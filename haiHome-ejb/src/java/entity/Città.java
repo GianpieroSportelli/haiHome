@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,10 @@ public class Città implements Serializable {
     private String foto;
     
     private String nome;
+
+    public Città() {
+        this.listaQuartieri = new ArrayList<Quartiere>();
+    }
 
     /**
      * Get the value of foto

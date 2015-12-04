@@ -7,6 +7,14 @@
     <servlet-mapping>
         <servlet-name>ServletController</servlet-name>
         <url-pattern>/ServletController</url-pattern>
+    </servlet-mapping>   
+    <servlet> 
+        <servlet-name>TestServlet</servlet-name>
+        <servlet-class>web.TestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/TestServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
