@@ -48,13 +48,9 @@ public class ServletController extends HttpServlet {
             RequestDispatcher rd = null;
             String action = request.getParameter("action");
 
-            
             if (action.equalsIgnoreCase("loginFacebook")) {
-                //out.println("<p>" + getServletContext().getContextPath() + "</p>");
-                //request.getRequestDispatcher("/ServletStudente.java").forward(request, response);
-               // out.println("<p>" + getServletContext().getContextPath() + "/ServletStudente" + "</p>");
-              //  rd = request.getRequestDispatcher(getServletContext().getContextPath() + "/ServletStudente");
-               // rd.forward(request, response);
+                request.getRequestDispatcher("/ServletStudente").forward(request, response);
+
             } else {
                 //altre cose
             }
