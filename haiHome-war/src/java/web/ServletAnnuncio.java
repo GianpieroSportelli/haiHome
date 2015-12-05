@@ -5,23 +5,18 @@
  */
 package web;
 
-import ejb.GestoreTestLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author gianp_000
  */
-public class TestServlet extends HttpServlet {
-
-    @EJB
-    private GestoreTestLocal gestoreTest;
+public class ServletAnnuncio extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,24 +35,10 @@ public class TestServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TestServlet</title>");
+            out.println("<title>Servlet ServletAnnuncio</title>");            
             out.println("</head>");
             out.println("<body>");
-            String nome = "Noci";
-            gestoreTest.addCittà(nome);
-            ArrayList<String> cities = gestoreTest.getAllCittàNome();
-            if (cities.isEmpty()) {
-                out.println("<p>Non sono Presenti città nel DB</p>");
-            } else {
-                for (String cit : cities) {
-                    out.println("<p>" + cit + "</p>");
-                }
-            }
-            gestoreTest.addQuartiere(nome, "lamaDacqua");
-            ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
-            for(String quartiere : quartieri)
-                out.println("<p>" + quartiere + "</p>");
-            //gestoreTest.cancellaCittà(nome);
+            out.println("<h1>Servlet ServletAnnuncio at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

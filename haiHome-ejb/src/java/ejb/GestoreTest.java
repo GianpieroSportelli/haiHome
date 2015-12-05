@@ -54,7 +54,7 @@ public class GestoreTest implements GestoreTestLocal {
             }
         }
         if (find != null) {
-            cittàFacade.remove(find);
+            
             Collection<Quartiere> quartieri = find.getListaQuartieri();
             if (quartieri == null) {
                 quartieri = new ArrayList<>();
@@ -67,7 +67,7 @@ public class GestoreTest implements GestoreTestLocal {
                 System.out.println(quartiere.getNome());
             }
             find.setListaQuartieri(quartieri);
-            cittàFacade.create(find);
+            cittàFacade.edit(find);
         }
     }
 

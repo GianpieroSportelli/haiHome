@@ -4,17 +4,49 @@
         <servlet-name>ServletController</servlet-name>
         <servlet-class>web.ServletController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletStudente</servlet-name>
+        <servlet-class>web.ServletStudente</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletLocatore</servlet-name>
+        <servlet-class>web.ServletLocatore</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAnnuncio</servlet-name>
+        <servlet-class>web.ServletAnnuncio</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAdmin</servlet-name>
+        <servlet-class>web.ServletAdmin</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletController</servlet-name>
         <url-pattern>/ServletController</url-pattern>
-    </servlet-mapping>   
-    <servlet> 
+    </servlet-mapping>
+    <servlet>
         <servlet-name>TestServlet</servlet-name>
         <servlet-class>web.TestServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/TestServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletStudente</servlet-name>
+        <url-pattern>/ServletStudente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletLocatore</servlet-name>
+        <url-pattern>/ServletLocatore</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAnnuncio</servlet-name>
+        <url-pattern>/ServletAnnuncio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAdmin</servlet-name>
+        <url-pattern>/ServletAdmin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
