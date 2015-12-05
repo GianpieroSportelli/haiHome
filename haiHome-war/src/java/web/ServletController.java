@@ -45,44 +45,9 @@ public class ServletController extends HttpServlet {
             out.println("<title>Esempio Servlet</title>");
             out.println("</head>");
             out.println("<body>");
-            String dati = request.getParameter("userData");
-            String email = request.getParameter("mailUser");
-            String foto = request.getParameter("profilo");
+            
 
-            //Il cognome è nella seconda posizione
-            String[] dataUser = dati.split(",");
-            String cognome = dataUser[1];
-            //Il nome è nella prima posizione
-            String nome = dataUser[0];
-            out.println("<p> Dati immessi: Nome e cognome - " + dati + " - Email: " + email + "- Foto: " + foto + "</p>");
-
-            //Check della presenza di uno studente
-            Studente st = gestoreStudente.checkStudente(email, nome, cognome);
-
-            //Se non è null significa che ho trovato uno studente con le stesse credenziali.
-            //Lo cancello
-            if (st != null) {
-                out.println("<p> Studente con credenziali: " + email + " " + nome + " " + cognome + " già presente </p>");
-                // gestoreStudente.removeStudente(st);
-            } else {
-                //Se non è presente, lo aggiungo
-                gestoreStudente.aggiungiStudente(email, nome, cognome, foto, null);
-            }
-
-            out.println("<p> Operazione in corso: Get studenti </p>");
-            List<Studente> lista = gestoreStudente.getStudenti();
-
-            for (Studente s : lista) {
-                //gestoreStudente.removeStudente(s);
-                out.println("<p>Nome =" + s.getNome()
-                        + ", Cognome = " + s.getCognome() + ", Email = " + s.getEmail() + ", Foto = " + s.getFotoProfilo() + ", Password = " + s.getPassword() + "</p>");
-
-            }
-
-            /**
-             * ***********************CODICE JSON //Qua c'era codice JSON
-            ************************************
-             */
+           
             out.println(
                     "</body>");
             out.println(

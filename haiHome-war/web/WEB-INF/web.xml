@@ -9,6 +9,10 @@
         <servlet-class>web.ServletStudente</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>MapsServlet</servlet-name>
+        <servlet-class>web.MapsServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletLocatore</servlet-name>
         <servlet-class>web.ServletLocatore</servlet-class>
     </servlet>
@@ -35,6 +39,10 @@
     <servlet-mapping>
         <servlet-name>ServletStudente</servlet-name>
         <url-pattern>/ServletStudente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MapsServlet</servlet-name>
+        <url-pattern>/MapsServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletLocatore</servlet-name>
