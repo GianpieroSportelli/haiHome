@@ -58,15 +58,16 @@ public class MapsServlet extends HttpServlet {
                 String country = request.getParameter("country");
                 country = country.replace(" ", "+");
                 String address = route + "," + street_number + "," + locality + "," + administrative_area_level_1 + "," + postal_code + "," + country;
+                
                 out.println(address);
                 double[] res = googleMapsBean.geocodingAddress(address);
                 if (res != null) {
-                    out.println("<p>lat:" + res[0] + "</p>");
-                    out.println("<p>lng:" + res[1] + "</p>");
+                    System.out.println("<p>lat:" + res[0] + "</p>");
+                    System.out.println("<p>lng:" + res[1] + "</p>");
 
                     ArrayList<JSONObject> nearSupermarket = googleMapsBean.getSupermarketNearBy(res[0], res[1], 500);
                     for (JSONObject obj : nearSupermarket) {
-                        out.println("<p>" + obj.toString() + "</p>");
+                        System.out.println("<p>" + obj.toString() + "</p>");
                     }
 
                     request.setAttribute("lat", res[0]);
