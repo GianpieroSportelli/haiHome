@@ -84,6 +84,7 @@
                 String latMarket=""+jobj.getJSONObject("location").get("lat");
                 String lngMarket=""+jobj.getJSONObject("location").get("lng");
                 String label=jobj.getString("name");
+                label=label.replace("'","&quot;");
             %>
             window.addMarker(new google.maps.LatLng(<%= latMarket%>, <%= lngMarket%>),'<%= label%>'); 
             <%System.out.println(jobj.getString("name")+","+jobj.getJSONObject("location")); %>
