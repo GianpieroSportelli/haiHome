@@ -198,7 +198,8 @@ public class Studente implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Studente[ id=" + id + " ]";
+        String res = "Nome: " + getNome() + " - Cognome: " + getCognome() + " - Email: " + getEmail() + " - Foto: " + getFotoProfilo() + " - Password: " + getPassword() + "\n";
+        return res;
     }
 
 }

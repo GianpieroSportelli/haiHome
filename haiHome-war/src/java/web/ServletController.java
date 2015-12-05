@@ -8,13 +8,12 @@ package web;
 import ejb.GestoreStudente;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import entity.Studente;
+import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -42,12 +41,24 @@ public class ServletController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Esempio Servlet</title>");
+            out.println("<title>Esempio ServletController</title>");
             out.println("</head>");
             out.println("<body>");
-            
 
-           
+            RequestDispatcher rd = null;
+            String action = request.getParameter("action");
+
+            
+            if (action.equalsIgnoreCase("loginFacebook")) {
+                //out.println("<p>" + getServletContext().getContextPath() + "</p>");
+                //request.getRequestDispatcher("/ServletStudente.java").forward(request, response);
+               // out.println("<p>" + getServletContext().getContextPath() + "/ServletStudente" + "</p>");
+              //  rd = request.getRequestDispatcher(getServletContext().getContextPath() + "/ServletStudente");
+               // rd.forward(request, response);
+            } else {
+                //altre cose
+            }
+
             out.println(
                     "</body>");
             out.println(
