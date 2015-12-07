@@ -29,7 +29,9 @@ public class FiltroDiRicerca implements Serializable {
 
     @ManyToOne
     protected Città Città;
-
+    
+    
+    //SE la lista è vuota per convenzione vuol dire tutti i quartieri di una determinata città
     protected Collection<String> listaQuartieri;
 
     /**
@@ -64,7 +66,7 @@ public class FiltroDiRicerca implements Serializable {
      *
      * @param Città new value of Città
      */
-    public void setIdCittà(Città Città) {
+    public void setCittà(Città Città) {
         this.Città = Città;
     }
 

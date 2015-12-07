@@ -5,7 +5,9 @@
  */
 package ejb;
 
+import java.util.ArrayList;
 import javax.ejb.Local;
+import org.json.JSONArray;
 
 /**
  *
@@ -13,5 +15,15 @@ import javax.ejb.Local;
  */
 @Local
 public interface GestoreRicercaLocal {
+
+    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri);
+
+    boolean selezionaCittà(String città);
+
+    boolean aggiornaAFiltroAppartamento(int numeroLocali, int numeroBagni, int numeroCamereDaLetto, double metratura);
+
+    boolean aggiornaAFiltroStanza(String tipo);
+
+    JSONArray usaFiltroAttuale();
     
 }
