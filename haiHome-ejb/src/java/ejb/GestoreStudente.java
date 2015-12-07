@@ -22,9 +22,12 @@ public class GestoreStudente implements GestoreStudenteLocal {
     @EJB
     private StudenteFacadeLocal studenteFacade;
 
+    private Studente studente = null;
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     //gli altri parametri, i.e. listaPreferiti saranno per forza null
+    @Override
     public boolean aggiungiStudente(String email, String nome, String cognome, String foto, String password) {
 
         //L'oggetto si crea senza costruttore (perchè sta fatto così)
@@ -44,13 +47,15 @@ public class GestoreStudente implements GestoreStudenteLocal {
         if (checkStudente == null) {
             return false;
         } else {
+            //Mi mantengo il riferimento allo studente durante la sessione
+            this.studente = stud;
             return true;//tutto ok
         }
     }
 
+    @Override
     public List<String> getStudenti() {
         List<Studente> listaStudenti = studenteFacade.findAll();
-
         List<String> result = new ArrayList<>();
 
         for (Studente s : listaStudenti) {
@@ -59,25 +64,35 @@ public class GestoreStudente implements GestoreStudenteLocal {
         return result;
     }
 
-    public void removeStudente(Studente s) {
+    //Non serve alcun parametro poichè lo studente, per rimuoversi, sarà loggato
+    //Se è loggato, allora l'oggetto studente sarà avvalorato e quindi non ha 
+    @Override
+    public boolean removeStudente() {
+
+        if (studente == null) {
+            return false;
+        }
         //lo cancello
-        studenteFacade.remove(studenteFacade.find(s.getId()));
+        studenteFacade.remove(studenteFacade.find(this.studente.getId()));
+        return true;
     }
 
     /**
-     * Metodo per cercare se esiste uno studente specifico
+     * Metodo per cercare se esiste uno studente specifico. Se esiste, lo
+     * studente viene memorizzato all'interno della sessione.
      *
-     * @param email
-     * @param nome
-     * @param cognome
+     * @param email L'email dello studente da cercare
      * @return true sse lo studente è già presente, false altrimenti
      */
-    public boolean checkStudente(String email, String nome, String cognome) {
+    @Override
+    public boolean checkStudente(String email) {
         List<Studente> listaStudenti = studenteFacade.findAll();
 
         for (Studente s : listaStudenti) {
-            if ((s.getCognome().compareToIgnoreCase(cognome) == 0) && (s.getNome().compareToIgnoreCase(nome) == 0) && (s.getEmail().compareToIgnoreCase(email) == 0)) {
+            if (s.getEmail().compareToIgnoreCase(email) == 0) {
                 //ho trovato uno studente duplicato
+                //Mi salvo il riferimento allo studente trovato
+                studente = s;
                 return true;
             }
         }
