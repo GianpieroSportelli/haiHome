@@ -45,7 +45,7 @@ public class ServletStudente extends HttpServlet {
             out.println("<title>Servlet Facebook - Login</title>");
             out.println("</head>");
             out.println("<body>");
-            
+
             String dati = request.getParameter("userData");
             String email = request.getParameter("mailUser");
             String foto = request.getParameter("profilo");
@@ -57,13 +57,11 @@ public class ServletStudente extends HttpServlet {
             out.println("<p> Dati immessi: Nome e cognome - " + dati + " - Email: " + email + "- Foto: " + foto + "</p>");
 
             //Check della presenza di uno studente
-            boolean esito = gestoreStudente.checkStudente(email, nome, cognome);
+            boolean esito = gestoreStudente.checkStudente(email);
 
-            //Se non è null significa che ho trovato uno studente con le stesse credenziali.
-            //Lo cancello
+            //Se true, allora lo studente è presente
             if (esito) {
                 out.println("<p> Studente con credenziali: " + email + " " + nome + " " + cognome + " già presente </p>");
-                // gestoreStudente.removeStudente(st);
             } else {
                 //Se non è presente, lo aggiungo
                 gestoreStudente.aggiungiStudente(email, nome, cognome, foto, null);
@@ -73,14 +71,17 @@ public class ServletStudente extends HttpServlet {
             List<String> lista = gestoreStudente.getStudenti();
 
             for (String s : lista) {
-                //gestoreStudente.removeStudente(s);
                 out.println("<p>" + s + "</p>");
-
             }
 
-            /**
-             * ***********************CODICE JSON //Qua c'era codice JSON
-             * ***********************************
+            /* ---------------- PROVA CANCELLAZIONE STUDENTE FUNZIONANTE
+             
+             gestoreStudente.removeStudente();
+             out.println("<p> Operazione in corso: Get studenti </p>");
+
+             for (String s : gestoreStudente.getStudenti()) {
+             out.println("<p>" + s + "</p>");
+             }
              */
             out.println("</body>");
             out.println("</html>");

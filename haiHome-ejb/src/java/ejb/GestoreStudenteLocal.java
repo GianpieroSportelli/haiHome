@@ -17,6 +17,6 @@ import javax.ejb.Local;
 public interface GestoreStudenteLocal {
     public boolean aggiungiStudente(String email, String nome, String cognome, String foto, String password);
     public List<String> getStudenti();
-    public void removeStudente(Studente s);
-    public boolean checkStudente(String email, String nome, String cognome);
+    public boolean checkStudente(String email);
+    public boolean removeStudente();
 }
