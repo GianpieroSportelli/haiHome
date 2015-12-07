@@ -19,28 +19,6 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Locatore implements Serializable {
-
-    private String password;
-
-    /**
-     * Get the value of password
-     *
-     * @return the value of password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Set the value of password
-     *
-     * @param password new value of password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,6 +29,8 @@ public class Locatore implements Serializable {
     private String cognome;
 
     private String email;
+    
+    private String password;
 
     private String telefono;
 
@@ -206,6 +186,25 @@ public class Locatore implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
+    /**
+     * Get the value of password
+     *
+     * @return the value of password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Set the value of password
+     *
+     * @param password new value of password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     public Long getId() {
         return id;
