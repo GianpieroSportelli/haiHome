@@ -5,7 +5,7 @@
  */
 package web;
 
-import ejb.GestoreStudente;
+import ejb.GestoreStudenteLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletStudente extends HttpServlet {
 
     @EJB
-    private GestoreStudente gestoreStudente;
+    private GestoreStudenteLocal gestoreStudente;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

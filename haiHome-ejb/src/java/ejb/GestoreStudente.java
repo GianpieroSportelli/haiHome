@@ -10,14 +10,14 @@ import facade.StudenteFacadeLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 
 /**
  *
  * @author Eugenio Liso
  */
-@Stateless
-public class GestoreStudente {
+@Stateful
+public class GestoreStudente implements GestoreStudenteLocal {
 
     @EJB
     private StudenteFacadeLocal studenteFacade;

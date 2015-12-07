@@ -5,10 +5,9 @@
  */
 package web;
 
-import ejb.GestoreStudente;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +19,6 @@ import javax.servlet.RequestDispatcher;
  * @author Eugenio Liso
  */
 public class ServletController extends HttpServlet {
-
-    @EJB
-    private GestoreStudente gestoreStudente;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
