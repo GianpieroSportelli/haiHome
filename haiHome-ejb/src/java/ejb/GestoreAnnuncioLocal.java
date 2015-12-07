@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.Locatore;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +14,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface GestoreAnnuncioLocal {
+    
+    public boolean CreaAnnuncio(Locatore locatore);
     
 }

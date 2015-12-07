@@ -7,12 +7,14 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -31,14 +33,23 @@ public class Annuncio implements Serializable {
     private String descrizione;
 
     private String indirizzo;
-
-    private double metratura;
     
+    @ManyToOne
+    private Città città;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataPubblicazione;
+     
+    private double metratura;
+     
     private String quartiere;
 
     private boolean archiviato;
 
     private boolean oscurato;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataInizioAffitto;
 
     @OneToMany
     private Collection<Stanza> listaStanza;
@@ -209,6 +220,24 @@ public class Annuncio implements Serializable {
     public void setIndirizzo(String indirizzo) {
         this.indirizzo = indirizzo;
     }
+    
+        /**
+     * Get the value of dataInizioAffitto
+     *
+     * @return the value of dataInizioAffitto
+     */
+    public Date getDataInizioAffitto() {
+        return dataInizioAffitto;
+    }
+
+    /**
+     * Set the value of dataInizioAffitto
+     *
+     * @param dataInizioAffitto new value of dataInizioAffitto
+     */
+    public void setDataInizioAffitto(Date dataInizioAffitto) {
+        this.dataInizioAffitto = dataInizioAffitto;
+    }
 
     /**
      * Get the value of descrizione
@@ -218,6 +247,7 @@ public class Annuncio implements Serializable {
     public String getDescrizione() {
         return descrizione;
     }
+  
 
     /**
      * Set the value of descrizione
@@ -234,6 +264,47 @@ public class Annuncio implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    
+    /**
+     * Get the value of dataPubblicazione
+     *
+     * @return the value of dataPubblicazione
+     */
+    public Date getDataPubblicazione() {
+        return dataPubblicazione;
+    }
+
+    /**
+     * Set the value of dataPubblicazione
+     *
+     * @param dataPubblicazione new value of dataPubblicazione
+     */
+    public void setDataPubblicazione(Date dataPubblicazione) {
+        this.dataPubblicazione = dataPubblicazione;
+    }
+
+
+
+
+
+    /**
+     * Get the value of città
+     *
+     * @return the value of città
+     */
+    public Città getCittà() {
+        return città;
+    }
+
+    /**
+     * Set the value of città
+     *
+     * @param città new value of città
+     */
+    public void setCittà(Città città) {
+        this.città = città;
     }
 
     @Override
