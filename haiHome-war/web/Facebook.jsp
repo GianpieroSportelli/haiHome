@@ -44,7 +44,7 @@
             //    FB.getLoginStatus(function (response) {
             //        statusChangeCallback(response);
             //    });
-           // }
+            // }
 
             window.fbAsyncInit = function () {
                 FB.init({
@@ -87,48 +87,70 @@
             function Login() {
                 FB.login(function (response) {
                     if (response.authResponse) {
-                        var dati;
-                        var email;
-                        
-                        //prendo l'immagine
-                         //FB.api("/me/picture?width=180&height=180", function (response) {
-                       //     var profileImage = response.data.url.split('https://')[1]; //remove https to avoid any cert issues
-                            //document.getElementById("profileImage").setAttribute("src", "http://" + profileImage);
-                       //     document.getElementById("profilo").value = "http://" + profileImage;
 
-                            
-                     //   });
+                        //Controllo permessi
+                        var declined = [];
+                        FB.api('/me/permissions', function (permessi) {
 
-                        //IMPORTANTE!! METTI I CAMPI CHE TI SERVONO ANCHE QUI DENTRO!!
-                        FB.api('/me?fields=id,first_name,last_name,email', function (response) {
-                            //response.name       - User Full name
-                            //response.link       - User Facebook URL
-                            //response.username   - User name
-                            //response.id         - id
-                            //response.email      - User email
-                            //
-                            dati = response.first_name + ',' + response.last_name;
-                            email = response.email;
+                            for (i = 0; i < permessi.data.length; i++) {
+                                if (permessi.data[i].status == 'declined') {
+                                    declined.push(permessi.data[i].permission)
+                                }
+                            }
 
-                            document.getElementById("status").innerHTML = "Tuoi dati: " + dati;
-                            document.getElementById("userEmail").innerHTML = "Tua mail: " + email;
-                            
-                            //Passo i parametri
-                            //Prendo nome+cognome
-                            document.getElementById("userData").value = dati;                             //Prendo email
-                            document.getElementById("mailUser").value = email;
-                            
-                            document.getElementById("profilo").value = "http://graph.facebook.com/" + response.id + "/picture?type=large";
+                            if (declined.length != 0) {
+                                alert("Permessi mancanti: " + declined.toString() + ". Per garantire il funzionamento di haiHome? è necessario fornire le poche informazioni richieste. La preghiamo di ricontrollare i permessi.");
+                            } else
+                                getData();
 
-                            //Chiamo la servlet
-                            document.getElementById("form").submit();
                         });
 
                     } else {
                         alert("Login attempt failed!");
                     }
-                }, {scope: 'email,public_profile,user_photos'});
+                }, {scope: 'email,public_profile'});
             }
+
+            function getData() {
+                var dati;
+                var email;
+
+                //prendo l'immagine
+                //FB.api("/me/picture?width=180&height=180", function (response) {
+                //     var profileImage = response.data.url.split('https://')[1]; //remove https to avoid any cert issues
+                //document.getElementById("profileImage").setAttribute("src", "http://" + profileImage);
+                //     document.getElementById("profilo").value = "http://" + profileImage;
+
+
+                //   });
+
+
+                //IMPORTANTE!! METTI I CAMPI CHE TI SERVONO ANCHE QUI DENTRO!!
+                FB.api('/me?fields=id,first_name,last_name,email', function (response) {
+                    //response.name       - User Full name
+                    //response.link       - User Facebook URL
+                    //response.username   - User name
+                    //response.id         - id
+                    //response.email      - User email
+                    //
+
+                    dati = response.first_name + ',' + response.last_name;
+                    email = response.email;
+
+                    document.getElementById("status").innerHTML = "Tuoi dati: " + dati;
+                    document.getElementById("userEmail").innerHTML = "Tua mail: " + email;
+
+                    //Passo i parametri
+                    //Prendo nome+cognome
+                    document.getElementById("userData").value = dati;                             //Prendo email
+                    document.getElementById("mailUser").value = email;
+                    document.getElementById("profilo").value = "http://graph.facebook.com/" + response.id + "/picture?type=large";
+
+                    //Chiamo la servlet
+                    document.getElementById("form").submit();
+                });
+            }
+
             function checkUser() {
                 FB.getLoginStatus(function (response) {
                     logOut(response);
