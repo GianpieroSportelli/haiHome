@@ -61,6 +61,46 @@ public class Annuncio implements Serializable {
     // latLng[0]=latitudine_googlemaps, latLng[1]=longitudine_googlemaps
     private double[] latLng;
 
+    private boolean compresoCondominio;
+
+    private boolean compresoRiscaldamento;
+
+    /**
+     * Get the value of compresoRiscaldamento
+     *
+     * @return the value of compresoRiscaldamento
+     */
+    public boolean isCompresoRiscaldamento() {
+        return compresoRiscaldamento;
+    }
+
+    /**
+     * Set the value of compresoRiscaldamento
+     *
+     * @param compresoRiscaldamento new value of compresoRiscaldamento
+     */
+    public void setCompresoRiscaldamento(boolean compresoRiscaldamento) {
+        this.compresoRiscaldamento = compresoRiscaldamento;
+    }
+
+    /**
+     * Get the value of compresoCondominio
+     *
+     * @return the value of compresoCondominio
+     */
+    public boolean isCompresoCondominio() {
+        return compresoCondominio;
+    }
+
+    /**
+     * Set the value of compresoCondominio
+     *
+     * @param compresoCondominio new value of compresoCondominio
+     */
+    public void setCompresoCondominio(boolean compresoCondominio) {
+        this.compresoCondominio = compresoCondominio;
+    }
+
     /**
      * Get the value of prezzo
      *
@@ -78,6 +118,7 @@ public class Annuncio implements Serializable {
     public void setPrezzo(double prezzo) {
         this.prezzo = prezzo;
     }
+
     /**
      * Get the value of latLng
      *
