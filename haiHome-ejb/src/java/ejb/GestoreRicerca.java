@@ -10,6 +10,10 @@ import entity.Città;
 import entity.FiltroAppartamento;
 import entity.FiltroDiRicerca;
 import entity.FiltroStanza;
+import entity.Stanza;
+import entity.StanzaAccessoria;
+import entity.StanzaInAffitto;
+import entity.TipoStanzaAccessoria;
 import entity.TipoStanzaInAffitto;
 import facade.AnnuncioFacadeLocal;
 import facade.CittàFacadeLocal;
@@ -112,18 +116,115 @@ public class GestoreRicerca implements GestoreRicercaLocal {
     public JSONArray usaFiltroAttuale() {
         JSONArray result = null;
         if (filtroAttuale != null) {
-            ArrayList<Annuncio> listResult=new ArrayList();
-            ArrayList<Annuncio> annunci=(ArrayList<Annuncio>) annuncioFacade.findAll();
-            for(Annuncio x: annunci){
-                
+            ArrayList<Annuncio> listResult = new ArrayList<>();
+            ArrayList<Annuncio> annunci = (ArrayList) filtroAttuale.getCittà().getAnnunci();
+            ArrayList<String> quartieriFiltro = (ArrayList<String>) filtroAttuale.getListaQuartieri();
+            if (quartieriFiltro.isEmpty()) {
+                listResult = annunci;
+            } else {
+                for (Annuncio x : annunci) {
+                    for (String quart : quartieriFiltro) {
+                        if (x.getQuartiere().equalsIgnoreCase(quart)) {
+                            listResult.add(x);
+                            break;
+                        }
+                    }
+                }
             }
             if (filtroAttuale instanceof FiltroAppartamento) {
+                FiltroAppartamento attuale = (FiltroAppartamento) filtroAttuale;
 
-            } else if (filtroAttuale instanceof FiltroAppartamento) {
+                for (Annuncio x : listResult) {
 
+                    if (x.getPrezzo() > attuale.getPrezzo()) {
+                        listResult.remove(x);
+                        break;
+                    }
+
+                    if (attuale.getNumeroLocali() > x.getNumeroStanze()) {
+                        listResult.remove(x);
+                        break;
+                    } else {
+                        //stanze[0] numeroBagni annuncio
+                        //stanze[1] numeroCamereDaLetto
+                        int[] stanze = countRoom(x);
+
+                        if (stanze[0] < attuale.getNumeroBagni()) {
+                            listResult.remove(x);
+                            break;
+                        }
+
+                        if (stanze[1] < attuale.getNumeroCamereDaLetto()) {
+                            listResult.remove(x);
+                            break;
+                        }
+                    }
+                    if (attuale.getMetratura() > x.getMetratura()) {
+                        listResult.remove(x);
+                        break;
+                    }
+                }
+
+            } else if (filtroAttuale instanceof FiltroStanza) {
+                FiltroStanza attuale = (FiltroStanza) filtroAttuale;
+                for (Annuncio x : listResult) {
+                    boolean ok = false;
+                    for (Stanza s : x.getListaStanza()) {
+                        if (s instanceof StanzaInAffitto) {
+                            StanzaInAffitto sF=(StanzaInAffitto) s;
+                            if(sF.isArchiviato())
+                                break;
+                            if(sF.getPrezzo()>attuale.getPrezzo())
+                                break;
+                            if(sF.getTipo()!=attuale.getTipo())
+                                break;
+                            ok=true;
+                        }
+                    }
+                    if(!ok)
+                        listResult.remove(x);
+                }
+            } else {
+               for (Annuncio x : listResult) {
+
+                    if (x.getPrezzo() > filtroAttuale.getPrezzo()) {
+                        listResult.remove(x);
+                        break;
+                    }
+               }
             }
+            result = ArrayListToJSONArray(listResult);
         }
         return result;
     }
 
+    private int[] countRoom(Annuncio x) {
+        int nBagni = 0;
+        int nStanzeDaLetto = 0;
+        for (Stanza s : x.getListaStanza()) {
+            if (s instanceof StanzaAccessoria) {
+                StanzaAccessoria sA = (StanzaAccessoria) s;
+                if (sA.getTipo() == TipoStanzaAccessoria.Bagno) {
+                    nBagni++;
+                }
+            }
+            if (s instanceof StanzaInAffitto) {
+                StanzaInAffitto sF = (StanzaInAffitto) s;
+                if (!sF.isArchiviato()) {
+                    nStanzeDaLetto++;
+                }
+            }
+        }
+        int[] result = {nBagni, nStanzeDaLetto};
+        return result;
+    }
+
+    private JSONArray ArrayListToJSONArray(ArrayList<Annuncio> annunci) {
+        JSONArray result=new JSONArray();
+        for(Annuncio x: annunci){
+            JSONObject attuale=new JSONObject();
+            
+        }
+        return null;
+    }
 }

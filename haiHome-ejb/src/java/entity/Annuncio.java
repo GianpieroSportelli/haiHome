@@ -22,6 +22,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Annuncio implements Serializable {
+
     @ManyToOne
     private Locatore locatore;
 
@@ -32,22 +33,24 @@ public class Annuncio implements Serializable {
 
     private String descrizione;
 
+    private double prezzo = 0;
+
     private String indirizzo;
-    
+
     @ManyToOne
     private Città città;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataPubblicazione;
-     
+
     private double metratura;
-     
+
     private String quartiere;
 
     private boolean archiviato;
 
     private boolean oscurato;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataInizioAffitto;
 
@@ -57,8 +60,24 @@ public class Annuncio implements Serializable {
     private int numeroStanze;
     // latLng[0]=latitudine_googlemaps, latLng[1]=longitudine_googlemaps
     private double[] latLng;
-    
 
+    /**
+     * Get the value of prezzo
+     *
+     * @return the value of prezzo
+     */
+    public double getPrezzo() {
+        return prezzo;
+    }
+
+    /**
+     * Set the value of prezzo
+     *
+     * @param prezzo new value of prezzo
+     */
+    public void setPrezzo(double prezzo) {
+        this.prezzo = prezzo;
+    }
     /**
      * Get the value of latLng
      *
@@ -220,8 +239,8 @@ public class Annuncio implements Serializable {
     public void setIndirizzo(String indirizzo) {
         this.indirizzo = indirizzo;
     }
-    
-        /**
+
+    /**
      * Get the value of dataInizioAffitto
      *
      * @return the value of dataInizioAffitto
@@ -247,7 +266,6 @@ public class Annuncio implements Serializable {
     public String getDescrizione() {
         return descrizione;
     }
-  
 
     /**
      * Set the value of descrizione
@@ -265,8 +283,7 @@ public class Annuncio implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    
+
     /**
      * Get the value of dataPubblicazione
      *
@@ -284,10 +301,6 @@ public class Annuncio implements Serializable {
     public void setDataPubblicazione(Date dataPubblicazione) {
         this.dataPubblicazione = dataPubblicazione;
     }
-
-
-
-
 
     /**
      * Get the value of città
