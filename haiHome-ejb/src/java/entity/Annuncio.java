@@ -65,6 +65,26 @@ public class Annuncio implements Serializable {
 
     private boolean compresoRiscaldamento;
 
+    private boolean atomico;
+
+    /**
+     * Get the value of atomico
+     *
+     * @return the value of atomico
+     */
+    public boolean isAtomico() {
+        return atomico;
+    }
+
+    /**
+     * Set the value of atomico
+     *
+     * @param atomico new value of atomico
+     */
+    public void setAtomico(boolean atomico) {
+        this.atomico = atomico;
+    }
+
     /**
      * Get the value of compresoRiscaldamento
      *
