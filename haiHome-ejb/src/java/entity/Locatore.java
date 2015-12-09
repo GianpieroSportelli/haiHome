@@ -245,6 +245,7 @@ public class Locatore implements Serializable {
     public JSONObject toJSON() throws JSONException {
         JSONObject jsonLoc = new JSONObject(); 
         
+        /* Informazioni personali */
         jsonLoc.accumulate("id", id);
         jsonLoc.accumulate("nome", nome); 
         jsonLoc.accumulate("cognome", cognome); 
@@ -263,7 +264,7 @@ public class Locatore implements Serializable {
             JSONObject current = a.toJSON(); 
             jsonAnnunci.put(current); 
         }
-        jsonLoc.accumulate("listaAnnunci", jsonAnnunci); */
+        jsonLoc.accumulate("listaAnnunci", jsonAnnunci);  */
         
         return jsonLoc; 
     }
