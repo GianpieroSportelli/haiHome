@@ -16,7 +16,7 @@ import org.json.JSONArray;
 @Local
 public interface GestoreRicercaLocal {
 
-    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri);
+    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri,boolean compresoCondominio, boolean compresoRiscaldamento);
 
     boolean selezionaCittà(String città);
 
@@ -25,5 +25,7 @@ public interface GestoreRicercaLocal {
     boolean aggiornaAFiltroStanza(String tipo);
 
     JSONArray usaFiltroAttuale();
+
+    boolean isFiltroAppartamento();
     
 }

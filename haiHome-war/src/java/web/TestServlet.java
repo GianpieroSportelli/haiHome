@@ -5,6 +5,7 @@
  */
 package web;
 
+import ejb.GestoreRicercaLocal;
 import ejb.GestoreTestLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,9 +20,13 @@ import javax.servlet.http.HttpServletResponse;
  * @author gianp_000
  */
 public class TestServlet extends HttpServlet {
+    @EJB
+    private GestoreRicercaLocal gestoreRicerca;
 
     @EJB
     private GestoreTestLocal gestoreTest;
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,6 +63,12 @@ public class TestServlet extends HttpServlet {
             for(String quartiere : quartieri)
                 out.println("<p>" + quartiere + "</p>");
             //gestoreTest.cancellaCittà(nome);
+            gestoreRicerca.selezionaCittà(nome);
+            gestoreRicerca.creaFiltroDiRicerca(100, new ArrayList<String>(), true, true);
+            gestoreRicerca.aggiornaAFiltroAppartamento(5,1,3,0);
+            out.println(gestoreRicerca.isFiltroAppartamento());
+            request.setAttribute("gestoreRicerca", gestoreRicerca);
+            request.getRequestDispatcher("/test2").forward(request, response);
             out.println("</body>");
             out.println("</html>");
         }
@@ -101,5 +112,7 @@ public class TestServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
 
 }
