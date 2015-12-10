@@ -84,4 +84,9 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         
         return resOp; 
     }
+    
+    @Override
+    public Locatore getLocatore() {
+        return this.locatore; 
+    }
 }

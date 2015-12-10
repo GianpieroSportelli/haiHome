@@ -5,8 +5,10 @@
  */
 package ejb;
 
+import entity.Locatore;
 import java.util.List;
 import javax.ejb.Local;
+
 
 /**
  *
@@ -19,4 +21,6 @@ public interface GestoreLocatoreLocal {
     public List<String> getLocatori(); 
     public boolean checkLocatore(String email);
     public boolean removeLocatore();
+    
+    public Locatore getLocatore(); 
 }
