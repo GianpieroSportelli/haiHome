@@ -11,6 +11,7 @@ import entity.Quartiere;
 import java.util.Collection;
 import java.util.Date;
 import javax.ejb.Local;
+import org.json.JSONObject;
 
 /**
  * 
@@ -37,6 +38,7 @@ public interface GestoreAnnuncioLocal {
     
     public boolean rendiAnnuncioPersistente();
     
+    public JSONObject toJSON();
     /*
      COSTI
     private boolean compresoCondominio;

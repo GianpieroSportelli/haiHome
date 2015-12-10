@@ -8,6 +8,8 @@ package entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -404,6 +409,36 @@ public class Annuncio implements Serializable {
     @Override
     public String toString() {
         return "entity.Annuncio[ id=" + id + " ]";
+    }
+    
+    public JSONObject toJSON(){
+        
+            
+            JSONObject annuncioJSON = new JSONObject();
+        try {
+            annuncioJSON.accumulate("Città", this.città.getNome());
+            annuncioJSON.accumulate("DataInizioAffitto", this.dataInizioAffitto.toString());
+            annuncioJSON.accumulate("DataPubblicazione", this.dataPubblicazione.toString());
+            annuncioJSON.accumulate("Prezzo", this.prezzo);
+            annuncioJSON.accumulate("Quartiere", this.quartiere);
+            annuncioJSON.accumulate("NumeroLocali", this.numeroStanze);
+            annuncioJSON.accumulate("Locatore", locatore.toJSON()); 
+            annuncioJSON.accumulate("Descrizione", this.descrizione);
+            annuncioJSON.accumulate("Indirizzo", this.indirizzo);
+            annuncioJSON.accumulate("LatLng", this.latLng);
+            annuncioJSON.accumulate("Metratura", this.metratura);
+            
+            //aggiungo le stanze
+            JSONArray JSONstanze = new JSONArray();
+            for(Stanza s: this.listaStanza)       
+                JSONstanze.put(s.toJSON());
+                
+            annuncioJSON.accumulate("Stanze", JSONstanze);
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(Annuncio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return annuncioJSON;
     }
 
 }

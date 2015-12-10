@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 
 /**
  *
@@ -59,7 +60,7 @@ private GestoreTestLocal gestoreTest;
             //inizio inserimento annuncio
             
 
-            this.gestoreAnnuncio.CreaAnnuncio(10);
+            out.println("<p>"+this.gestoreAnnuncio.CreaAnnuncio(12345678909864321L)+"</p>");
             double[] latlng = new double[2];
             latlng[0]=0.12;
             latlng[1]=100.12;
@@ -89,6 +90,9 @@ private GestoreTestLocal gestoreTest;
             out.println("<p>ciao ciao ciao</p>");
               System.out.println(a + " " + b);        
 
+            JSONObject json = this.gestoreAnnuncio.toJSON();
+            
+            out.println("<p>" +"miao"+ json.toString() +"</p>");
             
             out.println("</body>");
             out.println("</html>");

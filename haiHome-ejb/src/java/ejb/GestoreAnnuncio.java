@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import org.json.JSONObject;
 
 
 /*
@@ -122,19 +123,20 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean CreaAnnuncio(Object idLocatore) {
                 
         this.annuncio = new Annuncio();
-        
+        /*
         List<Locatore> locatori =locatoreFacade.findAll();
         
         for(Locatore l: locatori){
-            if(Objects.equals(l.getId(), idLocatore)){
+            if(l.getId() == idLocatore){
                         annuncio.setLocatore(l);
                         return true;
             }
         }
+        */
 
-        
-      
-            return false;
+        Locatore l = locatoreFacade.find(idLocatore);
+        this.annuncio.setLocatore(l);
+        return l != null;
     }
 
     @Override
@@ -283,17 +285,11 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean rendiAnnuncioPersistente() {
         GregorianCalendar gc = new GregorianCalendar();
-        String data = gc.get(Calendar.DAY_OF_MONTH) + "/" + gc.get(Calendar.MONTH) + "/" + gc.get(Calendar.YEAR);
         Date d = new Date();
         //TODO inserimento data, classe Date deprecata
-        
+        this.annuncio.setDataPubblicazione(d);
         Collection<Stanza> lista = this.annuncio.getListaStanza();
-        /*
-            @EJB
-    private StanzaAccessoriaFacadeLocal stanzaAccessoriaFacade;
-    @EJB
-    private StanzaInAffittoFacadeLocal stanzaInAffittoFacade;
-    */
+
         for(Stanza s: lista){
             if(s instanceof StanzaInAffitto)
                 stanzaInAffittoFacade.create((StanzaInAffitto) s);
@@ -305,6 +301,11 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         annuncioFacade.create(this.annuncio);
         
         return true;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        return this.annuncio.toJSON();
     }
 
 
