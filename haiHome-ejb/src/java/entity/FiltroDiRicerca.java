@@ -30,7 +30,48 @@ public class FiltroDiRicerca implements Serializable {
     @ManyToOne
     protected Città Città;
 
+    //SE la lista è vuota per convenzione vuol dire tutti i quartieri di una determinata città
     protected Collection<String> listaQuartieri;
+
+    protected boolean compresoCondominio;
+
+    protected boolean compresoRiscaldamento;
+
+    /**
+     * Get the value of compresoRiscaldamento
+     *
+     * @return the value of compresoRiscaldamento
+     */
+    public boolean isCompresoRiscaldamento() {
+        return compresoRiscaldamento;
+    }
+
+    /**
+     * Set the value of compresoRiscaldamento
+     *
+     * @param compresoRiscaldamento new value of compresoRiscaldamento
+     */
+    public void setCompresoRiscaldamento(boolean compresoRiscaldamento) {
+        this.compresoRiscaldamento = compresoRiscaldamento;
+    }
+
+    /**
+     * Get the value of compresoCondominio
+     *
+     * @return the value of compresoCondominio
+     */
+    public boolean isCompresoCondominio() {
+        return compresoCondominio;
+    }
+
+    /**
+     * Set the value of compresoCondominio
+     *
+     * @param compresoCondominio new value of compresoCondominio
+     */
+    public void setCompresoCondominio(boolean compresoCondominio) {
+        this.compresoCondominio = compresoCondominio;
+    }
 
     /**
      * Get the value of listaQuartieri
@@ -64,7 +105,7 @@ public class FiltroDiRicerca implements Serializable {
      *
      * @param Città new value of Città
      */
-    public void setIdCittà(Città Città) {
+    public void setCittà(Città Città) {
         this.Città = Città;
     }
 

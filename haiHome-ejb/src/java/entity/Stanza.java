@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.json.JSONObject;
 
 /**
  *
@@ -99,5 +100,7 @@ public abstract class Stanza implements Serializable {
     public String toString() {
         return "entity.Stanza[ id=" + id + " ]";
     }
+    
+    public abstract JSONObject toJSON();
     
 }

@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +33,12 @@ public class Città implements Serializable {
     private String foto;
     
     private String nome;
+    @OneToMany(mappedBy = "citt\u00e0")
+    private List<Annuncio> annunci;
+    
+    public List<Annuncio> getAnnunci() {
+        return annunci;
+    }
 
     public Città() {
         this.listaQuartieri = new ArrayList<Quartiere>();

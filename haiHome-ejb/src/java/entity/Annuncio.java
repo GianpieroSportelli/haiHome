@@ -7,12 +7,19 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -20,6 +27,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Annuncio implements Serializable {
+
     @ManyToOne
     private Locatore locatore;
 
@@ -30,15 +38,26 @@ public class Annuncio implements Serializable {
 
     private String descrizione;
 
+    private double prezzo = 0;
+
     private String indirizzo;
 
+    @ManyToOne
+    private Città città;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataPubblicazione;
+
     private double metratura;
-    
+
     private String quartiere;
 
     private boolean archiviato;
 
     private boolean oscurato;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataInizioAffitto;
 
     @OneToMany
     private Collection<Stanza> listaStanza;
@@ -46,7 +65,84 @@ public class Annuncio implements Serializable {
     private int numeroStanze;
     // latLng[0]=latitudine_googlemaps, latLng[1]=longitudine_googlemaps
     private double[] latLng;
-    
+
+    private boolean compresoCondominio;
+
+    private boolean compresoRiscaldamento;
+
+    private boolean atomico;
+
+    /**
+     * Get the value of atomico
+     *
+     * @return the value of atomico
+     */
+    public boolean isAtomico() {
+        return atomico;
+    }
+
+    /**
+     * Set the value of atomico
+     *
+     * @param atomico new value of atomico
+     */
+    public void setAtomico(boolean atomico) {
+        this.atomico = atomico;
+    }
+
+    /**
+     * Get the value of compresoRiscaldamento
+     *
+     * @return the value of compresoRiscaldamento
+     */
+    public boolean isCompresoRiscaldamento() {
+        return compresoRiscaldamento;
+    }
+
+    /**
+     * Set the value of compresoRiscaldamento
+     *
+     * @param compresoRiscaldamento new value of compresoRiscaldamento
+     */
+    public void setCompresoRiscaldamento(boolean compresoRiscaldamento) {
+        this.compresoRiscaldamento = compresoRiscaldamento;
+    }
+
+    /**
+     * Get the value of compresoCondominio
+     *
+     * @return the value of compresoCondominio
+     */
+    public boolean isCompresoCondominio() {
+        return compresoCondominio;
+    }
+
+    /**
+     * Set the value of compresoCondominio
+     *
+     * @param compresoCondominio new value of compresoCondominio
+     */
+    public void setCompresoCondominio(boolean compresoCondominio) {
+        this.compresoCondominio = compresoCondominio;
+    }
+
+    /**
+     * Get the value of prezzo
+     *
+     * @return the value of prezzo
+     */
+    public double getPrezzo() {
+        return prezzo;
+    }
+
+    /**
+     * Set the value of prezzo
+     *
+     * @param prezzo new value of prezzo
+     */
+    public void setPrezzo(double prezzo) {
+        this.prezzo = prezzo;
+    }
 
     /**
      * Get the value of latLng
@@ -211,6 +307,24 @@ public class Annuncio implements Serializable {
     }
 
     /**
+     * Get the value of dataInizioAffitto
+     *
+     * @return the value of dataInizioAffitto
+     */
+    public Date getDataInizioAffitto() {
+        return dataInizioAffitto;
+    }
+
+    /**
+     * Set the value of dataInizioAffitto
+     *
+     * @param dataInizioAffitto new value of dataInizioAffitto
+     */
+    public void setDataInizioAffitto(Date dataInizioAffitto) {
+        this.dataInizioAffitto = dataInizioAffitto;
+    }
+
+    /**
      * Get the value of descrizione
      *
      * @return the value of descrizione
@@ -236,6 +350,42 @@ public class Annuncio implements Serializable {
         this.id = id;
     }
 
+    /**
+     * Get the value of dataPubblicazione
+     *
+     * @return the value of dataPubblicazione
+     */
+    public Date getDataPubblicazione() {
+        return dataPubblicazione;
+    }
+
+    /**
+     * Set the value of dataPubblicazione
+     *
+     * @param dataPubblicazione new value of dataPubblicazione
+     */
+    public void setDataPubblicazione(Date dataPubblicazione) {
+        this.dataPubblicazione = dataPubblicazione;
+    }
+
+    /**
+     * Get the value of città
+     *
+     * @return the value of città
+     */
+    public Città getCittà() {
+        return città;
+    }
+
+    /**
+     * Set the value of città
+     *
+     * @param città new value of città
+     */
+    public void setCittà(Città città) {
+        this.città = città;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -259,6 +409,36 @@ public class Annuncio implements Serializable {
     @Override
     public String toString() {
         return "entity.Annuncio[ id=" + id + " ]";
+    }
+    
+    public JSONObject toJSON(){
+        
+            
+            JSONObject annuncioJSON = new JSONObject();
+        try {
+            annuncioJSON.accumulate("Città", this.città.getNome());
+            annuncioJSON.accumulate("DataInizioAffitto", this.dataInizioAffitto.toString());
+            annuncioJSON.accumulate("DataPubblicazione", this.dataPubblicazione.toString());
+            annuncioJSON.accumulate("Prezzo", this.prezzo);
+            annuncioJSON.accumulate("Quartiere", this.quartiere);
+            annuncioJSON.accumulate("NumeroLocali", this.numeroStanze);
+            annuncioJSON.accumulate("Locatore", locatore.toJSON()); 
+            annuncioJSON.accumulate("Descrizione", this.descrizione);
+            annuncioJSON.accumulate("Indirizzo", this.indirizzo);
+            annuncioJSON.accumulate("LatLng", this.latLng);
+            annuncioJSON.accumulate("Metratura", this.metratura);
+            
+            //aggiungo le stanze
+            JSONArray JSONstanze = new JSONArray();
+            for(Stanza s: this.listaStanza)       
+                JSONstanze.put(s.toJSON());
+                
+            annuncioJSON.accumulate("Stanze", JSONstanze);
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(Annuncio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return annuncioJSON;
     }
 
 }

@@ -12,6 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -42,7 +45,7 @@ public class Locatore implements Serializable {
     private boolean bloccato;
 
     private String descrizione;
-
+    
     /**
      * Get the value of descrizione
      *
@@ -238,5 +241,31 @@ public class Locatore implements Serializable {
     public String toString() {
         return "entity.Locatore[ id=" + id + " ]";
     }
-
+    
+    public JSONObject toJSON() throws JSONException {
+        JSONObject jsonLoc = new JSONObject(); 
+        
+        /* Informazioni personali */
+        jsonLoc.accumulate("id", id);
+        jsonLoc.accumulate("nome", nome); 
+        jsonLoc.accumulate("cognome", cognome); 
+        jsonLoc.accumulate("email", email); 
+        jsonLoc.accumulate("password", password); //serve?!
+        jsonLoc.accumulate("telefono", telefono); 
+        jsonLoc.accumulate("fotoProfilo", fotoProfilo); 
+        jsonLoc.accumulate("bloccato", (bloccato ? "true" : "false"));
+        jsonLoc.accumulate("descrizione", descrizione); 
+        
+        /* Loop (mutua ricorsione) se Locatore JSONizza la lista di annunci 
+         * e l'annuncio JSONizza il locatore */
+        /*
+        JSONArray jsonAnnunci = new JSONArray(); 
+        for (Annuncio a: listaAnnunci) {
+            JSONObject current = a.toJSON(); 
+            jsonAnnunci.put(current); 
+        }
+        jsonLoc.accumulate("listaAnnunci", jsonAnnunci);  */
+        
+        return jsonLoc; 
+    }
 }

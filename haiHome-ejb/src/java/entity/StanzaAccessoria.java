@@ -6,10 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -74,6 +78,23 @@ public class StanzaAccessoria extends Stanza implements Serializable {
     @Override
     public String toString() {
         return "entity.StanzaAccessoria[ id=" + id + " ]";
+    }
+    
+    
+     public JSONObject toJSON(){
+        
+            
+            JSONObject stanzaJSON = new JSONObject();
+        try {
+            stanzaJSON.accumulate("Foto", super.foto);
+            stanzaJSON.accumulate("Metratura", super.metratura);
+            stanzaJSON.accumulate("Tipo", this.tipo.name());
+            
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(Annuncio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return stanzaJSON;
     }
 
 }
