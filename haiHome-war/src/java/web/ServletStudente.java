@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 
 /**
  *
@@ -73,6 +74,10 @@ public class ServletStudente extends HttpServlet {
             for (String s : lista) {
                 out.println("<p>" + s + "</p>");
             }
+
+            JSONObject json = this.gestoreStudente.toJSON();
+
+            out.println("<p>" + json.toString() + "</p>");
 
             /* ---------------- PROVA CANCELLAZIONE STUDENTE FUNZIONANTE
              

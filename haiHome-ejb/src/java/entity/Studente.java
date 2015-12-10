@@ -7,11 +7,16 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -34,12 +39,12 @@ public class Studente implements Serializable {
     private String password;
 
     @OneToMany
-    private Collection<Annuncio> listaAnnunciPreferiti;
+    private Collection<Annuncio> listaAnnunciPreferiti = null;
 
     private String fotoProfilo;
-    
+
     @OneToMany
-    private Collection<FiltroDiRicerca> listaFiltriPreferiti;
+    private Collection<FiltroDiRicerca> listaFiltriPreferiti = null;
 
     /**
      * Get the value of listaFiltriPreferiti
@@ -58,7 +63,6 @@ public class Studente implements Serializable {
     public void setListaFiltriPreferiti(Collection<FiltroDiRicerca> listaFiltriPreferiti) {
         this.listaFiltriPreferiti = listaFiltriPreferiti;
     }
-
 
     /**
      * Get the value of fotoProfilo
@@ -200,6 +204,40 @@ public class Studente implements Serializable {
     public String toString() {
         String res = "Nome: " + getNome() + " - Cognome: " + getCognome() + " - Email: " + getEmail() + " - Foto: " + getFotoProfilo() + " - Password: " + getPassword() + "\n";
         return res;
+    }
+
+    public JSONObject toJSON() {
+
+        JSONObject studenteJSON = new JSONObject();
+
+        try {
+            studenteJSON.accumulate("ID", this.getId());
+            studenteJSON.accumulate("Nome", this.getNome());
+            studenteJSON.accumulate("Cognome", this.getCognome());
+            studenteJSON.accumulate("Email", this.getEmail());
+            studenteJSON.accumulate("Password", this.getPassword());
+            studenteJSON.accumulate("Foto", this.getFotoProfilo());
+
+            //aggiungo Lista filtri preferiti
+            JSONArray JSONFiltriPreferiti = new JSONArray();
+            for (FiltroDiRicerca f : this.listaFiltriPreferiti) {
+                //     JSONFiltriPreferiti.put(f.toJSON());
+            }
+
+            //aggiungo Lista annunci preferiti
+            JSONArray JSONAnnunciPreferiti = new JSONArray();
+            for (Annuncio a : this.listaAnnunciPreferiti) {
+                JSONFiltriPreferiti.put(a.toJSON());
+            }
+
+            studenteJSON.accumulate("FiltriPreferiti", JSONFiltriPreferiti);
+            studenteJSON.accumulate("AnnunciPreferiti", JSONAnnunciPreferiti);
+
+        } catch (JSONException ex) {
+            Logger.getLogger(Annuncio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return studenteJSON;
     }
 
 }

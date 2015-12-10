@@ -5,9 +5,9 @@
  */
 package ejb;
 
-import entity.Studente;
 import java.util.List;
 import javax.ejb.Local;
+import org.json.JSONObject;
 
 /**
  *
@@ -15,8 +15,14 @@ import javax.ejb.Local;
  */
 @Local
 public interface GestoreStudenteLocal {
+
     public boolean aggiungiStudente(String email, String nome, String cognome, String foto, String password);
+
     public List<String> getStudenti();
+
     public boolean checkStudente(String email);
+
     public boolean removeStudente();
+
+    public JSONObject toJSON();
 }
