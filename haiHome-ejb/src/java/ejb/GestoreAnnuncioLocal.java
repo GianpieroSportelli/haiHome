@@ -40,10 +40,23 @@ public interface GestoreAnnuncioLocal {
     
     public boolean rendiAnnuncioPersistente();
     
+    
+    
     //METODI PER LA MODIFICA
     public boolean modificaAnnuncio(Annuncio Annuncio);
     
+    public boolean modificaInfoIndirizzo(String citta, String quartiere,String indirizzo,double[] latlng );
     
+    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico);
+
+    public boolean modificaNuovaStanzaInAffitto(String tipo,Collection<String> foto,boolean compresoCondominio,boolean compresoRiscaldamento,double metratura, double prezzo);
+    public boolean modificaNuovaStanzaInAffitto(String tipo,Collection<String> foto,double metratura);
+    
+    public boolean modificaNuovaStanzaAccessoria(String tipo,Collection<String> foto, double metratura);
+        
+    public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento);
+    
+    public boolean rendiModifichePersistenti();
     
     
     

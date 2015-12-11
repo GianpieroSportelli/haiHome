@@ -185,8 +185,6 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean inserisciNuovaStanzaInAffitto(String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo) {
         StanzaInAffitto nuovaStanza = new StanzaInAffitto();
         
-        //il tipo diventa un int??? TODO
-        
         
         nuovaStanza.setTipo(TipoStanzaInAffitto.valueOf(tipo));
         
@@ -219,8 +217,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean inserisciNuovaStanzaInAffitto(String tipo, Collection<String> foto,double metratura) {
         StanzaInAffitto nuovaStanza = new StanzaInAffitto();
         
-        //il tipo diventa un int??? TODO
-        nuovaStanza.setTipo(TipoStanzaInAffitto.Tripla);
+        nuovaStanza.setTipo(TipoStanzaInAffitto.valueOf(tipo));
         
         nuovaStanza.setFoto(foto);
 
@@ -312,13 +309,75 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public JSONObject toJSON() {
         return this.annuncio.toJSON();
     }
-
+    
+    
     @Override
     public boolean modificaAnnuncio(Annuncio annuncio) {
        this.annuncio = annuncio;
        
        return true;
        
+    }
+
+    @Override
+    public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng) {
+       if(this.annuncio==null)
+           return false;
+
+      int   ii = citta.equalsIgnoreCase(this.annuncio.getCittà().getNome()) ? 1:2;
+        
+                
+       
+       //recupero la città dal nome
+       Città città = new Città();
+       List<Città> mieCittà = cittàFacade.findAll();
+       boolean trovato=false;
+       int i=0;
+       while(!trovato && i<mieCittà.size()){
+           Città c = mieCittà.get(i);
+           i++;
+           if(c.getNome().equalsIgnoreCase(citta)){
+               città = c;
+               trovato = true;
+           }
+       }
+
+               
+       this.annuncio.setCittà(città);
+       this.annuncio.setQuartiere(quartiere);
+       this.annuncio.setIndirizzo(indirizzo);
+       this.annuncio.setLatLng(latlng);
+       return true;
+    }
+
+    @Override
+    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean modificaNuovaStanzaInAffitto(String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean modificaNuovaStanzaInAffitto(String tipo, Collection<String> foto, double metratura) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean modificaNuovaStanzaAccessoria(String tipo, Collection<String> foto, double metratura) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean rendiModifichePersistenti() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 
