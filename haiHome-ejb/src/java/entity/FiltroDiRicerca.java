@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import org.json.JSONObject;
 
 /**
  *
@@ -45,7 +46,11 @@ public class FiltroDiRicerca implements Serializable {
     public boolean isCompresoRiscaldamento() {
         return compresoRiscaldamento;
     }
-
+    
+    public JSONObject toJSON(){
+        JSONObject result=null;
+        return result;
+    }
     /**
      * Set the value of compresoRiscaldamento
      *
