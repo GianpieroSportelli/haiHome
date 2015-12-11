@@ -149,8 +149,9 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
        List<Città> mieCittà = cittàFacade.findAll();
        boolean trovato=false;
        int i=0;
-       while(!trovato){
+       while(!trovato && i<mieCittà.size()){
            Città c = mieCittà.get(i);
+           i++;
            if(c.getNome().equalsIgnoreCase(cittaStr)){
                città = c;
                trovato = true;
@@ -166,7 +167,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean inserisciInfoAppartamento(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico) {
+    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico) {
         this.annuncio.setDescrizione(descrizione);
         this.annuncio.setMetratura(metratura);
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
@@ -185,7 +186,9 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         StanzaInAffitto nuovaStanza = new StanzaInAffitto();
         
         //il tipo diventa un int??? TODO
-        nuovaStanza.setTipo(TipoStanzaInAffitto.Tripla);
+        
+        
+        nuovaStanza.setTipo(TipoStanzaInAffitto.valueOf(tipo));
         
         nuovaStanza.setFoto(foto);
         nuovaStanza.setCompresoCondominio(compresoCondominio);
@@ -281,6 +284,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
 
+    
+    
 
     @Override
     public boolean rendiAnnuncioPersistente() {
@@ -306,6 +311,14 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public JSONObject toJSON() {
         return this.annuncio.toJSON();
+    }
+
+    @Override
+    public boolean modificaAnnuncio(Annuncio annuncio) {
+       this.annuncio = annuncio;
+       
+       return true;
+       
     }
 
 

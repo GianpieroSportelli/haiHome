@@ -70,7 +70,7 @@ private GestoreTestLocal gestoreTest;
             a=this.gestoreAnnuncio.inserisciInfoIndirizzo("Torino", "Aurora", "Via don Bosco 10", latlng);
             
             
-            b=this.gestoreAnnuncio.inserisciInfoAppartamento("descrizione", 200, new Date(), 3,true);
+            b=this.gestoreAnnuncio.inserisciInfoAnnuncio("descrizione", 200, new Date(), 3,true);
             
             ArrayList<String> foto = new ArrayList<String>();
             c=this.gestoreAnnuncio.inserisciNuovaStanzaInAffitto("tipo", foto, 50);

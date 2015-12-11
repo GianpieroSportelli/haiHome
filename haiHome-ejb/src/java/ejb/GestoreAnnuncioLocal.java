@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.Annuncio;
 import entity.Città;
 import entity.Locatore;
 import entity.Quartiere;
@@ -20,16 +21,17 @@ import org.json.JSONObject;
 @Local
 public interface GestoreAnnuncioLocal {
     
-    public boolean CreaAnnuncio(Locatore locatore);
     
-    public boolean CreaAnnuncio(Object idLocatore);
+    //METODI PER L'INSERIMENTO
+    
+    public boolean CreaAnnuncio(Locatore locatore); 
+    public boolean CreaAnnuncio(Object idLocatore); //A TOGLIERE DI REGOLA
     
     public boolean inserisciInfoIndirizzo(String citta, String quartiere,String indirizzo,double[] latlng );
     
-    public boolean inserisciInfoAppartamento(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico);
+    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico);
 
     public boolean inserisciNuovaStanzaInAffitto(String tipo,Collection<String> foto,boolean compresoCondominio,boolean compresoRiscaldamento,double metratura, double prezzo);
-    
     public boolean inserisciNuovaStanzaInAffitto(String tipo,Collection<String> foto,double metratura);
     
     public boolean inserisciNuovaStanzaAccessoria(String tipo,Collection<String> foto, double metratura);
@@ -38,11 +40,19 @@ public interface GestoreAnnuncioLocal {
     
     public boolean rendiAnnuncioPersistente();
     
+    //METODI PER LA MODIFICA
+    public boolean modificaAnnuncio(Annuncio Annuncio);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public JSONObject toJSON();
-    /*
-     COSTI
-    private boolean compresoCondominio;
-    private boolean compresoRiscaldamento;
-    private double prezzo = 0;
-    */
+
 }
