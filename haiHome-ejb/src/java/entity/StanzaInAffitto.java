@@ -165,6 +165,7 @@ public class StanzaInAffitto extends Stanza implements Serializable {
             
             JSONObject stanzaJSON = new JSONObject();
         try {
+            stanzaJSON.accumulate("OID", super.getId());
             stanzaJSON.accumulate("Foto", super.foto);
             stanzaJSON.accumulate("Metratura", super.metratura);
             stanzaJSON.accumulate("Tipo", this.tipo.name());

@@ -17,59 +17,16 @@ import facade.AnnuncioFacadeLocal;
 import facade.CittàFacadeLocal;
 import facade.LocatoreFacadeLocal;
 import facade.StanzaAccessoriaFacadeLocal;
+import facade.StanzaFacadeLocal;
 import facade.StanzaInAffittoFacadeLocal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import org.json.JSONObject;
-
-
-/*
-    INIZIALI
-    private Locatore locatore;
-
-    INDIRIZZO
-    private String indirizzo;
-    @ManyToOne
-    private Città città;
-    private String quartiere;
-    private double[] latLng;
-
-
-    APPARTAMENTO
-    private String descrizione;
-    private double metratura;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dataInizioAffitto;
-    private int numeroStanze;
-
-
-    STANZE
-    @OneToMany
-    private Collection<Stanza> listaStanza;
-
-
-    COSTI
-    private boolean compresoCondominio;
-    private boolean compresoRiscaldamento;
-    private double prezzo = 0;
-
-
-    FINALE
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dataPubblicazione;
-*/
-
-
-
-
-
 
 
 /**
@@ -84,6 +41,9 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     private StanzaAccessoriaFacadeLocal stanzaAccessoriaFacade;
     @EJB
     private StanzaInAffittoFacadeLocal stanzaInAffittoFacade;
+    
+    @EJB
+    private StanzaFacadeLocal stanzaFacade;
     
     
     
@@ -245,16 +205,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean inserisciNuovaStanzaAccessoria(String tipo, Collection<String> foto, double metratura) {
         StanzaAccessoria nuovaStanza = new StanzaAccessoria();
-        
-        if(tipo.compareToIgnoreCase(TipoStanzaAccessoria.Bagno.name())==0){
-                nuovaStanza.setTipo(TipoStanzaAccessoria.Bagno);
-        }else if(tipo.compareToIgnoreCase(TipoStanzaAccessoria.Cucina.name())==0){
-                nuovaStanza.setTipo(TipoStanzaAccessoria.Cucina);
-        }else if(tipo.compareToIgnoreCase(TipoStanzaAccessoria.Soggiorno.name())==0){
-                nuovaStanza.setTipo(TipoStanzaAccessoria.Soggiorno);
-        }else{
-                nuovaStanza.setTipo(TipoStanzaAccessoria.Altro);
-        }
+                
+        nuovaStanza.setTipo(TipoStanzaAccessoria.valueOf(tipo));
         nuovaStanza.setFoto(foto);
 
         if(metratura!=0){
@@ -285,21 +237,36 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
 
     @Override
     public boolean rendiAnnuncioPersistente() {
-        GregorianCalendar gc = new GregorianCalendar();
+        //GregorianCalendar gc = new GregorianCalendar();
         Date d = new Date();
         //TODO inserimento data, classe Date deprecata
         this.annuncio.setDataPubblicazione(d);
-        Collection<Stanza> lista = this.annuncio.getListaStanza();
+        
 
-        for(Stanza s: lista){
-            if(s instanceof StanzaInAffitto)
-                stanzaInAffittoFacade.create((StanzaInAffitto) s);
-            else if(s instanceof StanzaAccessoria)
-                stanzaAccessoriaFacade.create((StanzaAccessoria) s);
+        for(int i =0; i <this.annuncio.getListaStanza().size();i++){
+            
+            
+            if(((List<Stanza>)this.annuncio.getListaStanza()).get(i) instanceof StanzaInAffitto)
+                stanzaInAffittoFacade.create((StanzaInAffitto) ((List<Stanza>)this.annuncio.getListaStanza()).get(i));
+            else if(((List<Stanza>)this.annuncio.getListaStanza()).get(i)  instanceof StanzaAccessoria)
+                stanzaAccessoriaFacade.create((StanzaAccessoria) ((List<Stanza>)this.annuncio.getListaStanza()).get(i));
             else
                 return false;
+            
+            
         }
+        
+        List<Stanza> list = stanzaFacade.findAll();
+        
+        for(Stanza s: list){
+            System.out.println("Id:" + s.getId());
+           
+        }
+        
+        
         annuncioFacade.create(this.annuncio);
+        
+        System.out.println("ciao");
         
         return true;
     }
@@ -370,30 +337,166 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         
     }
 
+    private Stanza trovaStanza(long oid){
+        ArrayList<Stanza> stanze = (ArrayList<Stanza>) this.annuncio.getListaStanza();
+        boolean trovato=false;
+        Stanza myStanza = null;
+       
+        int i = 0;
+        while(!trovato && i<stanze.size()){
+            Stanza temp = stanze.get(i);
+            if(temp.getId() == oid){
+                trovato = true;
+                myStanza = temp;
+            }
+            i++;
+        }
+        return myStanza;
+    }
     @Override
-    public boolean modificaNuovaStanzaInAffitto(String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean modificaStanzaInAffitto(long oid,String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo) {
+        
+        Collection<Stanza> listaStanze = annuncio.getListaStanza();
+                
+        StanzaInAffitto stanza = (StanzaInAffitto) trovaStanza(oid);
+        if(stanza==null)
+            return false;
+        
+        listaStanze.remove(stanza);
+        
+       
+        stanza.setTipo(TipoStanzaInAffitto.valueOf(tipo));
+        
+        stanza.setFoto(foto);
+        stanza.setCompresoCondominio(compresoCondominio);
+        stanza.setCompresoRiscaldamento(compresoRiscaldamento);
+        if(metratura!=0){
+            stanza.setMetratura(metratura);
+        }
+            stanza.setPrezzo(prezzo);
+
+        
+        listaStanze.add(stanza);
+        annuncio.setListaStanza(listaStanze);
+        
+        return true;
+
     }
 
     @Override
-    public boolean modificaNuovaStanzaInAffitto(String tipo, Collection<String> foto, double metratura) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, double metratura) {
+        
+        Collection<Stanza> listaStanze = annuncio.getListaStanza();
+                
+        StanzaInAffitto stanza = (StanzaInAffitto) trovaStanza(oid);
+        if(stanza==null)
+            return false;
+        
+        listaStanze.remove(stanza);
+        
+       
+        stanza.setTipo(TipoStanzaInAffitto.valueOf(tipo));
+        
+        stanza.setFoto(foto);
+
+        if(metratura!=0){
+            stanza.setMetratura(metratura);
+        }
+
+        
+        listaStanze.add(stanza);
+        annuncio.setListaStanza(listaStanze);
+        
+        return true;
     }
 
     @Override
-    public boolean modificaNuovaStanzaAccessoria(String tipo, Collection<String> foto, double metratura) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean modificaStanzaAccessoria(long oid, String tipo, Collection<String> foto, double metratura) {
+                Collection<Stanza> listaStanze = annuncio.getListaStanza();
+                
+        StanzaAccessoria stanza = (StanzaAccessoria) trovaStanza(oid);
+        if(stanza==null)
+            return false;
+        
+        stanza.setTipo(TipoStanzaAccessoria.valueOf(tipo));
+        stanza.setFoto(foto);
+        if(metratura!=0)
+            stanza.setMetratura(metratura);
+        
+        
+    return true;
     }
 
     @Override
     public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            annuncio.setPrezzo(prezzo);
+            annuncio.setCompresoCondominio(compresoCondominio);
+            annuncio.setCompresoRiscaldamento(compresoRiscaldamento);
+            return true;
     }
 
     @Override
     public boolean rendiModifichePersistenti() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        //per ora non modifico la data di inserimento
+        /*
+        GregorianCalendar gc = new GregorianCalendar();
+        Date d = new Date();
+        this.annuncio.setDataPubblicazione(d);   
+        */
+
+
+        Collection<Stanza> lista = this.annuncio.getListaStanza();
+
+        for(Stanza s: lista){
+            if(s instanceof StanzaInAffitto)
+                stanzaInAffittoFacade.edit((StanzaInAffitto) s);
+            else if(s instanceof StanzaAccessoria)
+                stanzaAccessoriaFacade.edit((StanzaAccessoria) s);
+            else
+                return false;
+        }
+        annuncioFacade.edit(this.annuncio);
+        
+        return true;
     }
+
+    @Override
+    public boolean eliminaAnnuncio(Annuncio annuncio) {
+        this.annuncio=annuncio;
+        List<Stanza> stanze=  stanzaFacade.findAll();
+ 
+        Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
+        this.annuncio.setListaStanza(new ArrayList<>());
+        
+        for(Stanza s: listaStanze){
+            stanzaFacade.remove(s);
+        }
+        
+        //stanze=  stanzaFacade.findAll();
+                
+        annuncioFacade.remove(annuncio);
+        return true;
+    }
+
+    @Override
+    public boolean eliminaStanza(Stanza s) {
+                stanzaFacade.remove(s);
+        
+
+        
+        return true;
+    }
+
+    @Override
+    public Annuncio predniAnnuncio(long oid) {
+        Annuncio temp = annuncioFacade.find(oid);
+        /*
+        ArrayList<Stanza> stanza= (ArrayList<Stanza>) temp.getListaStanza();
+        long id = stanza.get(0).getId();
+                */
+        return temp;
+        }
 
 
     

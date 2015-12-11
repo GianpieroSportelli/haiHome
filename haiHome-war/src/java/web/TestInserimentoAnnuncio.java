@@ -7,17 +7,11 @@ package web;
 
 import ejb.GestoreAnnuncioLocal;
 import ejb.GestoreLocatoreLocal;
-import ejb.GestoreTestLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -69,7 +63,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
 
                 gestoreAnnuncio.CreaAnnuncio(gestoreLocatore.getLocatore());
 
-                gestoreAnnuncio.inserisciInfoIndirizzo("Torino", "Aurora", "Via don Bosco 10", latlng);
+                gestoreAnnuncio.inserisciInfoIndirizzo("Torino", "Aurora", "Via don Bosco 1" + i, latlng);
 
                
                 if (i % 2 == 0) {
@@ -86,7 +80,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
                     gestoreAnnuncio.inserisciInfoCostiAppartamento(500, false, false);
                 }else{
                    //Meglio InfoAnnuncio
-                    gestoreAnnuncio.inserisciInfoAnnuncio("descrizione", 300, new Date(), 4, false);
+                    gestoreAnnuncio.inserisciInfoAnnuncio("descrizione" + 1, 300, new Date(), 4, false);
 
                     gestoreAnnuncio.inserisciNuovaStanzaInAffitto("Singola", foto, true, true, 50, 250);
                     

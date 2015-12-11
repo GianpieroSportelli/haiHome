@@ -6,9 +6,8 @@
 package ejb;
 
 import entity.Annuncio;
-import entity.Città;
 import entity.Locatore;
-import entity.Quartiere;
+import entity.Stanza;
 import java.util.Collection;
 import java.util.Date;
 import javax.ejb.Local;
@@ -21,6 +20,8 @@ import org.json.JSONObject;
 @Local
 public interface GestoreAnnuncioLocal {
     
+    
+    //INSERIMENTO ANNUNCIO
     public boolean CreaAnnuncio(Locatore locatore);
     
     public boolean CreaAnnuncio(Object idLocatore);
@@ -38,37 +39,36 @@ public interface GestoreAnnuncioLocal {
     public boolean inserisciInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento);
     
     public boolean rendiAnnuncioPersistente();
-    
-    public JSONObject toJSON();
-    
-    
-     
-    public boolean modificaAnnuncio(Annuncio annuncio);
 
+    
+    //MODIFICA ANNUNCIO
+    public boolean modificaAnnuncio(Annuncio annuncio);
 
     public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng);
 
-
     public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico);
 
+    public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo);
 
-    public boolean modificaNuovaStanzaInAffitto(String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo);
+    public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, double metratura);
 
-
-    public boolean modificaNuovaStanzaInAffitto(String tipo, Collection<String> foto, double metratura);
-
-
-    public boolean modificaNuovaStanzaAccessoria(String tipo, Collection<String> foto, double metratura);
-
+    public boolean modificaStanzaAccessoria(long oid, String tipo, Collection<String> foto, double metratura);
 
     public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento);
 
-
     public boolean rendiModifichePersistenti() ;
-    /*
-     COSTI
-    private boolean compresoCondominio;
-    private boolean compresoRiscaldamento;
-    private double prezzo = 0;
-    */
+    
+    //ELIMINA
+    
+    public boolean eliminaAnnuncio(Annuncio annuncio);
+    
+    public boolean eliminaStanza(Stanza s);
+    
+    
+    
+    
+    //METODI DI RITORNO    
+    public JSONObject toJSON();
+    
+    public Annuncio predniAnnuncio(long oid);
 }
