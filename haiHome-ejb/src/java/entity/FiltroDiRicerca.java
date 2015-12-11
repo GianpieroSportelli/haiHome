@@ -21,6 +21,9 @@ import org.json.JSONObject;
 @Entity
 public class FiltroDiRicerca implements Serializable {
 
+    @ManyToOne
+    protected Studente studente;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,11 +49,12 @@ public class FiltroDiRicerca implements Serializable {
     public boolean isCompresoRiscaldamento() {
         return compresoRiscaldamento;
     }
-    
-    public JSONObject toJSON(){
-        JSONObject result=null;
+
+    public JSONObject toJSON() {
+        JSONObject result = null;
         return result;
     }
+
     /**
      * Set the value of compresoRiscaldamento
      *

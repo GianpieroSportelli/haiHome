@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.Studente;
 import java.util.List;
 import javax.ejb.Local;
 import org.json.JSONObject;
@@ -25,4 +26,6 @@ public interface GestoreStudenteLocal {
     public boolean removeStudente();
 
     public JSONObject toJSON();
+
+    public Studente getStudente();
 }
