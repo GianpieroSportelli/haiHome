@@ -8,12 +8,16 @@ package web;
 import ejb.GestoreAnnuncioLocal;
 import ejb.GestoreLocatoreLocal;
 import ejb.GestoreTestLocal;
-import entity.Locatore;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,11 +32,11 @@ import org.json.JSONObject;
 @WebServlet(name = "TestInserimentoAnnuncio", urlPatterns = {"/TestInserimentoAnnuncio"})
 public class TestInserimentoAnnuncio extends HttpServlet {
     
-@EJB
-private GestoreAnnuncioLocal gestoreAnnuncio;
+    @EJB
+    GestoreLocatoreLocal gestoreLocatore;
 
-@EJB
-private GestoreTestLocal gestoreTest;
+    @EJB
+    private GestoreAnnuncioLocal gestoreAnnuncio;
 
 
     /**
@@ -52,48 +56,56 @@ private GestoreTestLocal gestoreTest;
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TestInserimentoAnnuncio</title>");            
+            out.println("<title>Servlet TestInserimentoAnnuncio</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<p>ciao ciao ciao</p>");
-            
+            out.println("<p>inserimento Annunci</p>");
+            //gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "gianpiero", "sportelli", "foto", "password","prova locatore");
             //inizio inserimento annuncio
-            
+            double[] latlng = {0, 0};
+            ArrayList<String> foto = new ArrayList<>();
 
-            out.println("<p>"+this.gestoreAnnuncio.CreaAnnuncio(12345678909864321L)+"</p>");
-            double[] latlng = new double[2];
-            latlng[0]=0.12;
-            latlng[1]=100.12;
-            boolean a,b,c,d,e,f,g;
-            
+            for (int i = 0; i < 10; i++) {
 
-            a=this.gestoreAnnuncio.inserisciInfoIndirizzo("Torino", "Aurora", "Via don Bosco 10", latlng);
-            
-            
-            b=this.gestoreAnnuncio.inserisciInfoAppartamento("descrizione", 200, new Date(), 3,true);
-            
-            ArrayList<String> foto = new ArrayList<String>();
-            c=this.gestoreAnnuncio.inserisciNuovaStanzaInAffitto("tipo", foto, 50);
-    
-   
-    
-            d=this.gestoreAnnuncio.inserisciNuovaStanzaAccessoria("Bagno",foto, 30);
-             
-            e=this.gestoreAnnuncio.inserisciNuovaStanzaAccessoria("Bagno",foto, 30);
-             
-        
-            f=this.gestoreAnnuncio.inserisciInfoCostiAppartamento(500,  false,  false);
-    
-    
-            g=this.gestoreAnnuncio.rendiAnnuncioPersistente();
-            
-            out.println("<p>ciao ciao ciao</p>");
-              System.out.println(a + " " + b);        
+                gestoreAnnuncio.CreaAnnuncio(gestoreLocatore.getLocatore());
 
-            JSONObject json = this.gestoreAnnuncio.toJSON();
-            
-            out.println("<p>" +"miao"+ json.toString() +"</p>");
-            
+                gestoreAnnuncio.inserisciInfoIndirizzo("Torino", "Aurora", "Via don Bosco 10", latlng);
+
+               
+                if (i % 2 == 0) {
+                     //Meglio InfoAnnuncio
+                    gestoreAnnuncio.inserisciInfoAppartamento("descrizione"+i, 200, new Date(), 3, true);
+
+                    gestoreAnnuncio.inserisciNuovaStanzaInAffitto("Singola", foto, 50);
+
+                    gestoreAnnuncio.inserisciNuovaStanzaAccessoria("Bagno", foto, 30);
+
+                    gestoreAnnuncio.inserisciNuovaStanzaAccessoria("Cucina", foto, 30);
+
+                    //Meglio InfoCostiAnnuncio
+                    gestoreAnnuncio.inserisciInfoCostiAppartamento(500, false, false);
+                }else{
+                   //Meglio InfoAnnuncio
+                    gestoreAnnuncio.inserisciInfoAppartamento("descrizione", 300, new Date(), 4, false);
+
+                    gestoreAnnuncio.inserisciNuovaStanzaInAffitto("singola", foto, true, true, 50, 250);
+                    
+                    gestoreAnnuncio.inserisciNuovaStanzaInAffitto("singola", foto, true, true, 50, 250);
+
+                    gestoreAnnuncio.inserisciNuovaStanzaAccessoria("Bagno", foto, 30);
+
+                    gestoreAnnuncio.inserisciNuovaStanzaAccessoria("Cucina", foto, 30);
+
+                    //Meglio InfoCostiAnnuncio
+                    gestoreAnnuncio.inserisciInfoCostiAppartamento(0, false, false); 
+                }
+
+                gestoreAnnuncio.rendiAnnuncioPersistente();
+
+                JSONObject json = this.gestoreAnnuncio.toJSON();
+
+                out.println("<p>" + json.toString() + "</p>");
+            }
             out.println("</body>");
             out.println("</html>");
         }
@@ -137,5 +149,7 @@ private GestoreTestLocal gestoreTest;
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
 
 }
