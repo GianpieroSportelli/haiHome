@@ -26,6 +26,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -158,6 +159,17 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         filtroAttuale=filtroDiRicercaFacade.find(id_FiltroDiRicerca);
         return filtroAttuale!=null;
     }
+    
+    @Override
+    public JSONObject attualeToJSON() {
+        try {
+            return filtroAttuale.toJSON();
+        } catch (JSONException ex) {
+            Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
      private boolean acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
         boolean accept = false;
         if (!x.isArchiviato() || !x.isOscurato()) {
@@ -276,6 +288,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         }
         return result;
     }
+
+    
 
 
     
