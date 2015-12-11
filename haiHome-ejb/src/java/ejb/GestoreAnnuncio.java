@@ -324,10 +324,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
        if(this.annuncio==null)
            return false;
 
-      int   ii = citta.equalsIgnoreCase(this.annuncio.getCittà().getNome()) ? 1:2;
-        
-                
-       
+       if(!citta.equalsIgnoreCase(this.annuncio.getCittà().getNome())){
        //recupero la città dal nome
        Città città = new Città();
        List<Città> mieCittà = cittàFacade.findAll();
@@ -339,20 +336,39 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
            if(c.getNome().equalsIgnoreCase(citta)){
                città = c;
                trovato = true;
-           }
+                }
+           
+            }
+           if(!trovato){
+            return false;
        }
-
-               
-       this.annuncio.setCittà(città);
-       this.annuncio.setQuartiere(quartiere);
-       this.annuncio.setIndirizzo(indirizzo);
+         this.annuncio.setCittà(città);
+       }
+       
+       if(!quartiere.equalsIgnoreCase(this.annuncio.getQuartiere())){
+                  this.annuncio.setQuartiere(quartiere);
+       }
+       
+       if(!indirizzo.equalsIgnoreCase(this.annuncio.getIndirizzo())){
+                    this.annuncio.setIndirizzo(indirizzo);
+       }
+       
+       //se si è arrivati ad una modica qui, sicuramente le cordinate saranno 
+       //modificate
        this.annuncio.setLatLng(latlng);
        return true;
     }
 
     @Override
     public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        this.annuncio.setDescrizione(descrizione);
+        this.annuncio.setMetratura(metratura);
+        this.annuncio.setDataInizioAffitto(dataInizioAffitto);
+        this.annuncio.setNumeroStanze(numeroStanze);
+        this.annuncio.setAtomico(atomico);
+        return true;
+        
     }
 
     @Override
