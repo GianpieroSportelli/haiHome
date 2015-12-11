@@ -6,26 +6,26 @@
 package web;
 
 import ejb.GestoreRicercaLocal;
-import ejb.GestoreTestLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.ejb.EJB;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 /**
  *
  * @author gianp_000
  */
-public class TestServlet extends HttpServlet {
-    @EJB
-    private GestoreRicercaLocal gestoreRicerca;
-
-    @EJB
-    private GestoreTestLocal gestoreTest;
-    
+public class TestServlet2 extends HttpServlet {
+    GestoreRicercaLocal gestoreRicerca = lookupGestoreRicercaLocal();
     
 
     /**
@@ -45,30 +45,19 @@ public class TestServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TestServlet</title>");
+            out.println("<title>Servlet TestServlet2</title>");            
             out.println("</head>");
             out.println("<body>");
-            String nome = "Torino";
-            /*gestoreTest.addCittà(nome);
-            ArrayList<String> cities = gestoreTest.getAllCittàNome();
-            if (cities.isEmpty()) {
-                out.println("<p>Non sono Presenti città nel DB</p>");
-            } else {
-                for (String cit : cities) {
-                    out.println("<p>" + cit + "</p>");
+            gestoreRicerca=(GestoreRicercaLocal) request.getAttribute("gestoreRicerca");
+            JSONArray result=gestoreRicerca.usaFiltroAttuale();
+            for(int i=0;i<result.length();i++){
+                out.println("<p>############################################</p>");
+                try {
+                    out.println("<p>"+result.get(i)+"</p>");
+                } catch (JSONException ex) {
+                    Logger.getLogger(TestServlet2.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            gestoreTest.addQuartiere(nome, "Aurora");
-            ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
-            for(String quartiere : quartieri)
-                out.println("<p>" + quartiere + "</p>");
-            gestoreTest.cancellaCittà(nome);*/
-            gestoreRicerca.selezionaCittà(nome);
-            gestoreRicerca.creaFiltroDiRicerca(600, new ArrayList<>(), true, true);
-            gestoreRicerca.aggiornaAFiltroAppartamento(1,1,1,0);
-            out.println(gestoreRicerca.isFiltroAppartamento());
-            request.setAttribute("gestoreRicerca", gestoreRicerca);
-            request.getRequestDispatcher("/TestServlet2").forward(request, response);
+            }    
             out.println("</body>");
             out.println("</html>");
         }
@@ -113,6 +102,14 @@ public class TestServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
+    private GestoreRicercaLocal lookupGestoreRicercaLocal() {
+        try {
+            Context c = new InitialContext();
+            return (GestoreRicercaLocal) c.lookup("java:global/haiHome/haiHome-ejb/GestoreRicerca!ejb.GestoreRicercaLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
 
 }

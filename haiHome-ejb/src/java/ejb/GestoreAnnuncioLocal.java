@@ -21,17 +21,16 @@ import org.json.JSONObject;
 @Local
 public interface GestoreAnnuncioLocal {
     
+    public boolean CreaAnnuncio(Locatore locatore);
     
-    //METODI PER L'INSERIMENTO
-    
-    public boolean CreaAnnuncio(Locatore locatore); 
-    public boolean CreaAnnuncio(Object idLocatore); //A TOGLIERE DI REGOLA
+    public boolean CreaAnnuncio(Object idLocatore);
     
     public boolean inserisciInfoIndirizzo(String citta, String quartiere,String indirizzo,double[] latlng );
     
     public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico);
 
     public boolean inserisciNuovaStanzaInAffitto(String tipo,Collection<String> foto,boolean compresoCondominio,boolean compresoRiscaldamento,double metratura, double prezzo);
+    
     public boolean inserisciNuovaStanzaInAffitto(String tipo,Collection<String> foto,double metratura);
     
     public boolean inserisciNuovaStanzaAccessoria(String tipo,Collection<String> foto, double metratura);
@@ -40,32 +39,36 @@ public interface GestoreAnnuncioLocal {
     
     public boolean rendiAnnuncioPersistente();
     
+    public JSONObject toJSON();
     
     
-    //METODI PER LA MODIFICA
-    public boolean modificaAnnuncio(Annuncio Annuncio);
-    
-    public boolean modificaInfoIndirizzo(String citta, String quartiere,String indirizzo,double[] latlng );
-    
+     
+    public boolean modificaAnnuncio(Annuncio annuncio);
+
+
+    public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng);
+
+
     public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico);
 
-    public boolean modificaNuovaStanzaInAffitto(String tipo,Collection<String> foto,boolean compresoCondominio,boolean compresoRiscaldamento,double metratura, double prezzo);
-    public boolean modificaNuovaStanzaInAffitto(String tipo,Collection<String> foto,double metratura);
-    
-    public boolean modificaNuovaStanzaAccessoria(String tipo,Collection<String> foto, double metratura);
-        
-    public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento);
-    
-    public boolean rendiModifichePersistenti();
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public JSONObject toJSON();
 
+    public boolean modificaNuovaStanzaInAffitto(String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo);
+
+
+    public boolean modificaNuovaStanzaInAffitto(String tipo, Collection<String> foto, double metratura);
+
+
+    public boolean modificaNuovaStanzaAccessoria(String tipo, Collection<String> foto, double metratura);
+
+
+    public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento);
+
+
+    public boolean rendiModifichePersistenti() ;
+    /*
+     COSTI
+    private boolean compresoCondominio;
+    private boolean compresoRiscaldamento;
+    private double prezzo = 0;
+    */
 }

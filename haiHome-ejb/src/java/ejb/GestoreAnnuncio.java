@@ -185,7 +185,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean inserisciNuovaStanzaInAffitto(String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo) {
         StanzaInAffitto nuovaStanza = new StanzaInAffitto();
         
-        
+
         nuovaStanza.setTipo(TipoStanzaInAffitto.valueOf(tipo));
         
         nuovaStanza.setFoto(foto);
@@ -217,6 +217,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean inserisciNuovaStanzaInAffitto(String tipo, Collection<String> foto,double metratura) {
         StanzaInAffitto nuovaStanza = new StanzaInAffitto();
         
+
         nuovaStanza.setTipo(TipoStanzaInAffitto.valueOf(tipo));
         
         nuovaStanza.setFoto(foto);
@@ -281,8 +282,6 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
 
-    
-    
 
     @Override
     public boolean rendiAnnuncioPersistente() {
