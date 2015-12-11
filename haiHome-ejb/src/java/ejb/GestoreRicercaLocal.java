@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.FiltroDiRicerca;
 import java.util.ArrayList;
 import javax.ejb.Local;
 import org.json.JSONArray;
@@ -27,5 +28,7 @@ public interface GestoreRicercaLocal {
     JSONArray usaFiltroAttuale();
 
     boolean isFiltroAppartamento();
+
+   boolean cambiaFiltroAttuale(long id_FiltroDiRicerca);
     
 }

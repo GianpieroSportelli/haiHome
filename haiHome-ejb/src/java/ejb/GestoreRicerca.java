@@ -16,6 +16,7 @@ import entity.StanzaInAffitto;
 import entity.TipoStanzaAccessoria;
 import entity.TipoStanzaInAffitto;
 import facade.CittàFacadeLocal;
+import facade.FiltroDiRicercaFacadeLocal;
 import facade.QuartiereFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +33,8 @@ import org.json.JSONException;
  */
 @Stateful
 public class GestoreRicerca implements GestoreRicercaLocal {
-
+    @EJB
+    private FiltroDiRicercaFacadeLocal filtroDiRicercaFacade;
     @EJB
     private QuartiereFacadeLocal quartiereFacade;
     @EJB
@@ -44,6 +46,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    
     @Override
     public boolean selezionaCittà(String città) {
         for (Città cit : cittàFacade.findAll()) {
@@ -145,7 +148,17 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return result;
     }
 
-    private boolean acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
+       @Override
+    public boolean isFiltroAppartamento() {
+        return filtroAttuale instanceof FiltroAppartamento;
+    }
+
+    @Override
+    public boolean cambiaFiltroAttuale(long id_FiltroDiRicerca) {
+        filtroAttuale=filtroDiRicercaFacade.find(id_FiltroDiRicerca);
+        return filtroAttuale!=null;
+    }
+     private boolean acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
         boolean accept = false;
         if (!x.isArchiviato() || !x.isOscurato()) {
             if (!quartieriFiltro.isEmpty()) {
@@ -264,8 +277,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return result;
     }
 
-    @Override
-    public boolean isFiltroAppartamento() {
-        return filtroAttuale instanceof FiltroAppartamento;
-    }
+
+    
+    
+    
 }
