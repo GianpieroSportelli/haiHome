@@ -48,7 +48,7 @@ public class TestServlet extends HttpServlet {
             out.println("<title>Servlet TestServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            String nome = "Noci";
+            String nome = "Torino";
             gestoreTest.addCittà(nome);
             ArrayList<String> cities = gestoreTest.getAllCittàNome();
             if (cities.isEmpty()) {
@@ -58,17 +58,17 @@ public class TestServlet extends HttpServlet {
                     out.println("<p>" + cit + "</p>");
                 }
             }
-            gestoreTest.addQuartiere(nome, "lamaDacqua");
+            gestoreTest.addQuartiere(nome, "Aurora");
             ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
             for(String quartiere : quartieri)
                 out.println("<p>" + quartiere + "</p>");
             //gestoreTest.cancellaCittà(nome);
-            gestoreRicerca.selezionaCittà(nome);
-            gestoreRicerca.creaFiltroDiRicerca(100, new ArrayList<String>(), true, true);
-            gestoreRicerca.aggiornaAFiltroAppartamento(5,1,3,0);
-            out.println(gestoreRicerca.isFiltroAppartamento());
+            /*gestoreRicerca.selezionaCittà(nome);
+            gestoreRicerca.creaFiltroDiRicerca(300, new ArrayList<>(), true, true);
+            //gestoreRicerca.aggiornaAFiltroAppartamento(5,1,3,0);
+            //out.println(gestoreRicerca.isFiltroAppartamento());
             request.setAttribute("gestoreRicerca", gestoreRicerca);
-            request.getRequestDispatcher("/test2").forward(request, response);
+            request.getRequestDispatcher("/test2").forward(request, response);*/
             out.println("</body>");
             out.println("</html>");
         }

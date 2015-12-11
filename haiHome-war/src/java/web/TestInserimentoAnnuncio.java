@@ -60,7 +60,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<p>inserimento Annunci</p>");
-            //gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "gianpiero", "sportelli", "foto", "password","prova locatore");
+            gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "gianpiero", "sportelli", "foto", "password","prova locatore");
             //inizio inserimento annuncio
             double[] latlng = {0, 0};
             ArrayList<String> foto = new ArrayList<>();
@@ -74,7 +74,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
                
                 if (i % 2 == 0) {
                      //Meglio InfoAnnuncio
-                    gestoreAnnuncio.inserisciInfoAppartamento("descrizione"+i, 200, new Date(), 3, true);
+                    gestoreAnnuncio.inserisciInfoAnnuncio("descrizione"+i, 200, new Date(), 3, true);
 
                     gestoreAnnuncio.inserisciNuovaStanzaInAffitto("Singola", foto, 50);
 
@@ -86,11 +86,11 @@ public class TestInserimentoAnnuncio extends HttpServlet {
                     gestoreAnnuncio.inserisciInfoCostiAppartamento(500, false, false);
                 }else{
                    //Meglio InfoAnnuncio
-                    gestoreAnnuncio.inserisciInfoAppartamento("descrizione", 300, new Date(), 4, false);
+                    gestoreAnnuncio.inserisciInfoAnnuncio("descrizione", 300, new Date(), 4, false);
 
-                    gestoreAnnuncio.inserisciNuovaStanzaInAffitto("singola", foto, true, true, 50, 250);
+                    gestoreAnnuncio.inserisciNuovaStanzaInAffitto("Singola", foto, true, true, 50, 250);
                     
-                    gestoreAnnuncio.inserisciNuovaStanzaInAffitto("singola", foto, true, true, 50, 250);
+                    gestoreAnnuncio.inserisciNuovaStanzaInAffitto("Singola", foto, true, true, 50, 250);
 
                     gestoreAnnuncio.inserisciNuovaStanzaAccessoria("Bagno", foto, 30);
 
