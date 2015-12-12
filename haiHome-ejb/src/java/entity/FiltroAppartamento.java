@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -37,6 +39,17 @@ public class FiltroAppartamento extends FiltroDiRicerca implements Serializable 
      */
     public int getNumeroBagni() {
         return numeroBagni;
+    }
+    
+    @Override
+    public JSONObject toJSON() throws JSONException{
+        JSONObject result=super.toJSON();
+        result.accumulate("Tipo", "Appartamento");
+        result.accumulate("Metratura", this.metratura);
+        result.accumulate("NumeroBagni", this.numeroBagni);
+        result.accumulate("NumeroCamereDaLetto", this.numeroCamereDaLetto);
+        result.accumulate("NumeroLocali", this.numeroLocali);
+        return result;
     }
 
     /**

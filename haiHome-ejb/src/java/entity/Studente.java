@@ -43,7 +43,7 @@ public class Studente implements Serializable {
 
     private String fotoProfilo;
 
-    @OneToMany
+    @OneToMany(mappedBy = "studente")
     private Collection<FiltroDiRicerca> listaFiltriPreferiti = null;
 
     /**
@@ -238,6 +238,43 @@ public class Studente implements Serializable {
         }
 
         return studenteJSON;
+    }
+
+    public JSONArray getFiltriDiRicercaJSON() {
+        JSONArray array = new JSONArray();
+
+        int contatore = 1;
+        for (FiltroDiRicerca f : this.getListaFiltriPreferiti()) {
+            JSONObject obj = new JSONObject();
+            try {
+
+                obj.accumulate("FiltroDiRicerca" + String.valueOf(contatore), f);
+            } catch (JSONException ex) {
+                Logger.getLogger(Studente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            array.put(obj);
+
+        }
+
+        return array;
+    }
+
+    public JSONArray getAnnunciJSON() {
+        JSONArray array = new JSONArray();
+
+        int contatore = 1;
+        for (Annuncio a : this.getListaAnnunciPreferiti()) {
+            JSONObject obj = new JSONObject();
+            try {
+                obj.accumulate("Annuncio" + String.valueOf(contatore), a);
+            } catch (JSONException ex) {
+                Logger.getLogger(Studente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            array.put(obj);
+
+        }
+
+        return array;
     }
 
 }

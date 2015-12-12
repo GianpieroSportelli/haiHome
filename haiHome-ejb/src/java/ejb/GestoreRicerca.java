@@ -16,6 +16,7 @@ import entity.StanzaInAffitto;
 import entity.TipoStanzaAccessoria;
 import entity.TipoStanzaInAffitto;
 import facade.CittàFacadeLocal;
+import facade.FiltroDiRicercaFacadeLocal;
 import facade.QuartiereFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +26,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -32,7 +34,8 @@ import org.json.JSONException;
  */
 @Stateful
 public class GestoreRicerca implements GestoreRicercaLocal {
-
+    @EJB
+    private FiltroDiRicercaFacadeLocal filtroDiRicercaFacade;
     @EJB
     private QuartiereFacadeLocal quartiereFacade;
     @EJB
@@ -44,6 +47,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    
     @Override
     public boolean selezionaCittà(String città) {
         for (Città cit : cittàFacade.findAll()) {
@@ -128,112 +132,131 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         if (filtroAttuale != null) {
             try {
                 Collection<Annuncio> listResult = new ArrayList<>();
-                Collection<Annuncio> listResultFinal = new ArrayList<>();
                 Collection<Annuncio> annunci = filtroAttuale.getCittà().getAnnunci();
                 Collection<String> quartieriFiltro = filtroAttuale.getListaQuartieri();
 
                 for (Annuncio x : annunci) {
-                    if (!x.isArchiviato() || !x.isOscurato()) {
-                        if (!quartieriFiltro.isEmpty()) {
-                            for (String quart : quartieriFiltro) {
-                                if (x.getQuartiere().equalsIgnoreCase(quart)) {
-                                    listResult.add(x);
-                                }
-                            }
-                        } else {
-                            listResult.add(x);
-                        }
-                    }
+                    if(acceptAnnuncio(x, quartieriFiltro))
+                        listResult.add(x);
                 }
-
-                if (filtroAttuale instanceof FiltroAppartamento) {
-                    FiltroAppartamento attuale = (FiltroAppartamento) filtroAttuale;
-                    for (Annuncio x : listResult) {
-                        if (!x.isAtomico()) {
-                            continue;
-                        }
-
-                        if (attuale.getPrezzo() != 0 && x.getPrezzo() > attuale.getPrezzo()) {
-                            continue;
-                        }
-
-                        if (attuale.getNumeroLocali() > x.getNumeroStanze()) {
-                            continue;
-                        } else {
-                            //stanze[0] numeroBagni annuncio
-                            //stanze[1] numeroCamereDaLetto
-                            int[] stanze = countRoom(x);
-
-                            if (stanze[0] < attuale.getNumeroBagni()) {
-                                continue;
-                            }
-
-                            if (stanze[1] < attuale.getNumeroCamereDaLetto()) {
-                                continue;
-                            }
-                        }
-                        if (attuale.getMetratura() > x.getMetratura()) {
-                            continue;
-                        }
-                        listResultFinal.add(x);
-                    }
-
-                } else if (filtroAttuale instanceof FiltroStanza) {
-                    FiltroStanza attuale = (FiltroStanza) filtroAttuale;
-                    for (Annuncio x : listResult) {
-                        boolean ok = false;
-                        for (Stanza s : x.getListaStanza()) {
-                            if (s instanceof StanzaInAffitto) {
-                                StanzaInAffitto sF = (StanzaInAffitto) s;
-                                if (sF.isArchiviato()) {
-                                    continue;
-                                }
-                                if (attuale.getPrezzo() != 0 && sF.getPrezzo() > attuale.getPrezzo()) {
-                                    continue;
-                                }
-                                if (sF.getTipo() != attuale.getTipo()) {
-                                    continue;
-                                }
-                                ok = true;
-                            }
-                        }
-                        if (ok) {
-                            listResultFinal.add(x);
-                        }
-                    }
-                } else if (filtroAttuale.getPrezzo() != 0) {
-                    for (Annuncio x : listResult) {
-
-                        if (x.getPrezzo() > filtroAttuale.getPrezzo()) {
-                            continue;
-                        }
-
-                        boolean ok = false;
-                        for (Stanza s : x.getListaStanza()) {
-                            if (s instanceof StanzaInAffitto) {
-                                StanzaInAffitto sF = (StanzaInAffitto) s;
-                                if (sF.isArchiviato()) {
-                                    continue;
-                                }
-                                if (sF.getPrezzo() > filtroAttuale.getPrezzo()) {
-                                    continue;
-                                }
-                                ok = true;
-                            }
-                        }
-                        if (ok) {
-                            listResultFinal.add(x);
-                        }
-                    }
-                }
-
-                result = CollectionToJSONArray(listResultFinal);
                 
+                result = CollectionToJSONArray(listResult);
+
             } catch (JSONException ex) {
                 Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
+    }
+
+       @Override
+    public boolean isFiltroAppartamento() {
+        return filtroAttuale instanceof FiltroAppartamento;
+    }
+
+    @Override
+    public boolean cambiaFiltroAttuale(long id_FiltroDiRicerca) {
+        filtroAttuale=filtroDiRicercaFacade.find(id_FiltroDiRicerca);
+        return filtroAttuale!=null;
+    }
+    
+    @Override
+    public JSONObject attualeToJSON() {
+        try {
+            return filtroAttuale.toJSON();
+        } catch (JSONException ex) {
+            Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+     private boolean acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
+        boolean accept = false;
+        if (!x.isArchiviato() || !x.isOscurato()) {
+            if (!quartieriFiltro.isEmpty()) {
+                for (String quart : quartieriFiltro) {
+                    if (x.getQuartiere().equalsIgnoreCase(quart)) {
+                        accept = true;
+                        break;
+                    }
+                }
+            } else {
+                accept = true;
+            }
+        }
+        if (accept) {
+            accept = true;
+            if (filtroAttuale instanceof FiltroAppartamento) {
+                FiltroAppartamento attuale = (FiltroAppartamento) filtroAttuale;
+                if (!x.isAtomico()) {
+                    accept = false;
+                }
+
+                if (attuale.getPrezzo() != 0 && x.getPrezzo() > attuale.getPrezzo()) {
+                    accept = false;
+                }
+
+                if (attuale.getNumeroLocali() > x.getNumeroStanze()) {
+                    accept = false;
+                } else {
+                    //stanze[0] numeroBagni annuncio
+                    //stanze[1] numeroCamereDaLetto
+                    int[] stanze = countRoom(x);
+
+                    if (stanze[0] < attuale.getNumeroBagni()) {
+                        accept = false;
+                    }
+
+                    if (stanze[1] < attuale.getNumeroCamereDaLetto()) {
+                        accept = false;
+                    }
+                }
+                if (attuale.getMetratura() > x.getMetratura()) {
+                    accept = false;
+                }
+
+            } else if (filtroAttuale instanceof FiltroStanza) {
+                FiltroStanza attuale = (FiltroStanza) filtroAttuale;
+                boolean ok = false;
+                for (Stanza s : x.getListaStanza()) {
+                    if (s instanceof StanzaInAffitto) {
+                        StanzaInAffitto sF = (StanzaInAffitto) s;
+                        if (sF.isArchiviato()) {
+                            continue;
+                        }
+                        if (attuale.getPrezzo() != 0 && sF.getPrezzo() > attuale.getPrezzo()) {
+                            continue;
+                        }
+                        if (sF.getTipo() != attuale.getTipo()) {
+                            continue;
+                        }
+                        ok = true;
+                    }
+                }
+                accept = ok;
+            } else {
+                if (x.isAtomico() && x.getPrezzo() > filtroAttuale.getPrezzo()) {
+                    accept = false;
+                }
+                if (!x.isAtomico()) {
+                    boolean ok = false;
+                    for (Stanza s : x.getListaStanza()) {
+                        if (s instanceof StanzaInAffitto) {
+                            StanzaInAffitto sF = (StanzaInAffitto) s;
+                            if (sF.isArchiviato()) {
+                                continue;
+                            }
+                            if (sF.getPrezzo() > filtroAttuale.getPrezzo()) {
+                                continue;
+                            }
+                            ok = true;
+                        }
+                    }
+                    accept=ok;
+                }
+            }
+        }
+        return accept;
     }
 
     private int[] countRoom(Annuncio x) {
@@ -266,8 +289,10 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return result;
     }
 
-    @Override
-    public boolean isFiltroAppartamento() {
-        return filtroAttuale instanceof FiltroAppartamento;
-    }
+    
+
+
+    
+    
+    
 }

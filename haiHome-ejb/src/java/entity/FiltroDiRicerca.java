@@ -6,12 +6,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -19,6 +22,9 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class FiltroDiRicerca implements Serializable {
+
+    @ManyToOne
+    protected Studente studente;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +50,18 @@ public class FiltroDiRicerca implements Serializable {
      */
     public boolean isCompresoRiscaldamento() {
         return compresoRiscaldamento;
+    }
+    
+    public JSONObject toJSON() throws JSONException{
+        JSONObject result=new JSONObject();
+        result.accumulate("Città", this.Città.getNome());
+        result.accumulate("Quartieri", this.listaQuartieri);
+        result.accumulate("Prezzo", this.prezzo);
+        result.accumulate("Id", this.id);
+        result.accumulate("CompresoCondominio", this.compresoCondominio);
+        result.accumulate("CompresoRiscaldamento", this.compresoRiscaldamento);
+        result.accumulate("Id_Studente", this.studente.getId());
+        return result;
     }
 
     /**

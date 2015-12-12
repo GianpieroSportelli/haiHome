@@ -44,7 +44,7 @@
         %>
     </head>
     <body>
-        <%@include file="/header.jsp" %>
+        <%@include file="/header3Login.jsp" %>
         <div id="map" ></div>
         <script>
             var geocoder;

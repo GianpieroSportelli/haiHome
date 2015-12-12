@@ -104,4 +104,9 @@ public class GestoreStudente implements GestoreStudenteLocal {
     public JSONObject toJSON() {
         return this.studente.toJSON();
     }
+
+    @Override
+    public Studente getStudente() {
+        return this.studente;
+    }
 }
