@@ -17,11 +17,22 @@ import org.json.JSONObject;
  */
 @Local
 public interface GestoreLocatoreLocal {
+    /* */
     public boolean aggiungiLocatore(String email, String nome, String cognome, 
         String foto, String password, String descrizione);
     public List<String> getLocatori(); 
     public boolean checkLocatore(String email);
     public boolean removeLocatore();
+    /* Gestione profilo del locatore*/
+    public void modificaInfoProfilo(String telefono, String descrizione); 
+    public boolean modificaPassword(String oldpassword, String newpassword); 
+    
+    /* gestioneProfilo, 
+PubblicaAnnuncio, 
+modificaAnnuncio, 
+cancellaAnnuncio,
+archiviaAnnuncio */ 
+    
     
     public JSONObject toJSON();
     public Locatore getLocatore(); 

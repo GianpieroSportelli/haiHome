@@ -44,11 +44,11 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         locatoreFacade.create(loc); 
         //verifica esito inserimento
         Locatore check = locatoreFacade.find(loc.getId()); 
-        boolean resOp = (check != null); 
+        boolean res = (check != null); 
         //mantiene riferimento all'oggetto 
-        if (resOp)
+        if (res)
             this.locatore = loc; 
-        return resOp; 
+        return res; 
     }
     
     @Override
@@ -76,14 +76,40 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
     
     @Override
     public boolean removeLocatore() {
-        boolean resOp = false; 
+        boolean res = false; 
         
         if (locatore != null) {
             locatoreFacade.remove(locatoreFacade.find(locatore.getId()));
-            resOp = true; 
+            res = true; 
         }
         
-        return resOp; 
+        return res; 
+    }
+    
+    /* Gestione profilo del locatore*/
+    @Override
+    public boolean modificaPassword(String oldpassword, String newpassword) {
+        boolean res = false; 
+        
+        if (this.locatore.getPassword().equals(oldpassword)) {
+            this.locatore.setPassword(newpassword);
+            rendiModifichePersistenti();
+            res = true; 
+        }
+        
+        return res; 
+    }
+    
+    @Override
+    public void modificaInfoProfilo(String telefono, String descrizione) {
+        /* necessario controllo input ?? */
+        this.locatore.setTelefono(telefono);
+        this.locatore.setDescrizione(descrizione);
+        rendiModifichePersistenti();
+    }
+    
+    private void rendiModifichePersistenti() {
+        this.locatoreFacade.edit(this.locatore);
     }
     
     @Override
