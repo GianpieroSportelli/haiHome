@@ -8,6 +8,7 @@ package ejb;
 import entity.Locatore;
 import java.util.List;
 import javax.ejb.Local;
+import org.json.JSONObject;
 
 
 /**
@@ -22,5 +23,6 @@ public interface GestoreLocatoreLocal {
     public boolean checkLocatore(String email);
     public boolean removeLocatore();
     
+    public JSONObject toJSON();
     public Locatore getLocatore(); 
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import org.json.JSONObject;
 
 /**
  *
@@ -83,6 +84,11 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         }
         
         return resOp; 
+    }
+    
+    @Override
+    public JSONObject toJSON() {
+        return this.locatore.toJSON();
     }
     
     @Override
