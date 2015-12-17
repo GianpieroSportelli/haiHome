@@ -47,14 +47,12 @@ public class TestInserimentoAnnuncio extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TestInserimentoAnnuncio</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<p>inserimento Annunci</p>");
+            
+            
             gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "gianpiero", "sportelli", "foto", "password","prova locatore");
+            
+           
+           
             //inizio inserimento annuncio
             double[] latlng = {0, 0};
             ArrayList<String> foto = new ArrayList<>();
@@ -100,6 +98,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
 
                 out.println("<p>" + json.toString() + "</p>");
             }
+            
             out.println("</body>");
             out.println("</html>");
         }
@@ -117,6 +116,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         processRequest(request, response);
     }
 
@@ -131,6 +131,11 @@ public class TestInserimentoAnnuncio extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String città = request.getParameter("citta");
+        String quartiere = request.getParameter("quartiere");
+        String indirizzo = request.getParameter("ind");
+        String civico = request.getParameter("civico");
+        System.out.println(città + " " + quartiere + "\n" + indirizzo + " "+civico);
         processRequest(request, response);
     }
 

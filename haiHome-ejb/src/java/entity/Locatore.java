@@ -7,6 +7,8 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -242,19 +244,19 @@ public class Locatore implements Serializable {
         return "entity.Locatore[ id=" + id + " ]";
     }
     
-    public JSONObject toJSON() throws JSONException {
+    public JSONObject toJSON() {
         JSONObject jsonLoc = new JSONObject(); 
         
-        /* Informazioni personali */
-        jsonLoc.accumulate("id", id);
-        jsonLoc.accumulate("nome", nome); 
-        jsonLoc.accumulate("cognome", cognome); 
-        jsonLoc.accumulate("email", email); 
-        jsonLoc.accumulate("password", password); //serve?!
-        jsonLoc.accumulate("telefono", telefono); 
-        jsonLoc.accumulate("fotoProfilo", fotoProfilo); 
-        jsonLoc.accumulate("bloccato", (bloccato ? "true" : "false"));
-        jsonLoc.accumulate("descrizione", descrizione); 
+        try {
+            /* Informazioni personali */
+            jsonLoc.accumulate("id", id);
+            jsonLoc.accumulate("nome", nome); 
+            jsonLoc.accumulate("cognome", cognome); 
+            jsonLoc.accumulate("email", email); 
+            jsonLoc.accumulate("telefono", telefono); 
+            jsonLoc.accumulate("fotoProfilo", fotoProfilo); 
+            jsonLoc.accumulate("bloccato", (bloccato ? "true" : "false"));
+            jsonLoc.accumulate("descrizione", descrizione); 
         
         /* Loop (mutua ricorsione) se Locatore JSONizza la lista di annunci 
          * e l'annuncio JSONizza il locatore */
@@ -265,6 +267,10 @@ public class Locatore implements Serializable {
             jsonAnnunci.put(current); 
         }
         jsonLoc.accumulate("listaAnnunci", jsonAnnunci);  */
+        }
+        catch (JSONException ex) { 
+            Logger.getLogger(Locatore.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         return jsonLoc; 
     }
