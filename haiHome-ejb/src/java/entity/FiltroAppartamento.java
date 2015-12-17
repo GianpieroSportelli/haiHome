@@ -70,7 +70,7 @@ public class FiltroAppartamento extends FiltroDiRicerca implements Serializable 
     public int getNumeroCamereDaLetto() {
         return numeroCamereDaLetto;
     }
-
+    
     /**
      * Set the value of numeroCamereDaLetto
      *

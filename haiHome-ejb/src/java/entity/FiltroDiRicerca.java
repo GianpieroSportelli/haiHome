@@ -6,7 +6,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -63,7 +62,24 @@ public class FiltroDiRicerca implements Serializable {
         result.accumulate("Id_Studente", this.studente.getId());
         return result;
     }
+    /**
+     * Set the value of studente
+     *
+     * @param studente
+     */
+    public void setStudente(Studente studente) {
+        this.studente=studente;
+    }
 
+
+    /**
+     * Get the value of studente
+     *
+     * @return the value of numeroCamereDaLetto
+     */
+    public Studente getStudente() {
+        return this.studente;
+    }
     /**
      * Set the value of compresoRiscaldamento
      *

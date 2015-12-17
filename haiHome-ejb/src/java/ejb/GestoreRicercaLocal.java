@@ -6,6 +6,7 @@
 package ejb;
 
 import entity.FiltroDiRicerca;
+import entity.Studente;
 import java.util.ArrayList;
 import javax.ejb.Local;
 import org.json.JSONArray;
@@ -33,5 +34,7 @@ public interface GestoreRicercaLocal {
    boolean cambiaFiltroAttuale(long id_FiltroDiRicerca);
 
     JSONObject attualeToJSON();
+
+    boolean persistiFiltroAttuale(Studente studente);
     
 }

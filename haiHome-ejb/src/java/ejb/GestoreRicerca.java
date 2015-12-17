@@ -13,6 +13,7 @@ import entity.FiltroStanza;
 import entity.Stanza;
 import entity.StanzaAccessoria;
 import entity.StanzaInAffitto;
+import entity.Studente;
 import entity.TipoStanzaAccessoria;
 import entity.TipoStanzaInAffitto;
 import facade.CittàFacadeLocal;
@@ -170,6 +171,13 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return null;
     }
     
+    @Override
+    public boolean persistiFiltroAttuale(Studente studente) {
+        filtroAttuale.setStudente(studente);
+        filtroDiRicercaFacade.create(filtroAttuale);
+        return filtroDiRicercaFacade.find(filtroAttuale.getId())!=null;
+    }
+    
      private boolean acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
         boolean accept = false;
         if (!x.isArchiviato() || !x.isOscurato()) {
@@ -288,6 +296,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         }
         return result;
     }
+
+    
 
     
 
