@@ -25,14 +25,7 @@ public interface GestoreLocatoreLocal {
     public boolean removeLocatore();
     /* Gestione profilo del locatore*/
     public void modificaInfoProfilo(String telefono, String descrizione); 
-    public boolean modificaPassword(String oldpassword, String newpassword); 
-    
-    /* gestioneProfilo, 
-PubblicaAnnuncio, 
-modificaAnnuncio, 
-cancellaAnnuncio,
-archiviaAnnuncio */ 
-    
+    public boolean modificaPassword(String oldpassword, String newpassword);   
     
     public JSONObject toJSON();
     public Locatore getLocatore(); 
