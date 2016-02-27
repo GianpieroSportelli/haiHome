@@ -3,7 +3,8 @@
     Created on : 10-nov-2015, 10.07.01
     Author     : gianp_000
 --%>
-
+<%@page import="org.json.JSONObject"%> 
+<%@page import="java.util.ArrayList"%> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -104,6 +105,19 @@
             </div><!-- /.container-fluid -->
         </nav>
 
+        <script>
+            <%
+                Object log = request.getAttribute("Loggato");
+                if (log != null) {
+                    Boolean loggato = (Boolean) request.getAttribute("Loggato");
+
+                    if (loggato.booleanValue() == true) {
+                        JSONObject fromJ = (JSONObject) request.getAttribute("JSONList");
+                        System.out.println(fromJ.toString());
+                    } else %> alert("Errore. Riprova"); <%;
+                    } else %> alert("non loggato!!");
+
+        </script>
 
     </body>
 </html>

@@ -78,6 +78,11 @@ public class ServletStudente extends HttpServlet {
             JSONObject json = this.gestoreStudente.toJSON();
 
             out.println("<p>" + json.toString() + "</p>");
+            
+            request.setAttribute("JSONList", json);
+            request.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
+            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+            
 
             /* ---------------- PROVA CANCELLAZIONE STUDENTE FUNZIONANTE
              
