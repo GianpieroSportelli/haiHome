@@ -26,8 +26,9 @@
         <link rel="stylesheet" href="include/css/main.css">
         <link rel="stylesheet" href="include/css/header.css">
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
     <body>
 
         <nav class="navbar navbar-default navbar-inverse" role="navigation">
@@ -69,6 +70,25 @@
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
+                            <%
+                                Object log = request.getAttribute("Loggato");
+                                if (log != null) {
+                                    Boolean loggato = (Boolean) request.getAttribute("Loggato");
+
+                                    if (loggato.booleanValue() == true) {
+                                        JSONObject datiUtente = (JSONObject) request.getAttribute("JSONList");
+                                        System.out.println(datiUtente.toString());
+                            %>
+                            <a href="#" id="menuDrop" class="dropdown-toggle" data-toggle="dropdown"><b>Ciao, <%= datiUtente.getString("Nome")%></b> <span class="caret"></span></a>
+                            <ul class="dropdown-menu" >
+                                <li><a href="#">Profilo</a></li>
+                                <li><a href="#">Preferiti</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Logout</a></li>                         
+                            </ul>
+
+                            <%    } else %> alert('Errore. Riprova') <%;
+                            } else { %> 
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
                             <ul id="login-dp" class="dropdown-menu">
                                 <li>
@@ -91,33 +111,22 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                                                </div>
                                             </form>
-                                        </div>
-                                        <div class="bottom text-center">
-                                            New here ? <a href="#"><b>Join Us</b></a>
+
+                                            <div class="bottom text-center">
+                                                New here ? <a href="#"><b>Join Us</b></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul>    
+                            <% }%>
+
                         </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-
-        <script>
-            <%
-                Object log = request.getAttribute("Loggato");
-                if (log != null) {
-                    Boolean loggato = (Boolean) request.getAttribute("Loggato");
-
-                    if (loggato.booleanValue() == true) {
-                        JSONObject fromJ = (JSONObject) request.getAttribute("JSONList");
-                        System.out.println(fromJ.toString());
-                    } else %> alert("Errore. Riprova"); <%;
-                    } else %> alert("non loggato!!");
-
-        </script>
-
     </body>
 </html>
