@@ -24,19 +24,8 @@
         </style>
         <link rel="stylesheet" href="include/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="include/css/main.css">
-        <!--<link rel="stylesheet" href="include/css/prova_list.css">-->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
-        <script src="include/js/prova_list.js"></script>
-        <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
-        <!-- Latest compiled JavaScript -->
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <!-- FINE caricamento bootstrap mediante MaxCDN -->
+        
         <%
             ArrayList<String> quartieri = (ArrayList<String>) request.getAttribute("quartieri");
         %>
@@ -44,7 +33,7 @@
     <body>
         <!-- bootstap necessita di container ne esistono di 2 tipi container e container-fluid -->
         <div class="container">
-            <%@include file="/jspf/header.jspf" %>
+            <%@include file="/header3Login.jsp" %>
             <div class="row">
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
@@ -196,7 +185,7 @@
                     </div>
                 </div>
             </div>
-            <%@include file="/jspf/footer.jspf" %>
+            <%@include file="/footer.jsp" %>
         </div>
 
     </body>

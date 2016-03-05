@@ -54,6 +54,7 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook")) {
+                System.out.println("IN LOGOUT");
                 HttpSession session = request.getSession();
                 session.setAttribute("Loggato", false);
                 getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);

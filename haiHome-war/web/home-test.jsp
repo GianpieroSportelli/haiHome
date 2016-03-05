@@ -22,25 +22,14 @@
         </style>
         <link rel="stylesheet" href="include/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="include/css/main.css">
-        <link rel="stylesheet" href="include/css/prova_list.css">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
-        <script src="include/js/prova_list.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>haiHome!!</title>
-        <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
-        <!-- Latest compiled JavaScript -->
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <!-- FINE caricamento bootstrap mediante MaxCDN -->
+        
     </head>
     <body>
         <div class="container">
-            <%@include file="/jspf/header.jspf" %>
+            <%@include file="/header3Login.jsp" %>
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-md-offset-3 col-lg-offset-0">
                     <form class="form-horizontal" method="POST" action="ServletController" >
@@ -57,7 +46,7 @@
                     </form>
                 </div>
             </div>
-            <%@include file="/jspf/footer.jspf" %>
+            <%@include file="/footer.jsp" %>
         </div>
         <script>
             function IsEmpty() {

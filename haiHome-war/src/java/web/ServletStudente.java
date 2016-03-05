@@ -87,8 +87,9 @@ public class ServletStudente extends HttpServlet {
             //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
             session.setAttribute("JSONList", json);
             session.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
+            System.out.println("IN Session");
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-
+            
             /* ---------------- PROVA CANCELLAZIONE STUDENTE FUNZIONANTE
              
              gestoreStudente.removeStudente();
