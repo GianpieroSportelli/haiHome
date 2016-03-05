@@ -43,10 +43,13 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             <%
+                                //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
+                                HttpSession sessione = request.getSession();
+                                Object log = sessione.getAttribute("Loggato");
                                 boolean loggedMenu = false;
-                                Object log = request.getAttribute("Loggato");
+                                //Object log = request.getAttribute("Loggato");
                                 if (log != null) {
-                                    Boolean loggato = (Boolean) request.getAttribute("Loggato");
+                                    Boolean loggato = (Boolean) sessione.getAttribute("Loggato");
 
                                     if (loggato.booleanValue() == true) {
                                         loggedMenu = true;
@@ -56,7 +59,7 @@
                                 }
 
                                 if (loggedMenu) {
-                                    JSONObject datiUtente = (JSONObject) request.getAttribute("JSONList");
+                                    JSONObject datiUtente = (JSONObject) sessione.getAttribute("JSONList");
                             %>  
                             <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true">

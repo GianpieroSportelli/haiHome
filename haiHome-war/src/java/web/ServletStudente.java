@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
@@ -78,11 +79,15 @@ public class ServletStudente extends HttpServlet {
             JSONObject json = this.gestoreStudente.toJSON();
 
             out.println("<p>" + json.toString() + "</p>");
-            
-            request.setAttribute("JSONList", json);
-            request.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
+
+            //request.setAttribute("JSONList", json);
+            //request.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
+            //getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+            HttpSession session = request.getSession();
+            //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
+            session.setAttribute("JSONList", json);
+            session.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-            
 
             /* ---------------- PROVA CANCELLAZIONE STUDENTE FUNZIONANTE
              

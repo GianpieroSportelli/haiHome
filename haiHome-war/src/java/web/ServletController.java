@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -46,7 +47,8 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook")) {
-                request.setAttribute("Loggato", false);
+                HttpSession session = request.getSession();
+                session.setAttribute("Loggato", false);
                 getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
             } else {
                 //altre richieste
