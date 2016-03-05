@@ -10,6 +10,7 @@ import entity.Città;
 import entity.FiltroAppartamento;
 import entity.FiltroDiRicerca;
 import entity.FiltroStanza;
+import entity.Quartiere;
 import entity.Stanza;
 import entity.StanzaAccessoria;
 import entity.StanzaInAffitto;
@@ -178,6 +179,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return filtroDiRicercaFacade.find(filtroAttuale.getId())!=null;
     }
     
+    
      private boolean acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
         boolean accept = false;
         if (!x.isArchiviato() || !x.isOscurato()) {
@@ -293,6 +295,15 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         JSONArray result = new JSONArray();
         for (Annuncio x : annunci) {
             result.put(x.toJSON());
+        }
+        return result;
+    }
+
+    @Override
+    public ArrayList<String> getQuartieriCittà() {
+        ArrayList<String> result=new ArrayList();
+        for(Quartiere q:this.cittàAttuale.getListaQuartieri()){
+           result.add(q.getNome());
         }
         return result;
     }

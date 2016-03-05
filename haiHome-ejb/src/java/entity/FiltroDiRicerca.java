@@ -23,24 +23,24 @@ import org.json.JSONObject;
 public class FiltroDiRicerca implements Serializable {
 
     @ManyToOne
-    protected Studente studente;
+    protected Studente studente = null;
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    protected double prezzo;
+    protected double prezzo = 0;
 
     @ManyToOne
-    protected Città Città;
+    protected Città Città = null;
 
     //SE la lista è vuota per convenzione vuol dire tutti i quartieri di una determinata città
-    protected Collection<String> listaQuartieri;
+    protected Collection<String> listaQuartieri = null;
 
-    protected boolean compresoCondominio;
+    protected boolean compresoCondominio = false;
 
-    protected boolean compresoRiscaldamento;
+    protected boolean compresoRiscaldamento = false;
 
     /**
      * Get the value of compresoRiscaldamento
@@ -59,7 +59,8 @@ public class FiltroDiRicerca implements Serializable {
         result.accumulate("Id", this.id);
         result.accumulate("CompresoCondominio", this.compresoCondominio);
         result.accumulate("CompresoRiscaldamento", this.compresoRiscaldamento);
-        result.accumulate("Id_Studente", this.studente.getId());
+        
+        result.accumulate("Id_Studente", "Ricorda di cambiare in getID");//this.studente.getId();
         return result;
     }
     /**

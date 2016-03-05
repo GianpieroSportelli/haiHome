@@ -12,6 +12,7 @@
     <head>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
         <title>Maps</title>
         <style>
             #map {
@@ -42,15 +43,32 @@
              + "</div>"
              + "</div>";*/
         %>
+        <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <!-- FINE caricamento bootstrap mediante MaxCDN -->
     </head>
     <body>
-        <%@include file="/header3Login.jsp" %>
-        <div id="map" ></div>
+        <%@include file="/header2.jsp" %>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2" ></div>
+                <div class="col-sm-8" ><div id="map" class="" ></div></div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+        <%@include file="/footer.jsp" %>
         <script>
             var geocoder;
             var map;
             var geoAddress;
-            var icon="images/basket.png";
+            var icon = "images/basket.png";
 
             function initialize() {
                 geocoder = new google.maps.Geocoder();
@@ -65,11 +83,11 @@
                     position: latlng,
                     title: 'geocode request address'
                 });
-                map.setZoom(15);
+                map.setZoom(16);
             }
             window.initialize();
-            
-            function addMarker(location,label) {
+
+            function addMarker(location, label) {
                 //alert(label);
                 // Add the marker at the clicked location, and add the next-available label
                 // from the array of alphabetical characters.
@@ -80,15 +98,15 @@
                     icon: icon
                 });
             }
-            <%for(JSONObject jobj:fromJ){
-                String latMarket=""+jobj.getJSONObject("location").get("lat");
-                String lngMarket=""+jobj.getJSONObject("location").get("lng");
-                String label=jobj.getString("name");
-                label=label.replace("'","&quot;");
+            <%for (JSONObject jobj : fromJ) {
+                    String latMarket = "" + jobj.getJSONObject("location").get("lat");
+                    String lngMarket = "" + jobj.getJSONObject("location").get("lng");
+                    String label = jobj.getString("name");
+                    label = label.replace("'", "&quot;");
             %>
-            window.addMarker(new google.maps.LatLng(<%= latMarket%>, <%= lngMarket%>),'<%= label%>'); 
-            <%System.out.println(jobj.getString("name")+","+jobj.getJSONObject("location")); %>
-            <%} %>
+            window.addMarker(new google.maps.LatLng(<%= latMarket%>, <%= lngMarket%>), '<%= label%>');
+            <%System.out.println(jobj.getString("name") + "," + jobj.getJSONObject("location")); %>
+            <%}%>
             /*function codeAddressInfo(address, contentString) {
              var infowindow = new google.maps.InfoWindow({
              content: contentString
@@ -154,6 +172,6 @@
              });
              }*/
         </script>
-        <%@include file="/footer.jsp" %>
+        
     </body>
 </html>

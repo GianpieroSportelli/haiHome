@@ -16,12 +16,15 @@
         <style>
             body {
                 padding-top: 50px;
+                padding-left: 50px;
+                padding-right: 50px;
                 padding-bottom: 20px;
             }
         </style>
         <link rel="stylesheet" href="include/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="include/css/main.css">
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        
     </head>
 
     <body>
@@ -74,6 +77,7 @@
                 </div>      
             </form>
         </div>
+       
         <script>
             // This example displays an address form, using the autocomplete feature
             // of the Google Places API to help users fill in the information.
