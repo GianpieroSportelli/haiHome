@@ -19,6 +19,12 @@
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="include/css/bootstrap.min.css">
+        
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <!-- JavaScript specific to this application that is not related to API
+           calls -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
 
         <script type="text/javascript">
             // Wait for the page to load first
