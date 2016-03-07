@@ -91,6 +91,11 @@
                                                 <button id="FacebookButton" onclick="Login()">Facebook</button>
                                                 <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i>Facebook</a>
                                                 <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i>Google</a>
+
+                                                <div id="gConnect">
+                                                    <div id="signin-button"></div>
+                                                    <%@include file="/googleplus.jsp" %> 
+                                                </div> 
                                             </div>
 
                                             <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
