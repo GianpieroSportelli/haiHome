@@ -5,79 +5,88 @@
 --%>
 <%@page import="org.json.JSONObject"%> 
 <%@page import="java.util.ArrayList"%> 
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Search Page</title>
+        <title>haiHome!! - Search Page</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
-        <link rel="stylesheet" href="include/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <!-- FINE caricamento bootstrap mediante MaxCDN -->
+        <script type="text/javascript" src="include/js/sol.js"></script> 
+        <link rel="stylesheet" href="include/css/sol.css">
         <style>
             body {
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
         </style>
-        <link rel="stylesheet" href="include/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="include/css/main.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
-        
+
+    </head>
+    <body>
         <%
             ArrayList<String> quartieri = (ArrayList<String>) request.getAttribute("quartieri");
         %>
-    </head>
-    <body>
         <!-- bootstap necessita di container ne esistono di 2 tipi container e container-fluid -->
         <div class="container">
-            <%@include file="/header3Login.jsp" %>
+          
             <div class="row">
-                <div class="col-sm-9"></div>
+                <div class="col-sm-9">
+                    <!--<select id="my-select" name="character" multiple="multiple">
+                        <option value="Peter">Peter Griffin</option>
+                        <option value="Lois">Lois Griffin</option>
+                        <option value="Chris">Chris Griffin</option>
+                        <option value="Meg">Meg Griffin</option>
+                        <option value="Stewie">Stewie Griffin</option>
+                        <option value="Cleveland">Cleveland Brown</option>    
+                        <option value="Joe">Joe Swanson</option>    
+                        <option value="Quagmire">Glenn Quagmire</option>    
+                        <option value="Evil Monkey">Evil Monkey</option>
+                        <option value="Herbert">John Herbert</option>    
+                    </select>
+
+                    <script type="text/javascript">
+                        $(window).load(function () {
+                            // initialize sol
+                            $('#my-select').searchableOptionList();
+                        });
+                    </script>-->
+                </div>
                 <div class="col-sm-3">
                     <div class="well">
                         <h3 align="center">Filtro di Ricerca</h3>
                         <form class="form-horizontal" method="POST" action="ServletController" id="searchForm" >
                             <input type="hidden" name="action" value="search">
-                            <div class="form-group">
-                                <h5>Quartieri</h5>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="all" name="quartieri">
-                                        all
-                                    </label>
-                                </div>
-
-                                <% for (String quart : quartieri) {%>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="<%= quart%>" name="quartieri">
+                            <div>
+                                <label class="sol-label" for="quartieri">Seleziona Quartieri</label>
+                                <select class="sol-selection" name="quartieri" id="quartieri" multiple="multiple">
+                                    <% for (String quart : quartieri) {%>
+                                    <option value="<%= quart%>">
                                         <%= quart%>
-                                    </label>
-                                </div>
-                                <% }%>
-                                <!--<div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="all" name="quartieri">
-                                        all
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="Mirafiori" name="quartieri" ><!--disabled>
-                                        Mirafiori
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="Centro" name="quartieri" ><!--disabled>
-                                        Centro
-                                    </label>        
-                                </div>-->
+                                    </option>
+                                    <% }%>   
+                                </select>
+                                <script type="text/javascript">
+                                    $(window).load(function () {
+                                        // initialize sol
+                                        $('#quartieri').searchableOptionList({
+                                            maxHeight: '250px'
+                                        });
+                                    });
+                                </script>
                             </div>
-
                             <div class="form-group">
                                 <label for="tipo" class="control-label">Tipo Annuncio</label>
                                 <select class="form-control" name="tipo" id="tipo">
@@ -118,21 +127,21 @@
                             </div>-->
                             <script>
                                 $("select").change(function () {
-                                    if($("#tipo").val()==="Appartamento"){
+                                    if ($("#tipo").val() === "Appartamento") {
                                         //alert("Appartamento");
                                         $("#divTipoStanza").hide();
                                         $("#divNLocali").show("slow");
                                         $("#divNCamere").show("slow");
                                         $("#divNBagni").show("slow");
                                         $("#divMetratura").show("slow");
-                                    }else if($("#tipo").val()==="Stanza"){
+                                    } else if ($("#tipo").val() === "Stanza") {
                                         //alert("Stanza");
                                         $("#divTipoStanza").show("slow");
                                         $("#divNLocali").hide();
                                         $("#divNCamere").hide();
                                         $("#divNBagni").hide();
                                         $("#divMetratura").hide();
-                                    }else{
+                                    } else {
                                         //alert("Lascia perdere");
                                         $("#divTipoStanza").hide();
                                         $("#divNLocali").hide();
@@ -140,7 +149,7 @@
                                         $("#divNBagni").hide();
                                         $("#divMetratura").hide();
                                     }
-                                    
+
                                 });
                             </script>
                             <div class="form-group" id="divTipoStanza" style="display:none">
@@ -151,7 +160,7 @@
                                     <option value="Doppia">Doppia</option>
                                 </select>
                             </div>
-                            
+
                             <div class="form-group" id="divNLocali" style="display:none">
                                 <label for="numeroLocali" class="control-label">Numero Locali</label>
                                 <div class="input-group">
@@ -185,8 +194,7 @@
                     </div>
                 </div>
             </div>
-            <%@include file="/footer.jsp" %>
+             <%@include file="/footer.jsp" %>                   
         </div>
-
     </body>
 </html>

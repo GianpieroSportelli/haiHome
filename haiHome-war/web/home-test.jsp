@@ -25,7 +25,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>haiHome!!</title>
-        
+
     </head>
     <body>
         <div class="container">
@@ -49,16 +49,24 @@
             <%@include file="/footer.jsp" %>
         </div>
         <script>
-            function IsEmpty() {
+                    function IsEmpty() {
 
-                if (document.form.city.value == "")
-                {
+                    if (document.form.city.value == "")
+                    {
                     alert("empty city");
-                }
+                    }
 
-                return;
-            }
+                    return;
+                    }
         </script>
-        
+        <!--<script language="javascript">
+            function document.onkeydown() {
+            if (event.keyCode == 116) {
+            event.keyCode = 0;
+                    event.cancelBubble = true;
+                    return false;
+            }
+            }
+        </script> -->
     </body>
 </html>

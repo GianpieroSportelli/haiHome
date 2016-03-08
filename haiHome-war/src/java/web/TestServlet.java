@@ -15,18 +15,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author gianp_000
  */
 public class TestServlet extends HttpServlet {
+
     @EJB
     private GestoreRicercaLocal gestoreRicerca;
 
     @EJB
     private GestoreTestLocal gestoreTest;
-    
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,7 +49,7 @@ public class TestServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             String nome = "Torino";
-            
+
             gestoreTest.addCittà(nome);
             ArrayList<String> cities = gestoreTest.getAllCittàNome();
             if (cities.isEmpty()) {
@@ -59,22 +59,37 @@ public class TestServlet extends HttpServlet {
                     out.println("<p>" + cit + "</p>");
                 }
             }
-            gestoreTest.addQuartiere(nome, "Aurora");
+            String[] Quartieri = {"Centro", "Crocetta", "Santa Rita", "Mirafiori Nord",
+                "Borgo San Paolo", "Cenisia", "Pozzo Strada", "Cit Turin", "Borgata Lesna",
+                "San Donato", "Campidoglio", "Parella",
+                "Borgo Vittoria", "Madonna di Campagna", "Lucento", "Vallette",
+                "Barriera di Milano", "Regio Parco", "Barca", "Bertolla", "Falchera", "Rebaudengo", "Villaretto",
+                "Aurora", "Vanchiglia", "Sassi", "Madonna del Pilone",
+                "San Salvario", "Cavoretto", "Borgo Po",
+                "Nizza Millefonti", "Lingotto", "Filadelfia",
+                "Mirafiori Sud"};
+            String circoscrizioni="Di Bruce The Deus - Opera propria, <a href=\"http://creativecommons.org/licenses/by-sa/3.0/\" title=\"Creative Commons Attribuzione - Condividi allo stesso modo versioni 3.0\">CC BY-SA 3.0</a>, https://it.wikipedia.org/w/index.php?curid=4681908";
+            for (String quartiere : Quartieri) {
+                gestoreTest.addQuartiere(nome, quartiere);
+            }
             ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
-            for(String quartiere : quartieri)
+            for (String quartiere : quartieri) {
                 out.println("<p>" + quartiere + "</p>");
+            }
+
             /*
-            gestoreTest.cancellaCittà(nome);
-            gestoreRicerca.selezionaCittà(nome);
-            gestoreRicerca.creaFiltroDiRicerca(600, new ArrayList<>(), true, true);
-            gestoreRicerca.aggiornaAFiltroAppartamento(1,1,1,0);
-            out.println(gestoreRicerca.isFiltroAppartamento());
-            request.setAttribute("gestoreRicerca", gestoreRicerca);
-            request.getRequestDispatcher("/TestServlet2").forward(request, response);
-            */
+             gestoreTest.cancellaCittà(nome);
+             gestoreRicerca.selezionaCittà(nome);
+             gestoreRicerca.creaFiltroDiRicerca(600, new ArrayList<>(), true, true);
+             gestoreRicerca.aggiornaAFiltroAppartamento(1,1,1,0);
+             out.println(gestoreRicerca.isFiltroAppartamento());
+             request.setAttribute("gestoreRicerca", gestoreRicerca);
+             request.getRequestDispatcher("/TestServlet2").forward(request, response);
+             */
+            
             out.println("</body>");
             out.println("</html>");
-            
+
         }
     }
 
@@ -116,7 +131,5 @@ public class TestServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    
 
 }
