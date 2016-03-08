@@ -19,7 +19,7 @@
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="include/css/bootstrap.min.css">
-
+      
         <script type="text/javascript">
             // Wait for the page to load first
             /* window.onload = function () {
@@ -91,6 +91,8 @@
                                                 <button id="FacebookButton" onclick="Login()">Facebook</button>
                                                 <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i>Facebook</a>
                                                 <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i>Google</a>
+                                                
+                                                <%@include file="/googleplus.jsp" %> 
                                             </div>
 
                                             <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
