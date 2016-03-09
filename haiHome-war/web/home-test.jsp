@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="description" content="">
@@ -29,7 +30,7 @@
     </head>
     <body>
         <div class="container">
-            <%@include file="/header3Login.jsp" %>
+            <%@include file="/header4Login.jsp" %>
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-md-offset-3 col-lg-offset-0">
                     <form class="form-horizontal" method="POST" action="ServletController" >
@@ -46,18 +47,18 @@
                     </form>
                 </div>
             </div>
-            <%@include file="/footer.jsp" %>
+            <%@include file="/footer2.jsp" %>
         </div>
         <script>
-                    function IsEmpty() {
+            function IsEmpty() {
 
-                    if (document.form.city.value == "")
-                    {
+                if (document.form.city.value == "")
+                {
                     alert("empty city");
-                    }
+                }
 
-                    return;
-                    }
+                return;
+            }
         </script>
         <!--<script language="javascript">
             function document.onkeydown() {

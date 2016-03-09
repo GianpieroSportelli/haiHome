@@ -38,5 +38,9 @@ public interface GestoreRicercaLocal {
     boolean persistiFiltroAttuale(Studente studente);
 
     ArrayList<String> getQuartieriCittà();
+
+    ArrayList<String> getTipoStanza();
+
+    double[] geocodeCurrentCity();
     
 }

@@ -5,16 +5,20 @@
 --%>
 <%@page import="org.json.JSONObject"%> 
 <%@page import="java.util.ArrayList"%> 
+<%@page import="org.json.JSONArray"%> 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <!--<meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com">
+        <!-- meta tag googleplus login-->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>haiHome!! - Search Page</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -25,8 +29,21 @@
         <!-- Latest compiled JavaScript -->
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <!-- FINE caricamento bootstrap mediante MaxCDN -->
-        <script type="text/javascript" src="include/js/sol.js"></script> 
+
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <!--Tema bootstrap -->
+        <link href="tutcss.css" rel="stylesheet">
+        <!-- footer css -->
+        <style>
+            #map {
+                width:100%;
+                height:400px;
+            }
+        </style>
+        <!-- INIZIO import SOL -->
+        <script type="text/javascript" src="include/js/sol.js"></script>
         <link rel="stylesheet" href="include/css/sol.css">
+        <!-- FINE import SOL -->
         <style>
             body {
                 padding-top: 50px;
@@ -38,31 +55,65 @@
     <body>
         <%
             ArrayList<String> quartieri = (ArrayList<String>) request.getAttribute("quartieri");
+            ArrayList<String> tipoStanza = (ArrayList<String>) request.getAttribute("tipoStanza");
         %>
         <!-- bootstap necessita di container ne esistono di 2 tipi container e container-fluid -->
+
         <div class="container">
-          
+
             <div class="row">
                 <div class="col-sm-9">
-                    <!--<select id="my-select" name="character" multiple="multiple">
-                        <option value="Peter">Peter Griffin</option>
-                        <option value="Lois">Lois Griffin</option>
-                        <option value="Chris">Chris Griffin</option>
-                        <option value="Meg">Meg Griffin</option>
-                        <option value="Stewie">Stewie Griffin</option>
-                        <option value="Cleveland">Cleveland Brown</option>    
-                        <option value="Joe">Joe Swanson</option>    
-                        <option value="Quagmire">Glenn Quagmire</option>    
-                        <option value="Evil Monkey">Evil Monkey</option>
-                        <option value="Herbert">John Herbert</option>    
-                    </select>
+                    <%
+                        JSONArray annunci = (JSONArray) request.getAttribute("JSONAnnunci");
+                        double[] latlng = (double[]) request.getAttribute("latlng");
+                        double lat = latlng[0];
+                        double lng = latlng[1];
+                    %>
+                    <div id="map" class="" ></div>
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&libraries=places"></script>
+                    <script language="javascript">
+                        var geocoder;
+                        var map;
+                        var geoAddress;
+                        var icon = "images/basket.png";
 
-                    <script type="text/javascript">
-                        $(window).load(function () {
-                            // initialize sol
-                            $('#my-select').searchableOptionList();
-                        });
-                    </script>-->
+                        function initialize() {
+                            geocoder = new google.maps.Geocoder();
+                            var latlng = new google.maps.LatLng(<%= lat%>, <%= lng%>);
+                            var mapOptions = {
+                                zoom: 14,
+                                center: latlng
+                            };
+                            map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                            /*var marker = new google.maps.Marker({
+                             map: map,
+                             position: latlng,
+                             title: 'geocode request address'
+                             });*/
+                            //map.setZoom(16);
+                        }
+                        window.initialize();
+
+                        function addMarker(location, label) {
+                            //alert(label);
+                            // Add the marker at the clicked location, and add the next-available label
+                            // from the array of alphabetical characters.
+                            var marker = new google.maps.Marker({
+                                position: location,
+                                title: label,
+                                map: map
+                                        //icon: icon
+                            });
+                        }
+                        <%for (int i = 0; i < annunci.length(); i++) {
+                            JSONObject json_annuncio=annunci.getJSONObject(i);
+                            //System.out.println(json_annuncio);
+                            double[] latlngAnnuncio = (double[]) json_annuncio.get("LatLng");
+                        %>
+                        document.addMarker(new google.maps.LatLng(<%= latlngAnnuncio[0]%>, <%= latlngAnnuncio[1]%>), '<%= "ANNUNCIO " + i%>');
+                        
+                        <%}%>
+                    </script>
                 </div>
                 <div class="col-sm-3">
                     <div class="well">
@@ -78,8 +129,9 @@
                                     </option>
                                     <% }%>   
                                 </select>
+
                                 <script type="text/javascript">
-                                    $(window).load(function () {
+                                    $(function () {
                                         // initialize sol
                                         $('#quartieri').searchableOptionList({
                                             maxHeight: '250px'
@@ -156,8 +208,11 @@
                                 <label for="tipo" class="control-label">Tipo Stanza</label>
                                 <select class="form-control" name="tipoStanza" id="tipoStanza">
                                     <option value="all">-</option>
-                                    <option value="Singola">Singola</option>
-                                    <option value="Doppia">Doppia</option>
+                                    <% for (String tipo : tipoStanza) {%>
+                                    <option value="<%= tipo%>">
+                                        <%= tipo%>
+                                    </option>
+                                    <% }%>
                                 </select>
                             </div>
 
@@ -194,7 +249,7 @@
                     </div>
                 </div>
             </div>
-             <%@include file="/footer.jsp" %>                   
+            <%@include file="/footer2.jsp" %>                   
         </div>
     </body>
 </html>

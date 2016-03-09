@@ -27,8 +27,9 @@ import org.json.JSONObject;
 @Stateless
 public class GoogleMapsBean implements GoogleMapsBeanLocal {
 //Server key con api geolocalizzazione e google place
-    private final String key = "key=" + "AIzaSyAriKS9JSx0EdrZcTq98fGldD6KzDPiPHM";
 
+    private final String key = "key=" + "AIzaSyAriKS9JSx0EdrZcTq98fGldD6KzDPiPHM";
+    
     @Override
     //Buisness method per la geocodifica di un indirizzo secondo le coordinate di google maps
     // return double[2] or null double[0]=latitudine double[1]=longitudine
@@ -36,20 +37,24 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
         try {
             //costruzione url di richiesta
             String input = "address=" + address;
-            String url="https://maps.googleapis.com/maps/api/geocode/json?" + input + "&" + key;
+            String url = "https://maps.googleapis.com/maps/api/geocode/json?" + input + "&" + key;
             //ottenimento JSON object risultato, campi presenti status e results
             JSONObject json = readJsonFromUrl(url);
-                    
+            
             String status = (String) json.get("status");
-              
+
             //verifica esito richiesta status==OK
             if (status.equalsIgnoreCase("OK")) {
                 //Navigazione al interno della struttura json risultato per il reperimento 
                 //dei campi necessari (lat,lng)
                 JSONArray res = (JSONArray) json.get("results");
                 JSONObject dic = (JSONObject) res.get(0);
-                JSONObject geometry = (JSONObject) dic.get("geometry"); 
+                JSONObject geometry = (JSONObject) dic.get("geometry");                
                 JSONObject location = (JSONObject) geometry.get("location");
+                JSONArray addresscomponent = dic.getJSONArray("address_components");
+                for (int i = 0; i < addresscomponent.length(); i++) {
+                    System.out.println(addresscomponent.getJSONObject(i));
+                }
                 double lat = location.getDouble("lat");
                 double lng = location.getDouble("lng");
                 double[] result = new double[2];
@@ -64,7 +69,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
         }
         return null;
     }
-
+    
     @Override
     public ArrayList<JSONObject> getSupermarketNearBy(double lat, double lng, double rad) {
         ArrayList<JSONObject> list = new ArrayList<>();
@@ -130,8 +135,8 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
                     }
                 } while (results != null);
                 /*for (JSONObject obj : list) {
-                    System.out.println(obj);
-                }*/
+                 System.out.println(obj);
+                 }*/
             }
         } catch (IOException ex) {
             Logger.getLogger(GoogleMapsBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,7 +145,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
         }
         return list;
     }
-
+    
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -149,7 +154,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
         }
         return sb.toString();
     }
-
+    
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
