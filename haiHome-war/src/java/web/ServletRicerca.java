@@ -46,11 +46,12 @@ public class ServletRicerca extends HttpServlet {
                 String city = request.getParameter("city");
                 gestoreRicerca.selezionaCittà(city);
                 //invia quartieri
+                System.out.println("Filtro Creato:");
                 System.out.println(gestoreRicerca.attualeToJSON());
                 ArrayList<String> quartieri = gestoreRicerca.getQuartieriCittà();
-                for (String q : quartieri) {
+                /*for (String q : quartieri) {
                     System.out.println(q);
-                }
+                }*/
                 ArrayList<String> tipoStanza=gestoreRicerca.getTipoStanza();
                 request.setAttribute("quartieri", quartieri);
                 request.setAttribute("tipoStanza", tipoStanza);
@@ -64,14 +65,14 @@ public class ServletRicerca extends HttpServlet {
                 String pricefrom = request.getParameter("pricefrom");
                 String compCondomino = request.getParameter("compCondomino");
                 String compRiscaldamento = request.getParameter("compRiscaldamento");
-                System.out.println("Quartieri selezionti");
+                //System.out.println("Quartieri selezionti");
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();
                 if (quartieri == null) {
                     quartieriSel=quartieriCittà;
                 } else {
                     for (String selection : quartieri) {
-                        System.out.println(selection);
+                        //System.out.println(selection);
                         boolean find = false;
                         for (String qC : quartieriCittà) {
                             if (qC.equalsIgnoreCase(selection)) {
@@ -85,7 +86,7 @@ public class ServletRicerca extends HttpServlet {
                         }
                     }
                 
-                System.out.println(" Tipo:" + tipo + " PriceFrom:" + pricefrom);
+                System.out.println(" Filtro Aggiornato");
                 gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino != null, compRiscaldamento != null);
                 System.out.println(gestoreRicerca.attualeToJSON());
                 if (tipo.equalsIgnoreCase("Appartamento")) {
