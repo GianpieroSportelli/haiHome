@@ -5,28 +5,41 @@
  */
 package web;
 
+import ejb.GestoreAnnuncioLocal;
+import ejb.GestoreLocatoreLocal;
 import ejb.GestoreRicercaLocal;
 import ejb.GestoreTestLocal;
+import ejb.GoogleMapsBeanLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author gianp_000
  */
 public class TestServlet extends HttpServlet {
+
     @EJB
     private GestoreRicercaLocal gestoreRicerca;
 
     @EJB
     private GestoreTestLocal gestoreTest;
-    
-    
+
+    @EJB
+    private GestoreAnnuncioLocal gestoreAnnunci;
+
+    @EJB
+    private GestoreLocatoreLocal gestoreLocatore;
+
+    @EJB
+    private GoogleMapsBeanLocal gmb;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,32 +62,109 @@ public class TestServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             String nome = "Torino";
+            //String add_test="Via San Giuseppe Benedetto Cottolengo, Torino, TO, Italia";
+            //String add_test = "Via Carlo Alberto, 41, Torino, TO, Italia";
+            String add_test = "Via Gian Domenico Cassini, 15, 10129 Torino, TO, Italia, 41, Torino, TO, Italia";
             
-            gestoreTest.addCittà(nome);
-            ArrayList<String> cities = gestoreTest.getAllCittàNome();
-            if (cities.isEmpty()) {
-                out.println("<p>Non sono Presenti città nel DB</p>");
-            } else {
-                for (String cit : cities) {
-                    out.println("<p>" + cit + "</p>");
+
+            /*gestoreTest.addCittà(nome);
+             ArrayList<String> cities = gestoreTest.getAllCittàNome();
+             if (cities.isEmpty()) {
+             out.println("<p>Non sono Presenti città nel DB</p>");
+             } else {
+             for (String cit : cities) {
+             out.println("<p>" + cit + "</p>");
+             }
+             }
+             String[] Quartieri = {"Centro", "Crocetta", "Santa Rita", "Mirafiori Nord",
+             "Borgo San Paolo", "Cenisia", "Pozzo Strada", "Cit Turin", "Borgata Lesna",
+             "San Donato", "Campidoglio", "Parella",
+             "Borgo Vittoria", "Madonna di Campagna", "Lucento", "Vallette",
+             "Barriera di Milano", "Regio Parco", "Barca", "Bertolla", "Falchera", "Rebaudengo", "Villaretto",
+             "Aurora", "Vanchiglia", "Sassi", "Madonna del Pilone",
+             "San Salvario", "Cavoretto", "Borgo Po",
+             "Nizza Millefonti", "Lingotto", "Filadelfia",
+             "Mirafiori Sud"};
+             String circoscrizioni="Di Bruce The Deus - Opera propria, <a href=\"http://creativecommons.org/licenses/by-sa/3.0/\" title=\"Creative Commons Attribuzione - Condividi allo stesso modo versioni 3.0\">CC BY-SA 3.0</a>, https://it.wikipedia.org/w/index.php?curid=4681908";
+             for (String quartiere : Quartieri) {
+             gestoreTest.addQuartiere(nome, quartiere);
+             }
+             ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
+             for (String quartiere : quartieri) {
+             out.println("<p>" + quartiere + "</p>");
+             }
+
+             /*
+             gestoreTest.cancellaCittà(nome);
+             gestoreRicerca.selezionaCittà(nome);
+             gestoreRicerca.creaFiltroDiRicerca(600, new ArrayList<>(), true, true);
+             gestoreRicerca.aggiornaAFiltroAppartamento(1,1,1,0);
+             out.println(gestoreRicerca.isFiltroAppartamento());
+             request.setAttribute("gestoreRicerca", gestoreRicerca);
+             request.getRequestDispatcher("/TestServlet2").forward(request, response);
+             */
+            /*double[] latlng=gmb.geocodingAddress(add_test);
+             System.out.println("lat: "+latlng[0]+" lng: "+latlng[1]);*/
+            String email = "gianpiero.sportelli@libero.it";
+            //gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "Gianpiero", "Sportelli", "foto", "pass", "Locatore Random");
+            //gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
+
+            /*ANNUNCIO Via Cottolengo
+             gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 1", 90, new Date(2016, 3, 1), 5, true);
+             gestoreAnnunci.inserisciInfoCostiAppartamento(850, true, true);
+             double[] latlng=gmb.geocodingAddress(add_test);
+             gestoreAnnunci.inserisciInfoIndirizzo("Torino","Aurora", add_test, latlng);
+             gestoreAnnunci.inserisciNuovaStanzaAccessoria("Cucina",new ArrayList<String>(), 15);
+             gestoreAnnunci.inserisciNuovaStanzaAccessoria("Bagno",new ArrayList<String>() , 15);
+             gestoreAnnunci.inserisciNuovaStanzaInAffitto("Singola", new ArrayList<String>(), true, true, 20, 272);
+             gestoreAnnunci.inserisciNuovaStanzaInAffitto("Singola", new ArrayList<String>(), true, true, 20, 272);
+             gestoreAnnunci.inserisciNuovaStanzaInAffitto("Singola", new ArrayList<String>(), true, true, 20, 272);
+             if (gestoreAnnunci.rendiAnnuncioPersistente()) {
+             System.out.println(gestoreAnnunci.toJSON());
+             } else {
+             System.out.println("errore");
+             }
+             */
+            /* ANNUNCIO 2 Via Carlo Alberto, 41, Torino, TO, Italia
+            if (gestoreLocatore.checkLocatore(email)) {
+                gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
+                gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 2", 110, new Date(2016, 3, 1), 5, false);
+                gestoreAnnunci.inserisciInfoCostiAppartamento(800, true, true);
+
+                double[] latlng = gmb.geocodingAddress(add_test);
+                gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Centro", add_test, latlng);
+                gestoreAnnunci.inserisciNuovaStanzaAccessoria("Cucina", new ArrayList<String>(), 30);
+                gestoreAnnunci.inserisciNuovaStanzaAccessoria("Bagno", new ArrayList<String>(), 15);
+                gestoreAnnunci.inserisciNuovaStanzaInAffitto("Singola", new ArrayList<String>(), true, true, 25, 300);
+                gestoreAnnunci.inserisciNuovaStanzaInAffitto("Doppia", new ArrayList<String>(), true, true, 50, 500);
+                if (gestoreAnnunci.rendiAnnuncioPersistente()) {
+                    System.out.println(gestoreAnnunci.toJSON());
+                } else {
+                    System.out.println("errore");
+                }
+            }*/
+            
+            if (gestoreLocatore.checkLocatore(email)) {
+                gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
+                gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 3", 110, new Date(2016, 3, 1), 5, false);
+                gestoreAnnunci.inserisciInfoCostiAppartamento(900, true, true);
+
+                double[] latlng = gmb.geocodingAddress(add_test);
+                gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Crocetta", add_test, latlng);
+                gestoreAnnunci.inserisciNuovaStanzaAccessoria("Cucina", new ArrayList<String>(), 30);
+                gestoreAnnunci.inserisciNuovaStanzaAccessoria("Bagno", new ArrayList<String>(), 15);
+                gestoreAnnunci.inserisciNuovaStanzaAccessoria("Bagno", new ArrayList<String>(), 20);
+                gestoreAnnunci.inserisciNuovaStanzaInAffitto("Doppia", new ArrayList<String>(), true, true, 25, 450);
+                gestoreAnnunci.inserisciNuovaStanzaInAffitto("Doppia", new ArrayList<String>(), true, true, 50, 450);
+                if (gestoreAnnunci.rendiAnnuncioPersistente()) {
+                    System.out.println(gestoreAnnunci.toJSON());
+                } else {
+                    System.out.println("errore");
                 }
             }
-            gestoreTest.addQuartiere(nome, "Aurora");
-            ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
-            for(String quartiere : quartieri)
-                out.println("<p>" + quartiere + "</p>");
-            /*
-            gestoreTest.cancellaCittà(nome);
-            gestoreRicerca.selezionaCittà(nome);
-            gestoreRicerca.creaFiltroDiRicerca(600, new ArrayList<>(), true, true);
-            gestoreRicerca.aggiornaAFiltroAppartamento(1,1,1,0);
-            out.println(gestoreRicerca.isFiltroAppartamento());
-            request.setAttribute("gestoreRicerca", gestoreRicerca);
-            request.getRequestDispatcher("/TestServlet2").forward(request, response);
-            */
             out.println("</body>");
             out.println("</html>");
-            
+
         }
     }
 
@@ -116,7 +206,5 @@ public class TestServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    
 
 }

@@ -51,7 +51,11 @@ public class ServletRicerca extends HttpServlet {
                 for (String q : quartieri) {
                     System.out.println(q);
                 }
+                ArrayList<String> tipoStanza=gestoreRicerca.getTipoStanza();
                 request.setAttribute("quartieri", quartieri);
+                request.setAttribute("tipoStanza", tipoStanza);
+                request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
+                request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
                 getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("search")) {
@@ -63,37 +67,38 @@ public class ServletRicerca extends HttpServlet {
                 System.out.println("Quartieri selezionti");
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();
-                for (String selection : quartieri) {
-                    System.out.println(selection);
-                    if (selection.equalsIgnoreCase("all")) {
-                        quartieriSel = quartieriCittà;
-                        break;
-                    } else {
+                if (quartieri == null) {
+                    quartieriSel=quartieriCittà;
+                } else {
+                    for (String selection : quartieri) {
+                        System.out.println(selection);
                         boolean find = false;
                         for (String qC : quartieriCittà) {
                             if (qC.equalsIgnoreCase(selection)) {
                                 find = true;
+                                break;
                             }
                         }
-                        if (find) {
-                            quartieriSel.add(selection);
+                            if (find) {
+                                quartieriSel.add(selection);
+                            }
                         }
                     }
-                }
+                
                 System.out.println(" Tipo:" + tipo + " PriceFrom:" + pricefrom);
-                gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino!=null, compRiscaldamento!=null);
+                gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino != null, compRiscaldamento != null);
                 System.out.println(gestoreRicerca.attualeToJSON());
-                if(tipo.equalsIgnoreCase("Appartamento")){
+                if (tipo.equalsIgnoreCase("Appartamento")) {
                     String nL = request.getParameter("numeroLocali");
                     String nB = request.getParameter("numeroBagni");
                     String nC = request.getParameter("numeroCamere");
                     String met = request.getParameter("metratura");
                     gestoreRicerca.aggiornaAFiltroAppartamento(Integer.valueOf(nL), Integer.valueOf(nB), Integer.valueOf(nC), Double.valueOf(met));
                     System.out.println(gestoreRicerca.attualeToJSON());
-                }else if(tipo.equalsIgnoreCase("Stanza")){
-                   String tS = request.getParameter("tipoStanza"); 
-                   gestoreRicerca.aggiornaAFiltroStanza(tS);
-                   System.out.println(gestoreRicerca.attualeToJSON());
+                } else if (tipo.equalsIgnoreCase("Stanza")) {
+                    String tS = request.getParameter("tipoStanza");
+                    gestoreRicerca.aggiornaAFiltroStanza(tS);
+                    System.out.println(gestoreRicerca.attualeToJSON());
                 }
             } else {
                 out.println("<p> Che vuoi?? </p>");

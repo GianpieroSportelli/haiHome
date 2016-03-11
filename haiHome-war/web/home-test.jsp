@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="description" content="">
@@ -25,7 +26,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>haiHome!!</title>
-        
+
     </head>
     <body>
         <div class="container">
@@ -59,6 +60,14 @@
                 return;
             }
         </script>
-        
+        <!--<script language="javascript">
+            function document.onkeydown() {
+            if (event.keyCode == 116) {
+            event.keyCode = 0;
+                    event.cancelBubble = true;
+                    return false;
+            }
+            }
+        </script> -->
     </body>
 </html>

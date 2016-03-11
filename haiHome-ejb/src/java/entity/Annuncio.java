@@ -425,7 +425,8 @@ public class Annuncio implements Serializable {
             annuncioJSON.accumulate("Locatore", locatore.toJSON()); 
             annuncioJSON.accumulate("Descrizione", this.descrizione);
             annuncioJSON.accumulate("Indirizzo", this.indirizzo);
-            annuncioJSON.accumulate("LatLng", this.latLng);
+            annuncioJSON.accumulate("Lat", this.latLng[0]);
+            annuncioJSON.accumulate("Lng", this.latLng[1]);
             annuncioJSON.accumulate("Metratura", this.metratura);
             
             //aggiungo le stanze
