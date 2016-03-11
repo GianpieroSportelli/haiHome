@@ -1,4 +1,7 @@
+<!--
+
 <!DOCTYPE html>
+
 <html >
     <head>
         <meta charset="UTF-8">
@@ -6,9 +9,7 @@
 
 
         <link rel="stylesheet" href="include/css/login/normalize.css">
-
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
-
         <link rel="stylesheet" href="include/css/login/style.css">
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,237 +21,304 @@
 
     </head>
 
-    <body>
+    <body> -->
 
+<div class="container">
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+        Login
+    </button>
 
-        <div class="container">
-            <h2>Modal Example</h2>
-            <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Entra!!</button>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
 
-            <!--Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
-                    <div class="modal-content"> 
-                        <div class="modal-header">
-                            <ul class="logmod__tabs">
-                                <li data-tabtar="lgm-2"><a href="#">Accesso Studente</a></li>
-                                <li data-tabtar="lgm-1"><a href="#">Accesso Locatore</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="modal-body">
-                            <!-- random inizio -->
-                            <div class="logmod__tab lgm-1">
-                                <div class="logmod__heading">
-                                    <span class="logmod__heading-subtitle">Enter your personal details <strong>to create an acount</strong></span>
-                                </div>
-                                <div class="logmod__form">
-                                    <form accept-charset="utf-8" action="#" class="simform">
-                                        <div class="sminputs">
-                                            <div class="input full">
-                                                <label class="string optional" for="user-name">Email*</label>
-                                                <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
-                                            </div>
-                                        </div>
-                                        <div class="sminputs">
-                                            <div class="input string optional">
-                                                <label class="string optional" for="user-pw">Password *</label>
-                                                <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="text" size="50" />
-                                            </div>
-                                            <div class="input string optional">
-                                                <label class="string optional" for="user-pw-repeat">Repeat password *</label>
-                                                <input class="string optional" maxlength="255" id="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
-                                            </div>
-                                        </div>
-                                        <div class="simform__actions">
-                                            <input class="sumbit" name="commit" type="sumbit" value="Create Account" />
-                                            <span class="simform__actions-sidetext">By creating an account you agree to our <a class="special" href="#" target="_blank" role="link">Terms & Privacy</a></span>
-                                        </div> 
-                                    </form>
-                                </div> 
-
-                            </div>
-                            <div class="logmod__tab lgm-2">
-                                <div class="logmod__heading">
-                                    <span class="logmod__heading-subtitle">Enter your email and password <strong>to sign in</strong></span>
-                                </div> 
-                                <div class="logmod__form">
-                                    <form accept-charset="utf-8" action="#" class="simform">
-                                        <div class="sminputs">
-                                            <div class="input full">
-                                                <label class="string optional" for="user-name">Email*</label>
-                                                <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
-                                            </div>
-                                        </div>
-                                        <div class="sminputs">
-                                            <div class="input full">
-                                                <label class="string optional" for="user-pw">Password *</label>
-                                                <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />
-                                                <span class="hide-password">Show</span>
-                                            </div>
-                                        </div>
-                                        <div class="simform__actions">
-                                            <input class="sumbit" name="commit" type="sumbit" value="Log In" />
-                                            <span class="simform__actions-sidetext"><a class="special" role="link" href="#">Forgot your password?<br>Click here</a></span>
-                                        </div> 
-                                    </form>
-                                </div> 
-                                <div class="logmod__alter">
-                                    <div class="logmod__alter-container">
-                                        <a href="#" class="connect facebook">
-                                            <div class="connect__icon">
-                                                <i class="fa fa-facebook"></i>
-                                            </div>
-                                            <div class="connect__context">
-                                                <span>Sign in with <strong>Facebook</strong></span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="connect googleplus">
-                                            <div class="connect__icon">
-                                                <i class="fa fa-google-plus"></i>
-                                            </div>
-                                            <div class="connect__context">
-                                                <span>Sign in with <strong>Google+</strong></span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- random fine --> 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div> 
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-
-        <!--
-        
-        <div class="logmod">
-            <div class="logmod__wrapper">
-                <span class="logmod__close">Close</span>
-                <div class="logmod__container">
+            <!-- Modal content-->
+            <div class="modal-content">  
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-header">
                     <ul class="logmod__tabs">
-                        <li data-tabtar="lgm-2"><a href="#">Login</a></li>
-                        <li data-tabtar="lgm-1"><a href="#">Sign Up</a></li>
+                        <li data-tabtar="lgm-1"><a href="#">Accesso Studente</a></li>
+                        <li data-tabtar="lgm-2"><a href="#">Accesso Locatore</a></li>
                     </ul>
-                    <div class="logmod__tab-wrapper">
-                        <div class="logmod__tab lgm-1">
-                            <div class="logmod__heading">
-                                <span class="logmod__heading-subtitle">Enter your personal details <strong>to create an acount</strong></span>
-                            </div>
-                            <div class="logmod__form">
-                                <form accept-charset="utf-8" action="#" class="simform">
-                                    <div class="sminputs">
-                                        <div class="input full">
-                                            <label class="string optional" for="user-name">Email*</label>
-                                            <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
-                                        </div>
+                </div>
+
+                <div class="modal-body">
+                    <!-- random inizio -->
+
+                    <!-- Accesso Studente -->
+                    <div id="signIn_studente" class="logmod__tab lgm-1">
+                        <div class="logmod__heading">
+                            <span class="logmod__heading-subtitle">
+                                Inserisci le tue credenziali per <strong>accedere</strong>
+                            </span>
+                        </div>
+                        <div class="logmod__form">
+                            <form accept-charset="utf-8" action="#" class="simform">
+                                <div class="sminputs">
+                                    <div class="input full">
+                                        <label class="string optional" for="user-name">Email*</label>
+                                        <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
                                     </div>
-                                    <div class="sminputs">
-                                        <div class="input string optional">
-                                            <label class="string optional" for="user-pw">Password *</label>
-                                            <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="text" size="50" />
-                                        </div>
-                                        <div class="input string optional">
-                                            <label class="string optional" for="user-pw-repeat">Repeat password *</label>
-                                            <input class="string optional" maxlength="255" id="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
-                                        </div>
-                                    </div>
-                                    <div class="simform__actions">
-                                        <input class="sumbit" name="commit" type="sumbit" value="Create Account" />
-                                        <span class="simform__actions-sidetext">By creating an account you agree to our <a class="special" href="#" target="_blank" role="link">Terms & Privacy</a></span>
-                                    </div> 
-                                </form>
-                            </div> 
-                            <div class="logmod__alter">
-                                <div class="logmod__alter-container">
-                                    <a href="#" class="connect facebook">
-                                        <div class="connect__icon">
-                                            <i class="fa fa-facebook"></i>
-                                        </div>
-                                        <div class="connect__context">
-                                            <span>Create an account with <strong>Facebook</strong></span>
-                                        </div>
-                                    </a>
-        
-                                    <a href="#" class="connect googleplus">
-                                        <div class="connect__icon">
-                                            <i class="fa fa-google-plus"></i>
-                                        </div>
-                                        <div class="connect__context">
-                                            <span>Create an account with <strong>Google+</strong></span>
-                                        </div>
-                                    </a>
                                 </div>
+                                <div class="sminputs">
+                                    <div class="input full">
+                                        <label class="string optional" for="user-pw">Password *</label>
+                                        <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />
+                                        <span class="hide-password">Show</span>
+                                    </div>
+                                </div>
+                                <div class="simform__actions">
+                                    <input class="sumbit" name="commit" type="sumbit" value="Log In" />
+                                    <span class="simform__actions-sidetext">
+                                        <a id="gotoSignUp" class="special" role="link" href="#">
+                                            Registrazioneeee
+                                        </a>
+                                    </span>
+                                </div> 
+                            </form>
+                        </div> 
+                        <div class="logmod__heading">
+                            <span class="logmod__heading-subtitle">
+                                Oppure accedi tramite <strong>social</strong>
+                            </span>
+                        </div>
+                        <div class="logmod__alter">
+                            <div class="logmod__alter-container">
+                                <a href="#" class="connect facebook">
+                                    <div class="connect__icon">
+                                        <i class="fa fa-facebook"></i>
+                                    </div>
+                                    <div class="connect__context">
+                                        <span>Sign in with <strong>Facebook</strong></span>
+                                    </div>
+                                </a>
+                                <a href="#" class="connect googleplus">
+                                    <div class="connect__icon">
+                                        <i class="fa fa-google-plus"></i>
+                                    </div>
+                                    <div class="connect__context">
+                                        <span>Sign in with <strong>Google+</strong></span>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="logmod__tab lgm-2">
-                            <div class="logmod__heading">
-                                <span class="logmod__heading-subtitle">Enter your email and password <strong>to sign in</strong></span>
-                            </div> 
-                            <div class="logmod__form">
-                                <form accept-charset="utf-8" action="#" class="simform">
-                                    <div class="sminputs">
-                                        <div class="input full">
-                                            <label class="string optional" for="user-name">Email*</label>
-                                            <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
-                                        </div>
+                    </div>
+
+                    <!-- Accesso Locatore -->
+                    <div class="logmod__tab lgm-2">
+
+                    </div>
+
+                    <!--
+                    <div class="logmod__tab lgm-1">
+                        <div class="logmod__heading">
+                            <span class="logmod__heading-subtitle">Enter your personal details <strong>to create an acount</strong></span>
+                        </div>
+                        <div class="logmod__form">
+                            <form accept-charset="utf-8" action="#" class="simform">
+                                <div class="sminputs">
+                                    <div class="input full">
+                                        <label class="string optional" for="user-name">Email*</label>
+                                        <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
                                     </div>
-                                    <div class="sminputs">
-                                        <div class="input full">
-                                            <label class="string optional" for="user-pw">Password *</label>
-                                            <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />
-                                            <span class="hide-password">Show</span>
-                                        </div>
+                                </div>
+                                <div class="sminputs">
+                                    <div class="input string optional">
+                                        <label class="string optional" for="user-pw">Password *</label>
+                                        <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="text" size="50" />
                                     </div>
-                                    <div class="simform__actions">
-                                        <input class="sumbit" name="commit" type="sumbit" value="Log In" />
-                                        <span class="simform__actions-sidetext"><a class="special" role="link" href="#">Forgot your password?<br>Click here</a></span>
-                                    </div> 
-                                </form>
-                            </div> 
-                            <div class="logmod__alter">
-                                <div class="logmod__alter-container">
-                                    <a href="#" class="connect facebook">
-                                        <div class="connect__icon">
-                                            <i class="fa fa-facebook"></i>
-                                        </div>
-                                        <div class="connect__context">
-                                            <span>Sign in with <strong>Facebook</strong></span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="connect googleplus">
-                                        <div class="connect__icon">
-                                            <i class="fa fa-google-plus"></i>
-                                        </div>
-                                        <div class="connect__context">
-                                            <span>Sign in with <strong>Google+</strong></span>
-                                        </div>
-                                    </a>
+                                    <div class="input string optional">
+                                        <label class="string optional" for="user-pw-repeat">Repeat password *</label>
+                                        <input class="string optional" maxlength="255" id="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
+                                    </div>
+                                </div>
+                                <div class="simform__actions">
+                                    <input class="sumbit" name="commit" type="sumbit" value="Create Account" />
+                                    <span class="simform__actions-sidetext">By creating an account you agree to our <a class="special" href="#" target="_blank" role="link">Terms & Privacy</a></span>
+                                </div> 
+                            </form>
+                        </div> 
+                    </div>
+                    -->
+
+                    <!--
+                    <div class="logmod__tab lgm-2">
+                        <div class="logmod__heading">
+                            <span class="logmod__heading-subtitle">Enter your email and password <strong>to sign in</strong></span>
+                        </div> 
+                        <div class="logmod__form">
+                            <form accept-charset="utf-8" action="#" class="simform">
+                                <div class="sminputs">
+                                    <div class="input full">
+                                        <label class="string optional" for="user-name">Email*</label>
+                                        <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
+                                    </div>
+                                </div>
+                                <div class="sminputs">
+                                    <div class="input full">
+                                        <label class="string optional" for="user-pw">Password *</label>
+                                        <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />
+                                        <span class="hide-password">Show</span>
+                                    </div>
+                                </div>
+                                <div class="simform__actions">
+                                    <input class="sumbit" name="commit" type="sumbit" value="Log In" />
+                                    <span class="simform__actions-sidetext"><a class="special" role="link" href="#">Forgot your password?<br>Click here</a></span>
+                                </div> 
+                            </form>
+                        </div> 
+                        <div class="logmod__alter">
+                            <div class="logmod__alter-container">
+                                <a href="#" class="connect facebook">
+                                    <div class="connect__icon">
+                                        <i class="fa fa-facebook"></i>
+                                    </div>
+                                    <div class="connect__context">
+                                        <span>Sign in with <strong>Facebook</strong></span>
+                                    </div>
+                                </a>
+                                <a href="#" class="connect googleplus">
+                                    <div class="connect__icon">
+                                        <i class="fa fa-google-plus"></i>
+                                    </div>
+                                    <div class="connect__context">
+                                        <span>Sign in with <strong>Google+</strong></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- random fine --> 
+                </div> 
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!--
+
+<div class="logmod">
+    <div class="logmod__wrapper">
+        <span class="logmod__close">Close</span>
+        <div class="logmod__container">
+            <ul class="logmod__tabs">
+                <li data-tabtar="lgm-2"><a href="#">Login</a></li>
+                <li data-tabtar="lgm-1"><a href="#">Sign Up</a></li>
+            </ul>
+            <div class="logmod__tab-wrapper">
+                <div class="logmod__tab lgm-1">
+                    <div class="logmod__heading">
+                        <span class="logmod__heading-subtitle">Enter your personal details <strong>to create an acount</strong></span>
+                    </div>
+                    <div class="logmod__form">
+                        <form accept-charset="utf-8" action="#" class="simform">
+                            <div class="sminputs">
+                                <div class="input full">
+                                    <label class="string optional" for="user-name">Email*</label>
+                                    <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
                                 </div>
                             </div>
+                            <div class="sminputs">
+                                <div class="input string optional">
+                                    <label class="string optional" for="user-pw">Password *</label>
+                                    <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="text" size="50" />
+                                </div>
+                                <div class="input string optional">
+                                    <label class="string optional" for="user-pw-repeat">Repeat password *</label>
+                                    <input class="string optional" maxlength="255" id="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
+                                </div>
+                            </div>
+                            <div class="simform__actions">
+                                <input class="sumbit" name="commit" type="sumbit" value="Create Account" />
+                                <span class="simform__actions-sidetext">By creating an account you agree to our <a class="special" href="#" target="_blank" role="link">Terms & Privacy</a></span>
+                            </div> 
+                        </form>
+                    </div> 
+                    <div class="logmod__alter">
+                        <div class="logmod__alter-container">
+                            <a href="#" class="connect facebook">
+                                <div class="connect__icon">
+                                    <i class="fa fa-facebook"></i>
+                                </div>
+                                <div class="connect__context">
+                                    <span>Create an account with <strong>Facebook</strong></span>
+                                </div>
+                            </a>
+
+                            <a href="#" class="connect googleplus">
+                                <div class="connect__icon">
+                                    <i class="fa fa-google-plus"></i>
+                                </div>
+                                <div class="connect__context">
+                                    <span>Create an account with <strong>Google+</strong></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="logmod__tab lgm-2">
+                    <div class="logmod__heading">
+                        <span class="logmod__heading-subtitle">Enter your email and password <strong>to sign in</strong></span>
+                    </div> 
+                    <div class="logmod__form">
+                        <form accept-charset="utf-8" action="#" class="simform">
+                            <div class="sminputs">
+                                <div class="input full">
+                                    <label class="string optional" for="user-name">Email*</label>
+                                    <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
+                                </div>
+                            </div>
+                            <div class="sminputs">
+                                <div class="input full">
+                                    <label class="string optional" for="user-pw">Password *</label>
+                                    <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />
+                                    <span class="hide-password">Show</span>
+                                </div>
+                            </div>
+                            <div class="simform__actions">
+                                <input class="sumbit" name="commit" type="sumbit" value="Log In" />
+                                <span class="simform__actions-sidetext"><a class="special" role="link" href="#">Forgot your password?<br>Click here</a></span>
+                            </div> 
+                        </form>
+                    </div> 
+                    <div class="logmod__alter">
+                        <div class="logmod__alter-container">
+                            <a href="#" class="connect facebook">
+                                <div class="connect__icon">
+                                    <i class="fa fa-facebook"></i>
+                                </div>
+                                <div class="connect__context">
+                                    <span>Sign in with <strong>Facebook</strong></span>
+                                </div>
+                            </a>
+                            <a href="#" class="connect googleplus">
+                                <div class="connect__icon">
+                                    <i class="fa fa-google-plus"></i>
+                                </div>
+                                <div class="connect__context">
+                                    <span>Sign in with <strong>Google+</strong></span>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>-->
-        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> 
-
-        <script src="include/js/login/index.js"></script>
-
+        </div>
+    </div>
+</div>-->
 
 
+<!--<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
+
+<script src="include/js/login/index.js"></script>
+
+
+<!--
 
     </body>
-</html> 
+</html>  -->
