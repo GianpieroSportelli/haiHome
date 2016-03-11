@@ -102,6 +102,8 @@ var LoginModalController = {
     }
 };
 
+
+
 $(document).ready(function() {
     LoginModalController.initialize();
 });
