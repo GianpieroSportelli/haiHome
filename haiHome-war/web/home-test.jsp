@@ -40,7 +40,7 @@
     </head>
     <body>
         <div class="container">
-            <%@include file="/header4Login.jsp" %>
+            <%@include file="/header3Login.jsp" %>
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-md-offset-3 col-lg-offset-0">
                     <form class="form-horizontal" method="POST" action="ServletController" >
@@ -57,7 +57,7 @@
                     </form>
                 </div>
             </div>
-            <%@include file="/footer2.jsp" %>
+            <%@include file="/footer.jsp" %>
         </div>
         <script>
             function IsEmpty() {

@@ -32,6 +32,10 @@
         <!--Tema bootstrap -->
         <link rel="stylesheet" href="tutcss.css">
         
+        <link rel="stylesheet" href="include/css/login/normalize.css">
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+        <link rel="stylesheet" href="include/css/login/style.css">
+        
         <style>
             body {
                 padding-top: 50px;
@@ -45,7 +49,8 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         
-        <a href="login.jsp"> LOGIN </a>
+        <a href="login2.jsp">LOGIN</a>
+        <%@include file="/login.jsp" %> 
         
         <%@include file="/header3Login.jsp" %>
         
