@@ -10,21 +10,26 @@
     <head>
         <!--da modificare con riferimento interno -->
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        
-        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-        
 
-  
+        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+
+
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
         <link rel="stylesheet" href="../include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
-        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone.css">        
+        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone.css">       
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
     </head>
     <body>
-        
-                    
+
+
+
+
+
         <div class="container">
 
             <!-- Step superiori -->
@@ -62,9 +67,20 @@
                 </div>
 
                 <div class="row setup-content" id="step-3">
+                    
+                    <%@include file="prova.jsp" %>
+                    
+
                     <%@include file="InserimentoStanze.jsp" %>
+                                    
+                                    
                 </div>
 
+                
+
+                
+                
+                
                 <div class="row setup-content" id="step-4">
                     <div class="col-xs-6 col-md-offset-3">
                         <div class="col-md-12">
@@ -80,9 +96,9 @@
 
         </div> <!-- fine container -->
 
-        
+
         <script type="text/javascript">
-            
+
             //codice per lo step-wizard
             $(document).ready(function () {
                 var navListItems = $('div.setup-panel div a'),
@@ -127,31 +143,31 @@
                 jQuery('div.setup-panel div a.btn-primary').trigger('click');
 
 
-                
 
-                
-                
+
+
+
 
             });
-            
+
         </script>
 
-    
-    
-<script type="text/javascript"
-     src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-    </script>
-    
-<script type="text/javascript"
-     src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
-    </script>
-    
-    <script type="text/javascript" src=../include/js/InserimentoAnnunci/dataPicker.js></script>
 
-    <script type="text/javascript" src=../include/js/InserimentoAnnunci/stanzeUtily.js></script>
-    
-    <script type="text/javascript" src=../include/js/InserimentoAnnunci/dropzone.js></script>
-        
+
+        <script type="text/javascript"
+                src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+        </script>
+
+        <script type="text/javascript"
+                src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
+        </script>
+
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dataPicker.js"></script>
+
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/stanzeUtily.js"></script>
+
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone.js"></script> 
+
 
     </body>
 </html>

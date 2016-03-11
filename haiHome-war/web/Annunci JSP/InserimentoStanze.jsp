@@ -5,8 +5,12 @@
 --%>
 
 <div class="col-xs-6 col-md-offset-3">
+
     <div class="col-md-12">
+
+
         <h3> Info Stanze</h3>
+
 
         <div class="form-group col-md-6">
 
@@ -31,31 +35,42 @@
 
 
         </div>
+
+
         <div class="form-group col-md-6">
             <label class="control-label">Foto</label>
-            
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h3>DropzoneJS Upload Example - http://www.dropzonejs.com/</h3>  
+
+            <div id="dropzone"><form action="/upload" class="haiHomeDZ needsclick dz-clickable" id="demo-upload">
+
+                    <div class="dz-message needsclick">
+                        Drop files here or click to upload.<br>
+                        <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
                     </div>
-                </div><!--/row-->
-                <hr>
-                <div> 
-                    <form action="/upload" class="dropzone" drop-zone="" id="file-dropzone"></form>
-                </div>
-            </div>
+
+                </form></div>
+
+
+
 
 
         </div>
 
 
 
-        <div class="form-group">
-            <div id="aggiungi" onclick="nuovaStanza()">+</div>
-            <div class=container" id="elencoStanze">
 
-            </div>
-        </div>
-    </div>
-</div>
+
+
+        <!-- aggiungi stanze
+        
+                <div class="form-group">
+              <div id="aggiungi" onclick="nuovaStanza()">+</div>
+              <div class=container" id="elencoStanze">
+  
+              </div>
+          </div>
+        
+                <form action="/file-upload"
+        class="dropzone"
+        id="my-awesome-dropzone"></form>
+        
+        -->

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-
+/*
                 if ($('#test')[0].type !== 'date')
                     $('#test').datepicker();
 
@@ -16,3 +16,4 @@
 
     });
   });
+  */
