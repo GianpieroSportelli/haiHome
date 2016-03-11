@@ -29,19 +29,33 @@
         <!-- FINE caricamento bootstrap mediante MaxCDN -->
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <!--Tema bootstrap -->
+        <!--Tema bootstrap --> 
         <link rel="stylesheet" href="tutcss.css">
+        <!--
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         
         <link rel="stylesheet" href="include/css/login/normalize.css">
-        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
-        <link rel="stylesheet" href="include/css/login/style.css">
+        
+        <link rel="stylesheet" href="include/css/login/style.css"> -->
         
         <style>
             body {
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
-        </style>        
+        </style>     
+        
+        <!-- Robe di login2.jsp -->
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+        
+        <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
+        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
+        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
+        <!-- robe del login bello -->
+        <link rel="stylesheet" href="include/css/login/normalize.css">
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+        <link rel="stylesheet" href="include/css/login/style.css">
+        <!-- Fine robe di login2.jsp -->
         
     </head>
     <body>
@@ -49,9 +63,9 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         
-        <a href="login2.jsp">LOGIN</a>
-        <%@include file="/login.jsp" %> 
-        
+       
+       <!-- < %@include file="/login.jsp" %> -->
+       <%@include file="/login2.jsp" %> 
         <%@include file="/header3Login.jsp" %>
         
         <%@include file="/formAutocomplete.jsp" %> 

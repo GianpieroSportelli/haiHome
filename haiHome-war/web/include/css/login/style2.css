@@ -462,6 +462,22 @@ xsigin/signup popup
   text-decoration: underline;
 }
 
+/* aggiunta random, speriamo vada */ 
+.cd-form-bottom-message2 {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: -30px;
+  text-align: center;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.cd-form-bottom-message2 a {
+  color: #FFF;
+  text-decoration: underline;
+}
+/* fine inserimento random */ 
+
 .cd-close-form {
   /* form X button on top right */
   display: block;
@@ -481,10 +497,11 @@ xsigin/signup popup
   }
 }
 
-#cd-login, #cd-signup, #cd-reset-password {
+#cd-login, #cd-signup, #cd-reset-password, #cd-registrazione-locatore {
   display: none;
 }
 
-#cd-login.is-selected, #cd-signup.is-selected, #cd-reset-password.is-selected {
+#cd-login.is-selected, #cd-signup.is-selected, 
+#cd-reset-password.is-selected, #cd-registrazione-locatore.is-selected {
   display: block;
 }
