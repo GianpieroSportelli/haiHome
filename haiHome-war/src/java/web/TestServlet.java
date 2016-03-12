@@ -62,12 +62,15 @@ public class TestServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             String nome = "Torino";
-            //String add_test="Via San Giuseppe Benedetto Cottolengo, Torino, TO, Italia";
-            //String add_test = "Via Carlo Alberto, 41, Torino, TO, Italia";
-            String add_test = "Via Gian Domenico Cassini, 15, 10129 Torino, TO, Italia, 41, Torino, TO, Italia";
-            
+            String add_test1="Via San Giuseppe Benedetto Cottolengo, Torino, TO, Italia";
+            String add_test2 = "Via Carlo Alberto, 41, Torino, TO, Italia";
+            String add_test3 = "Via Gian Domenico Cassini, 15, 10129 Torino, TO, Italia, 41, Torino, TO, Italia";
+            //String add_test="Via Po, 15, Torino, TO, Italia";
+            add_test3=add_test3.replace(" ", "+");
+            add_test2=add_test2.replace(" ", "+");
+            add_test1=add_test1.replace(" ", "+");
 
-            /*gestoreTest.addCittà(nome);
+            gestoreTest.addCittà(nome);
              ArrayList<String> cities = gestoreTest.getAllCittàNome();
              if (cities.isEmpty()) {
              out.println("<p>Non sono Presenti città nel DB</p>");
@@ -106,14 +109,14 @@ public class TestServlet extends HttpServlet {
             /*double[] latlng=gmb.geocodingAddress(add_test);
              System.out.println("lat: "+latlng[0]+" lng: "+latlng[1]);*/
             String email = "gianpiero.sportelli@libero.it";
-            //gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "Gianpiero", "Sportelli", "foto", "pass", "Locatore Random");
-            //gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
+            gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "Gianpiero", "Sportelli", "foto", "pass", "Locatore Random");
+            gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
 
-            /*ANNUNCIO Via Cottolengo
+            /*ANNUNCIO Via Cottolengo*/
              gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 1", 90, new Date(2016, 3, 1), 5, true);
              gestoreAnnunci.inserisciInfoCostiAppartamento(850, true, true);
-             double[] latlng=gmb.geocodingAddress(add_test);
-             gestoreAnnunci.inserisciInfoIndirizzo("Torino","Aurora", add_test, latlng);
+             double[] latlng=gmb.geocodingAddress(add_test1);
+             gestoreAnnunci.inserisciInfoIndirizzo("Torino","Aurora", add_test1, latlng);
              gestoreAnnunci.inserisciNuovaStanzaAccessoria("Cucina",new ArrayList<String>(), 15);
              gestoreAnnunci.inserisciNuovaStanzaAccessoria("Bagno",new ArrayList<String>() , 15);
              gestoreAnnunci.inserisciNuovaStanzaInAffitto("Singola", new ArrayList<String>(), true, true, 20, 272);
@@ -124,15 +127,15 @@ public class TestServlet extends HttpServlet {
              } else {
              System.out.println("errore");
              }
-             */
-            /* ANNUNCIO 2 Via Carlo Alberto, 41, Torino, TO, Italia
+             /**/
+            /* ANNUNCIO 2 Via Carlo Alberto, 41, Torino, TO, Italia*/
             if (gestoreLocatore.checkLocatore(email)) {
                 gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
                 gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 2", 110, new Date(2016, 3, 1), 5, false);
                 gestoreAnnunci.inserisciInfoCostiAppartamento(800, true, true);
 
-                double[] latlng = gmb.geocodingAddress(add_test);
-                gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Centro", add_test, latlng);
+                /*double[]*/ latlng = gmb.geocodingAddress(add_test2);
+                gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Centro", add_test2, latlng);
                 gestoreAnnunci.inserisciNuovaStanzaAccessoria("Cucina", new ArrayList<String>(), 30);
                 gestoreAnnunci.inserisciNuovaStanzaAccessoria("Bagno", new ArrayList<String>(), 15);
                 gestoreAnnunci.inserisciNuovaStanzaInAffitto("Singola", new ArrayList<String>(), true, true, 25, 300);
@@ -142,15 +145,16 @@ public class TestServlet extends HttpServlet {
                 } else {
                     System.out.println("errore");
                 }
-            }*/
+            }/**/
             
             if (gestoreLocatore.checkLocatore(email)) {
                 gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
                 gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 3", 110, new Date(2016, 3, 1), 5, false);
                 gestoreAnnunci.inserisciInfoCostiAppartamento(900, true, true);
 
-                double[] latlng = gmb.geocodingAddress(add_test);
-                gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Crocetta", add_test, latlng);
+                /*double[]*/ latlng = gmb.geocodingAddress(add_test3);
+                System.out.println(""+latlng[0]+" , "+latlng[1]);
+                gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Crocetta", add_test3, latlng);
                 gestoreAnnunci.inserisciNuovaStanzaAccessoria("Cucina", new ArrayList<String>(), 30);
                 gestoreAnnunci.inserisciNuovaStanzaAccessoria("Bagno", new ArrayList<String>(), 15);
                 gestoreAnnunci.inserisciNuovaStanzaAccessoria("Bagno", new ArrayList<String>(), 20);

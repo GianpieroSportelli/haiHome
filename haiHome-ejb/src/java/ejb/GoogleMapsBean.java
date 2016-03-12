@@ -51,10 +51,10 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
                 JSONObject dic = (JSONObject) res.get(0);
                 JSONObject geometry = (JSONObject) dic.get("geometry");                
                 JSONObject location = (JSONObject) geometry.get("location");
-                JSONArray addresscomponent = dic.getJSONArray("address_components");
+                /*JSONArray addresscomponent = dic.getJSONArray("address_components");
                 for (int i = 0; i < addresscomponent.length(); i++) {
                     System.out.println(addresscomponent.getJSONObject(i));
-                }
+                }*/
                 double lat = location.getDouble("lat");
                 double lng = location.getDouble("lng");
                 double[] result = new double[2];
