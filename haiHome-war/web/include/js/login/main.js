@@ -4,15 +4,15 @@ jQuery(document).ready(function ($) {
             tabStudente = formModalTab.children('li').eq(0).children('a'),
             tabLocatore = formModalTab.children('li').eq(1).children('a'),
             
-            formLoginStudente = formModal.find('#cd-login'),
-            formRegistrazioneStudente = formModal.find('#cd-reset-password'),
-            /* login e registrazione studente  */
+            formLoginStudente = formModal.find('#cd-login-studente'),
+            formRegistrazioneStudente = formModal.find('#cd-registrazione-studente'),
+            
             gotoRegistrazioneStudente = formLoginStudente.find('.cd-form-bottom-message a'),
             backToLoginStudente = formRegistrazioneStudente.find('.cd-form-bottom-message a'),
             
-            formLoginLocatore = formModal.find('#cd-signup'),
-            formRegistrazioneLocatore = formModal.find('#cd-registrazione-locatore'),     
-            /* login e registrazione locatore */
+            formLoginLocatore = formModal.find('#cd-login-locatore'),
+            formRegistrazioneLocatore = formModal.find('#cd-registrazione-locatore'),
+            
             gotoRegistrazioneLocatore = formLoginLocatore.find('.cd-form-bottom-message2 a'),
             backToLoginLocatore = formRegistrazioneLocatore.find('.cd-form-bottom-message2 a'),
             
@@ -24,9 +24,9 @@ jQuery(document).ready(function ($) {
     });
 
     //open sign-up form
-    mainNav.on('click', '.cd-signup', login_locatore_selected);
+    mainNav.on('click', '.cd-signup', login_studente_selected);
     //open login-form form
-    mainNav.on('click', '.cd-signin', login_studente_selected);
+//    mainNav.on('click', '.cd-signin', login_studente_selected);
 
     //close modal
     formModal.on('click', function (event) {

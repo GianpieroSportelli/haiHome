@@ -497,11 +497,11 @@ xsigin/signup popup
   }
 }
 
-#cd-login, #cd-signup, #cd-reset-password, #cd-registrazione-locatore {
+#cd-login-studente, #cd-login-locatore, #cd-registrazione-studente, #cd-registrazione-locatore {
   display: none;
 }
 
-#cd-login.is-selected, #cd-signup.is-selected, 
-#cd-reset-password.is-selected, #cd-registrazione-locatore.is-selected {
+#cd-login-studente.is-selected, #cd-login-locatore.is-selected, 
+#cd-registrazione-studente.is-selected, #cd-registrazione-locatore.is-selected {
   display: block;
 }
