@@ -40,7 +40,7 @@
         <div class="form-group col-md-6">
             <label class="control-label">Foto</label>
 
-            <div id="dropzone"><form action="/upload" class="haiHomeDZ needsclick dz-clickable" id="demo-upload">
+            <div id="dropzone"><form action="../src/java/web/ServletController.java" class="dropzone needsclick dz-clickable" id="demo-upload">
 
                     <div class="dz-message needsclick">
                         Drop files here or click to upload.<br>
@@ -55,7 +55,8 @@
 
         </div>
 
-
+    </div>
+</div>
 
 
 

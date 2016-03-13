@@ -1175,7 +1175,7 @@
       if (this.options.uploadMultiple) {
         this.emit("processingmultiple", files);
       }
-      return this.uploadFiles(files);
+      //return this.uploadFiles(files);       //sto modificando
     };
 
     Dropzone.prototype._getFilesWithXhr = function(xhr) {

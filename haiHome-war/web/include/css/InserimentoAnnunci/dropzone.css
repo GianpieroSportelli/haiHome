@@ -175,20 +175,23 @@
 
 
 /* MIA DROP ZONE */
-.haiHomeDZ {
-  min-height: 150px;
-  border: 1px dashed rgba(149,138,255,0.6) ;  /* bordo dropzone */
-  background: white;
-  padding: 20px 20px;
-  border-radius: 10px 10px 10px 10px;}
-
-
 .dropzone {
   min-height: 150px;
   border: 1px dashed rgba(149,138,255,0.6) ;  /* bordo dropzone */
   background: white;
+  padding: 0px 0px;
+  border-radius: 10px 10px 10px 10px;}
+
+
+/* fropzone vecchia
+.dropzone {
+  min-height: 150px;
+  border: 1px dashed rgba(149,138,255,0.6) ;   bordo dropzone 
+  background: white;
   padding: 20px 20px;
-  }
+  } */
+  
+  
 
   .dropzone.dz-clickable {
     cursor: pointer; }
@@ -249,7 +252,7 @@
       opacity: 0;
       font-size: 13px;
       min-width: 100%;
-      max-width: 100%;
+      max-width: 100%; 
       padding: 2em 1em;
       text-align: center;
       color: rgba(0, 0, 0, 0.9); /* scritta del testo */
@@ -282,8 +285,8 @@
     .dropzone .dz-preview .dz-image {
       border-radius: 20px;
       overflow: hidden;
-      width: 120px;
-      height: 120px;
+      width: 60px;
+      height: 60px;
       position: relative;
       display: block;
       z-index: 10; }
