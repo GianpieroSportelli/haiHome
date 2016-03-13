@@ -109,7 +109,11 @@
                                             $(function () {
                                                 var result_div = '<div class = "search-result" >';
                                                 var close_div = '</div>';
-                                            <%for (int i = 0; i < annunci.length(); i++) {
+                                                var no_res = '<p > Nessun Risultato!! </p>';
+                                            <%if (annunci.length() == 0) {%>
+                                                $("#list-result").append(result_div + no_res + close_div);
+                                            <%} else {
+                                                for (int i = 0; i < annunci.length(); i++) {
                                                     if (i % N_ANNUNCI_X_PAGE == 0) {%>
                                                 $("#list-result").append('<div id ="<%="" + ((i / N_ANNUNCI_X_PAGE) + 1) + "_RESULT"%>" style="display:none">');
 
@@ -129,6 +133,7 @@
                                             <%if (i % N_ANNUNCI_X_PAGE == 0) {%>
                                                 $("#list-result").append(close_div);
                                             <%}
+                                                    }
                                                 }%>
                                             });
 
@@ -153,12 +158,15 @@
                                                 if (actual !== (+page)) {
                                                     var div_name_hide = "#" + actual + "_RESULT";
                                                     var div_name_show = "#" + page + "_RESULT";
-                                                    
+
                                                     $(div_name_hide).hide();
                                                     $(div_name_show).show();
                                                     
-                                                    actual = +page;
+                                                    $("#"+actual).removeClass("disabled");
+                                                    $("#"+page).addClass("disabled");
                                                     
+                                                    actual = +page;
+
                                                 }
                                             }
 
@@ -178,11 +186,12 @@
                                                     selectpage(page);
                                                 }
                                             }
-                                            $(window).load(function () {
+                                            $(function () {
                                                 //alert(actual);
                                                 var div_name = "#" + actual + "_RESULT";
+                                                $("#"+actual).addClass("disabled");
                                                 $(div_name).show();
-                                                
+
                                             });
                                         </script>
 
@@ -225,12 +234,12 @@
                                                             //icon: icon
                                                 });
                                             }
-                                            <%for (int i = 0; i < annunci.length(); i++) {
-                                                    JSONObject json_annuncio = annunci.getJSONObject(i);
-                                                    //System.out.println(json_annuncio);
-                                                    String latAnnuncio = "" + json_annuncio.get("Lat");
-                                                    String lngAnnuncio = "" + json_annuncio.get("Lng");
-                                            %>
+                        <%for (int i = 0; i < annunci.length(); i++) {
+                                JSONObject json_annuncio = annunci.getJSONObject(i);
+                                //System.out.println(json_annuncio);
+                                String latAnnuncio = "" + json_annuncio.get("Lat");
+                                String lngAnnuncio = "" + json_annuncio.get("Lng");
+                        %>
 
                                             window.addMarker(new google.maps.LatLng(<%= latAnnuncio%>, <%= lngAnnuncio%>), '<%= "ANNUNCIO " + i%>');
                         <%}%>
@@ -239,7 +248,7 @@
 
                 <div class="col-sm-3 fixed">
                     <div class="well">
-                        <h3 align="center">Filtro di Ricerca</h3>
+                        <h1 align="center">Filtro di Ricerca</h1>
                         <form class="form-horizontal" method="POST" action="ServletController" id="searchForm" >
                             <input type="hidden" name="action" value="search">
                             <div>
@@ -291,7 +300,7 @@
                                     </label>
                                 </div>
                             </div>
-                            
+
                             <script>
                                 $("select").change(function () {
                                     if ($("#tipo").val() === "Appartamento") {
@@ -322,7 +331,7 @@
                             <div class="form-group" id="divTipoStanza" style="display:none">
                                 <label for="tipo" class="control-label">Tipo Stanza</label>
                                 <select class="form-control" name="tipoStanza" id="tipoStanza">
-                                    <option value="all">-</option>
+                                    <!--<option value="all">-</option>-->
                                     <% for (String tipo : tipoStanza) {%>
                                     <option value="<%= tipo%>">
                                         <%= tipo%>
@@ -359,8 +368,46 @@
                                     <input type="text" class="form-control" id="numeroBagni" name="numeroBagni" aria-describedby="NBagni">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-danger glyphicon glyphicon-search"></button>
+                            <button id="searchButton"  class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
                         </form>
+                        <script>
+                            $("#searchButton").click(function () {
+                                var ok = true;
+                                if ($("#pricefrom").val() === '') {
+                                    $("#pricefrom").val("0");
+                                    //alert("prezzo 0");
+                                }
+                                if ($("#tipo").val() === 'Appartamento') {
+                                    if ($("#numeroLocali").val() === '') {
+                                        $("#numeroLocali").val("0");
+                                        //alert("prezzo 0");
+                                    }
+                                    if ($("#numeroCamere").val() === '') {
+                                        $("#numeroCamere").val("0");
+                                        //alert("prezzo 0");
+                                    }
+                                    if ($("#numeroBagni").val() === '') {
+                                        $("#numeroBagni").val("0");
+                                        //alert("prezzo 0");
+                                    }
+                                    if ($("#metratura").val() === '') {
+                                        $("#metratura").val("0");
+                                        //alert("prezzo 0");
+                                    }
+                                }
+                                if ($("#tipo").val() === 'Stanza') {
+                                    if ($("#tipoStanza").val() === '') {
+                                        alert("Scegliere un tipo stanza");
+                                        $("#tipoStanza").css("color", "red").slideUp(2000).slideDown(2000);
+                                        ok = false;
+                                    }
+                                }
+                                if (ok) {
+                                    $("#searchform").submit();
+                                }
+                            });
+
+                        </script>
                     </div>
                 </div>
             </div>

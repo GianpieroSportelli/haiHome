@@ -75,6 +75,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         if (filtroAttuale == null) {
             return false;
         } else {
+            filtroAttuale = new FiltroDiRicerca();
+            filtroAttuale.setCittà(cittàAttuale);
             filtroAttuale.setListaQuartieri(listaQuartieri);
             filtroAttuale.setPrezzo(prezzo);
             filtroAttuale.setCompresoCondominio(compresoCondominio);
@@ -207,52 +209,66 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                 FiltroAppartamento attuale = (FiltroAppartamento) filtroAttuale;
                 if (!x.isAtomico()) {
                     accept = false;
-                }
-
-                if (attuale.getPrezzo() != 0 && x.getPrezzo() > attuale.getPrezzo()) {
-                    accept = false;
-                }
-
-                if (attuale.getNumeroLocali() > x.getNumeroStanze()) {
-                    accept = false;
                 } else {
-                    //stanze[0] numeroBagni annuncio
-                    //stanze[1] numeroCamereDaLetto
-                    int[] stanze = countRoom(x);
-
-                    if (stanze[0] < attuale.getNumeroBagni()) {
+                    if (attuale.getPrezzo() != 0 && x.getPrezzo() > attuale.getPrezzo()) {
                         accept = false;
                     }
+                    if (attuale.getNumeroLocali() != 0 && attuale.getNumeroLocali() > x.getNumeroStanze()) {
+                        accept = false;
+                    } else {
+                        //stanze[0] numeroBagni annuncio
+                        //stanze[1] numeroCamereDaLetto
+                        int[] stanze = countRoom(x);
 
-                    if (stanze[1] < attuale.getNumeroCamereDaLetto()) {
+                        if (attuale.getNumeroBagni() != 0 && stanze[0] < attuale.getNumeroBagni()) {
+                            accept = false;
+                        }
+
+                        if (attuale.getNumeroCamereDaLetto() != 0 && stanze[1] < attuale.getNumeroCamereDaLetto()) {
+                            accept = false;
+                        }
+                    }
+                    if (attuale.getMetratura() != 0 && attuale.getMetratura() > x.getMetratura()) {
                         accept = false;
                     }
-                }
-                if (attuale.getMetratura() > x.getMetratura()) {
-                    accept = false;
+                    if(attuale.isCompresoCondominio() && !x.isCompresoCondominio()){
+                        accept= false;
+                    }
+                    if(attuale.isCompresoRiscaldamento()&& !x.isCompresoRiscaldamento()){
+                        accept= false;
+                    }
                 }
 
             } else if (filtroAttuale instanceof FiltroStanza) {
                 FiltroStanza attuale = (FiltroStanza) filtroAttuale;
                 boolean ok = false;
-                for (Stanza s : x.getListaStanza()) {
-                    if (s instanceof StanzaInAffitto) {
-                        StanzaInAffitto sF = (StanzaInAffitto) s;
-                        if (sF.isArchiviato()) {
-                            continue;
+                if (!x.isAtomico()) {
+                    for (Stanza s : x.getListaStanza()) {
+                        if (s instanceof StanzaInAffitto) {
+                            StanzaInAffitto sF = (StanzaInAffitto) s;
+                            if (sF.isArchiviato()) {
+                                continue;
+                            }
+                            if (attuale.getPrezzo() != 0 && sF.getPrezzo() > attuale.getPrezzo()) {
+                                continue;
+                            }
+                            if (sF.getTipo() != attuale.getTipo()) {
+                                continue;
+                            }
+                            if(attuale.isCompresoCondominio() && !sF.isCompresoCondominio()){
+                                continue;
+                            }
+                            if(attuale.isCompresoRiscaldamento()&& !sF.isCompresoRiscaldamento()){
+                                continue;
+                            }
+                            
+                            ok = true;
                         }
-                        if (attuale.getPrezzo() != 0 && sF.getPrezzo() > attuale.getPrezzo()) {
-                            continue;
-                        }
-                        if (sF.getTipo() != attuale.getTipo()) {
-                            continue;
-                        }
-                        ok = true;
                     }
                 }
                 accept = ok;
             } else {
-                if (x.isAtomico() && x.getPrezzo() < filtroAttuale.getPrezzo()) {
+                if (filtroAttuale.getPrezzo() != 0 && x.isAtomico() && x.getPrezzo() > filtroAttuale.getPrezzo()) {
                     accept = false;
                 }
                 if (!x.isAtomico()) {

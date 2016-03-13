@@ -43,7 +43,8 @@
     position: relative;
     height: 30px;
     line-height: 30px;
-    z-index: 9999;
+    //commentato perchè risultava sopra al modal del login
+    //z-index: 9999;
 
     background: #fff;
     border: 1px solid #ccc;
