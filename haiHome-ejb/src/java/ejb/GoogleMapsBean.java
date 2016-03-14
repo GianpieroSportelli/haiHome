@@ -169,4 +169,36 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 
+    @Override
+    public String getQuartiereByAddress(String address) {
+        try {
+            //costruzione url di richiesta
+            String input = "address=" + address;
+            String url = "https://maps.googleapis.com/maps/api/geocode/json?" + input + "&" + key;
+            //ottenimento JSON object risultato, campi presenti status e results
+            JSONObject json = readJsonFromUrl(url);
+            
+            String status = (String) json.get("status");
+
+            //verifica esito richiesta status==OK
+            if (status.equalsIgnoreCase("OK")) {
+                JSONArray res = (JSONArray) json.get("results");
+                System.out.println("lunghezza result: "+res.length());
+                for(int i=0;i<res.length();i++){
+                    JSONObject actual=res.getJSONObject(i);
+                    System.out.println(actual);
+                    System.out.println(actual.getString("formatted_address"));
+                }
+                
+            }else{
+                System.out.println(status);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(GoogleMapsBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(GoogleMapsBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
 }

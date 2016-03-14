@@ -34,13 +34,25 @@
                 padding-bottom: 20px;
             }
         </style>
+        <!-- Robe di login2.jsp -->
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+        
+        <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
+        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
+        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
+        <!-- robe del login bello -->
+        <link rel="stylesheet" href="include/css/login/normalize.css">
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+        <link rel="stylesheet" href="include/css/login/style.css">
+        <!-- Fine robe di login2.jsp -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>haiHome!!</title>
 
     </head>
     <body>
+        <%@include file="/login2.jsp" %>
+        <%@include file="/header3Login.jsp" %>
         <div class="container">
-            <%@include file="/header3Login.jsp" %>
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-md-offset-3 col-lg-offset-0">
                     <form class="form-horizontal" method="POST" action="ServletController" >
@@ -57,8 +69,8 @@
                     </form>
                 </div>
             </div>
-            <%@include file="/footer.jsp" %>
         </div>
+        <%@include file="/footer.jsp" %>
         <script>
             function IsEmpty() {
 
