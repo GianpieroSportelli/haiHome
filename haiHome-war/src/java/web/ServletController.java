@@ -43,7 +43,14 @@ public class ServletController extends HttpServlet {
             //Prende il parametro "action" dalla form della pagina JSP ed elabora la richiesta
             String action = request.getParameter("action");
 
-            if (action.equalsIgnoreCase("loginFacebook")) {
+            
+            if (action.equalsIgnoreCase("signup-studente")) {
+                out.println("registrazione studente!!!");
+            }
+            else if (action.equalsIgnoreCase("signup-locatore")) {
+                out.println("registrazione locatore!!!");
+            }
+            else if (action.equalsIgnoreCase("loginFacebook")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
 
 

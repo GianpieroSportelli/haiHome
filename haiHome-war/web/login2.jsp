@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="simform__actions">
-                        <input class="sumbit" name="commit" type="sumbit" value="Log In" />
+                        <input id="submit-login-stud" class="sumbit" name="commit" type="sumbit" value="Log In" />
                         <span class="simform__actions-sidetext"><a class="special" target="_blank" role="link">Password dimenticata?</a></span>
                     </div> 
                 </form>
@@ -75,36 +75,37 @@
                 </span>
             </div>
             <div class="logmod__form">
-                <form id="studente-reg" accept-charset="utf-8" action="#" class="simform">
+                <form id="studente-reg" accept-charset="utf-8" action="ServletController" method="POST" lcass="simform">
+                    <input type="hidden" name="action" value="signup-studente"/>
                     <div class="sminputs">
                         <div class="input string optional">
                             <label class="string optional" for="user-name">Name*</label>
-                            <input class="string optional" maxlength="255" id="user-name" placeholder="Il tuo nome" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-name" placeholder="Il tuo nome" type="text" size="50" />
                         </div>
                         <div class="input string optional">
                             <label class="string optional" for="user-surname">Surname*</label>
-                            <input class="string optional" maxlength="255" id="user-surname" placeholder="Il tuo nome" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-surname" placeholder="Il tuo nome" type="text" size="50" />
                         </div>
 
                     </div>
                     <div class="sminputs">
                         <div class="input full">
-                            <label class="string optional" for="user-name">Email*</label>
-                            <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
+                            <label class="string optional" for="user-email">Email*</label>
+                            <input class="string optional" maxlength="255" name="user-email" placeholder="Email" type="email" size="50" />
                         </div> 
                     </div>
                     <div class="sminputs">
                         <div class="input string optional">
                             <label class="string optional" for="user-pw">Password *</label>
-                            <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-pw" placeholder="Password" type="text" size="50" />
                         </div>
                         <div class="input string optional">
                             <label class="string optional" for="user-pw-repeat">Repeat password *</label>
-                            <input class="string optional" maxlength="255" id="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
                         </div>
                     </div>
                     <div class="simform__actions">
-                        <input class="sumbit" name="commit" type="sumbit" value="Create Account" />
+                        <input id="submit-reg-stud" class="sumbit" name="commit" type="sumbit" value="Create Account" />
                         <span class="simform__actions-sidetext">By creating an account you agree to our <a class="special" target="_blank" role="link">Terms & Privacy</a></span>
                     </div> 
                 </form>
@@ -145,6 +146,7 @@
             </div> 
             <div class="logmod__form">
                 <form id="locatore-login" accept-charset="utf-8" action="#" class="simform">
+                    <input type="hidden" name="action" value="login-locatore" />
                     <div class="sminputs">
                         <div class="input full">
                             <label class="string optional" for="user-name">Email*</label>
@@ -159,7 +161,7 @@
                         </div>
                     </div>
                     <div class="simform__actions">
-                        <input class="sumbit" name="commit" type="sumbit" value="Log In" />
+                        <input id="submit-login-loc" class="sumbit" name="commit" type="sumbit" value="Log In" />
                         <span class="simform__actions-sidetext"><a class="special" target="_blank" role="link">Password dimenticata?</a></span>
                     </div> 
                 </form>
@@ -180,25 +182,26 @@
             </div>
             <div class="logmod__form">
                 <form id="locatore-reg" accept-charset="utf-8" action="#" class="simform">
+                    <input type="hidden" name="action" value="signup-locatore" />
                     <div class="sminputs">
                         <div class="input string optional">
                             <label class="string optional" for="user-name">Name*</label>
-                            <input class="string optional" maxlength="255" id="user-name" placeholder="Il tuo nome" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-name" placeholder="Il tuo nome" type="text" size="50" />
                         </div>
                         <div class="input string optional">
                             <label class="string optional" for="user-surname">Surname*</label>
-                            <input class="string optional" maxlength="255" id="user-surname" placeholder="Il tuo nome" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-surname" placeholder="Il tuo nome" type="text" size="50" />
                         </div>
 
                     </div>
                     <div class="sminputs">
                         <div class="input string optional">
                             <label class="string optional" for="user-phone">Phone*</label>
-                            <input class="string optional" maxlength="255" id="user-phone" placeholder="Phone number" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-phone" placeholder="Phone number" type="text" size="50" />
                         </div>
                         <div class="input string optional">
                             <label class="string optional" for="user-email">Email*</label>
-                            <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
+                            <input class="string optional" maxlength="255" name="user-email" placeholder="Email" type="email" size="50" />
                         </div>
 
                         <!--
@@ -210,15 +213,15 @@
                     <div class="sminputs">
                         <div class="input string optional">
                             <label class="string optional" for="user-pw">Password *</label>
-                            <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-pw" placeholder="Password" type="text" size="50" />
                         </div>
                         <div class="input string optional">
                             <label class="string optional" for="user-pw-repeat">Repeat password *</label>
-                            <input class="string optional" maxlength="255" id="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
+                            <input class="string optional" maxlength="255" name="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
                         </div>
                     </div>
                     <div class="simform__actions">
-                        <input class="sumbit" name="commit" type="sumbit" value="Create Account" />
+                        <input id="submit-reg-loc" class="sumbit" name="commit" type="sumbit" value="Create Account" />
                         <span class="simform__actions-sidetext">By creating an account you agree to our <a class="special" target="_blank" role="link" disabled>Terms & Privacy</a></span>
                     </div> 
                 </form>
@@ -237,3 +240,4 @@
 
 
 <script src="include/js/login/main.js"></script> <!-- Gem jQuery -->
+<script src="include/js/login/login_checks.js"></script>
