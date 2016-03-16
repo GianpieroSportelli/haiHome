@@ -124,7 +124,6 @@ jQuery(document).ready(function ($) {
     } // funzionera'???
 
     //REMOVE THIS - it's just to show error messages 
-    /*
     formLoginStudente.find('input[type="submit"]').on('click', function (event) {
         event.preventDefault();
         formLoginStudente.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
@@ -132,7 +131,7 @@ jQuery(document).ready(function ($) {
     formLoginLocatore.find('input[type="submit"]').on('click', function (event) {
         event.preventDefault();
         formLoginLocatore.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-    }); */
+    }); 
 
 
     //IE9 placeholder fallback
