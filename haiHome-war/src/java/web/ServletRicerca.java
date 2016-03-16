@@ -101,6 +101,16 @@ public class ServletRicerca extends HttpServlet {
                     gestoreRicerca.aggiornaAFiltroStanza(tS);
                     System.out.println(gestoreRicerca.attualeToJSON());
                 }
+                ArrayList<String> quartieri_all = gestoreRicerca.getQuartieriCittà();
+                /*for (String q : quartieri) {
+                    System.out.println(q);
+                }*/
+                ArrayList<String> tipoStanza=gestoreRicerca.getTipoStanza();
+                request.setAttribute("quartieri", quartieri_all);
+                request.setAttribute("tipoStanza", tipoStanza);
+                request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
+                request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
+                getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);
             } else {
                 out.println("<p> Che vuoi?? </p>");
             }

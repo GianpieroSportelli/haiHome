@@ -114,7 +114,7 @@
     Dropzone.prototype.events = ["drop", "dragstart", "dragend", "dragenter", "dragover", "dragleave", "addedfile", "addedfiles", "removedfile", "thumbnail", "error", "errormultiple", "processing", "processingmultiple", "uploadprogress", "totaluploadprogress", "sending", "sendingmultiple", "success", "successmultiple", "canceled", "canceledmultiple", "complete", "completemultiple", "reset", "maxfilesexceeded", "maxfilesreached", "queuecomplete"];
 
     Dropzone.prototype.defaultOptions = {
-      url: null,
+      url: "../FotoUploadServlet",
       method: "post",
       withCredentials: false,
       parallelUploads: 2,
@@ -1175,7 +1175,7 @@
       if (this.options.uploadMultiple) {
         this.emit("processingmultiple", files);
       }
-      return this.uploadFiles(files);
+      return this.uploadFiles(files);       //sto modificando
     };
 
     Dropzone.prototype._getFilesWithXhr = function(xhr) {
@@ -1294,6 +1294,9 @@
           return _results;
         };
       })(this);
+      
+      
+      
       xhr.onload = (function(_this) {
         return function(e) {
           var _ref;

@@ -30,6 +30,16 @@
                     <option>Camera Accessoria</option>                       
                 </select>
             </div>
+            <!--
+            <label class="control-label">Metratura</label>
+            <input maxlength="100" type="text" required="required" class="form-control" placeholder="Metratura" /><br />
+-->
+
+        </div>
+        
+                <div class="form-group col-md-6">
+
+
             <label class="control-label">Metratura</label>
             <input maxlength="100" type="text" required="required" class="form-control" placeholder="Metratura" /><br />
 
@@ -37,11 +47,12 @@
         </div>
 
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12">
             <label class="control-label">Foto</label>
 
-            <div id="dropzone"><form action="/upload" class="haiHomeDZ needsclick dz-clickable" id="demo-upload">
+            <div id="dropzone"><form action="../FotoUploadServlet" class="dropzone needsclick dz-clickable" id="demo-upload">
 
+                   
                     <div class="dz-message needsclick">
                         Drop files here or click to upload.<br>
                         <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
@@ -49,13 +60,10 @@
 
                 </form></div>
 
-
-
-
-
         </div>
 
-
+    </div>
+</div>
 
 
 

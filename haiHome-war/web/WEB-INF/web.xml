@@ -36,6 +36,10 @@
         <servlet-name>ServletRicerca</servlet-name>
         <servlet-class>web.ServletRicerca</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FotoUploadServlet</servlet-name>
+        <servlet-class>web.FotoUploadServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletController</servlet-name>
         <url-pattern>/ServletController</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>ServletRicerca</servlet-name>
         <url-pattern>/ServletRicerca</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FotoUploadServlet</servlet-name>
+        <url-pattern>/FotoUploadServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -50,8 +50,28 @@
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
+            .fixed {
+                /* float: right; */
+                position: relative;
+                right: 0;
+                width: 25%;
+            }
+            .scrollit {
+                /* float: left; */
+                width: 71%
+            }
         </style>
+        <!-- Robe di login2.jsp -->
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
+        <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
+        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
+        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
+        <!-- robe del login bello -->
+        <link rel="stylesheet" href="include/css/login/normalize.css">
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+        <link rel="stylesheet" href="include/css/login/style.css">
+        <!-- Fine robe di login2.jsp -->
     </head>
     <body>
         <%
@@ -68,14 +88,15 @@
 
         %>
         <!-- bootstap necessita di container ne esistono di 2 tipi container e container-fluid -->
+        <%@include file="/login2.jsp" %>
         <%@include file="/header3Login.jsp" %> 
         <div class="container">
 
             <div class="row">
+
                 <div class="col-sm-9">
                     <div>
                         <div id="map" class="" >
-
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
@@ -83,12 +104,18 @@
                                     <div class="ibox-content" id="list-result"> 
                                         <div class="hr-line-dashed"></div>
                                         <script>
+                                            var n_page =<%=n_page%>;
+                                            var actual = 1;
                                             $(function () {
                                                 var result_div = '<div class = "search-result" >';
                                                 var close_div = '</div>';
-                                            <%for (int i = 0; i < annunci.length(); i++) {
+                                                var no_res = '<p > Nessun Risultato!! </p>';
+                                            <%if (annunci.length() == 0) {%>
+                                                $("#list-result").append(result_div + no_res + close_div);
+                                            <%} else {
+                                                for (int i = 0; i < annunci.length(); i++) {
                                                     if (i % N_ANNUNCI_X_PAGE == 0) {%>
-                                                $("#list-result").append('<div id ="<%="" + ((i  / N_ANNUNCI_X_PAGE)+1) + "_RESULT"%>" style="display:none">');
+                                                $("#list-result").append('<div id ="<%="" + ((i / N_ANNUNCI_X_PAGE) + 1) + "_RESULT"%>" style="display:none">');
 
                                             <%}%>
                                                 var title = '<h3 > <a href = "#" ><%= annunci.getJSONObject(i).getString("Indirizzo")%> </a></h3 >';
@@ -101,43 +128,71 @@
                                                 var desc = '<p > Descrizione: <%= annunci.getJSONObject(i).getString("Descrizione")%> </p>';
                                                 var met = '<p > Metratura: <%= annunci.getJSONObject(i).getDouble("Metratura")%> </p>';
                                                 var html = result_div + title + data_i + data_p + prezzo + quartiere + n_loc + loc + desc + met + close_div;
-                                                $("#<%="" + ((i  / N_ANNUNCI_X_PAGE)+1) + "_RESULT"%>").append(html);
-                                            <%
-                                                if (i % N_ANNUNCI_X_PAGE == 0) {%>
+                                                $("#<%="" + ((i / N_ANNUNCI_X_PAGE) + 1) + "_RESULT"%>").append(html);
+
+                                            <%if (i % N_ANNUNCI_X_PAGE == 0) {%>
                                                 $("#list-result").append(close_div);
                                             <%}
+                                                    }
                                                 }%>
                                             });
-                                        </script>
 
-                                        <script>
-                                            var n_page =<%=n_page%>;
                                             $(function () {
                                                 $("#list-result").append("<div class=\"text-center\" id=\"button-div\">");
                                                 $("#button-div").append("<div class=\"btn-group\" id=\"group-button-page\">");
-                                                $("#group-button-page").append("<button class=\"btn btn-white\" type=\"button\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button>");
+                                                $("#group-button-page").append("<button class=\"btn btn-white\"onClick=prevpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button>");
                                             <%for (int i = 0; i < n_page; i++) {%>
                                                 //var node = document.createElement("div");
                                                 var html = "<button class=\"btn btn-white\" onClick=selectpage(this.id) id=\"<%=i + 1%>\"><%= i + 1%> </button>";
                                                 $("#group-button-page").append(html);
 
                                             <%}%>
-                                                $("#group-button-page").append("<button class=\"btn btn-white\" type=\"button\"><i class=\"glyphicon glyphicon-chevron-right\"></i> </button>");
+                                                $("#group-button-page").append("<button class=\"btn btn-white\" onClick=nextpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-right\"></i> </button>");
                                                 $("#button-div").append("</div>");
                                                 $("#list-result").append("</div>");
-                                            });
-                                            function selectpage(page) {
 
-                                                for (i = 1; i <= n_page; i++) {
-                                                    var div_name = "#" + i + "_RESULT";
-                                                    if (i == page) {
-                                                        $(div_name).show("slow");
-                                                    } else {
-                                                        $(div_name).hide();
-                                                    }
+                                            });
+
+                                            function selectpage(page) {
+                                                //alert(page);
+                                                if (actual !== (+page)) {
+                                                    var div_name_hide = "#" + actual + "_RESULT";
+                                                    var div_name_show = "#" + page + "_RESULT";
+
+                                                    $(div_name_hide).hide();
+                                                    $(div_name_show).show();
+                                                    
+                                                    $("#"+actual).removeClass("disabled");
+                                                    $("#"+page).addClass("disabled");
+                                                    
+                                                    actual = +page;
+
                                                 }
                                             }
-                                            
+
+
+
+                                            function prevpage() {
+                                                //alert(actual);
+                                                if (actual !== 1) {
+                                                    var page = actual - 1;
+                                                    selectpage(page);
+                                                }
+                                            }
+                                            function nextpage() {
+                                                //alert(actual);
+                                                if (actual !== n_page) {
+                                                    var page = actual + 1;
+                                                    selectpage(page);
+                                                }
+                                            }
+                                            $(function () {
+                                                //alert(actual);
+                                                var div_name = "#" + actual + "_RESULT";
+                                                $("#"+actual).addClass("disabled");
+                                                $(div_name).show();
+
+                                            });
                                         </script>
 
 
@@ -191,10 +246,9 @@
                     </script>
                 </div>
 
-
-                <div class="col-sm-3">
+                <div class="col-sm-3 fixed">
                     <div class="well">
-                        <h3 align="center">Filtro di Ricerca</h3>
+                        <h1 align="center">Filtro di Ricerca</h1>
                         <form class="form-horizontal" method="POST" action="ServletController" id="searchForm" >
                             <input type="hidden" name="action" value="search">
                             <div>
@@ -246,13 +300,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <!--<div class="form-group">
-                                <label for="priceto" class="control-label">Max Price</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon" id="basic-addon2">Euro</div>
-                                    <input type="text" class="form-control" id="priceto" name="priceto" aria-describedby="basic-addon1">
-                                </div>
-                            </div>-->
+
                             <script>
                                 $("select").change(function () {
                                     if ($("#tipo").val() === "Appartamento") {
@@ -283,7 +331,7 @@
                             <div class="form-group" id="divTipoStanza" style="display:none">
                                 <label for="tipo" class="control-label">Tipo Stanza</label>
                                 <select class="form-control" name="tipoStanza" id="tipoStanza">
-                                    <option value="all">-</option>
+                                    <!--<option value="all">-</option>-->
                                     <% for (String tipo : tipoStanza) {%>
                                     <option value="<%= tipo%>">
                                         <%= tipo%>
@@ -320,16 +368,50 @@
                                     <input type="text" class="form-control" id="numeroBagni" name="numeroBagni" aria-describedby="NBagni">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-danger glyphicon glyphicon-search"></button>
+                            <button id="searchButton"  class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
                         </form>
+                        <script>
+                            $("#searchButton").click(function () {
+                                var ok = true;
+                                if ($("#pricefrom").val() === '') {
+                                    $("#pricefrom").val("0");
+                                    //alert("prezzo 0");
+                                }
+                                if ($("#tipo").val() === 'Appartamento') {
+                                    if ($("#numeroLocali").val() === '') {
+                                        $("#numeroLocali").val("0");
+                                        //alert("prezzo 0");
+                                    }
+                                    if ($("#numeroCamere").val() === '') {
+                                        $("#numeroCamere").val("0");
+                                        //alert("prezzo 0");
+                                    }
+                                    if ($("#numeroBagni").val() === '') {
+                                        $("#numeroBagni").val("0");
+                                        //alert("prezzo 0");
+                                    }
+                                    if ($("#metratura").val() === '') {
+                                        $("#metratura").val("0");
+                                        //alert("prezzo 0");
+                                    }
+                                }
+                                if ($("#tipo").val() === 'Stanza') {
+                                    if ($("#tipoStanza").val() === '') {
+                                        alert("Scegliere un tipo stanza");
+                                        $("#tipoStanza").css("color", "red").slideUp(2000).slideDown(2000);
+                                        ok = false;
+                                    }
+                                }
+                                if (ok) {
+                                    $("#searchform").submit();
+                                }
+                            });
+
+                        </script>
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-9">
-
-            </div>                
-        </div>
-        <%@include file="/footer2.jsp" %> 
+        </div> 
+        <%@include file="/footer.jsp" %>
     </body>
 </html>

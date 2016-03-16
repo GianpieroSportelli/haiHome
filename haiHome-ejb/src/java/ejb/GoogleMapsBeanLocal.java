@@ -19,5 +19,7 @@ public interface GoogleMapsBeanLocal {
     double[] geocodingAddress(String address);
 
     ArrayList<JSONObject> getSupermarketNearBy(double lat, double lng, double rad);
+
+    String getQuartiereByAddress(String address);
     
 }
