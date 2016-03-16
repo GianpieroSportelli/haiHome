@@ -15,8 +15,8 @@
     
     <div id="contenitoreStanze">
 
-    <div class="col-md-12" id="stanza">
-
+        <div class="col-md-12 formContainer" id="stanza"> 
+              
         <div class="form-group col-md-6">
             <div class="form-group">
                 <label class="control-label">Stanza</label>
@@ -49,9 +49,7 @@
     </div>
   
     </div>
-    <div id="random">
-        antonio gay
-    </div>
+
 
 </div>
 
