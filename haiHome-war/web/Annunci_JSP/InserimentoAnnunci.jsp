@@ -26,10 +26,6 @@
     </head>
     <body>
 
-
-
-
-
         <div class="container">
 
             <!-- Step superiori -->
