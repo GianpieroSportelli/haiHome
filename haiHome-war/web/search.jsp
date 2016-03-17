@@ -32,35 +32,17 @@
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
+        
         <link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
-        <style>
-            #map {
-                width:100%;
-                height:400px;
-            }
-        </style>
-        <!-- INIZIO import SOL -->
-        <script type="text/javascript" src="include/js/sol.js"></script>
-        <link rel="stylesheet" href="include/css/sol.css">
-        <link rel="stylesheet" href="include/css/search-result.css">
-        <!-- FINE import SOL -->
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-            .fixed {
-                /* float: right; */
-                position: relative;
-                right: 0;
-                width: 25%;
-            }
-            .scrollit {
-                /* float: left; */
-                width: 71%
-            }
-        </style>
+        
+        <!-- INIZIO import SOL -SearchPage -->
+        <script type="text/javascript" src="include/js/search/sol.js"></script>
+        <link rel="stylesheet" href="include/css/search/sol.css">
+        <link rel="stylesheet" href="include/css/search/search-result.css">
+        <link rel="stylesheet" href="include/css/search/search-page.css">
+        <!-- FINE import SOL -->  
+        
         <!-- Robe di login2.jsp -->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
@@ -161,16 +143,14 @@
 
                                                     $(div_name_hide).hide();
                                                     $(div_name_show).show();
-                                                    
-                                                    $("#"+actual).removeClass("disabled");
-                                                    $("#"+page).addClass("disabled");
-                                                    
+
+                                                    $("#" + actual).removeClass("disabled");
+                                                    $("#" + page).addClass("disabled");
+
                                                     actual = +page;
 
                                                 }
                                             }
-
-
 
                                             function prevpage() {
                                                 //alert(actual);
@@ -189,7 +169,7 @@
                                             $(function () {
                                                 //alert(actual);
                                                 var div_name = "#" + actual + "_RESULT";
-                                                $("#"+actual).addClass("disabled");
+                                                $("#" + actual).addClass("disabled");
                                                 $(div_name).show();
 
                                             });
@@ -223,7 +203,7 @@
                                                 //map.setZoom(16);
                                             }
                                             window.initialize();
-                                            function addMarker(location, label) {
+                                            function addMarker(location, label, contentString) {
                                                 //alert(label);
                                                 // Add the marker at the clicked location, and add the next-available label
                                                 // from the array of alphabetical characters.
@@ -231,7 +211,13 @@
                                                     position: location,
                                                     title: label,
                                                     map: map
-                                                            //icon: icon
+                                                    //icon: icon
+                                                });
+                                                var infowindow = new google.maps.InfoWindow({
+                                                    content: contentString
+                                                });
+                                                marker.addListener('click', function () {
+                                                    infowindow.open(map, marker);
                                                 });
                                             }
                         <%for (int i = 0; i < annunci.length(); i++) {
@@ -239,14 +225,23 @@
                                 //System.out.println(json_annuncio);
                                 String latAnnuncio = "" + json_annuncio.get("Lat");
                                 String lngAnnuncio = "" + json_annuncio.get("Lng");
+                                String addressAnnuncio = "" + json_annuncio.get("Indirizzo");
                         %>
-
-                                            window.addMarker(new google.maps.LatLng(<%= latAnnuncio%>, <%= lngAnnuncio%>), '<%= "ANNUNCIO " + i%>');
+                                            var contentString = ' <div id = \"content\" > ' +
+                                                    '<div id = \"siteNotice\" >' +
+                                                    '</div>' +
+                                                    '<div id = \"firstHeading\" > <span style =\"font-size:18px; font-weight:bold;\"> Uluru </span><br><br><img src='+icon+' style=\"max-width:100%;\" / > <br> <br> ' +
+                                                    'Contact info <br> Phone: + 65 123456789 <br> Email: <a href =\"mailto:info@example.com\"> info@example.com </a>' +
+                                                    '</div><div id=”bodyContent”>' +
+                                                    '<p> <b> <%= addressAnnuncio%> </b> Lorem upsum</p >' +
+                                                    ' </div>' +
+                                                    '</div>';
+                                            window.addMarker(new google.maps.LatLng(<%= latAnnuncio%>, <%= lngAnnuncio%>), '<%= "ANNUNCIO " + i%>', contentString);
                         <%}%>
                     </script>
                 </div>
 
-                <div class="col-sm-3 fixed">
+                <div class="col-sm-3">
                     <div class="well">
                         <h1 align="center">Filtro di Ricerca</h1>
                         <form class="form-horizontal" method="POST" action="ServletController" id="searchForm" >

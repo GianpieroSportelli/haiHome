@@ -45,12 +45,23 @@ public class ServletController extends HttpServlet {
 
             if (action.equalsIgnoreCase("loginFacebook")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
-
-
+                
             } else if (action.equalsIgnoreCase("setCity")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
-            } else if (action.equalsIgnoreCase("search")) {
+            } else if (action.equalsIgnoreCase("Ricerca-geoCity")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            }else if (action.equalsIgnoreCase("Ricerca-getAnnunciFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-getQuartieri")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            }else if (action.equalsIgnoreCase("Ricerca-getTipoStanza")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            }else if (action.equalsIgnoreCase("search")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook")) {
