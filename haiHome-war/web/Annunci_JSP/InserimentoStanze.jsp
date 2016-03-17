@@ -7,12 +7,13 @@
 <div class="col-xs-6 col-md-offset-3">
 
 <div class="form-group">
-    <div id="aggiungia" onclick="nuovaStanza()">+</div>
+    <div id="aggiungia " class="btn btn-success" onclick="nuovaStanza()">+</div>
 
   </div>
 
     <h3> Info Stanze</h3>
     
+     <div class="col-md-12 "> 
     <div id="contenitoreStanze">
 
         <div class="col-md-12 formContainer" id="stanza"> 
@@ -35,6 +36,7 @@
             </div>
         </div>
         <div class="form-group col-md-6">
+            <div id="aggiungia " class="btn buttonElimina" onclick="eliminaStanza('stanza')">-</div><br />
             <label class="control-label">Metratura</label>
             <input maxlength="100" type="text" required="required" class="form-control" placeholder="Metratura" /><br />
         </div>
@@ -47,9 +49,12 @@
                 </form></div>
         </div>
     </div>
-  
-    </div>
 
+
+    </div>
+         
+                  <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+     </div>
 
 </div>
 
