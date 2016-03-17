@@ -6,15 +6,19 @@
 
 <div class="col-xs-6 col-md-offset-3">
 
-    <div class="col-md-12">
+<div class="form-group">
+    <div id="aggiungia " class="btn btn-success" onclick="nuovaStanza()">+</div>
 
+  </div>
 
-        <h3> Info Stanze</h3>
+    <h3> Info Stanze</h3>
+    
+     <div class="col-md-12 "> 
+    <div id="contenitoreStanze">
 
-
+        <div class="col-md-12 formContainer" id="stanza"> 
+              
         <div class="form-group col-md-6">
-
-
             <div class="form-group">
                 <label class="control-label">Stanza</label>
                 <select class="form-control" id="sel1">
@@ -30,55 +34,44 @@
                     <option>Camera Accessoria</option>                       
                 </select>
             </div>
-            <!--
+        </div>
+        <div class="form-group col-md-6">
+            <div id="aggiungia " class="btn buttonElimina" onclick="eliminaStanza('stanza')">-</div><br />
             <label class="control-label">Metratura</label>
             <input maxlength="100" type="text" required="required" class="form-control" placeholder="Metratura" /><br />
--->
-
         </div>
-        
-                <div class="form-group col-md-6">
-
-
-            <label class="control-label">Metratura</label>
-            <input maxlength="100" type="text" required="required" class="form-control" placeholder="Metratura" /><br />
-
-
-        </div>
-
-
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-12" id="dropcontainer">
             <label class="control-label">Foto</label>
-
             <div id="dropzone"><form action="../FotoUploadServlet" class="dropzone needsclick dz-clickable" id="demo-upload">
-
-                   
                     <div class="dz-message needsclick">
                         Drop files here or click to upload.<br>
-                        <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
                     </div>
-
                 </form></div>
-
         </div>
+    </div>
+
 
     </div>
+         
+                  <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+     </div>
+
 </div>
 
 
 
 
-        <!-- aggiungi stanze
-        
-                <div class="form-group">
-              <div id="aggiungi" onclick="nuovaStanza()">+</div>
-              <div class=container" id="elencoStanze">
-  
-              </div>
-          </div>
-        
-                <form action="/file-upload"
-        class="dropzone"
-        id="my-awesome-dropzone"></form>
-        
-        -->
+<!-- aggiungi stanze
+
+        <div class="form-group">
+      <div id="aggiungi" onclick="nuovaStanza()">+</div>
+      <div class=container" id="elencoStanze">
+
+      </div>
+  </div>
+
+        <form action="/file-upload"
+class="dropzone"
+id="my-awesome-dropzone"></form>
+
+-->

@@ -170,10 +170,18 @@
         <%@include file="/footer.jsp" %>
         <script>
             $(window).load(function () {
-                var dfd = $.Deferred();
-                dfd.done(init_map)
-                        .done(loadAnnunci);
-                dfd.resolve();
+                var init = $.Deferred();
+                init.done(init_map);
+                var load = $.Deferred();
+                load.done(loadAnnunci);
+                var select = $.Deferred();
+                select.done(select);
+                $.when(init).then(function(){
+                    load.resolve().then(function(){
+                        select.resolve(1);
+                    });  
+                });
+                init.resolve();
                 
                 //window.init_map();
                 $(document).ready(function () {
