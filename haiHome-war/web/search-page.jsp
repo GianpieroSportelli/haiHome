@@ -39,6 +39,12 @@
         <link rel="stylesheet" href="include/css/search/search-result.css">
         <link rel="stylesheet" href="include/css/search/search-page.css">
         <!-- FINE import SOL -->  
+        <!-- INIZIO import ajax-fun searchPage-->
+        <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
+        <!-- FINE import ajax-fun searchPage-->
+        <!--INIZIO - Form ajax plugin -->
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <!--FINE- Form ajax plugin -->
 
         <!-- Robe di login2.jsp -->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -51,9 +57,7 @@
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
-        <!--INIZIO - Form ajax plugin -->
-        <script src="http://malsup.github.com/jquery.form.js"></script> 
-        <!--FINE- Form ajax plugin -->
+        
     </head>
     <body>
         <%@include file="/login2.jsp" %>
@@ -169,49 +173,39 @@
 
         <%@include file="/footer.jsp" %>
         <script>
-            $(window).load(function () {
-                var init = $.Deferred();
-                init.done(init_map);
-                var load = $.Deferred();
-                load.done(loadAnnunci);
-                var select = $.Deferred();
-                select.done(select);
-                $.when(init).then(function(){
-                    load.resolve().then(function(){
-                        select.resolve(1);
-                    });  
-                });
-                init.resolve();
-                
-                //window.init_map();
-                $(document).ready(function () {
-                    console.log(init_filtro_quartieri());
-                });
-                $(document).ready(function () {
-                    console.log(init_filtro_tipoStanze());
-                });
-
-                //window.init_filtro();
-                //window.loadAnnunci();
+            $(window).load(function () {               
+                    console.log(annunci_search());              
+                    console.log(init_filtro());
             });
         </script>
-        <script>
+        <!--<script>
             var geocoder;
             var map;
             var geoAddress;
             var icon = "images/basket.png";
-            //Funzion Ajax per caricare e inizializzare la mappa
-            function init_map() {
+            var N_ANNUNCI_X_PAGE = 2;
+            var n_page = 0;
+            var n_annunci = 0;
+            var annunci = new Array();
+            var page_annunci = new Array();
+            var actual = 0;
+            //Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
+            function annunci_search() {
                 $.post("ServletController",
                         {action: "Ricerca-geoCity"},
                 function (responseJson) {                               // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
-                    var arr = [0, 0]; // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
+                    var latlng = [0, 0];                                   // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
                     $.each(responseJson, function (index, item) {       // Iterate over the JSON array.
-                        //$("<p>").text(item).appendTo($("#mydiv"));
-                        arr[index] = item; // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+                        latlng[index] = item;                              // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
                     });
-                    //alert(arr);
-                    window.initialize(arr[0], arr[1]);
+                    
+                    console.log(initialize(latlng[0], latlng[1]));
+                    
+                    //Deferred serve pr delegare l'esecuzione di funzioni javascript
+                    var load_A=$.Deferred();
+                    load_A.done(load_Annunci);
+                    load_A.resolve();
+                    
                 });
             }
 
@@ -223,53 +217,40 @@
                     center: latlng
                 };
                 map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                /*var marker = new google.maps.Marker({
-                 map: map,
-                 position: latlng,
-                 title: 'geocode request address'
-                 });*/
-                //map.setZoom(16);
             }
 
-        </script>
-
-        <script>
-            var N_ANNUNCI_X_PAGE = 2;
-            var n_page = 0;
-            var n_annunci = 0;
-            var annunci = new Array();
-            var page_annunci = [];
-            var actual = 0;
-
-            function loadAnnunci() {
+            function load_Annunci() {
                 $.post("ServletController",
                         {action: "Ricerca-getAnnunciFiltro"},
                 function (responseJson) {
                     annunci = [];
                     n_page = 0;
                     n_annunci = 0;
-                    
+
                     $("#list-result").empty();
+
                     $.each(responseJson, function (index, annuncio) {
                         n_annunci += 1;
                         annunci[index] = annuncio;
                         console.log(addMarkerToJSON(annuncio, index));
                     });
-                    //alert(n_annunci);
-                    //alert(annunci.length);
+                    
+                    actual=0;
                     n_page = n_annunci / N_ANNUNCI_X_PAGE;
+                    
                     console.log(create_pageResult());
                     console.log(add_button());
                     console.log(selectpage(1));
+                    
                 });
             }
             function create_pageResult() {
-                page_annunci=[];
+                page_annunci = [];
                 var result_div = '<div class = "search-result" >';
                 var close_div = '</div>';
                 var no_res = '<p > Nessun Risultato!! </p>';
                 var page_html = '';
-                if(n_page==0){
+                if (n_page == 0) {
                     $("#list-result").append(no_res);
                 }
                 for (page = 0; page < n_page; page++) {
@@ -298,7 +279,7 @@
                 $("#button-div").append("<div class=\"btn-group\" id=\"group-button-page\">");
                 $("#group-button-page").append("<button class=\"btn btn-white\"onClick=prevpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button>");
                 for (i = 0; i < n_page; i++) {
-                    //var node = document.createElement("div");
+                    
                     var html = '<button class=\"btn btn-white\" onClick=selectpage(this.id) id=\"' + (i + 1) + '\"> ' + (i + 1) + '</button>';
                     $("#group-button-page").append(html);
                 }
@@ -308,15 +289,12 @@
             }
 
             function selectpage(page) {
-                //alert(page);
                 if (actual === 0) {
                     $("#button-div").before(page_annunci[page - 1]);
                     $("#" + page).addClass("disabled");
                     actual = page;
                 } else if (actual !== (+page)) {
                     $("#" + (actual) + "_RESULT").remove();
-                    //var div_name_hide = "#" + actual + "_RESULT";
-                    //var div_name_show = "#" + page + "_RESULT";
                     $("#button-div").before(page_annunci[page - 1]);
                     $("#" + actual).removeClass("disabled");
                     $("#" + page).addClass("disabled");
@@ -325,15 +303,15 @@
             }
 
             function prevpage() {
-                //alert(actual);
-                if (actual !== 1) {
+                
+                if (actual > 1) {
                     var page = actual - 1;
                     selectpage(page);
                 }
             }
             function nextpage() {
-                //alert(actual);
-                if (actual !== n_page) {
+                
+                if (actual < n_page) {
                     var page = actual + 1;
                     selectpage(page);
                 }
@@ -371,9 +349,8 @@
                 var label = "Annuncio " + (index + 1);
                 window.addMarker(new google.maps.LatLng(lat, lng), label, contentString);
             }
-        </script>
-        <script>
-            function init_filtro_quartieri() {
+
+            function init_filtro() {
                 $.post("ServletController",
                         {action: "Ricerca-getQuartieri"},
                 function (responseJson) {
@@ -385,6 +362,9 @@
                     $('#quartieri').searchableOptionList({
                         maxHeight: '250px'
                     });
+                    var filtro_S=$.Deferred();
+                    filtro_S.done(init_filtro_tipoStanze);
+                    filtro_S.resolve();
                 });
 
             }
@@ -399,7 +379,7 @@
                     });
                 });
             }
-        </script>
+        </script>-->
         <script>
             $("select").change(function () {
                 if ($("#tipo").val() === "Appartamento") {
@@ -426,11 +406,10 @@
                 }
 
             });
-        </script>
-        <script>
-            $("#searchForm").on("submit",function(){
-              alert("in");
-                
+            
+            $("#searchForm").on("submit", function () {
+                //alert("in");
+
                 if ($("#pricefrom").val() === '') {
                     $("#pricefrom").val("0");
                     //alert("prezzo 0");
@@ -452,57 +431,12 @@
                         $("#metratura").val("0");
                         //alert("prezzo 0");
                     }
-                }  
+                }
             });
-            $(document).ready(function() {
-                $('#searchForm').ajaxForm(function() {
-                
-                var init = $.Deferred();
-                init.done(init_map);
-                var load = $.Deferred();
-                load.done(loadAnnunci);
-                var select = $.Deferred();
-                select.done(select);
-                $.when(init).then(function(){
-                    load.resolve().then(function(){
-                        select.resolve(1);
-                    });  
+            $(document).ready(function () {
+                $('#searchForm').ajaxForm(function () {
+                    console.log(annunci_search());
                 });
-                init.resolve();
-                
-        
-                
-                
-                    /*alert($("#searchForm").serialize());
-                    $.ajax({type: "POST",
-                        url: $("#searchForm").attr("action"), //"ServletController",
-                        data: $("#searchForm").serialize(),
-                        /*{action: "search",
-                         quartieri:$('#quartieri').val(),
-                         tipo: $("#tipo").val(),
-                         pricefrom: $("#pricefrom").val(),
-                         compCondomino: $("#compCondomino").val(),
-                         compRiscaldamento: $("#compRiscaldamento").val(),
-                         numeroLocali: $("#numeroLocali").val(),
-                         numeroBagni: $("#numeroBagni").val(),
-                         numeroCamere: $("#numeroCamere").val(),
-                         metratura: $("#metratura").val(),
-                         tipoStanza: $("#tipoStanza").val()
-                         },
-                                success: function (responseJson) {
-                                    $.each(responseJson, function (index, item) {
-                                        if (item == true) {
-                                            console.log(init_map());
-                                            console.log(loadAnnunci());
-                                        } else {
-                                            alert("Errore!! filtro di ricerca non aggiornato chiedere al Admin!!");
-                                        }
-                                    });
-                                }
-                    });*/
-                
-                
-            });
             });
 
         </script>
