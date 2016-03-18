@@ -53,7 +53,7 @@
 
     </div>
          
-                  <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                  <button class="btn btn-primary nextBtn btn-lg pull-right" id="NxtS" type="button" >Next</button>
      </div>
 
 </div>
