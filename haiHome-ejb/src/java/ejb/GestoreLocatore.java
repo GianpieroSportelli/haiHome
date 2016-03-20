@@ -30,14 +30,17 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
     
     
     @Override
-    public boolean aggiungiLocatore(String email, String nome, String cognome, 
-    String foto, String password, String descrizione) {
+    public boolean aggiungiLocatore(String email, String nome, String cognome,
+        String foto, String password, String descrizione) {
         Locatore loc = new Locatore(); 
         //inizializza l'oggetto
         loc.setEmail(email);
         loc.setPassword(password);      
         loc.setNome(nome);
         loc.setCognome(cognome);
+ //       loc.setTelefono(telefono);
+ //       loc.setFotoProfilo("random"); //foto di default??
+ //       loc.setDescrizione(""); 
         loc.setFotoProfilo(foto);
         loc.setDescrizione(descrizione);
         //rende persistente l'oggetto

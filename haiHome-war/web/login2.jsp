@@ -41,17 +41,17 @@
                 </span>
             </div> 
             <div class="logmod__form">
-                <form id="studente-login" accept-charset="utf-8" action="#" class="simform">
+                <form id="studente-login" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
                     <div class="sminputs">
                         <div class="input full">
                             <label class="string optional" for="user-name">Email*</label>
-                            <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
+                            <input class="string optional" maxlength="255" name="user-email" placeholder="Email" type="email" size="50" />
                         </div>
                     </div>
                     <div class="sminputs">
                         <div class="input full">
                             <label class="string optional" for="user-pw">Password *</label>
-                            <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />
+                            <input class="string optional" maxlength="255" name="user-pw" placeholder="Password" type="password" size="50" />
                             <span class="hide-password">Show</span>
                         </div>
                     </div>
@@ -145,18 +145,18 @@
                 </span>
             </div> 
             <div class="logmod__form">
-                <form id="locatore-login" accept-charset="utf-8" action="#" class="simform">
+                <form id="locatore-login" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
                     <input type="hidden" name="action" value="login-locatore" />
                     <div class="sminputs">
                         <div class="input full">
-                            <label class="string optional" for="user-name">Email*</label>
-                            <input class="string optional" maxlength="255" id="user-email" placeholder="Email" type="email" size="50" />
+                            <label class="string optional" for="user-email">Email*</label>
+                            <input class="string optional" maxlength="255" name="user-email" placeholder="Email" type="email" size="50" />
                         </div>
                     </div>
                     <div class="sminputs">
                         <div class="input full">
                             <label class="string optional" for="user-pw">Password *</label>
-                            <input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />
+                            <input class="string optional" maxlength="255" name="user-pw" placeholder="Password" type="password" size="50" />
                             <span class="hide-password">Show</span>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                 </span>
             </div>
             <div class="logmod__form">
-                <form id="locatore-reg" accept-charset="utf-8" action="#" class="simform">
+                <form id="locatore-reg" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
                     <input type="hidden" name="action" value="signup-locatore" />
                     <div class="sminputs">
                         <div class="input string optional">
