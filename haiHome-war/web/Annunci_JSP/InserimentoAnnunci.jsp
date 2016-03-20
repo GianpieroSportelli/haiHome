@@ -26,10 +26,6 @@
     </head>
     <body>
 
-
-
-
-
         <div class="container">
 
             <!-- Step superiori -->
@@ -68,26 +64,16 @@
 
                 <div class="row setup-content" id="step-3">
                     
-                    <%@include file="prova.jsp" %>
-                    
-
+                   
                     <%@include file="InserimentoStanze.jsp" %>
                                     
                                     
                 </div>
-
-                
-
-                
-                
-                
+   
                 <div class="row setup-content" id="step-4">
-                    <div class="col-xs-6 col-md-offset-3">
-                        <div class="col-md-12">
-                            <h3> Step 4</h3>
-                            <button class="btn btn-success btn-lg pull-right" type="submit">Submit</button>
-                        </div>
-                    </div>
+                    
+                   <%@include file="InserimentoCosti.jsp" %>
+                    
                 </div>
 
             </form>
@@ -121,6 +107,7 @@
                     }
                 });
 
+
                 allNextBtn.click(function () {
                     var curStep = $(this).closest(".setup-content"),
                             curStepBtn = curStep.attr("id"),
@@ -138,6 +125,7 @@
 
                     if (isValid)
                         nextStepWizard.removeAttr('disabled').trigger('click');
+                        
                 });
 
                 jQuery('div.setup-panel div a.btn-primary').trigger('click');

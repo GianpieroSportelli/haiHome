@@ -5,6 +5,7 @@
  */
 package web;
 
+import com.google.gson.Gson;
 import ejb.GestoreRicercaLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  *
@@ -41,23 +43,22 @@ public class ServletRicerca extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             RequestDispatcher rd = null;
             String action = request.getParameter("action");
-            //out.println(action);
+            System.out.println(action);
             if (action.equalsIgnoreCase("setCity")) {
                 String city = request.getParameter("city");
                 gestoreRicerca.selezionaCittà(city);
                 //invia quartieri
                 System.out.println("Filtro Creato:");
                 System.out.println(gestoreRicerca.attualeToJSON());
-                ArrayList<String> quartieri = gestoreRicerca.getQuartieriCittà();
-                /*for (String q : quartieri) {
-                    System.out.println(q);
-                }*/
-                ArrayList<String> tipoStanza=gestoreRicerca.getTipoStanza();
-                request.setAttribute("quartieri", quartieri);
-                request.setAttribute("tipoStanza", tipoStanza);
-                request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
-                request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
-                getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);
+                /*PROVA AJAX
+                 ArrayList<String> quartieri = gestoreRicerca.getQuartieriCittà();
+                 ArrayList<String> tipoStanza=gestoreRicerca.getTipoStanza();
+                 request.setAttribute("quartieri", quartieri);
+                 request.setAttribute("tipoStanza", tipoStanza);
+                 request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
+                 request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
+                 */
+                getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("search")) {
                 String[] quartieri = request.getParameterValues("quartieri");
@@ -69,7 +70,7 @@ public class ServletRicerca extends HttpServlet {
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();
                 if (quartieri == null) {
-                    quartieriSel=quartieriCittà;
+                    quartieriSel = quartieriCittà;
                 } else {
                     for (String selection : quartieri) {
                         //System.out.println(selection);
@@ -80,38 +81,75 @@ public class ServletRicerca extends HttpServlet {
                                 break;
                             }
                         }
-                            if (find) {
-                                quartieriSel.add(selection);
-                            }
+                        if (find) {
+                            quartieriSel.add(selection);
                         }
                     }
+                }
+
                 
-                System.out.println(" Filtro Aggiornato");
-                gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino != null, compRiscaldamento != null);
+                boolean result;
+                result=gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino != null, compRiscaldamento != null);
                 System.out.println(gestoreRicerca.attualeToJSON());
                 if (tipo.equalsIgnoreCase("Appartamento")) {
                     String nL = request.getParameter("numeroLocali");
                     String nB = request.getParameter("numeroBagni");
                     String nC = request.getParameter("numeroCamere");
                     String met = request.getParameter("metratura");
-                    gestoreRicerca.aggiornaAFiltroAppartamento(Integer.valueOf(nL), Integer.valueOf(nB), Integer.valueOf(nC), Double.valueOf(met));
+                    result=gestoreRicerca.aggiornaAFiltroAppartamento(Integer.valueOf(nL), Integer.valueOf(nB), Integer.valueOf(nC), Double.valueOf(met));
                     System.out.println(gestoreRicerca.attualeToJSON());
                 } else if (tipo.equalsIgnoreCase("Stanza")) {
                     String tS = request.getParameter("tipoStanza");
-                    gestoreRicerca.aggiornaAFiltroStanza(tS);
+                    result=gestoreRicerca.aggiornaAFiltroStanza(tS);
                     System.out.println(gestoreRicerca.attualeToJSON());
                 }
-                ArrayList<String> quartieri_all = gestoreRicerca.getQuartieriCittà();
+                //ArrayList<String> quartieri_all = gestoreRicerca.getQuartieriCittà();
                 /*for (String q : quartieri) {
-                    System.out.println(q);
-                }*/
-                ArrayList<String> tipoStanza=gestoreRicerca.getTipoStanza();
-                request.setAttribute("quartieri", quartieri_all);
+                 System.out.println(q);
+                 }*/
+                //ArrayList<String> tipoStanza = gestoreRicerca.getTipoStanza();
+                
+                /*request.setAttribute("quartieri", quartieri_all);
                 request.setAttribute("tipoStanza", tipoStanza);
                 request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
                 request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
-                getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);
-            } else {
+                getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);*/
+                response.setContentType("application/json");
+                System.out.println(" Filtro Aggiornato: "+result);
+                String json = new Gson().toJson(""+result);
+                System.out.println(json);
+                out.write(json);
+            } else if (action.equalsIgnoreCase("AjaxGetInfo")) {
+                System.out.println("I'm in!!");
+                response.setContentType("application/json");
+                String json = new Gson().toJson(gestoreRicerca.geocodeCurrentCity());
+                System.out.println(json);
+                out.write(json);
+            }else if (action.equalsIgnoreCase("Ricerca-geoCity")) {
+                //System.out.println("I'm in!!");
+                response.setContentType("application/json");
+                String json = new Gson().toJson(gestoreRicerca.geocodeCurrentCity());
+                //System.out.println(json);
+                out.write(json);
+            } else if (action.equalsIgnoreCase("Ricerca-getAnnunciFiltro")) {
+                //System.out.println("I'm in!!");
+                response.setContentType("application/json");
+                String json =gestoreRicerca.usaFiltroAttuale().toString(); //new Gson().toJson(gestoreRicerca.usaFiltroAttuale());
+                System.out.println(json);
+                out.write(json);
+            } else if (action.equalsIgnoreCase("Ricerca-getQuartieri")) {
+                //System.out.println("I'm in!!");
+                response.setContentType("application/json");
+                String json =new Gson().toJson(gestoreRicerca.getQuartieriCittà());
+                System.out.println(json);
+                out.write(json);
+            }else if (action.equalsIgnoreCase("Ricerca-getTipoStanza")) {
+                //System.out.println("I'm in!!");
+                response.setContentType("application/json");
+                String json =new Gson().toJson(gestoreRicerca.getTipoStanza());
+                System.out.println(json);
+                out.write(json);
+            }else {
                 out.println("<p> Che vuoi?? </p>");
             }
 
