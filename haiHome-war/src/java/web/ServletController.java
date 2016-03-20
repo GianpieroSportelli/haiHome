@@ -47,8 +47,8 @@ public class ServletController extends HttpServlet {
             if (action.equalsIgnoreCase("signup-studente")) {
                 out.println("registrazione studente!!!");
             }
-            else if (action.equalsIgnoreCase("signup-locatore")) {
-                out.println("registrazione locatore!!!");
+            else if (action.equalsIgnoreCase("signup-locatore") || action.equalsIgnoreCase("login-locatore")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response); 
             }
             else if (action.equalsIgnoreCase("loginFacebook")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);

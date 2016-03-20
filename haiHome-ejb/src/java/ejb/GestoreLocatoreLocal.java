@@ -18,7 +18,7 @@ import org.json.JSONObject;
 @Local
 public interface GestoreLocatoreLocal {
     /* */
-    public boolean aggiungiLocatore(String email, String nome, String cognome, 
+    public boolean aggiungiLocatore(String email, String nome, String cognome,
         String foto, String password, String descrizione);
     public List<String> getLocatori(); 
     public boolean checkLocatore(String email);
