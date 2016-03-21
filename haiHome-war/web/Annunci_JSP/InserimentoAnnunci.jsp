@@ -154,7 +154,9 @@
 
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/stanzeUtily.js"></script>
 
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone.js"></script> 
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone.js"></script>
+        
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
 
 
     </body>

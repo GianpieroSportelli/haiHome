@@ -19,7 +19,7 @@ ToDO:
         <div class="form-group">
             <label class="control-label">Citta</label>
 
-            <select class="form-control" id="sel1">
+            <select class="form-control citta" id="sel1">
                 <option>Torino</option>
             </select>
 
@@ -39,7 +39,7 @@ ToDO:
 
         </div>
 
-        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" onclick="prova()" >Next</button>
     </div>
 </div>
 
