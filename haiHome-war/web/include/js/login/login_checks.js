@@ -9,19 +9,18 @@ jQuery(document).ready(function ($) {
             form_locatore_login = $('#locatore-login'),
             form_locatore_reg = $('#locatore-reg');
 
-    var input_name = 'input[name="user-name"]',
-        input_surname = 'input[name="user-surname"]',
-        input_email = 'input[name="user-email"]',
-        input_pwd = 'input[name="user-pw"]',
-        input_pwd2 = 'input[name="user-pw-repeat"]',
-        input_phone = 'input[name="user-phone"]';
+    var iname = 'input[name="user-name"]',
+        isurname = 'input[name="user-surname"]',
+        iemail = 'input[name="user-email"]',
+        ipwd = 'input[name="user-pw"]',
+        ipwd2 = 'input[name="user-pw-repeat"]',
+        iphone = 'input[name="user-phone"]'; //random
 
-    var email_pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        phone_pattern = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
-            /*
-             * Password expresion that requires one lower case letter, 
+    var email_regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        phone_regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
+            /* Password expression that requires one lower case letter, 
              * one upper case letter, one digit, 6-13 length, and no spaces. */
-        password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
+        password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
 
     validate_reg_studente.on('click', function () {
         console.log('click reg studente');
@@ -34,7 +33,7 @@ jQuery(document).ready(function ($) {
          
          var check_name = name.val().trim() !== "", 
          check_surname = surname.val().trim() !== "", 
-         check_email = email_pattern.test(email.val().trim()),
+         check_email = email_regex.test(email.val().trim()),
          check_pwd = pwd.val().trim() !== "" && pwd.val().trim() === pwd2.val().trim(); 
          
          if (check_name && check_surname && check_email && check_pwd) {
@@ -54,30 +53,32 @@ jQuery(document).ready(function ($) {
          } */
     });
 
-    validate_reg_locatore.on('click', function () {
+    validate_reg_locatore.on('click', function() {
         console.log('click reg locatore');
 
         // controlli input client side - inutili se non per la presentazione
-        var name_check = $("#locatore-reg").find(input_name).val().trim() !== "";
-        var surname_check = $("#locatore-reg").find(input_surname).val().trim()  !== "";
-        var email_check = email_pattern.test($("#locatore-reg").find(input_email).val().trim());
-        var phone_check = phone_pattern.test($("#locatore-reg").find(input_phone).val().trim());
-        var pw_check = password_pattern.test($("#locatore-reg").find(input_pwd).val()); 
-        var pw2_check = $("#locatore-reg").find(input_pwd).val() === $("#locatore-reg").find(input_pwd2).val(); 
+        var name_check = $("#locatore-reg").find(iname).val().trim() !== "";
+        var surname_check = $("#locatore-reg").find(isurname).val().trim()  !== "";
+        var email_check = email_regex.test($("#locatore-reg").find(iemail).val().trim());
+        var phone_check = phone_regex.test($("#locatore-reg").find(iphone).val().trim());
+        var pw_check = password_regex.test($("#locatore-reg").find(ipwd).val()); 
+        var pw2_check = $("#locatore-reg").find(ipwd).val() === $("#locatore-reg").find(ipwd2).val(); 
         
         if (name_check && surname_check && email_check && phone_check && pw_check && pw2_check) {
             console.log("ok"); 
             
             $.post($("#locatore-reg").attr("action"), //servlet
                    $("#locatore-reg").serialize(), //data
-                   function(response) {
-                       console.log(response); 
+                   function(responseJson) {
+                       $.each(responseJson, function (index, item) {
+                           console.log("" + index + "-" + item);
+                       });
                    });
             
         }
         else {
             var message = "NO: "; 
-            if (!name_check) message += "name "; 
+            if (!name_check)  message += "name ";
             if (!surname_check) message += "surname "; 
             if (!email_check) message += "email "; 
             if (!phone_check) message += "phone "; 
@@ -99,14 +100,6 @@ jQuery(document).ready(function ($) {
         $.post($form.attr("action"), $form.serialize(), function (response) {
             alert(response);
         });
-
-
-        /*
-         $.post("ServletController", 
-         
-         function(responseJson) {
-         alert(responseJson); 
-         });  */
     });
 
 

@@ -5,6 +5,7 @@
  */
 package web;
 
+import com.google.gson.JsonObject;
 import ejb.GestoreLocatoreLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -36,38 +39,50 @@ public class ServletLocatore extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {            
             String action = request.getParameter("action"); 
-            
-            
+                        
             if (action.equalsIgnoreCase("signup-locatore")) {
                 /* registrazione */ 
-                String name = request.getParameter("user-name"), 
-                       surname = request.getParameter("user-surname"), 
-                       email = request.getParameter("user-email"), 
-                       phone = request.getParameter("user-phone"), 
+                String name = request.getParameter("user-name").trim(), 
+                       surname = request.getParameter("user-surname").trim(), 
+                       email = request.getParameter("user-email").trim(), 
+                       phone = request.getParameter("user-phone").trim(), 
                        pwd = request.getParameter("user-pw"), 
                        pwd2 = request.getParameter("user-pw-repeat"), 
-                       message; 
+                       result, message; 
+               
+                
                
                 /* controllo correttezza email, telefono, password */ 
                 if (pwd.equals(pwd2)) {
                     if (!gestoreLocatore.checkLocatore(email)) {
-                        gestoreLocatore.aggiungiLocatore(email, name, surname, "foto", pwd, "descrizione");
+                
+                        gestoreLocatore.aggiungiLocatore(email, pwd, name, surname, phone);
+                        result = "ok";
                         message = "registrazione avvenuta"; 
                     }
                     else {
+                        result = "error";
                         message = "registrazione non avvenuta-email non valida";
                     }
                 }
                 else {
+                    result = "error"; 
                     message = "boh-password diverse";
                 }
                 
-                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+                JSONObject json = new JSONObject();
+                
+                try {
+                    json.accumulate("result", result); 
+                    json.accumulate("message", message);
+                } catch (JSONException ex) {       ;       }
+                
+                response.setContentType("text/json");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                response.getWriter().write(message);
+                response.getWriter().write(json.toString());
             }
             else if (action.equalsIgnoreCase("login-locatore")) {
-                String email = request.getParameter("user-email"), message; 
+                String email = request.getParameter("user-email").trim(), message; 
                 // controlli sull'input ??
                 if (gestoreLocatore.checkLocatore(email)) {
                     if (gestoreLocatore.getLocatore().getPassword().equals(request.getParameter("user-pw"))) {
