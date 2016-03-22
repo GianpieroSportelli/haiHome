@@ -163,11 +163,29 @@
                 <div class="col-xs-9">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
-                        <div class="tab-pane active" id="home">Informazioni utente qui. Ad esempio: Ciao sono un utente random. Oppure: Ciao, sono l'utente numero 
-                            Random.NextRandom().new().JavaFaSchifoTroppoVerboso.dettoDaTutti.
-                            AtuttiPiaceScrivereUnaRigaDiCodiceEnonCapireComeFunzionaMaSeFunzionaAlloraOk
-                        
-                        Comunque vi dico che per fare sta roba sono arrivato fino alla pagina 4 di google, per dire eh</div>
+                        <div class="tab-pane active" id="home">
+                            <table class="table table-user-information">
+                                <tbody>
+                                    <tr>
+                                        <td>Nome: </td>
+                                        <td><%= datiUtente.getString("Nome")%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cognome:</td>
+                                        <td><%= datiUtente.getString("Cognome")%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email: </td>
+                                        <td><%= datiUtente.getString("Email")%></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> </td>
+                                        <td> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="tab-pane" id="annunci">Annunci preferiti qui</div>
                         <div class="tab-pane" id="filtri">Filtri utente qui</div>
                     </div>
