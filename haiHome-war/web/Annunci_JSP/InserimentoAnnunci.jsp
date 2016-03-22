@@ -51,7 +51,7 @@
             </div> <!-- fine step superiori-->
 
             <!-- inizio pagine step -->
-            <form role="form" action="" method="post">
+            <form role="form" action="" method="post" >
 
                 <div class="row setup-content" id="step-1">
 
@@ -154,7 +154,9 @@
 
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/stanzeUtily.js"></script>
 
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone.js"></script> 
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone.js"></script>
+        
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
 
 
     </body>

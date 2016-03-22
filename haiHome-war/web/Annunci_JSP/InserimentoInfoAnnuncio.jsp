@@ -15,11 +15,11 @@ ToDo:
         <h3>Info Appartamento</h3>
         <div class="form-group">
             <label class="control-label">Descrizione</label>
-            <textarea required="required" class="form-control" placeholder="Enter your address" ></textarea>
+            <textarea id='textDescrizione' name='Descrizione' required="required" class="form-control" ></textarea>
         </div>
         <div class="form-group">
             <label class="control-label">Metratura</label>
-            <input maxlength="200" type="text" required="required" class="form-control" placeholder="Enter Company Address"  />
+            <input id='inpMetratura' name='Metratura' maxlength="200" type="text" class="form-control" />
         </div>
         <div class="form-group">
             <label class="control-label">Data inizio Affitto</label>
