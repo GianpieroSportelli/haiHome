@@ -19,14 +19,14 @@ ToDO:
         <div class="form-group">
             <label class="control-label">Citta</label>
 
-            <select class="form-control citta" id="sel1">
+            <select class="form-control citta" name='Città' id="selCitta">
                 <option>Torino</option>
             </select>
 
         </div>
         <div class="form-group">
             <label class="control-label">Quartiere</label>
-            <select class="form-control" id="sel1">
+            <select class="form-control" id="selQuartiere" name='Quartiere'>
                 <option>Aurora</option>
                 <option>Altri Quartieri</option>                       
             </select>
@@ -34,12 +34,12 @@ ToDO:
         <div class="form-group">
 
             <label class="control-label">Indirizzo</label>
-            <input maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo" /><br />
-            <input maxlength="100" type="text" required="required" class="form-control" placeholder="Civico" />
+            <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo" /><br />
+            <input id='inpCivico'maxlength="100" type="text" required="required" class="form-control" placeholder="Civico" />
 
         </div>
 
-        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" onclick="prova()" >Next</button>
+        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" <!--onclick="prova()" --> >Next</button>
     </div>
 </div>
 
