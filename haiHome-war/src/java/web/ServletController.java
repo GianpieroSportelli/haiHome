@@ -50,8 +50,12 @@ public class ServletController extends HttpServlet {
             else if (action.equalsIgnoreCase("signup-locatore") || action.equalsIgnoreCase("login-locatore")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response); 
             }
-            else if (action.equalsIgnoreCase("loginFacebook")) {
+            else if (action.equalsIgnoreCase("loginFacebookStudente")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
+                
+            } else if (action.equalsIgnoreCase("loginFacebookLocatore")) {
+                //request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+                out.println("Sono in LOCATORE! FUNZIONA!");
                 
             } else if (action.equalsIgnoreCase("setCity")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
@@ -72,7 +76,6 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook")) {
-                System.out.println("IN LOGOUT");
                 HttpSession session = request.getSession();
                 session.setAttribute("Loggato", false);
                 getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);

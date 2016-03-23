@@ -17,7 +17,7 @@
         <div id="cd-login-studente"> 
             <div class="logmod__alter">
                 <div class="logmod__alter-container">
-                    <a href="#" class="connect facebook">
+                    <a id="facebook_studente" href="#" onclick="LoginFB(this.id)" class="connect facebook">
                         <div class="connect__icon">
                             <i class="fa fa-facebook"></i>
                         </div>
@@ -121,12 +121,12 @@
             <!---------------------- -->
             <div class="logmod__alter">
                 <div class="logmod__alter-container">
-                    <a href="#" class="connect facebook">
+                    <a id="facebook_locatore" href="#" onclick="LoginFB(this.id)" class="connect facebook">
                         <div class="connect__icon">
                             <i class="fa fa-facebook"></i>
                         </div>
                         <div class="connect__context">
-                            <span>Accedi con <strong>Dio</strong></span>
+                            <span>Accedi con <strong>Facebook</strong></span>
                         </div>
                     </a>
                     <a href="#" class="connect googleplus">
@@ -238,6 +238,21 @@
 </div> <!-- cd-user-modal -->
 <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
 
+<!-- FACEBOOK -->
+<form id="formLogin" method="POST" action="ServletController">
+    <!-- Per far elaborare la richiesta dalla servlet -->
+    <input id="azione" type="hidden" name="action" value="loginFacebook">
+    <input type="hidden" id="userData" name="userData">
+    <input type="hidden" id="mailUser" name="mailUser">
+    <input type="hidden" id="profilo" name="profilo">
+</form>
+<!-- Per passare i parametri -->
+<div id="status"></div>
+<div id="userEmail"></div>
+<div id="userID"></div>
+
+<img id="profileImage">
+<!-- FACEBOOK -->
 
 <script src="include/js/login/main.js"></script> <!-- Gem jQuery -->
 <script src="include/js/login/login_checks.js"></script>
