@@ -35,7 +35,7 @@ public class ServletLocatore extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {            
             String action = request.getParameter("action"); 
@@ -48,57 +48,44 @@ public class ServletLocatore extends HttpServlet {
                        phone = request.getParameter("user-phone").trim(), 
                        pwd = request.getParameter("user-pw"), 
                        pwd2 = request.getParameter("user-pw-repeat"), 
-                       result, message; 
-               
-                
+                       op_result; 
                
                 /* controllo correttezza email, telefono, password */ 
                 if (pwd.equals(pwd2)) {
                     if (!gestoreLocatore.checkLocatore(email)) {
-                
                         gestoreLocatore.aggiungiLocatore(email, pwd, name, surname, phone);
-                        result = "ok";
-                        message = "registrazione avvenuta"; 
+                        op_result = "ok";
                     }
                     else {
-                        result = "error";
-                        message = "registrazione non avvenuta-email non valida";
+                        op_result = "email address <" + email + "> is already registered";
                     }
                 }
                 else {
-                    result = "error"; 
-                    message = "boh-password diverse";
+                    op_result = "password mismatch";
                 }
                 
-                JSONObject json = new JSONObject();
-                
-                try {
-                    json.accumulate("result", result); 
-                    json.accumulate("message", message);
-                } catch (JSONException ex) {       ;       }
-                
-                response.setContentType("text/json");  // Set content type of the response so that jQuery knows what it can expect.
+                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                response.getWriter().write(json.toString());
+                response.getWriter().write(op_result);
             }
             else if (action.equalsIgnoreCase("login-locatore")) {
-                String email = request.getParameter("user-email").trim(), message; 
+                String email = request.getParameter("user-email").trim(), op_result; 
                 // controlli sull'input ??
                 if (gestoreLocatore.checkLocatore(email)) {
                     if (gestoreLocatore.getLocatore().getPassword().equals(request.getParameter("user-pw"))) {
-                        message = "login riuscito"; 
+                        op_result = "OK"; 
                     }
                     else {
-                        message = "password incorretta"; 
+                        op_result = "password incorretta"; 
                     }
                 }
                 else {
-                    message = "email non riconosciuta"; 
+                    op_result = "email non riconosciuta"; 
                 }
                                
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                response.getWriter().write(message);
+                response.getWriter().write(op_result);
             }
         }
     }

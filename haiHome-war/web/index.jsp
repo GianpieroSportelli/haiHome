@@ -53,7 +53,9 @@
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
         
         <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
-        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
+        
+        <link rel="stylesheet" href="include/css/login/style2.css"> 
+        <!-- Gem style -->
         <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
         <!-- robe del login bello -->
         <link rel="stylesheet" href="include/css/login/normalize.css">
@@ -70,6 +72,7 @@
        
        <!-- < %@include file="/login.jsp" %> -->
        <%@include file="/login2.jsp" %> 
+       
         <%@include file="/header3Login.jsp" %>
         
         <%@include file="/formAutocomplete.jsp" %> 
