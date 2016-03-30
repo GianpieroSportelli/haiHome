@@ -1,50 +1,18 @@
 jQuery(document).ready(function ($) {
-    var formModal = $('.cd-user-modal'),
-            formModalTab = $('.cd-switcher'),
-            tabStudente = formModalTab.children('li').eq(0).children('a'),
-            tabLocatore = formModalTab.children('li').eq(1).children('a'),
-            
-            formLoginStudente = formModal.find('#cd-login-studente'),
-            formRegistrazioneStudente = formModal.find('#cd-registrazione-studente'),
-            
-            gotoRegistrazioneStudente = formLoginStudente.find('.cd-form-bottom-message a'),
-            backToLoginStudente = formRegistrazioneStudente.find('.cd-form-bottom-message a'),
-            
-            formLoginLocatore = formModal.find('#cd-login-locatore'),
-            formRegistrazioneLocatore = formModal.find('#cd-registrazione-locatore'),
-            
-            gotoRegistrazioneLocatore = formLoginLocatore.find('.cd-form-bottom-message2 a'),
-            backToLoginLocatore = formRegistrazioneLocatore.find('.cd-form-bottom-message2 a'),
-            
-            mainNav = $('.main-nav');
+    var myModal = $('#myModal');
 
-    //open modal
-    mainNav.on('click', function (event) {
-        $(event.target).is(mainNav) && mainNav.children('ul').toggleClass('is-visible');
+    //initialize popovers in the page 
+    $(function () {
+        $('[data-toggle="popover"]').popover()
     });
 
-    //open sign-up form
-    mainNav.on('click', '.cd-signup', login_studente_selected);
-    //open login-form form
-//    mainNav.on('click', '.cd-signin', login_studente_selected);
-
-    //close modal
-    formModal.on('click', function (event) {
-        if ($(event.target).is(formModal) || $(event.target).is('.cd-close-form')) {
-            formModal.removeClass('is-visible');
+    //close popovers when the user clicks 
+    // http://jsfiddle.net/guya/fjZja/
+    myModal.on('click', function (e) {
+        if (typeof $(e.target).data('original-title') == 'undefined' &&
+                !$(e.target).parents().is('.popover.in')) {
+            $('[data-original-title]').popover('hide');
         }
-    });
-    //close modal when clicking the esc keyboard button
-    $(document).keyup(function (event) {
-        if (event.which == '27') {
-            formModal.removeClass('is-visible');
-        }
-    });
-
-    //switch from a tab to another
-    formModalTab.on('click', function (event) {
-        event.preventDefault();
-        ($(event.target).is(tabStudente)) ? login_studente_selected() : login_locatore_selected();
     });
 
     //hide or show password
@@ -58,80 +26,42 @@ jQuery(document).ready(function ($) {
         passwordField.putCursorAtEnd();
     });
 
-    
-    //show form registrazione studente
-    gotoRegistrazioneStudente.on('click', function (event) {
-        event.preventDefault();
-        registrazione_studente_selected();
+    //close modal when clicking the ESC keyboard button
+    $(document).keyup(function (event) {
+        if (event.which == '27') {
+            myModal.modal('hide');
+        }
     });
 
-    //torna al login dal form registrazione studente
-    backToLoginStudente.on('click', function (event) {
-        event.preventDefault();
-        login_studente_selected();
-    });
+    //disable submit button until all fields have values
+    /* se si riesce a fare una funzione parametrizzata per tutti i form e' meglio, 
+     * così fa cagare...ma meglio di niente */
+    (function () {
+        $('#locatore-login input').keyup(function () {
+            var empty = false;
+            $('#locatore-login input').each(function () {
+                if ($(this).val().trim() == '') 
+                    empty = true;
+            });
+
+            empty ? $('#submit-login-loc').attr('disabled', 'disabled') :
+                    $('#submit-login-loc').removeAttr('disabled');
+        });
+    })();
     
-    gotoRegistrazioneLocatore.on('click', function (event) {
-        event.preventDefault();
-        registrazione_locatore_selected(); 
-    }); 
+    (function () {
+        $('#locatore-reg input').keyup(function () {
+            var empty = false;
+            $('#locatore-reg input').each(function () {
+                if ($(this).val().trim() == '') 
+                    empty = true;
+            });
+
+            empty ? $('#submit-reg-loc').attr('disabled', 'disabled') :
+                    $('#submit-reg-loc').removeAttr('disabled');
+        });
+    })();
     
-    backToLoginLocatore.on('click', function (event) {
-        event.preventDefault(); 
-        login_locatore_selected(); // questa è sbagliata
-    });
-
-    /* Tab studente */
-    function login_studente_selected() {
-        mainNav.children('ul').removeClass('is-visible');
-        formModal.addClass('is-visible');
-        formLoginStudente.addClass('is-selected');
-        formLoginLocatore.removeClass('is-selected');
-        
-        formRegistrazioneStudente.removeClass('is-selected');
-        formRegistrazioneLocatore.removeClass('is-selected');
-        
-        tabStudente.addClass('selected');
-        tabLocatore.removeClass('selected');
-    }
-
-    /* Tab Locatore */
-    function login_locatore_selected() {
-        mainNav.children('ul').removeClass('is-visible');
-        formModal.addClass('is-visible');
-        formLoginStudente.removeClass('is-selected');
-        formLoginLocatore.addClass('is-selected');
-        
-        formRegistrazioneStudente.removeClass('is-selected');
-        formRegistrazioneLocatore.removeClass('is-selected');
-        
-        tabStudente.removeClass('selected');
-        tabLocatore.addClass('selected');
-    }
-
-    /* Tab registrazione studente */
-    function registrazione_studente_selected() {
-        formLoginStudente.removeClass('is-selected');
-        formLoginLocatore.removeClass('is-selected');
-        formRegistrazioneStudente.addClass('is-selected');
-    }
-    
-    /* Tab registrazione locatore */ 
-    function registrazione_locatore_selected() {
-        formLoginStudente.removeClass('is-selected'); 
-        formLoginLocatore.removeClass('is-selected'); 
-        formRegistrazioneLocatore.addClass('is-selected'); 
-    } // funzionera'???
-
-    //REMOVE THIS - it's just to show error messages 
-    formLoginStudente.find('input[type="submit"]').on('click', function (event) {
-        event.preventDefault();
-        formLoginStudente.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-    });
-    formLoginLocatore.find('input[type="submit"]').on('click', function (event) {
-        event.preventDefault();
-        formLoginLocatore.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-    }); 
 
 
     //IE9 placeholder fallback
@@ -157,7 +87,6 @@ jQuery(document).ready(function ($) {
             })
         });
     }
-
 });
 
 

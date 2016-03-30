@@ -114,8 +114,9 @@ public class TestServlet extends HttpServlet {
             
 
             String email = "gianpiero.sportelli@libero.it";
-            //gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "Gianpiero", "Sportelli", "foto", "pass", "Locatore Random");
-            //gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
+         //   gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "Gianpiero", "Sportelli", "foto", "pass", "Locatore Random");
+            gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it","password","gianpiero","sportelli","3401234567"); 
+            gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
 
             /*ANNUNCIO 1 Via Cottolengo
              gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 1", 90, new Date(2016, 3, 1), 5, true);

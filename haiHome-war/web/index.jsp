@@ -31,6 +31,10 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap --> 
         <link rel="stylesheet" href="tutcss.css">
+        
+        <!-- Import script Facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Fine Import script Facebook -->
         <!--
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         
@@ -49,7 +53,9 @@
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
         
         <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
-        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
+        
+        <link rel="stylesheet" href="include/css/login/style2.css"> 
+        <!-- Gem style -->
         <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
         <!-- robe del login bello -->
         <link rel="stylesheet" href="include/css/login/normalize.css">
@@ -66,6 +72,7 @@
        
        <!-- < %@include file="/login.jsp" %> -->
        <%@include file="/login2.jsp" %> 
+       
         <%@include file="/header3Login.jsp" %>
         
         <%@include file="/formAutocomplete.jsp" %> 

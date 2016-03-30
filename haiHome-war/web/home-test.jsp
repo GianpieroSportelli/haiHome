@@ -28,6 +28,9 @@
         <!--Tema bootstrap -->
         <link href="tutcss.css" rel="stylesheet">
         
+        <!-- Import script Facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Fine Import script Facebook -->
         <style>
             body {
                 padding-top: 50px;

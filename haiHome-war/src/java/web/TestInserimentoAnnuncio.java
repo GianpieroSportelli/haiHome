@@ -49,8 +49,8 @@ public class TestInserimentoAnnuncio extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             
             
-            gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "gianpiero", "sportelli", "foto", "password","prova locatore");
-            
+//            gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "gianpiero", "sportelli", "foto", "password","prova locatore");
+     gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it","password","gianpiero","sportelli","3401234567");        
            
            
             //inizio inserimento annuncio

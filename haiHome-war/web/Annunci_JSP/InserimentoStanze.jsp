@@ -16,20 +16,20 @@
      <div class="col-md-12 "> 
     <div id="contenitoreStanze">
 
-        <div class="col-md-12 formContainer" id="stanza"> 
+        <div class="col-md-12 formContainer Stanza" id="stanza"> 
               
         <div class="form-group col-md-6">
             <div class="form-group">
                 <label class="control-label">Stanza</label>
-                <select class="form-control" id="sel1">
-                    <option>Stanza da Letto</option>
-                    <option>Stanza Accessoria</option>                       
+                <select id='selStanza' class="form-control" >
+                    <option value="1">Stanza da Letto</option>
+                    <option value="2">Stanza Accessoria</option>                       
                 </select>
             </div>
 
             <div class="form-group">
                 <label class="control-label">Tipo di Stanza</label>
-                <select class="form-control" id="sel1">
+                <select class="form-control" id="seltipoStanza">
                     <option>Camera da Letto</option>
                     <option>Camera Accessoria</option>                       
                 </select>
@@ -38,7 +38,7 @@
         <div class="form-group col-md-6">
             <div id="aggiungia " class="btn buttonElimina" onclick="eliminaStanza('stanza')">-</div><br />
             <label class="control-label">Metratura</label>
-            <input maxlength="100" type="text" required="required" class="form-control" placeholder="Metratura" /><br />
+            <input id="inpMetratura" maxlength="100" type="text" required="required" class="form-control" placeholder="Metratura" /><br />
         </div>
         <div class="form-group col-md-12" id="dropcontainer">
             <label class="control-label">Foto</label>
@@ -53,7 +53,7 @@
 
     </div>
          
-                  <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                  <button class="btn btn-primary nextBtn btn-lg pull-right" id="NxtS" type="button" >Next</button>
      </div>
 
 </div>
