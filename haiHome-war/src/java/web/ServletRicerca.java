@@ -7,16 +7,20 @@ package web;
 
 import com.google.gson.Gson;
 import ejb.GestoreRicercaLocal;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.ejb.EJB;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 /**
  *
@@ -87,20 +91,19 @@ public class ServletRicerca extends HttpServlet {
                     }
                 }
 
-                
                 boolean result;
-                result=gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino != null, compRiscaldamento != null);
+                result = gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino != null, compRiscaldamento != null);
                 System.out.println(gestoreRicerca.attualeToJSON());
                 if (tipo.equalsIgnoreCase("Appartamento")) {
                     String nL = request.getParameter("numeroLocali");
                     String nB = request.getParameter("numeroBagni");
                     String nC = request.getParameter("numeroCamere");
                     String met = request.getParameter("metratura");
-                    result=gestoreRicerca.aggiornaAFiltroAppartamento(Integer.valueOf(nL), Integer.valueOf(nB), Integer.valueOf(nC), Double.valueOf(met));
+                    result = gestoreRicerca.aggiornaAFiltroAppartamento(Integer.valueOf(nL), Integer.valueOf(nB), Integer.valueOf(nC), Double.valueOf(met));
                     System.out.println(gestoreRicerca.attualeToJSON());
                 } else if (tipo.equalsIgnoreCase("Stanza")) {
                     String tS = request.getParameter("tipoStanza");
-                    result=gestoreRicerca.aggiornaAFiltroStanza(tS);
+                    result = gestoreRicerca.aggiornaAFiltroStanza(tS);
                     System.out.println(gestoreRicerca.attualeToJSON());
                 }
                 //ArrayList<String> quartieri_all = gestoreRicerca.getQuartieriCittà();
@@ -108,15 +111,15 @@ public class ServletRicerca extends HttpServlet {
                  System.out.println(q);
                  }*/
                 //ArrayList<String> tipoStanza = gestoreRicerca.getTipoStanza();
-                
+
                 /*request.setAttribute("quartieri", quartieri_all);
-                request.setAttribute("tipoStanza", tipoStanza);
-                request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
-                request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
-                getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);*/
+                 request.setAttribute("tipoStanza", tipoStanza);
+                 request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
+                 request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
+                 getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);*/
                 response.setContentType("application/json");
-                System.out.println(" Filtro Aggiornato: "+result);
-                String json = new Gson().toJson(""+result);
+                System.out.println(" Filtro Aggiornato: " + result);
+                String json = new Gson().toJson("" + result);
                 System.out.println(json);
                 out.write(json);
             } else if (action.equalsIgnoreCase("AjaxGetInfo")) {
@@ -125,7 +128,7 @@ public class ServletRicerca extends HttpServlet {
                 String json = new Gson().toJson(gestoreRicerca.geocodeCurrentCity());
                 System.out.println(json);
                 out.write(json);
-            }else if (action.equalsIgnoreCase("Ricerca-geoCity")) {
+            } else if (action.equalsIgnoreCase("Ricerca-geoCity")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.geocodeCurrentCity());
@@ -134,22 +137,39 @@ public class ServletRicerca extends HttpServlet {
             } else if (action.equalsIgnoreCase("Ricerca-getAnnunciFiltro")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
-                String json =gestoreRicerca.usaFiltroAttuale().toString(); //new Gson().toJson(gestoreRicerca.usaFiltroAttuale());
+                String json = gestoreRicerca.usaFiltroAttuale().toString(); //new Gson().toJson(gestoreRicerca.usaFiltroAttuale());
                 System.out.println(json);
                 out.write(json);
             } else if (action.equalsIgnoreCase("Ricerca-getQuartieri")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
-                String json =new Gson().toJson(gestoreRicerca.getQuartieriCittà());
+                String json = new Gson().toJson(gestoreRicerca.getQuartieriCittà());
                 System.out.println(json);
                 out.write(json);
-            }else if (action.equalsIgnoreCase("Ricerca-getTipoStanza")) {
+            } else if (action.equalsIgnoreCase("Ricerca-getTipoStanza")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
-                String json =new Gson().toJson(gestoreRicerca.getTipoStanza());
+                String json = new Gson().toJson(gestoreRicerca.getTipoStanza());
                 System.out.println(json);
                 out.write(json);
-            }else {
+            } else if (action.equalsIgnoreCase("Ricerca-getImageAnnuncio")) {
+                response.setContentType("image/jpeg");
+                String[] paths = request.getParameterValues("srcImg");
+                if (paths == null) {
+                    System.out.println("NULLO!!");
+                } else {
+                    for (String path : paths) {
+                        System.out.println(path);
+                        String pathToWeb = getServletContext().getRealPath(File.separator);
+                        File f = new File(pathToWeb + path.substring(2));
+                        BufferedImage bi = ImageIO.read(f);
+                        //OutputStream out = response.getOutputStream();
+                        ImageIO.write(bi, "jpg", (ImageOutputStream) out);
+                    }
+                }
+
+                out.close();
+            } else {
                 out.println("<p> Che vuoi?? </p>");
             }
 
