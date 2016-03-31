@@ -22,8 +22,8 @@
             <div class="form-group" id="prezzoAppartamento" hidden>
             <label class="control-label">Prezzo Appartamento</label>
             <input maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo" /><br />
-            <input type="checkbox" name="vehicle" value="Bike">Compreso Condominio<br>
-            <input type="checkbox" name="vehicle" value="Car" checked>Compreso Riscaldamento<br>
+            <input type="checkbox" name="vehicle" value="True">Compreso Condominio<br>
+            <input type="checkbox" name="vehicle" value="True">Compreso Riscaldamento<br>
             
         </div>
         </div>
