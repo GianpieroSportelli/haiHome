@@ -5,19 +5,23 @@
  */
 package web;
 
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import javax.servlet.RequestDispatcher;
+
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @MultipartConfig
 /**
@@ -36,19 +40,23 @@ public class FotoUploadServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JSONException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            Enumeration<String> ListaParametri =request.getParameterNames();
-            
-            while(ListaParametri.hasMoreElements()){
-                String par = ListaParametri.nextElement();
-                System.out.println(par);
+            String objarray = request.getParameter("annuncio").toString();
+            JSONObject jObj = new JSONObject(request.getParameter("annuncio").toString()); // this parses the json
+            Iterator it = jObj.keys(); //gets all the keys
+
+            while (it.hasNext()) {
+                String key = (String) it.next(); // get key
+                Object o = jObj.get(key); // get value
+                System.out.println("Chiave: " + key + " Valore: " + o.toString());
+                
             }
-            
+
             /* TODO output your page here. You may use following sample code. */
-            /* CODICE PER PASSARE LE FOTO
+ /* CODICE PER PASSARE LE FOTO
         String action = request.getParameter("action");
             System.out.println(action);
                 Part filePart = request.getPart("file");
@@ -68,10 +76,7 @@ public class FotoUploadServlet extends HttpServlet {
                 prova.close();
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/Annunci_JSP/InserimentoStanze.jsp");
                 rd.forward(request, response);
-                */
-            
-            
-            
+             */
         }
     }
 
@@ -87,7 +92,11 @@ public class FotoUploadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JSONException ex) {
+            Logger.getLogger(FotoUploadServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -101,7 +110,11 @@ public class FotoUploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JSONException ex) {
+            Logger.getLogger(FotoUploadServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
