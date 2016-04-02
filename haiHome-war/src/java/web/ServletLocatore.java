@@ -22,6 +22,7 @@ import org.json.JSONObject;
  * @author gianp_000
  */
 public class ServletLocatore extends HttpServlet {
+
     @EJB
     private GestoreLocatoreLocal gestoreLocatore;
 
@@ -35,54 +36,51 @@ public class ServletLocatore extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {            
-            String action = request.getParameter("action"); 
-                        
+            throws ServletException, IOException {
+        //response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            String action = request.getParameter("action");
+
             if (action.equalsIgnoreCase("signup-locatore")) {
-                /* registrazione */ 
-                String name = request.getParameter("user-name").trim(), 
-                       surname = request.getParameter("user-surname").trim(), 
-                       email = request.getParameter("user-email").trim(), 
-                       phone = request.getParameter("user-phone").trim(), 
-                       pwd = request.getParameter("user-pw"), 
-                       pwd2 = request.getParameter("user-pw-repeat"), 
-                       op_result; 
-               
-                /* controllo correttezza email, telefono, password */ 
+                /* registrazione */
+                String name = request.getParameter("user-name").trim(),
+                        surname = request.getParameter("user-surname").trim(),
+                        email = request.getParameter("user-email").trim(),
+                        phone = request.getParameter("user-phone").trim(),
+                        pwd = request.getParameter("user-pw"),
+                        pwd2 = request.getParameter("user-pw-repeat"),
+                        op_result;
+
+                /* controllo correttezza email, telefono, password */
                 if (pwd.equals(pwd2)) {
                     if (!gestoreLocatore.checkLocatore(email)) {
                         gestoreLocatore.aggiungiLocatore(email, pwd, name, surname, phone);
-                        op_result = "ok";
-                    }
-                    else {
+                        op_result = "OK";
+                    } else {
                         op_result = "email address <" + email + "> is already registered";
                     }
-                }
-                else {
+                } else {
                     op_result = "password mismatch";
                 }
-                
+
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write(op_result);
-            }
-            else if (action.equalsIgnoreCase("login-locatore")) {
-                String email = request.getParameter("user-email").trim(), op_result; 
+                
+            } else if (action.equalsIgnoreCase("login-locatore")) {
+                String email = request.getParameter("user-email").trim(), 
+                        pwd = request.getParameter("user-pw"), op_result;
                 // controlli sull'input ??
                 if (gestoreLocatore.checkLocatore(email)) {
-                    if (gestoreLocatore.getLocatore().getPassword().equals(request.getParameter("user-pw"))) {
-                        op_result = "OK"; 
+                    if (gestoreLocatore.getLocatore().getPassword().equals(pwd)) {
+                        op_result = "OK";
+                    } else {
+                        op_result = "password incorretta";
                     }
-                    else {
-                        op_result = "password incorretta"; 
-                    }
+                } else {
+                    op_result = "email non riconosciuta";
                 }
-                else {
-                    op_result = "email non riconosciuta"; 
-                }
-                               
+
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write(op_result);

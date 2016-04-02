@@ -36,32 +36,27 @@ jQuery(document).ready(function ($) {
     //disable submit button until all fields have values
     /* se si riesce a fare una funzione parametrizzata per tutti i form e' meglio, 
      * così fa cagare...ma meglio di niente */
-    (function () {
-        $('#locatore-login input').keyup(function () {
-            var empty = false;
-            $('#locatore-login input').each(function () {
-                if ($(this).val().trim() == '') 
-                    empty = true;
-            });
-
-            empty ? $('#submit-login-loc').attr('disabled', 'disabled') :
-                    $('#submit-login-loc').removeAttr('disabled');
-        });
-    })();
+    /* var form : $('#idform input') - selettore sugli input contenuti nel form */
     
-    (function () {
-        $('#locatore-reg input').keyup(function () {
-            var empty = false;
-            $('#locatore-reg input').each(function () {
-                if ($(this).val().trim() == '') 
-                    empty = true;
-            });
-
-            empty ? $('#submit-reg-loc').attr('disabled', 'disabled') :
-                    $('#submit-reg-loc').removeAttr('disabled');
+    /*TODO: 
+     * definire check_filled_reg_form e check_filled_login_form
+     * utilizzando le regex per un controllo più accurato degli input - es. email, phone etc */
+    function check_filled_form (form, submit) {
+        form.keyup(function() {
+            var empty = false; 
+            form.each(function() {
+                if ($(this).val().trim() == '')
+                    empty = true; 
+            })
+            
+            empty ? submit.attr('disabled', 'disabled') : submit.removeAttr('disabled');
         });
-    })();
+    } //stammerda non funziona....poi vedo - edit: ora funziona :D 
     
+    check_filled_form($('#locatore-login input'), $('#submit-login-loc'));
+    check_filled_form($('#locatore-reg input'), $('#submit-reg-loc'));
+    check_filled_form($('#studente-login input'), $('#submit-login-stud'));
+    check_filled_form($('#studente-reg input'), $('#submit-reg-stud'));
 
 
     //IE9 placeholder fallback
