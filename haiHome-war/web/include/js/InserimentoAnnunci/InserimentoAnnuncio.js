@@ -4,22 +4,52 @@
  * and open the template in the editor.
  */
 
-var jsonAnn = [];
-var jsonStanze = [];
-var annuncioObject;
-
-function prova1(){
-    console.log("E si parte!!!");
-    var $form = $('#formAnnuncio');
+jQuery(document).ready(function ($) {
+   var $form = $('#formAnnuncio');
+   var $subButton = $('#submitButtom');
+   
+   $('#submitButtom').on('click', function () {
+       
+       
+        $('#formAnnuncio').ajaxForm(function () {
+                    console.log("Sia lodato");
+        });
+        
+       
+          /*    
+        console.log("E si parte!!!");
         $.post($form.attr("action"), $form.serialize(), function (response) {
+        */
+         
+         
+         
+            /*
         if (response === "SIAMO DENTRO") {
             // qualcosa...
             alert("Sono dentro");
         } else {
             alert("MERDA");
-        }
-    });
-}
+        }*/
+    //});
+   });
+    
+});
+
+
+
+
+
+
+
+
+
+
+
+
+var jsonAnn = [];
+var jsonStanze = [];
+var annuncioObject;
+
 
 function prova() {
 

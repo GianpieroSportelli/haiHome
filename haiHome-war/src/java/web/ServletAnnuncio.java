@@ -34,7 +34,31 @@ public class ServletAnnuncio extends HttpServlet {
              String action = request.getParameter("action");
               System.out.println("Azione richiesta: " + action);
              if (action.equalsIgnoreCase("Annunci-newAnnuncio")){
-                 //System.out.println("SIAMO DENTRO");
+                 
+                 System.out.println("SIAMO DENTRO");
+                 
+                 //prendo i dati
+                 System.out.println("Inizio A prendere i Dati dell'annuncio");
+                 //Info Annuncio
+                 String citta = request.getParameter("Città").trim();
+                 String quartiere = request.getParameter("Quartiere").trim();
+                 String indirizzo = request.getParameter("Indirizzo").trim();
+                 String civico = request.getParameter("Civico").trim();
+                 
+                 //Info Appartamento
+                 String descrizione = request.getParameter("Descrizione").trim();
+                 String metratura = request.getParameter("Metratura").trim();
+
+                 System.out.println("Appartamento");
+                 
+                 System.out.println("  " + citta);
+                 System.out.println("  " + quartiere);
+                 System.out.println("  " + indirizzo);
+                 System.out.println("  " + civico);
+                 System.out.println("  " + descrizione);
+                 System.out.println("  " + metratura);
+                 
+                 
                  
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?

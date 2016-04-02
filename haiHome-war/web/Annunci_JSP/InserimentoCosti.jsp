@@ -58,7 +58,7 @@
 
 
 
-        <button id="submitButtom" class="btn btn-success btn-lg pull-right" onclick="prova1()"  >Submit</button>
+        <button id="submitButtom" class="btn btn-success btn-lg pull-right">Submit</button>
     </div>
 </div>
 

@@ -16,6 +16,9 @@
 
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        
+
+        
 
         <link rel="stylesheet" href="../include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
         <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone.css">       
@@ -51,7 +54,7 @@
             </div> <!-- fine step superiori-->
 
             <!-- inizio pagine step -->
-            <form role="form" action="../ServletAnnuncio" method="post" id="formAnnuncio">
+            <form action="../ServletAnnuncio" method="post" id="formAnnuncio">
                 <input type="hidden" name="action" value="Annunci-newAnnuncio" />
                 <div class="row setup-content" id="step-1">
 
@@ -157,6 +160,10 @@
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone.js"></script>
         
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
+        
+                        <!--INIZIO - Form ajax plugin -->
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <!--FINE- Form ajax plugin -->
 
 
     </body>
