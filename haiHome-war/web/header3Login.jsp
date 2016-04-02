@@ -67,9 +67,13 @@
                         </ul>
                     </div>
                     <%    } else { %> 
+                    
+                    
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
                     <ul id="login-dp" class="dropdown-menu">
                         <li>
+                            inutile?!
+                            <!--
                             <div class="row">
                                 <div class="col-md-12">
                                     Login via
@@ -78,7 +82,7 @@
                                         <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i>Facebook</a>
                                         <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i>Google</a>
 
-                                        <%@include file="/googleplus.jsp" %> 
+                                        < % @include file="/googleplus.jsp" %>  
                                     </div>
 
                                     <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
@@ -99,9 +103,9 @@
                                         New here ? <a href="#"><b>Join Us</b></a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </li>
-                    </ul>    
+                    </ul>     
                     <% }%>
 
                 </li>

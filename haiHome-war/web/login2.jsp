@@ -2,8 +2,14 @@
     <nav class="main-nav">
         <ul>
             <li><a class="cd-signup" href="#myModal" data-toggle="modal">Accesso</a></li> 
-
+            <li>
+                <form id="form_logout" action="ServletController" method="POST">
+                    <input type="hidden" name="action" value="user-logout" >
+                    <a class="cd-signup" href="javascript:;" onclick="parentNode.submit();">Log out</a>
+                </form>
+            </li>
         </ul>
+
     </nav>
 </header>
 
@@ -49,9 +55,10 @@
                         </div> 
                         <div class="logmod__form">
                             <form id="studente-login" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
+                                <input type="hidden" name="action" value="login-studente" />
                                 <div class="sminputs">
                                     <div class="input full">
-                                        <label class="string optional" for="user-name">Email*</label>
+                                        <label class="string optional" for="user-email">Email*</label>
                                         <input class="string optional" maxlength="255" name="user-email" placeholder="Email" type="email" size="50" />
                                     </div>
                                 </div>
@@ -64,12 +71,12 @@
                                 </div>
                                 <div class="simform__actions"> <!--
                                     <input id="submit-login-stud" class="sumbit" name="commit" type="sumbit" value="Log In" /> -->
-                                    
+
                                     <a href="#0" id="submit-login-stud" class="btn btn-lg btn-success" role="button"
                                        data-toggle="popover" data-trigger="manual" data-content="" disabled="disabled"> 
                                         Log In 
                                     </a>
-                                    
+
                                     <span class="simform__actions-sidetext">
                                         <!--<a class="special" target="_blank" role="link">Password dimenticata?</a>-->
                                         <a href="#reg-stud" data-toggle="tab"> Non hai un account? </a>
@@ -122,12 +129,12 @@
                                 <div class="simform__actions">
                                     <!--
                                     <input id="submit-reg-stud" class="sumbit" name="commit" type="sumbit" value="Create Account" /> -->
-                                    
+
                                     <a href="#0" id="submit-reg-stud" class="btn btn-lg btn-success" role="button"
                                        data-toggle="popover" data-trigger="manual" data-content="" disabled="disabled"> 
                                         Crea Account
                                     </a>
-                                    
+
                                     <span class="simform__actions-sidetext">
                                         <!--By creating an account you agree to our <a class="special" target="_blank" role="link">Terms & Privacy</a>-->
                                         <a data-toggle="tab" href="#login-stud">Torna al login</a>

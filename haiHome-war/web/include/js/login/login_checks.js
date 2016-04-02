@@ -23,38 +23,42 @@ jQuery(document).ready(function ($) {
             password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
 
     $submit_reg_stud.on('click', function () {
+        if ($submit_reg_stud.attr("disabled") === "disabled")
+            return false;
+
         console.log('click reg studente');
-        /*
-         var name = form_studente_reg.find('input[name="user-name"]'),
-         surname = form_studente_reg.find('input[name="user-surname"]'),
-         email = form_studente_reg.find('input[name="user-email"]'),
-         pwd = form_studente_reg.find('input[name="user-pw"]'),
-         pwd2 = form_studente_reg.find('input[name="user-pw-repeat"]'); 
-         
-         var check_name = name.val().trim() !== "", 
-         check_surname = surname.val().trim() !== "", 
-         check_email = email_regex.test(email.val().trim()),
-         check_pwd = pwd.val().trim() !== "" && pwd.val().trim() === pwd2.val().trim(); 
-         
-         if (check_name && check_surname && check_email && check_pwd) {
-         console.log('submit');form_studente_reg.submit(); 
-         }
-         else {
-         if (!check_name) {
-         console.log('name');
-         
-         }
-         if (!check_surname) {
-         surname.focus();
-         console.log('surname');
-         }
-         if (!check_email) console.log('email');
-         if (!check_pwd) console.log('password'); 
-         } */
+        
+        $.post($form_studente_reg.attr("action"), //servlet
+                $form_studente_reg.serialize(), //data
+                function (response) {
+                    if (response === "OK") {
+                        $submit_reg_stud.attr('data-content', "registrazione avvenuta");
+                        $submit_reg_stud.popover('show');
+                    } else {
+                        $submit_reg_stud.attr('data-content', response);
+                        $submit_reg_stud.popover('show');
+                    }
+                });
+
     });
 
     $submit_login_stud.on('click', function () {
+        if ($submit_login_stud.attr("disabled") === "disabled")
+            return false;
         console.log('click su submit login studente'); //form_studente_login.submit(); 
+
+        $.post($form_studente_login.attr("action"), //servlet
+                $form_studente_login.serialize(), //data
+                function (response) {
+                    if (response === "OK") {
+                        window.location.replace('UserProfile.jsp');
+                    } else {
+                        $submit_login_stud.attr('data-content', response);
+                        $submit_login_stud.popover('show');
+                    }
+                });
+
+
     });
 
 
