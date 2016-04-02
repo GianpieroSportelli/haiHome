@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,6 +75,11 @@ public class ServletLocatore extends HttpServlet {
                 if (gestoreLocatore.checkLocatore(email)) {
                     if (gestoreLocatore.getLocatore().getPassword().equals(pwd)) {
                         op_result = "OK";
+                        
+                        /*
+                        HttpSession session; 
+                        session.setAttribute("user-type", "locatore");*/
+                        
                     } else {
                         op_result = "password incorretta";
                     }

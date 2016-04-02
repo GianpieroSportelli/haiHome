@@ -68,19 +68,16 @@ public class ServletStudente extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("login-studente")) {
                 String email = request.getParameter("user-email").trim(),
-                        pwd = request.getParameter("user-pw"), op_result;
+                        pwd = request.getParameter("user-pw"), 
+                        op_result = "OK"; // ottimismo mode on 
 
                 if (gestoreStudente.checkStudente(email)) {
                     if (gestoreStudente.getStudente().getPassword().equals(pwd)) {
-                        op_result = "OK";  //avviso avvenuto login
-
                         // creo una nuova sessione 
-                        
-                        JSONObject json = this.gestoreStudente.toJSON();
-                        
                         HttpSession session = request.getSession();
+                        
                         //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
-                        session.setAttribute("JSONList", json);
+                        session.setAttribute("JSONList", this.gestoreStudente.toJSON());
                         session.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
                         session.setAttribute("IsStudente", true);
                        // getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
