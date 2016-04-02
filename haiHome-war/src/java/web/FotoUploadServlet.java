@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -37,7 +39,16 @@ public class FotoUploadServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+            Enumeration<String> ListaParametri =request.getParameterNames();
+            
+            while(ListaParametri.hasMoreElements()){
+                String par = ListaParametri.nextElement();
+                System.out.println(par);
+            }
+            
             /* TODO output your page here. You may use following sample code. */
+            /* CODICE PER PASSARE LE FOTO
         String action = request.getParameter("action");
             System.out.println(action);
                 Part filePart = request.getPart("file");
@@ -57,7 +68,9 @@ public class FotoUploadServlet extends HttpServlet {
                 prova.close();
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/Annunci_JSP/InserimentoStanze.jsp");
                 rd.forward(request, response);
-                
+                */
+            
+            
             
         }
     }

@@ -57,6 +57,7 @@ function load_Annunci() {
             n_annunci += 1;
             annunci[index] = annuncio;
             console.log(addMarkerToJSON(annuncio, index));
+            console.log(load_annuncio_image(annuncio));
         });
 
         actual = 0;
@@ -203,5 +204,25 @@ function init_filtro_tipoStanze() {
         });
     });
 }
+function load_annuncio_image(annuncio) {
+    //var stanze = annuncio.Stanze;
+    $.each(annuncio.Stanze, function (index, stanze) {
+        $.each(stanze, function (index2, stanza) {
+            var paths = stanza.Foto;
+            alert(paths);
+            var action = "Ricerca-getImageAnnuncio";
+            $.ajax({
+                type: "POST",
+                url: "ServletRicerca",
+                data: 'action=' +action  +'&srcImg=' + encodeURIComponent(paths),
+                dataType: "json",
+                success: function (responseJson) {
 
+                    $.each(responseJson, function (index, item) {
 
+                    });
+                }
+            });
+        });
+    });
+}
