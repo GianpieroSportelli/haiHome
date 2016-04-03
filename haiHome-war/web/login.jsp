@@ -24,13 +24,7 @@
                     out.println("<li><a class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li> ");
                 }
             %>
-            <!--<li><a class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li>
-            <li>
-                <form id='form_logout' action='ServletController' method='POST'>
-                    <input type='hidden' name='action' value='user-logout' >
-                    <a class='cd-signup' href='javascript:;' onclick='parentNode.submit();'>Log out</a>
-                </form>
-            </li> -->
+            
         </ul>
 
     </nav>

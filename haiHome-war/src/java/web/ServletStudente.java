@@ -79,6 +79,9 @@ public class ServletStudente extends HttpServlet {
                             // creo una nuova sessione 
                             HttpSession session = request.getSession();
 
+                            session.setAttribute("user-type", "studente");
+                            session.setAttribute("user-data", this.gestoreStudente.toJSON());
+
                             //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
                             session.setAttribute("JSONList", this.gestoreStudente.toJSON());
                             session.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
@@ -88,9 +91,8 @@ public class ServletStudente extends HttpServlet {
                         } else {
                             op_result = "password incorretta";
                         }
-                    }
-                    else {
-                        op_result = "accedi via social..."; 
+                    } else {
+                        op_result = "accedi via social...";
                     }
                 } else {
                     op_result = "email non riconosciuta";
@@ -126,30 +128,16 @@ public class ServletStudente extends HttpServlet {
                 if (gestoreStudente.checkStudente(email) == false) {
                     gestoreStudente.aggiungiStudente(email, nome, cognome, foto, null);
                 }
-                /*
-                if (esito) {
-                    out.println("<p> Studente con credenziali: " + email + " " + nome + " " + cognome + " già presente </p>");
-                } else {
-                    //Se non è presente, lo aggiungo
-                    gestoreStudente.aggiungiStudente(email, nome, cognome, foto, null);
-                }*/
- /*
-                out.println("<p> Operazione in corso: Get studenti </p>");
-                List<String> lista = gestoreStudente.getStudenti();
 
-                for (String s : lista) {
-                    out.println("<p>" + s + "</p>");
-                }*/
+                
 
-                JSONObject json = this.gestoreStudente.toJSON();
-
-                //       System.out.println("<p>" + json.toString() + "</p>");
-                //request.setAttribute("JSONList", json);
-                //request.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
-                //getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
                 HttpSession session = request.getSession();
+
+                session.setAttribute("user-type", "studente");
+                session.setAttribute("user-data", this.gestoreStudente.toJSON());
+
                 //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
-                session.setAttribute("JSONList", json);
+                session.setAttribute("JSONList", this.gestoreStudente.toJSON());
                 session.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
                 session.setAttribute("IsStudente", true);
                 getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);

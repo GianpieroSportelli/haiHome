@@ -53,7 +53,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li><a href="UserProfile.jsp">Profilo</a></li>
+                            <li><a href="studente-profile.jsp">Profilo</a></li>
                             <li><a href="#">Preferiti</a></li>
                             <li class="divider"></li>
                             <li>
