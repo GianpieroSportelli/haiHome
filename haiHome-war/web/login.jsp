@@ -309,5 +309,5 @@
 <!-- FACEBOOK -->
 
 
-<script src="include/js/login/main.js"></script> <!-- Gem jQuery -->
-<script src="include/js/login/login_checks.js"></script>
+<script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
+<script src="include/js/login/ajax_req_and_stuff.js"></script>

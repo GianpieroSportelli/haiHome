@@ -68,28 +68,31 @@ jQuery(document).ready(function ($) {
      check_filled_form($('#studente-login input'), $('#submit-login-stud'));
      check_filled_form($('#studente-reg input'), $('#submit-reg-stud')); */
 
-    function check_filled_form(form, submit) {
-        form.keyup(function () {
+    function check_filled_form($form, $submit) {
+        $form.keyup(function () {
             var empty = false;
 
             /* questa roba qua, una volta funzionante, 
              * va messa in modo che triggeri per ogni singolo input - 
              * diventa più leggero e non agiamo su tutto il form ogni volta
              */
-            form.each(function () {
+            $form.each(function () {
                 var name = $(this).attr("name");
                 var input_value = $(this).val().trim();
 
                 if (((name === "user-name" || name === "user-surname") && input_value == '') ||
                         (name === "user-email" && !email_regex.test(input_value)) ||
                         (name === "user-phone" && !phone_regex.test(input_value)) ||
-                        ((name === "user-pw" || name === "user-pw2") && input_value == '')) {
+                        ((name === "user-pw" || name === "user-pw-repeat") && input_value == '')) { /*|| non funge D: 
+                         (name === "user-pw-repeat" && input_value !== $form.find('input[name="user-pw"]').val())*/
                     empty = true;
                     return false;
                 }
-            })
 
-            empty ? submit.attr('disabled', 'disabled') : submit.removeAttr('disabled');
+//                    alert(form.find('input[name="user-pw"]').val()); - è undefined D:
+            });
+
+            empty ? $submit.attr('disabled', 'disabled') : $submit.removeAttr('disabled');
         });
     }
 

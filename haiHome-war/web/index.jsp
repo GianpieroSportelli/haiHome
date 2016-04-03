@@ -56,7 +56,10 @@
         
         <link rel="stylesheet" href="include/css/login/style2.css"> 
         <!-- Gem style -->
-        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
+        <script src="//oss.maxcdn.com/modernizr/2.8.3/modernizr.min.js"></script>
+        
+        
+       <!-- <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
         <!-- robe del login bello -->
         <link rel="stylesheet" href="include/css/login/normalize.css">
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
