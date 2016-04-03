@@ -50,7 +50,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
             
             
 //            gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it", "gianpiero", "sportelli", "foto", "password","prova locatore");
-     gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it","password","gianpiero","sportelli","3401234567");        
+     gestoreLocatore.aggiungiLocatore("gianpiero.sportelli@libero.it","password","gianpiero","sportelli","3401234567", "https://upload.wikimedia.org/wikipedia/commons/2/23/Pino_Scotto_ceroanKio_2009_6.jpg");        
            
            
             //inizio inserimento annuncio

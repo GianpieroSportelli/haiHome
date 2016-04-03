@@ -109,11 +109,10 @@ public class ServletStudente extends HttpServlet {
                 out.println("</head>");
                 out.println("<body>");*/
 
-                String dati = request.getParameter("userData");
                 String email = request.getParameter("mailUser");
                 String foto = request.getParameter("profilo");
                 //Il cognome è nella seconda posizione
-                String[] dataUser = dati.split(",");
+                String[] dataUser = request.getParameter("userData").split(",");
                 String cognome = dataUser[1];
                 //Il nome è nella prima posizione
                 String nome = dataUser[0];

@@ -52,8 +52,7 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
 
             } else if (action.equalsIgnoreCase("loginFacebookLocatore")) {
-                //request.getRequestDispatcher("/ServletLocatore").forward(request, response);
-                out.println("Sono in LOCATORE! FUNZIONA!");
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
             } else if (action.equalsIgnoreCase("setCity")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
@@ -75,20 +74,6 @@ public class ServletController extends HttpServlet {
                 
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {
                 request.getRequestDispatcher("/LogoutServlet").forward(request, response);
-                /*
-                //verifico se esiste una sessione precedentemente creata
-                HttpSession session = request.getSession(false); 
-                if (session != null) {
-                    if (session)
-                    out.println("there is a session...EXTERMINATE");
-                    session.invalidate();
-                    out.println("done"); 
-                    
-                    //redirect all'index 
-                }
-                else { //non dovrebbe essere possibile ma non si sa mai 
-                    out.println("no session");
-                } */
             }
             else {
                 // action random

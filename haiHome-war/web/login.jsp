@@ -1,13 +1,36 @@
+<%@page import="org.json.JSONObject"%>
+
+<%
+    boolean session_exists = session.getAttribute("user-type") != null;
+    JSONObject user_data = (JSONObject) session.getAttribute("user-data");
+%>
+
 <header role="banner">
     <nav class="main-nav">
         <ul>
-            <li><a class="cd-signup" href="#myModal" data-toggle="modal">Accesso</a></li> 
+            <%
+                if (session_exists) {
+                    // link al profilo (locatore o studente) 
+                    String target_profile_page = ((String) session.getAttribute("user-type")) + "-profile.jsp";
+                    out.println("<li><a class='cd-signup' href='" + target_profile_page + "'>Profilo</a></li>");
+                    // form e bottone per logout 
+                    out.println("<li><form id='form_logout' action='ServletController' method='POST'>"
+                            + "<input type='hidden' name='action' value='user-logout' >"
+                            + "<a class='cd-signup' href='javascript:;' onclick='parentNode.submit();'>Log out</a>"
+                            + "</form></li>");
+
+                } else {
+                    // bottone apertura modal 
+                    out.println("<li><a class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li> ");
+                }
+            %>
+            <!--<li><a class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li>
             <li>
-                <form id="form_logout" action="ServletController" method="POST">
-                    <input type="hidden" name="action" value="user-logout" >
-                    <a class="cd-signup" href="javascript:;" onclick="parentNode.submit();">Log out</a>
+                <form id='form_logout' action='ServletController' method='POST'>
+                    <input type='hidden' name='action' value='user-logout' >
+                    <a class='cd-signup' href='javascript:;' onclick='parentNode.submit();'>Log out</a>
                 </form>
-            </li>
+            </li> -->
         </ul>
 
     </nav>

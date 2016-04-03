@@ -53,7 +53,7 @@ jQuery(document).ready(function ($) {
                 $form_studente_login.serialize(), //data
                 function (response) {
                     if (response === "OK") {
-                        window.location.replace('UserProfile.jsp');
+                        window.location.replace('index.jsp');
                     } else {
                         $submit_login_stud.attr('data-content', response);
                         $submit_login_stud.popover('show');
@@ -96,7 +96,7 @@ jQuery(document).ready(function ($) {
 
         $.post($form_locatore_login.attr("action"), $form_locatore_login.serialize(), function (response) {
             if (response === "OK") {
-                window.location.replace('locatore-profile.jsp');
+                window.location.replace('index.jsp');
             } else {
                 $submit_login_loc.attr('data-content', response);
                 $submit_login_loc.popover('show');
