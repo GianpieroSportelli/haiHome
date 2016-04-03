@@ -9,9 +9,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Trm&ograve;</title>
+        <title>Locatore - il tuo profilo</title>
     </head>
     <body>
-        <h1>Trm&ograve; si tu!!</h1>
+        Ti sei appena loggato come locatore <br/>
+        Ulteriori funzionalit&agrave; saranno disponibili nelle prossime release! <br/>
+        
+       
     </body>
 </html>
