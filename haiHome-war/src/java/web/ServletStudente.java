@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import verifytoken.Verify;
+
 /**
  *
  * @author gianp_000
@@ -120,7 +122,6 @@ public class ServletStudente extends HttpServlet {
                 out.println("<p> Dati immessi: Nome e cognome - " + dati + " - Email: " + email + "- Foto: " + foto + "</p>");
                  */
                 //Check della presenza di uno studente
-                boolean esito = gestoreStudente.checkStudente(email);
 
                 //Se true, allora lo studente è presente
                 if (gestoreStudente.checkStudente(email) == false) {
@@ -150,11 +151,31 @@ public class ServletStudente extends HttpServlet {
                 out.println("</body>");
                 out.println("</html>");*/
             } else if (action.equalsIgnoreCase("login-googleplus-studente")) {
-                String name = request.getParameter("name");
-                String surname = request.getParameter("surname");
+                String idToken = request.getParameter("id_token");
+                String access_token = request.getParameter("access_token");
 
-                out.println("you are here - studente ");
-                out.println("hey " + name + " " + surname);
+                String[] verify = Verify.getUserCredentials(idToken, access_token);
+
+                if (verify != null) {
+                    String name = request.getParameter("name");
+                    String surname = request.getParameter("surname");
+                    String email = verify[1];
+                    String url_img = request.getParameter("url-profile-img");// + "?sz=200";
+
+                    if (gestoreStudente.checkStudente(email) == false) {
+                        gestoreStudente.aggiungiStudente(email, name, surname, url_img, null);
+                    }
+
+                    HttpSession session = request.getSession();
+
+                    session.setAttribute("user-type", "studente");
+                    session.setAttribute("user-data", this.gestoreStudente.toJSON());
+                    
+                    getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+
+                } else {
+                    out.println("errore nell'autenticazione");
+                }
             }
         }
     }

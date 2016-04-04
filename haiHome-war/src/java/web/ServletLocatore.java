@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import verifytoken.Verify;
 
 /**
  *
@@ -115,11 +116,32 @@ public class ServletLocatore extends HttpServlet {
                 getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("login-googleplus-locatore")) {
-                String name = request.getParameter("name"); 
-                String surname = request.getParameter("surname"); 
-                
-                out.println("you are here - locatore");
-                out.println("hey " + name + " " + surname);
+                String idToken = request.getParameter("id_token");
+                String access_token = request.getParameter("access_token");
+
+                String[] verify = Verify.getUserCredentials(idToken, access_token);
+
+                if (verify != null) {
+                    String name = request.getParameter("name");
+                    String surname = request.getParameter("surname");
+                    String email = verify[1];
+                    String url_img = request.getParameter("url-profile-img");// + "?sz=200";
+
+                    if (gestoreLocatore.checkLocatore(email) == false) {
+                        gestoreLocatore.aggiungiLocatore(email, null, name, surname, "", url_img);
+                    }
+
+                    // creo sessione 
+                    HttpSession session = request.getSession(true);
+
+                    session.setAttribute("user-type", "locatore");
+                    session.setAttribute("user-data", this.gestoreLocatore.toJSON());
+                    // redirect 
+                    getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+
+                } else {
+                    out.println("errore nell'autenticazione");
+                }
             }
         }
     }
