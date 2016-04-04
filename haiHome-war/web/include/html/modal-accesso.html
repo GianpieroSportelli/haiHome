@@ -24,13 +24,15 @@
                                     <span>Accedi con <strong>Facebook</strong></span>
                                 </div>
                             </a>
-                            <a href="#" class="connect googleplus">
+                            <a href="#" id='googleplus-studente'>  <!-- class="connect googleplus"> -->
+                                <div id="signin-googleplus-studente"></div>
+                                <!--
                                 <div class="connect__icon">
                                     <i class="fa fa-google-plus"></i>
                                 </div>
                                 <div class="connect__context">
                                     <span>Accedi con <strong>Google+</strong></span>
-                                </div>
+                                </div> -->
                             </a>
                         </div>
                         <div class="logmod__heading">
@@ -144,13 +146,15 @@
                                         <span>Accedi con <strong>Facebook</strong></span>
                                     </div>
                                 </a>
-                                <a href="#" class="connect googleplus">
+                                <a href="#" id='googleplus-locatore'> <!-- class="connect googleplus">-->
+                                    <div id="signin-googleplus-locatore"></div>
+                                    <!--
                                     <div class="connect__icon">
                                         <i class="fa fa-google-plus"></i>
                                     </div>
                                     <div class="connect__context">
                                         <span>Accedi con <strong>Google+</strong></span>
-                                    </div>
+                                    </div>-->
                                 </a>
                             </div>
                         </div>
@@ -274,10 +278,10 @@
 <!-- FACEBOOK -->
 <form id="formLogin" method="POST" action="ServletController">
     <!-- Per far elaborare la richiesta dalla servlet -->
-    <input id="azione" type="hidden" name="action" value="loginFacebook">
-    <input type="hidden" id="userData" name="userData">
-    <input type="hidden" id="mailUser" name="mailUser">
-    <input type="hidden" id="profilo" name="profilo">
+    <input id="azione" type="hidden" name="action" value="loginFacebook"/>
+    <input type="hidden" id="userData" name="userData"/>
+    <input type="hidden" id="mailUser" name="mailUser"/>
+    <input type="hidden" id="profilo" name="profilo"/>
 </form>
 <!-- Per passare i parametri -->
 <div id="status"></div>
@@ -286,6 +290,16 @@
 
 <img id="profileImage">
 <!-- FACEBOOK -->
+<!-- Google+ -->
+<form id="form-login-googleplus" method="POST" action="ServletController">
+    <input type="hidden" name="action"  value="login-googleplus-"/>
+    <input type="text" name="name" value="hello"/>
+    <input type="hidden" name="surname"/>
+    <input type="hidden" name="url-profile-img"/>
+    <input type="hidden" id="id_token"  name="id_token" value="null">
+    <input type="hidden" id="id_access_token" name="access_token" value="null">
+</form>
+
 
 <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
 <script src="include/js/login/ajax_req_and_stuff.js"></script>

@@ -8,14 +8,12 @@ package web;
 import ejb.GestoreStudenteLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.json.JSONObject;
 
 /**
  *
@@ -129,8 +127,6 @@ public class ServletStudente extends HttpServlet {
                     gestoreStudente.aggiungiStudente(email, nome, cognome, foto, null);
                 }
 
-                
-
                 HttpSession session = request.getSession();
 
                 session.setAttribute("user-type", "studente");
@@ -153,6 +149,12 @@ public class ServletStudente extends HttpServlet {
                  *//*
                 out.println("</body>");
                 out.println("</html>");*/
+            } else if (action.equalsIgnoreCase("login-googleplus-studente")) {
+                String name = request.getParameter("name");
+                String surname = request.getParameter("surname");
+
+                out.println("you are here - studente ");
+                out.println("hey " + name + " " + surname);
             }
         }
     }

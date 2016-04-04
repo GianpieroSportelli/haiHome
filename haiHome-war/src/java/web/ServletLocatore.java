@@ -5,7 +5,6 @@
  */
 package web;
 
-import com.google.gson.JsonObject;
 import ejb.GestoreLocatoreLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -70,7 +67,7 @@ public class ServletLocatore extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("login-locatore")) {
                 String email = request.getParameter("user-email").trim(),
-                        pwd = request.getParameter("user-pw"), 
+                        pwd = request.getParameter("user-pw"),
                         op_result = "OK"; // ottimismo, gianni!
                 // controlli sull'input ??
                 if (gestoreLocatore.checkLocatore(email)) {
@@ -117,6 +114,12 @@ public class ServletLocatore extends HttpServlet {
                 // redirect 
                 getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
+            } else if (action.equalsIgnoreCase("login-googleplus-locatore")) {
+                String name = request.getParameter("name"); 
+                String surname = request.getParameter("surname"); 
+                
+                out.println("you are here - locatore");
+                out.println("hey " + name + " " + surname);
             }
         }
     }

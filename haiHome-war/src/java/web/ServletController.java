@@ -46,14 +46,23 @@ public class ServletController extends HttpServlet {
 
             if (action.equalsIgnoreCase("signup-studente") || action.equalsIgnoreCase("login-studente")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
+
             } else if (action.equalsIgnoreCase("signup-locatore") || action.equalsIgnoreCase("login-locatore")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+
             } else if (action.equalsIgnoreCase("loginFacebookStudente")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
 
             } else if (action.equalsIgnoreCase("loginFacebookLocatore")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
+            } else if (action.equalsIgnoreCase("login-googleplus-studente")) {
+                request.getRequestDispatcher("/ServletStudente").forward(request, response);
+                
+            }
+            else if (action.equalsIgnoreCase("login-googleplus-locatore")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+            
             } else if (action.equalsIgnoreCase("setCity")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
@@ -71,11 +80,11 @@ public class ServletController extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("search")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
-                
+
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {
                 request.getRequestDispatcher("/LogoutServlet").forward(request, response);
-            }
-            else {
+                
+            } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }
