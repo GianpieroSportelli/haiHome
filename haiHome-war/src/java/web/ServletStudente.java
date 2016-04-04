@@ -151,10 +151,9 @@ public class ServletStudente extends HttpServlet {
                 out.println("</body>");
                 out.println("</html>");*/
             } else if (action.equalsIgnoreCase("login-googleplus-studente")) {
-                String idToken = request.getParameter("id_token");
-                String access_token = request.getParameter("access_token");
-
-                String[] verify = Verify.getUserCredentials(idToken, access_token);
+                String[] verify = Verify.getUserCredentials(
+                        request.getParameter("id_token"),
+                        request.getParameter("access_token"));
 
                 if (verify != null) {
                     String name = request.getParameter("name");
@@ -170,7 +169,7 @@ public class ServletStudente extends HttpServlet {
 
                     session.setAttribute("user-type", "studente");
                     session.setAttribute("user-data", this.gestoreStudente.toJSON());
-                    
+
                     getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
                 } else {

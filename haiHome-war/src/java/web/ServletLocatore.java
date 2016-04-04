@@ -116,21 +116,20 @@ public class ServletLocatore extends HttpServlet {
                 getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("login-googleplus-locatore")) {
-                String idToken = request.getParameter("id_token");
-                String access_token = request.getParameter("access_token");
-
-                String[] verify = Verify.getUserCredentials(idToken, access_token);
+                String[] verify = Verify.getUserCredentials(
+                        request.getParameter("id_token"),
+                        request.getParameter("access_token"));
 
                 if (verify != null) {
                     String name = request.getParameter("name");
                     String surname = request.getParameter("surname");
                     String email = verify[1];
                     String url_img = request.getParameter("url-profile-img");// + "?sz=200";
+                    String phone = request.getParameter("phone"); //da recuperare dal profilo...boh
 
                     if (gestoreLocatore.checkLocatore(email) == false) {
-                        gestoreLocatore.aggiungiLocatore(email, null, name, surname, "", url_img);
+                        gestoreLocatore.aggiungiLocatore(email, null, name, surname, phone, url_img);
                     }
-
                     // creo sessione 
                     HttpSession session = request.getSession(true);
 
