@@ -8,6 +8,11 @@
 <%@page import="java.util.ArrayList"%> 
 <%@page import="javax.servlet.http.HttpSession"%>
 
+<%
+    boolean session_exists = session.getAttribute("user-type") != null;
+    JSONObject user_data = (JSONObject) session.getAttribute("user-data");
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -55,8 +60,8 @@
 
     </head>
     <body>
-        <%@include file="/login.jsp" %> 
-        <%@include file="/header3Login.jsp" %> 
+        <%@include file="/header.jsp" %> 
+        <!-- < %@include file="/header3Login.jsp" %>  -->
 
         <div class="container">
             <div class="row profile">
@@ -64,30 +69,29 @@
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic">
-                            <%
+                            <%                                if (session_exists) {
+                                    out.println(
+                                            "<img src='" + user_data.getString("Foto") + "'"
+                                            + "class='img-responsive' alt=''/>");
+                                } else {
+                                    out.println("no login no party");
+                                }
+                            %>
+                            <!--
+                            < %
                                 sessione = request.getSession();
                                 JSONObject datiUtente = (JSONObject) sessione.getAttribute("JSONList");
 
                             %>
-                            <img src="<%= datiUtente.getString("Foto")%>" class="img-responsive" alt="">
+                            <img src="< %= datiUtente.getString("Foto")%>" class="img-responsive" alt=""> -->
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name">
-                                <%= datiUtente.getString("Nome") + " " + datiUtente.getString("Cognome")%>
+                                <%= user_data.getString("Nome") + " " + user_data.getString("Cognome")%>
                             </div>
-                            <div class="profile-usertitle-job">
-                                <%
-                                    Boolean isStudente = (Boolean) sessione.getAttribute("IsStudente");
-                                    if (isStudente) {
-
-                                %>
-                                Studente
-                                <% } else {%>
-                                Locatore
-                                <% }%>
-                            </div>
+                            <div class="profile-usertitle-job">Studente</div>
                         </div>
 
 
@@ -172,15 +176,21 @@
                                 <tbody>
                                     <tr>
                                         <td>Nome: </td>
-                                        <td><%= datiUtente.getString("Nome")%></td>
+                                        <td>
+                                            <%= user_data.getString("Nome")%> 
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Cognome:</td>
-                                        <td><%= datiUtente.getString("Cognome")%></td>
+                                        <td>
+                                            <%= user_data.getString("Cognome")%> 
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Email: </td>
-                                        <td><%= datiUtente.getString("Email")%></td>
+                                        <td>
+                                            <%= user_data.getString("Email")%> 
+                                        </td>
                                     </tr>
 
                                     <tr>

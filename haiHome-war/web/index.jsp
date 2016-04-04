@@ -73,10 +73,7 @@
         <![endif]-->
         
        
-       <!-- < %@include file="/login.jsp" %> -->
-       <%@include file="/login.jsp" %> 
-       
-        <%@include file="/header3Login.jsp" %>
+       <%@include file="/header.jsp" %> 
         
         <%@include file="/formAutocomplete.jsp" %> 
         

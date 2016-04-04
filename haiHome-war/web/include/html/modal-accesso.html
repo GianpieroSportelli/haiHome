@@ -1,35 +1,3 @@
-<%@page import="org.json.JSONObject"%>
-
-<%
-    boolean session_exists = session.getAttribute("user-type") != null;
-    JSONObject user_data = (JSONObject) session.getAttribute("user-data");
-%>
-
-<header role="banner">
-    <nav class="main-nav">
-        <ul>
-            <%
-                if (session_exists) {
-                    // link al profilo (locatore o studente) 
-                    String target_profile_page = ((String) session.getAttribute("user-type")) + "-profile.jsp";
-                    out.println("<li><a class='cd-signup' href='" + target_profile_page + "'>Profilo</a></li>");
-                    // form e bottone per logout 
-                    out.println("<li><form id='form_logout' action='ServletController' method='POST'>"
-                            + "<input type='hidden' name='action' value='user-logout' >"
-                            + "<a class='cd-signup' href='javascript:;' onclick='parentNode.submit();'>Log out</a>"
-                            + "</form></li>");
-
-                } else {
-                    // bottone apertura modal 
-                    out.println("<li><a class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li> ");
-                }
-            %>
-            
-        </ul>
-
-    </nav>
-</header>
-
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -114,7 +82,7 @@
                             </span>
                         </div>
                         <div class="logmod__form">
-                            <form id="studente-reg" accept-charset="utf-8" action="ServletController" method="POST" lcass="simform">
+                            <form id="studente-reg" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
                                 <input type="hidden" name="action" value="signup-studente"/>
                                 <div class="sminputs">
                                     <div class="input string optional">
@@ -226,12 +194,6 @@
                                 </div> 
                             </form>
                         </div>
-                        <!--
-                                                <p class="cd-form-bottom-message2">
-                                                    <a href="#reg-loc" data-toggle="tab"> Non hai un account? </a>
-                                                </p> -->
-
-
                     </div> 
                     <!-- tab nasconsta: registrazione locatore --> 
                     <div id="reg-loc" class="tab-pane fade">
@@ -324,7 +286,6 @@
 
 <img id="profileImage">
 <!-- FACEBOOK -->
-
 
 <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
 <script src="include/js/login/ajax_req_and_stuff.js"></script>

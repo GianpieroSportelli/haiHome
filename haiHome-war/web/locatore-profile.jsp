@@ -61,16 +61,7 @@
         </style>
     </head>
     <body>
-        <%
-            if (session_exists) {
-                out.println("Ti sei appena loggato come locatore <br/>");
-                out.println("Benvenuto " + user_data.getString("nome") + " " + user_data.getString("cognome"));
-                out.println("Ulteriori funzionalit&agrave; saranno disponibili nelle prossime release! <br/>");
-            } else {
-                out.println("sessione inesistente");
-            }
-        %>
-
+        <%@include file="/header.jsp" %>
         <div class="container">
             <div class="row profile">
                 <div class="col-md-3">
@@ -79,7 +70,6 @@
                         <div class="profile-userpic">
                             <%
                                 if (session_exists) {
-                                    
                                     out.println(
                                             "<img src='" + user_data.getString("fotoProfilo") + "'"
                                             + "class='img-responsive' alt=''/>"); 
@@ -100,9 +90,7 @@
                                 %>
                                 <!--  < % = user_data.getString("Nome") + " " + user_data.getString("Cognome")%> -->
                             </div>
-                            <div class="profile-usertitle-job">
-
-                            </div>
+                            <div class="profile-usertitle-job">Locatore</div>
                         </div>
 
 
@@ -130,27 +118,34 @@
                 <div class="col-xs-9">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
-                        <div class="tab-pane active" id="home">
+                        <div class="tab-pane fade in active" id="home">
                             <table class="table table-user-information">
                                 <tbody>
                                     <tr>
                                         <td>Nome: </td>
                                         <td> 
-                                            <!-- < % = user_data.getString("nome")%> -->
+                                            <%= user_data.getString("nome")%> 
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Cognome:</td>
                                         <td> 
-                                            <!-- < %= user_data.getString("cognome")%> -->
+                                            <%= user_data.getString("cognome")%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Email: </td>
                                         <td>
-                                            <!-- < %= user_data.getString("email")%> -->
+                                            <%= user_data.getString("email")%> 
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>Numero di telefono: </td>
+                                        <td>
+                                            <%= user_data.getString("telefono")%> 
+                                        </td>
+                                    </tr>
+                                    
 
                                     <tr>
                                         <td> </td>
@@ -159,8 +154,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="annunci">Annunci preferiti qui</div>
-                        <div class="tab-pane" id="filtri">Filtri utente qui</div>
+                        <div class="tab-pane fade" id="annunci">Annunci preferiti qui</div>
+                        <div class="tab-pane fade" id="filtri">Filtri utente qui</div>
                     </div>
                 </div>  
             </div>

@@ -60,8 +60,7 @@
 
     </head>
     <body>
-        <%@include file="/login.jsp" %>
-        <%@include file="/header3Login.jsp" %> 
+        <%@include file="/header.jsp" %>
         <div class="container">
             <div id="mydiv"></div>
             <div class="row">
