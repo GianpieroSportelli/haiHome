@@ -39,6 +39,12 @@ public class ServletLocatore extends HttpServlet {
         //response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
+            
+            HttpSession session = request.getSession(); 
+           /*
+           if (session.getAttribute("is-user-logged") == null) 
+               session.setAttribute("is-user-logged", false);*/
+            
 
             if (action.equalsIgnoreCase("signup-locatore")) {
                 /* registrazione */
@@ -73,11 +79,16 @@ public class ServletLocatore extends HttpServlet {
                 // controlli sull'input ??
                 if (gestoreLocatore.checkLocatore(email)) {
                     if (gestoreLocatore.getLocatore().getPassword().equals(pwd)) {
-                        HttpSession session = request.getSession(true);
 
+                        if (gestoreLocatore.getLocatore() != null) {
+                            session.setAttribute("user-type", "locatore");
+                        session.setAttribute("user-data", this.gestoreLocatore.toJSON());
+                        }
+                        /*
                         session.setAttribute("user-type", "locatore");
                         session.setAttribute("user-data", this.gestoreLocatore.toJSON());
-                        // redirect 
+                        session.setAttribute("is-user-logged", (gestoreLocatore.getLocatore() != null) ? "true" : "false"); 
+                        // redirect  */
 //                getServletContext().getRequestDispatcher("/locatore-profile.jsp").forward(request, response);
 
                         /*
@@ -108,7 +119,6 @@ public class ServletLocatore extends HttpServlet {
                 // si potrebbe aggiornare l'immagine del profilo, possibile che sia cambiata...
 
                 // creo sessione 
-                HttpSession session = request.getSession(true);
 
                 session.setAttribute("user-type", "locatore");
                 session.setAttribute("user-data", this.gestoreLocatore.toJSON());
@@ -131,7 +141,6 @@ public class ServletLocatore extends HttpServlet {
                         gestoreLocatore.aggiungiLocatore(email, null, name, surname, phone, url_img);
                     }
                     // creo sessione 
-                    HttpSession session = request.getSession(true);
 
                     session.setAttribute("user-type", "locatore");
                     session.setAttribute("user-data", this.gestoreLocatore.toJSON());

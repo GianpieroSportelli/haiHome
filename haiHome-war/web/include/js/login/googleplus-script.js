@@ -41,7 +41,7 @@ function startApp() {
                         
                         if (auth2.isSignedIn.get()) {
                             console.log('sign out forzato'); 
-                            auth2.signOut()
+                            auth2.signOut();
                         }
                         
                         console.log('mi metto in attesa del click');

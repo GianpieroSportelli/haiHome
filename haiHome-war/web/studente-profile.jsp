@@ -10,7 +10,11 @@
 
 <%
     boolean session_exists = session.getAttribute("user-type") != null;
-    JSONObject user_data = (JSONObject) session.getAttribute("user-data");
+    JSONObject user_data = null;
+
+    if (session_exists) {
+        user_data = (JSONObject) session.getAttribute("user-data");
+    }
 %>
 
 <!DOCTYPE html>
@@ -69,7 +73,8 @@
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic">
-                            <%                                if (session_exists) {
+                            <%                                
+                                if (session_exists) {
                                     out.println(
                                             "<img src='" + user_data.getString("Foto") + "'"
                                             + "class='img-responsive' alt=''/>");
@@ -89,7 +94,10 @@
                         <!-- SIDEBAR USER TITLE -->
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name">
-                                <%= user_data.getString("Nome") + " " + user_data.getString("Cognome")%>
+                                <% if (session_exists) {
+                                        out.println(user_data.getString("Nome") + " " + user_data.getString("Cognome"));
+                                    }
+                                %>
                             </div>
                             <div class="profile-usertitle-job">Studente</div>
                         </div>
@@ -177,19 +185,29 @@
                                     <tr>
                                         <td>Nome: </td>
                                         <td>
-                                            <%= user_data.getString("Nome")%> 
+                                            <% if (session_exists) {
+                                                    out.println(user_data.getString("Nome"));
+                                                }
+                                            %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Cognome:</td>
                                         <td>
-                                            <%= user_data.getString("Cognome")%> 
+                                            <%
+                                                if (session_exists) {
+                                                    out.println(user_data.getString("Cognome"));
+                                                }
+                                            %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Email: </td>
                                         <td>
-                                            <%= user_data.getString("Email")%> 
+                                            <% if (session_exists) {
+                                                    out.println(user_data.getString("Email"));
+                                                }
+                                            %>
                                         </td>
                                     </tr>
 
