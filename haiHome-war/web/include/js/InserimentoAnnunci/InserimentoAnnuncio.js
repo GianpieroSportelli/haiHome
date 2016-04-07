@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
+/*
 jQuery(document).ready(function ($) {
-   var $form = $('#formAnnuncio');
-   var $subButton = $('#submitButtom');
+
    
    $('#submitButtom').on('click', function () {
        
@@ -15,25 +15,71 @@ jQuery(document).ready(function ($) {
                     console.log("Sia lodato");
         });
         
-       
-          /*    
-        console.log("E si parte!!!");
-        $.post($form.attr("action"), $form.serialize(), function (response) {
-        */
-         
-         
-         
-            /*
-        if (response === "SIAMO DENTRO") {
-            // qualcosa...
-            alert("Sono dentro");
-        } else {
-            alert("MERDA");
-        }*/
-    //});
    });
     
 });
+*/
+
+//codice per lo step-wizard
+            $(document).ready(function () {
+                var navListItems = $('div.setup-panel div a'),
+                        allWells = $('.setup-content'),
+                        allNextBtn = $('.nextBtn');
+
+                allWells.hide();
+
+                navListItems.click(function (e) {
+                    e.preventDefault();
+                    var $target = $($(this).attr('href')),
+                            $item = $(this);
+
+                    if (!$item.hasClass('disabled')) {
+                        navListItems.removeClass('btn-primary').addClass('btn-default');
+                        $item.addClass('btn-primary');
+                        allWells.hide();
+                        $target.show();
+                        $target.find('input:eq(0)').focus();
+                    }
+                });
+
+
+                allNextBtn.click(function () {
+                    var curStep = $(this).closest(".setup-content"),
+                            curStepBtn = curStep.attr("id"),
+                            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                            curInputs = curStep.find("input[type='text'],input[type='url']"),
+                            isValid = true;
+
+                    $(".form-group").removeClass("has-error");
+                    for (var i = 0; i < curInputs.length; i++) {
+                        if (!curInputs[i].validity.valid) {
+                            isValid = false;
+                            $(curInputs[i]).closest(".form-group").addClass("has-error");
+                        }
+                    }
+
+                    if (isValid){
+                        console.log("Sono entrato");
+                        var form = allNextBtn.parent("form");
+                        var id = form.attr("id");
+                        console.log("   " + form + " " + id);
+                        
+                        $('#'+id).ajaxForm(function () {
+                                console.log("Sia lodato");
+                        });
+                        nextStepWizard.removeAttr('disabled').trigger('click');
+                    }
+                });
+
+                jQuery('div.setup-panel div a.btn-primary').trigger('click');
+
+
+
+
+
+
+
+            });
 
 
 
@@ -44,7 +90,7 @@ jQuery(document).ready(function ($) {
 
 
 
-
+/*
 
 var jsonAnn = [];
 var jsonStanze = [];
@@ -55,7 +101,7 @@ function prova() {
 
     //annuncioObject = null;
     jsonAnn  = [];
-    /* controllo se il prezzo è stato inserito per stanze */
+    /* controllo se il prezzo è stato inserito per stanze 
     var atomico;
     var value = $("#selStanza option:selected").val();
     console.log(value);
@@ -118,9 +164,9 @@ function prova() {
     jsonAnn.push(itemDesc);
     jsonAnn.push(itemMetCasa);
 
-    /* da aggiungere data di inizio affitto */
+    /* da aggiungere data di inizio affitto 
 
-    /*Inserimento Stanze*/
+    /*Inserimento Stanze
     createStanzaJSON();
 
     jsonAnn.push(jsonStanze);
@@ -162,7 +208,7 @@ function createStanzaJSON(atomico) { //da inserire le foto
             var tipoStanza = $(this).contents().find("#seltipoLetto").val();
             var Metratura = $(this).contents().find("#inpMetratura").val();
             console.log("Stanza : " + idStanza + "| TipoStanza: " + tipoStanza + "| Metratura " + Metratura);
-            /* controllo se il prezzo è stato inserito per stanze */
+            /* controllo se il prezzo è stato inserito per stanze 
             if (!atomico) {
                 console.log("Calcolo il prezzo Stanze");
                 // <div class=\"form-group\" id=\"prezzo$_$_$\">
@@ -276,3 +322,4 @@ function sendJSON(jsonData) {
     });
 
 }
+*/

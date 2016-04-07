@@ -15,9 +15,9 @@
                     </div>\n\
                     <div class=\"col-md-6\">\n\
                         <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
-                        <input name='Prezzo' maxlength=\"100\" type=\"text\" required=\"required\" class=\"form-control prezzoStanza\" /><br />\n\
-                        <input name='compresoCondominio' class=\"CompCond\" type=\"checkbox\"  value=\"CC\">Compreso Condominio<br>\n\
-                        <input name='compresoRiscaldamento' class=\"CompRisc\" type=\"checkbox\"  value=\"CR\" checked>Compreso Riscaldamento<br>\n\
+                        <input name='PrezzoS' maxlength=\"100\" type=\"text\" required=\"required\" class=\"form-control prezzoStanza\" /><br />\n\
+                        <input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"CC\">Compreso Condominio<br>\n\
+                        <input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"CR\" checked>Compreso Riscaldamento<br>\n\
                     </div>\n\
                 </div>";
 
@@ -29,7 +29,18 @@
                 console.log(stanzaCode);
                 $(stanzaCode).appendTo("#contenitoreStanze");
                 //  var myDropzone = new Dropzone("div#contenitoreStanze", { url: "../FotoUploadServlet"});
-                $("div#mydropzone" + numStanze).dropzone({ url: "../FotoUploadServlet" });
+                $("div#mydropzone" + numStanze).dropzone({ 
+                url: "../ServletAnnuncio",
+                paramName: "file",
+                addRemoveLinks: true,
+                hiddenInputContainer: "div#mydropzone" + numStanze,
+                
+                autoProcessQueue: false,
+                uploadMultiple: true,
+                parallelUploads: 100,
+                maxFiles: 100
+                
+            });
         }
 //"<select class=\"form-control\" id=\"seltipoStanza\"><option class=\"acc\" hidden>Bagno</option><option class=\"acc\" hidden>Cucina</option><option class=\"acc\" hidden>Soggiorno</option><option class=\"acc\" hidden>Altro</option><option class=\"letto\">Singola</option><option class=\"letto\">Doppia</option><option class=\"letto\">Altro</option></select>" //vecchio
 
@@ -126,7 +137,7 @@ function getStanzaHTMLCode(number){
             </div>\n\
             <div class=\"form-group col-md-6\">\n\
                 <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('stanza"+number+"')\">-</div><br />\n\
-                <label class=\"control-label\">Metratura</label> <input name='Metratura' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
+                <label class=\"control-label\">Metratura</label> <input name='MetraturaS' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
             </div>\n\
             <div class=\"form-group col-md-12\">\n\
                 <label class=\"control-label\">Foto</label>\n\

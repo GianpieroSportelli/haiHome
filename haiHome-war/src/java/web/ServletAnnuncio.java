@@ -6,12 +6,17 @@
 package web;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Map;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
+@MultipartConfig
 /**
  *
  * @author gianp_000
@@ -32,22 +37,43 @@ public class ServletAnnuncio extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
              String action = request.getParameter("action");
+             
+             /*DA ELIMINARE
+             Map<String,String[]> parametri1 = request.getParameterMap();
+             Part filePart1 = request.getPart("file");
+             InputStream filecontent1 = filePart1.getInputStream();
+             
+             //FINE DA ELIMINARE */
               System.out.println("Azione richiesta: " + action);
              if (action.equalsIgnoreCase("Annunci-newAnnuncio")){
                  
                  System.out.println("SIAMO DENTRO");
                  
+                 System.out.println("Elenco parametri disponibili");
+                 
+                 Map<String,String[]> parametri = request.getParameterMap();
+                 
+                 // prova per le foto
+                 Part filePart = request.getPart("file");
+                  InputStream filecontent = filePart.getInputStream();
+                 
+                 
+                 //fine prova
+                 
                  //prendo i dati
                  System.out.println("Inizio A prendere i Dati dell'annuncio");
-                 //Info Annuncio
+                 //Info Appartamento
                  String citta = request.getParameter("Città").trim();
                  String quartiere = request.getParameter("Quartiere").trim();
                  String indirizzo = request.getParameter("Indirizzo").trim();
                  String civico = request.getParameter("Civico").trim();
                  
-                 //Info Appartamento
+                 //info Annuncio (manca la data)
                  String descrizione = request.getParameter("Descrizione").trim();
                  String metratura = request.getParameter("Metratura").trim();
+                 
+                 
+
 
                  System.out.println("Appartamento");
                  
@@ -64,7 +90,9 @@ public class ServletAnnuncio extends HttpServlet {
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write("SIAMO DENTRO");
                 
-             }
+             }else if(action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")){
+                    System.out.println("FUNONZIA!!!!");
+        }
         }
     }
 
