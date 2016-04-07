@@ -180,7 +180,8 @@ public class ServletStudente extends HttpServlet {
                 if (verify != null) {
                     String name = request.getParameter("name");
                     String surname = request.getParameter("surname");
-                    String email = verify[1];
+ //                   String email = verify[1];
+                    String email = request.getParameter("email");
                     String url_img = request.getParameter("url-profile-img");// + "?sz=200";
 
                     if (gestoreStudente.checkStudente(email) == false) {

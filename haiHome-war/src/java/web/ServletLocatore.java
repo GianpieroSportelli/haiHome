@@ -133,7 +133,8 @@ public class ServletLocatore extends HttpServlet {
                 if (verify != null) {
                     String name = request.getParameter("name");
                     String surname = request.getParameter("surname");
-                    String email = verify[1];
+        //            String email = verify[1];
+                    String email = request.getParameter("email"); 
                     String url_img = request.getParameter("url-profile-img");// + "?sz=200";
                     String phone = request.getParameter("phone"); //da recuperare dal profilo...boh
 
