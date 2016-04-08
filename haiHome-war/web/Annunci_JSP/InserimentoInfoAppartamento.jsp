@@ -18,7 +18,7 @@ ToDO:
 
         <form action="../ServletAnnuncio" method="post" id="form-info-appartamento">
             <input type="hidden" name="action" value="Annunci-newAnnuncio-infoAppartamento" /> 
-            <h3> Info Appartamento</h3>
+            <h3> Info Annuncio</h3>
             <div class="form-group">
                 <label class="control-label">Citta</label>
 
@@ -42,8 +42,12 @@ ToDO:
 
             </div>
 
-            <button class="btn btn-primary nextBtn btn-lg pull-right" type="submit" <!--onclick="prova()" --> >Next</button>
+            <button id="butt1" type="submit" class="btn btn-primary nextBtn btn-lg pull-right"> Next</button>
+           
         </form>
+        
+
+         
     </div>
 </div>
 

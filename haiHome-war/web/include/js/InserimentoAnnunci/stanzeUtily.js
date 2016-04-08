@@ -22,6 +22,9 @@
                 </div>";
 
 
+        function getPrezzoStanzaHTMLCode(){
+            return PrezzoStanzaHTML;
+        }
         function nuovaStanza(){
         numStanze++;
         console.log("stanzaCode");
@@ -44,12 +47,14 @@
         }
 //"<select class=\"form-control\" id=\"seltipoStanza\"><option class=\"acc\" hidden>Bagno</option><option class=\"acc\" hidden>Cucina</option><option class=\"acc\" hidden>Soggiorno</option><option class=\"acc\" hidden>Altro</option><option class=\"letto\">Singola</option><option class=\"letto\">Doppia</option><option class=\"letto\">Altro</option></select>" //vecchio
 
-
+//elimina una stanza
 function eliminaStanza(nome){
 $("div#" + nome).remove();
         numStanze--;
         }
 
+
+//permette di cambiare specifiche sul prezzo (Prezzo intero Appartamento - Prezzo singole Stanze)
 function cambiaSpecifiche(){
     console.log("--------------------------------------");
     console.log("Cambio Specifiche Prezzo");
@@ -67,6 +72,7 @@ function cambiaSpecifiche(){
         }
 }
 
+//permette di cambiare le specifiche relative alla stanza (Stanza Accessoria - Stanza da Letto)
 function cambiaSpecificheTipologiaStanza(id){
     console.log("--------------------------------------");
     console.log("Cambio specifiche Tipologia Stanza");
@@ -93,7 +99,7 @@ function cambiaSpecificheTipologiaStanza(id){
     
 }
 
-/* da permettere la modifica del tipo stanza in seguito alla selezione FORSE DA ELIMINARE*/
+/* da permettere la modifica del tipo stanza in seguito alla selezione (vecchio) DA ELIMINARE*/
 function cambiaCameraSpecifiche(){
 console.log("random");
         var value = $("#selStanza option:selected").val();
@@ -109,7 +115,7 @@ console.log("ciao");
         }
 }
 
-
+//restituisce il codice HTML della stanza
 function getStanzaHTMLCode(number){
             var StanzaCode =
         "<div id=\"stanza"+number+"\" class=\"col-md-12 formContainer Stanza\">\n\
@@ -151,11 +157,10 @@ function getStanzaHTMLCode(number){
     return StanzaCode;
 }
 
+
+
 $(document).ready(function(){
-
-
-
-//bottone NEXT delle stanze (genero le form per i costi)
+//bottone NEXT delle stanze (genero le form per i costi) //DA ELIMINARE deprecato
 $("button#NxtS").click(function(){
     
     //INIZIO VALIDAZIONE DATI
@@ -200,9 +205,7 @@ $("button#NxtS").click(function(){
     }
 
 
-});
-        
-
+});        
 });
 
 

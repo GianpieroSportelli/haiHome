@@ -62,15 +62,15 @@
                 </div>
 
                 <div class="row setup-content" id="step-2">
+                    
                     <%@include file="InserimentoInfoAnnuncio.jsp" %>
+                    
                 </div>
 
                 <div class="row setup-content" id="step-3">
-                    
-                   
+
                     <%@include file="InserimentoStanze.jsp" %>
-                                    
-                                    
+                                                                        
                 </div>
    
                 <div class="row setup-content" id="step-4">

@@ -23,6 +23,7 @@ import javax.servlet.http.Part;
  */
 public class ServletAnnuncio extends HttpServlet {
 
+    private String citta;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,63 +37,121 @@ public class ServletAnnuncio extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-             String action = request.getParameter("action");
-             
-             /*DA ELIMINARE
+            System.out.println("---- Entro In Servlet Annuncio -----------------!!!!\n\n");
+
+            String action = request.getParameter("action");
+
+            /*DA ELIMINARE
              Map<String,String[]> parametri1 = request.getParameterMap();
              Part filePart1 = request.getPart("file");
              InputStream filecontent1 = filePart1.getInputStream();
              
              //FINE DA ELIMINARE */
-              System.out.println("Azione richiesta: " + action);
-             if (action.equalsIgnoreCase("Annunci-newAnnuncio")){
-                 
-                 System.out.println("SIAMO DENTRO");
-                 
-                 System.out.println("Elenco parametri disponibili");
-                 
-                 Map<String,String[]> parametri = request.getParameterMap();
-                 
-                 // prova per le foto
-                 Part filePart = request.getPart("file");
-                  InputStream filecontent = filePart.getInputStream();
-                 
-                 
-                 //fine prova
-                 
-                 //prendo i dati
-                 System.out.println("Inizio A prendere i Dati dell'annuncio");
-                 //Info Appartamento
-                 String citta = request.getParameter("Città").trim();
-                 String quartiere = request.getParameter("Quartiere").trim();
-                 String indirizzo = request.getParameter("Indirizzo").trim();
-                 String civico = request.getParameter("Civico").trim();
-                 
-                 //info Annuncio (manca la data)
-                 String descrizione = request.getParameter("Descrizione").trim();
-                 String metratura = request.getParameter("Metratura").trim();
-                 
-                 
+            System.out.println("Azione richiesta: " + action + "\n\n");
+            if (action.equalsIgnoreCase("Annunci-newAnnuncio")) {
 
+                System.out.println("SIAMO DENTRO");
 
-                 System.out.println("Appartamento");
-                 
-                 System.out.println("  " + citta);
-                 System.out.println("  " + quartiere);
-                 System.out.println("  " + indirizzo);
-                 System.out.println("  " + civico);
-                 System.out.println("  " + descrizione);
-                 System.out.println("  " + metratura);
-                 
-                 
-                 
+                System.out.println("Elenco parametri disponibili");
+
+                Map<String, String[]> parametri = request.getParameterMap();
+
+                // prova per le foto
+                Part filePart = request.getPart("file");
+                InputStream filecontent = filePart.getInputStream();
+
+                //fine prova
+                //prendo i dati
+                System.out.println("Inizio A prendere i Dati dell'annuncio");
+                //Info Appartamento
+                String citta = request.getParameter("Città").trim();
+                String quartiere = request.getParameter("Quartiere").trim();
+                String indirizzo = request.getParameter("Indirizzo").trim();
+                String civico = request.getParameter("Civico").trim();
+
+                //info Annuncio (manca la data)
+                String descrizione = request.getParameter("Descrizione").trim();
+                String metratura = request.getParameter("Metratura").trim();
+
+                System.out.println("Appartamento");
+
+                System.out.println("  " + citta);
+                System.out.println("  " + quartiere);
+                System.out.println("  " + indirizzo);
+                System.out.println("  " + civico);
+                System.out.println("  " + descrizione);
+                System.out.println("  " + metratura);
+
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write("SIAMO DENTRO");
+
+            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
+
+                System.out.println("    action: Annunci-newAnnuncio-infoAppartamento");
+                citta = request.getParameter("Città").trim();
+                String quartiere = request.getParameter("Quartiere").trim();
+                String indirizzo = request.getParameter("Indirizzo").trim();
+                String civico = request.getParameter("Civico").trim();
+                System.out.println("Dati letti:  " + citta + " - " + quartiere + " - " + indirizzo + ", " + civico);
+
                 
-             }else if(action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")){
-                    System.out.println("FUNONZIA!!!!");
-        }
+               // out.write("Dati InfoAppartamento Letti!");
+               
+               response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+               response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+               out.write("Dati info Appartamento inseriti");
+
+
+            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAnnuncio")) {
+                
+                
+                System.out.println("    action: Annunci-newAnnuncio-infoAnnuncio");
+                String descrizione = request.getParameter("Descrizione").trim();
+                String metraturaApp = request.getParameter("Metratura").trim();
+                
+                //Da inserire la data
+
+                System.out.println("Dati letti:  " + descrizione + " - " + metraturaApp);
+                //out.write("Dati InfoAnnuncio Letti!");
+                
+                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+                response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+                 out.write("Dati info Annuncio inseriti " + citta);
+
+                
+            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoStanze")) {
+                
+                
+                System.out.println("    action: Annunci-newAnnuncio-infoStanze");
+                String[] tipologiaStanze = request.getParameterValues("TipologiaStanza");
+                
+                String[] tipoL = request.getParameterValues("TipoL");
+                String[] tipoA = request.getParameterValues("TipoA");
+                
+                String[] metraturaS = request.getParameterValues("MetraturaS");
+                
+                for(int i=0;i<tipologiaStanze.length;i++){
+                    System.out.println("Stanza n° " + (i+1) + "-----------------------" );
+                    
+                    System.out.println("Tipologia stanza " + tipologiaStanze[i] );
+                    System.out.println("Tipo Letto " + tipoL[i] );
+                    System.out.println("Tipo Accessoria " + tipoA[i] );
+                    System.out.println("Metratura Stanza" + metraturaS[i] );
+                    
+                }
+                
+                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+                response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+                 out.write("Dati info Annuncio inseriti " + citta);
+
+                
+            }else{
+                                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+                response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+                out.write("Random");
+            }
+            out.close();
         }
     }
 

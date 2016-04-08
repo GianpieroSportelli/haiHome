@@ -15,50 +15,21 @@
 
     </div>
 
-    <!-- contenitore stanze -->
-    <div  class="col-md-12" id="contenitoreStanze">
+    <form action="../ServletAnnuncio" method="post" id="form-info-stanze">
+        <input type="hidden" name="action" value="Annunci-newAnnuncio-infoStanze" /> 
+
+        <!-- contenitore stanze -->
+        <div  class="col-md-12" id="contenitoreStanze">
 
 
-        <!-- Stanza prova DA CANCELLARE 
-        <div class="col-md-12 formContainer Stanza" id="stanza"> 
 
-            <div class="form-group col-md-6">
-                <div class="form-group">
-                    <label class="control-label">Stanza</label>
-                    <select id='selStanza' class="form-control" >
-                        <option value="1">Stanza da Letto</option>
-                        <option value="2">Stanza Accessoria</option>                       
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label">Tipo di Stanza</label>
-                    <select class="form-control" id="seltipoStanza">
-                        <option>Camera da Letto</option>
-                        <option>Camera Accessoria</option>                       
-                    </select>
-                </div>
-            </div>
-            <div class="form-group col-md-6">
-                <div id="aggiungia " class="btn buttonElimina" onclick="eliminaStanza('stanza')">-</div><br />
-                <label class="control-label">Metratura</label>
-                <input id="inpMetratura" maxlength="100" type="text" required="required" class="form-control" placeholder="Metratura" /><br />
-            </div>
-            <div class="form-group col-md-12" id="dropcontainer">
-                <label class="control-label">Foto</label>
-                <div id="dropzone"><form action="../FotoUploadServlet" class="dropzone needsclick dz-clickable" id="demo-upload">
-                        <div class="dz-message needsclick">
-                            Drop files here or click to upload.<br>
-                        </div>
-                    </form></div>
-            </div>
         </div>
-        FINE STANZA -->
 
-    </div>
+    
 
     <div class="form-group row">
         <div class="col-md-10"></div>
-        <button class="btn btn-primary nextBtn btn-lg pull-right col-md-2" id="NxtS" type="button" >Next</button>
+        <button class="btn btn-primary nextBtn btn-lg pull-right col-md-2" id="butt3" type="submit" >Next</button>
     </div>
+    </form>
 </div>
