@@ -109,4 +109,16 @@ public class GestoreStudente implements GestoreStudenteLocal {
     public Studente getStudente() {
         return this.studente;
     }
+
+    /**
+     * Restituisce uno Studente dando in input il suo ID
+     *
+     * @param id
+     * @return Studente se è presente, null altrimenti
+     */
+    @Override
+    public Studente getStudenteByID(String id) {
+        Studente s = studenteFacade.find(Long.valueOf(id));
+        return s;
+    }
 }

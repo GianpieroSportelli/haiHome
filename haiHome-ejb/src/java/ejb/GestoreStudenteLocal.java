@@ -28,4 +28,6 @@ public interface GestoreStudenteLocal {
     public JSONObject toJSON();
 
     public Studente getStudente();
+    
+    public Studente getStudenteByID(String id);
 }
