@@ -38,7 +38,7 @@ public class Verify {
   /** Replace this with the client ID you got from the Google APIs console.   */
   private static final String CLIENT_ID = "495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com";
   /** Optionally replace this with your application's name.  */
-  private static final String APPLICATION_NAME = "Google+ Java Token Verification";
+  private static final String APPLICATION_NAME = "haiHome? Token Verification";
   /** Default HTTP transport to use to make HTTP requests.  */
   private static final HttpTransport TRANSPORT = new NetHttpTransport();
   /** Default JSON factory to use to deserialize JSON.   */

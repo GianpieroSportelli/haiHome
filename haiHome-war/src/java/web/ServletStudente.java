@@ -43,6 +43,22 @@ public class ServletStudente extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String action = request.getParameter("action");
 
+            /* We have to create or update a session between requests 
+               We suppose that a previous session exists.
+               request.getSession(false): 
+               If create is false and the request has no valid HttpSession, 
+               this method returns null.*//*
+            HttpSession session = request.getSession(false);
+            
+            if (session == null) {
+                session = request.getSession(true); // 
+                session.setAttribute("is-user-logged", false);
+            } */
+            HttpSession session = request.getSession();
+            /*
+           if (session.getAttribute("is-user-logged") == null) 
+               session.setAttribute("is-user-logged", "false"); */
+
             if (action.equalsIgnoreCase("signup-studente")) {
                 String name = request.getParameter("user-name").trim(),
                         surname = request.getParameter("user-surname").trim(),
@@ -77,17 +93,23 @@ public class ServletStudente extends HttpServlet {
                     if (curr_pwd != null) {
                         if (curr_pwd.equals(pwd)) {
                             // creo una nuova sessione 
-                            HttpSession session = request.getSession();
+                            //   HttpSession session = request.getSession();
 
+                            if (gestoreStudente.getStudente() != null) {
+                                session.setAttribute("user-type", "studente");
+                                session.setAttribute("user-data", this.gestoreStudente.toJSON());
+                            }
+/*
                             session.setAttribute("user-type", "studente");
                             session.setAttribute("user-data", this.gestoreStudente.toJSON());
-
+                            session.setAttribute("is-user-logged", (gestoreStudente.getStudente() != null) ? "true" : "false");
+*/
                             //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
+                            /*
                             session.setAttribute("JSONList", this.gestoreStudente.toJSON());
                             session.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
-                            session.setAttribute("IsStudente", true);
+                            session.setAttribute("IsStudente", true);*/
                             // getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-
                         } else {
                             op_result = "password incorretta";
                         }
@@ -128,14 +150,14 @@ public class ServletStudente extends HttpServlet {
                     gestoreStudente.aggiungiStudente(email, nome, cognome, foto, null);
                 }
 
-                HttpSession session = request.getSession();
-
+                //     HttpSession session = request.getSession();
                 session.setAttribute("user-type", "studente");
                 session.setAttribute("user-data", this.gestoreStudente.toJSON());
+                session.setAttribute("is-user-logged", this.gestoreStudente.getStudente() != null);
 
                 //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
                 session.setAttribute("JSONList", this.gestoreStudente.toJSON());
-                session.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
+                //-          session.setAttribute("Loggato", this.gestoreStudente.getStudente() != null);
                 session.setAttribute("IsStudente", true);
                 getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
@@ -158,15 +180,15 @@ public class ServletStudente extends HttpServlet {
                 if (verify != null) {
                     String name = request.getParameter("name");
                     String surname = request.getParameter("surname");
-                    String email = verify[1];
+ //                   String email = verify[1];
+                    String email = request.getParameter("email");
                     String url_img = request.getParameter("url-profile-img");// + "?sz=200";
 
                     if (gestoreStudente.checkStudente(email) == false) {
                         gestoreStudente.aggiungiStudente(email, name, surname, url_img, null);
                     }
 
-                    HttpSession session = request.getSession();
-
+                    //          HttpSession session = request.getSession();
                     session.setAttribute("user-type", "studente");
                     session.setAttribute("user-data", this.gestoreStudente.toJSON());
 
