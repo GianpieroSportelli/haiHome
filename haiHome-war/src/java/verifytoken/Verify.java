@@ -93,7 +93,7 @@ public class Verify {
           // Check that the Access Token is valid.
           try {
             GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
-            Oauth2 oauth2 = new Oauth2.Builder(TRANSPORT, JSON_FACTORY, credential).build();
+            Oauth2 oauth2 = new Oauth2.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
             Tokeninfo tokenInfo = oauth2.tokeninfo().setAccessToken(accessToken).execute();
             
             if (!tokenInfo.getIssuedTo().equals(CLIENT_ID)) {

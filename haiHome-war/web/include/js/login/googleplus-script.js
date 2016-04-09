@@ -18,14 +18,14 @@ function startApp() {
         gapi.client.load('plus', 'v1').then(function () {
             /* render dei bottoni */
             gapi.signin2.render('signin-googleplus-studente', {
-                scope: 'https://www.googleapis.com/auth/plus.login',
+                scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email',
                 fetch_basic_profile: false,
                 theme: 'dark',
                 width: 568,
                 height: 60
             });
             gapi.signin2.render('signin-googleplus-locatore', {
-                scope: 'https://www.googleapis.com/auth/plus.login',
+                scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email',
                 fetch_basic_profile: false,
                 theme: 'dark',
                 width: 568,
@@ -33,7 +33,7 @@ function startApp() {
             });
             /* inizializza il listener */
             gapi.auth2.init({fetch_basic_profile: false,
-                scope: 'https://www.googleapis.com/auth/plus.login'}).then(
+                scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email'}).then(
                     function () {
                         console.log('init');
                         auth2 = gapi.auth2.getAuthInstance();
