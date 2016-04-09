@@ -11,7 +11,7 @@
             <label class="control-label">Modello di Costi</label>
 
             <select id="costi" onchange="cambiaSpecifiche()" class="form-control">
-                <option selected="selected">-</option>
+                <option id="nothing" selected="selected">-</option>
                 <option  value="1">Prezzo intero Appartamento</option>
                 <option  value="2">Prezzo singole Stanze</option>
             </select>
@@ -21,9 +21,9 @@
         <div>
             <div class="form-group" id="prezzoAppartamento" hidden>
             <label class="control-label">Prezzo Appartamento</label>
-            <input maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo" /><br />
-            <input type="checkbox" name="vehicle" value="Bike">Compreso Condominio<br>
-            <input type="checkbox" name="vehicle" value="Car" checked>Compreso Riscaldamento<br>
+            <input maxlength="100" type="text" required="required" class="form-control" /><br />
+            <input name='compresoCondominio' type="checkbox"  value="CC">Compreso Condominio<br>
+            <input name='compresoRiscaldamento' type="checkbox"  value="CR">Compreso Riscaldamento<br>
             
         </div>
         </div>
@@ -58,7 +58,7 @@
 
 
 
-        <button class="btn btn-success btn-lg pull-right" onclick="prova()" <!--type="submit" --> >Submit</button>
+        <button id="submitButtom" class="btn btn-success btn-lg pull-right">Submit</button>
     </div>
 </div>
 

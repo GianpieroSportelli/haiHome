@@ -33,7 +33,7 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
 //    public boolean aggiungiLocatore(String email, String nome, String cognome,
 //        String foto, String password, String descrizione) {
     public boolean aggiungiLocatore(String email, String password, String nome, 
-            String cognome, String telefono) {
+            String cognome, String telefono, String img_profilo) {
         Locatore loc = new Locatore(); 
         //inizializza l'oggetto
         loc.setEmail(email);
@@ -41,10 +41,9 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         loc.setNome(nome);
         loc.setCognome(cognome);
         loc.setTelefono(telefono);
- //       loc.setFotoProfilo("random"); //foto di default??
-        loc.setDescrizione(""); 
- //       loc.setFotoProfilo("");
+        loc.setFotoProfilo(img_profilo);
         loc.setDescrizione("");
+        
         //rende persistente l'oggetto
         locatoreFacade.create(loc); 
         //verifica esito inserimento

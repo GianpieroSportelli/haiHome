@@ -1,101 +1,39 @@
-<%-- 
-    Document   : header
-    Created on : Sep 1, 2014, 10:01:26 AM
-    Author     : giovanna
---%>
+<%@page import="org.json.JSONObject"%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
+<header role="banner">
+    <nav class="main-nav">
+        <ul>
+            <%
+                // if a previous session exists 
+                if (session.getAttribute("user-type") != null) {
+                    /* link al profilo , o all'index se ci si trova correntemente
+                     * nel profilo   */
+                    String currentURL = request.getRequestURI().toString().replace(request.getContextPath().toString() + "/", "");
+                    String url_target_page = "index.jsp", title_target_page = "Home";
 
-        <!-- to correctly display on mobile devices  -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">  
+                    if (!currentURL.contains("-profile.jsp")) {
+                        url_target_page = ((String) session.getAttribute("user-type")) + "-profile.jsp";
+                        title_target_page = "Profilo";
+                    }
 
-        <meta http-equiv="Content-Type" content="text/html; charset="utf-8">
-              <title>JSP Gio Page</title>
-        <!-- Include bootstrap CSS -->
+                    out.println("<li><a class='cd-signup' href='" + url_target_page + "'>"
+                            + title_target_page + "</a></li>");
+                    // form e bottone per logout 
+                    out.println(
+                            "<li><form id='form_logout' action='ServletController' method='POST'>"
+                            + "<input type='hidden' name='action' value='user-logout' >"
+                            + "<a class='cd-signup' href='javascript:;' onclick='parentNode.submit();'>Log out</a>"
+                            + "</form></li>"
+                    );
 
-        <link href="css/bootstrap.css" rel="stylesheet">    
+                } else {
+                    // bottone apertura modal 
+                    out.println("<li><a class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li> ");
+                }
+            %>
+        </ul>
+    </nav>
+</header>
 
-        <link  rel="stylesheet" href="include/css/bootstrap.min.css">
+<%@include file="/include/html/modal-accesso.html"%>
 
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
-        <link href="tutcss.css" rel="stylesheet">
-        <!-- Include jQuery and bootstrap JS plugins  -->
-        <script src="include/jquery/jquery-jquery-2.1.1.min.js"></script>
-        <script src="include/js/bootstrap.js"></script> 
-        <!--   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-           
-        
-           
-   
-     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"  
-        -->
-
-        <style type="text/css">
-            .bs-example{
-                margin: 20px;
-            }
-        </style>
-    </head>
-    <body>
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://code.jquery.com/jquery.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files 
-              as needed -->
-        <script src="include/js/bootstrap.min.js"></script>      
-
-        <!-- Navigation bar  MANCA IL DROPDOWN-->
-        <!-- Site header and navigation -->
-        <header class="top" role="header">
-            <div class="container">
-
-                <a href="#" class="navbar-brand pull-left">
-                    Gio
-                </a>
-                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="glyphicon glyphicon-align-justify"></span>
-                </button>
-                <nav class="navbar-collapse collapse" role="navigation">
-                    <ul class="nav nav-pills">                    
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#">Profile</a></li>
-                        <li class="dropdown">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle ">Messages <b class="caret"></b></a>
-                            <ul class="dropdown-menu scrollable-menu">
-                                <li><a href="#">Inbox</a></li>
-                                <li><a href="#">Drafts</a></li>
-                                <li><a href="#">Sent Items</a></li>
-                                <li><a href="#">Sent Items</a></li>
-                                <li><a href="#">Sent Items</a></li>
-                                <li><a href="#">Sent Items</a></li> 
-                                <li><a href="#">Sent Items</a></li>
-
-                                <li class="divider"></li>
-                                <li><a href="#">Trash</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown pull-right">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Admin <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Settings</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-        <div class="banner">
-            <div class="container">
-                <h1>Gio spike</h1>
-                <p>  Web app Bootstrap 3.0</p>
-            </div>
-        </div>
-        <!-- End of Navigation bar -->
-    </body>
-</html>

@@ -21,14 +21,16 @@ ToDo:
             <label class="control-label">Metratura</label>
             <input id='inpMetratura' name='Metratura' maxlength="200" type="text" class="form-control" />
         </div>
+        
         <div class="form-group">
             <label class="control-label">Data inizio Affitto</label>
 
-            <input id="test" />
 
             <div class="well">
 
-
+                <input data-format="yyyy-MM-dd" type="text"></input>
+                
+                <!--
                 <div id="datetimepicker4" class="input ">
                     <!--
                     <input data-format="yyyy-MM-dd" type="text"></input>
@@ -36,9 +38,10 @@ ToDo:
                         <i data-time-icon="icon-time" data-date-icon="icon-calendar">
                         </i>
                     </span>
-                    -->
+                    
                 </div>
 
+            -->
             </div>
 
         </div>

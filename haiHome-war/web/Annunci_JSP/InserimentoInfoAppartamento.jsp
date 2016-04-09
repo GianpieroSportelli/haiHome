@@ -34,8 +34,8 @@ ToDO:
         <div class="form-group">
 
             <label class="control-label">Indirizzo</label>
-            <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo" /><br />
-            <input id='inpCivico'maxlength="100" type="text" required="required" class="form-control" placeholder="Civico" />
+            <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo"  name='Indirizzo'/><br />
+            <input id='inpCivico'maxlength="100" type="text" required="required" class="form-control" placeholder="Civico" name='Civico' />
 
         </div>
 

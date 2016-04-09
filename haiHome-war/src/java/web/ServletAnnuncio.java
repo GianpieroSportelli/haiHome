@@ -31,16 +31,40 @@ public class ServletAnnuncio extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ServletAnnuncio</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ServletAnnuncio at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+             String action = request.getParameter("action");
+              System.out.println("Azione richiesta: " + action);
+             if (action.equalsIgnoreCase("Annunci-newAnnuncio")){
+                 
+                 System.out.println("SIAMO DENTRO");
+                 
+                 //prendo i dati
+                 System.out.println("Inizio A prendere i Dati dell'annuncio");
+                 //Info Annuncio
+                 String citta = request.getParameter("Città").trim();
+                 String quartiere = request.getParameter("Quartiere").trim();
+                 String indirizzo = request.getParameter("Indirizzo").trim();
+                 String civico = request.getParameter("Civico").trim();
+                 
+                 //Info Appartamento
+                 String descrizione = request.getParameter("Descrizione").trim();
+                 String metratura = request.getParameter("Metratura").trim();
+
+                 System.out.println("Appartamento");
+                 
+                 System.out.println("  " + citta);
+                 System.out.println("  " + quartiere);
+                 System.out.println("  " + indirizzo);
+                 System.out.println("  " + civico);
+                 System.out.println("  " + descrizione);
+                 System.out.println("  " + metratura);
+                 
+                 
+                 
+                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+                response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+                response.getWriter().write("SIAMO DENTRO");
+                
+             }
         }
     }
 

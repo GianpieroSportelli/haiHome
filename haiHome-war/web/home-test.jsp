@@ -53,8 +53,7 @@
 
     </head>
     <body>
-        <%@include file="/login2.jsp" %>
-        <%@include file="/header3Login.jsp" %>
+        <%@include file="/header.jsp" %>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-md-offset-3 col-lg-offset-0">

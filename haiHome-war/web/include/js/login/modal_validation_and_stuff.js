@@ -1,6 +1,14 @@
 jQuery(document).ready(function ($) {
     var myModal = $('#myModal');
 
+    var email_regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var phone_regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+    /* Password expression that requires one lower case letter, 
+     * one upper case letter, one digit, 6-13 length, and no spaces. */
+    var password_regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
+
+
+
     //initialize popovers in the page 
     $(function () {
         $('[data-toggle="popover"]').popover()
@@ -33,36 +41,44 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    //disable submit button until all fields have values
-    /* se si riesce a fare una funzione parametrizzata per tutti i form e' meglio, 
-     * così fa cagare...ma meglio di niente */
-    (function () {
-        $('#locatore-login input').keyup(function () {
+    /*
+    function submit_with_enter_listener($form) {
+        //boh
+    } */
+   
+    //disable submit button until all fields have valid values
+    function check_filled_form($form, $submit) {
+        $form.keyup(function () {
             var empty = false;
-            $('#locatore-login input').each(function () {
-                if ($(this).val().trim() == '') 
+
+            /* questa roba qua, una volta funzionante, 
+             * va messa in modo che triggeri per ogni singolo input - 
+             * diventa più leggero e non agiamo su tutto il form ogni volta
+             */
+            $form.each(function () {
+                var name = $(this).attr("name");
+                var input_value = $(this).val().trim();
+
+                if (((name === "user-name" || name === "user-surname") && input_value == '') ||
+                        (name === "user-email" && !email_regex.test(input_value)) ||
+                        (name === "user-phone" && !phone_regex.test(input_value)) ||
+                        ((name === "user-pw" || name === "user-pw-repeat") && input_value == '')) { /*|| non funge D: 
+                         (name === "user-pw-repeat" && input_value !== $form.find('input[name="user-pw"]').val())*/
                     empty = true;
+                    return false;
+                }
+
+//                    alert(form.find('input[name="user-pw"]').val()); - è undefined D:
             });
 
-            empty ? $('#submit-login-loc').attr('disabled', 'disabled') :
-                    $('#submit-login-loc').removeAttr('disabled');
+            empty ? $submit.attr('disabled', 'disabled') : $submit.removeAttr('disabled');
         });
-    })();
-    
-    (function () {
-        $('#locatore-reg input').keyup(function () {
-            var empty = false;
-            $('#locatore-reg input').each(function () {
-                if ($(this).val().trim() == '') 
-                    empty = true;
-            });
+    }
 
-            empty ? $('#submit-reg-loc').attr('disabled', 'disabled') :
-                    $('#submit-reg-loc').removeAttr('disabled');
-        });
-    })();
-    
-
+    check_filled_form($('#locatore-login input'), $('#submit-login-loc'));
+    check_filled_form($('#locatore-reg input'), $('#submit-reg-loc'));
+    check_filled_form($('#studente-login input'), $('#submit-login-stud'));
+    check_filled_form($('#studente-reg input'), $('#submit-reg-stud'));
 
     //IE9 placeholder fallback
     //credits http://www.hagenburger.net/BLOG/HTML5-Input-Placeholder-Fix-With-jQuery.html

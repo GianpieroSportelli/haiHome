@@ -70,8 +70,8 @@
 
         %>
         <!-- bootstap necessita di container ne esistono di 2 tipi container e container-fluid -->
-        <%@include file="/login2.jsp" %>
-        <%@include file="/header3Login.jsp" %> 
+        <%@include file="/header.jsp" %>
+        
         <div class="container">
 
             <div class="row">

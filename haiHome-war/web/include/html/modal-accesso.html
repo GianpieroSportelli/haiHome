@@ -1,12 +1,3 @@
-<header role="banner">
-    <nav class="main-nav">
-        <ul>
-            <li><a class="cd-signup" href="#myModal" data-toggle="modal">Accesso</a></li> 
-
-        </ul>
-    </nav>
-</header>
-
 <div id="myModal" class="modal fade" role="dialog" data-backdrop="static">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -17,9 +8,7 @@
                 <ul class="nav nav-pills nav-justified">
                     <li class="active"><a data-toggle="tab" href="#login-stud">Accesso Studente</a></li>
                     <li><a data-toggle="tab" href="#login-loc">Accesso Locatore</a></li>
-                    <li>
-                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                    </li>
+                    <li><a class="close" data-dismiss="modal" aria-hidden="true">&times;</a></li>
                 </ul>
             </div> <!-- fine header -->
             <div class="modal-body">
@@ -35,13 +24,15 @@
                                     <span>Accedi con <strong>Facebook</strong></span>
                                 </div>
                             </a>
-                            <a href="#" class="connect googleplus">
+                            <a href="#" id='googleplus-studente'>  <!-- class="connect googleplus"> -->
+                                <div id="signin-googleplus-studente"></div>
+                                <!--
                                 <div class="connect__icon">
                                     <i class="fa fa-google-plus"></i>
                                 </div>
                                 <div class="connect__context">
                                     <span>Accedi con <strong>Google+</strong></span>
-                                </div>
+                                </div> -->
                             </a>
                         </div>
                         <div class="logmod__heading">
@@ -51,9 +42,10 @@
                         </div> 
                         <div class="logmod__form">
                             <form id="studente-login" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
+                                <input type="hidden" name="action" value="login-studente" />
                                 <div class="sminputs">
                                     <div class="input full">
-                                        <label class="string optional" for="user-name">Email*</label>
+                                        <label class="string optional" for="user-email">Email*</label>
                                         <input class="string optional" maxlength="255" name="user-email" placeholder="Email" type="email" size="50" />
                                     </div>
                                 </div>
@@ -64,8 +56,14 @@
                                         <span class="hide-password">Show</span>
                                     </div>
                                 </div>
-                                <div class="simform__actions">
-                                    <input id="submit-login-stud" class="sumbit" name="commit" type="sumbit" value="Log In" />
+                                <div class="simform__actions"> <!--
+                                    <input id="submit-login-stud" class="sumbit" name="commit" type="sumbit" value="Log In" /> -->
+
+                                    <a href="#0" id="submit-login-stud" class="btn btn-lg btn-success" role="button"
+                                       data-toggle="popover" data-trigger="manual" data-content="" disabled="disabled"> 
+                                        Log In 
+                                    </a>
+
                                     <span class="simform__actions-sidetext">
                                         <!--<a class="special" target="_blank" role="link">Password dimenticata?</a>-->
                                         <a href="#reg-stud" data-toggle="tab"> Non hai un account? </a>
@@ -82,27 +80,27 @@
                     <div id="reg-stud" class="tab-pane fade">
                         <div class="logmod__heading">
                             <span class="logmod__heading-subtitle">
-                                Enter your personal details <strong>to create an account</strong>
+                                Inserisci le informazioni richieste <strong>per creare un account</strong>
                             </span>
                         </div>
                         <div class="logmod__form">
-                            <form id="studente-reg" accept-charset="utf-8" action="ServletController" method="POST" lcass="simform">
+                            <form id="studente-reg" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
                                 <input type="hidden" name="action" value="signup-studente"/>
                                 <div class="sminputs">
                                     <div class="input string optional">
-                                        <label class="string optional" for="user-name">Name*</label>
+                                        <label class="string optional" for="user-name">Nome*</label>
                                         <input class="string optional" maxlength="255" name="user-name" placeholder="Il tuo nome" type="text" size="50" />
                                     </div>
                                     <div class="input string optional">
-                                        <label class="string optional" for="user-surname">Surname*</label>
-                                        <input class="string optional" maxlength="255" name="user-surname" placeholder="Il tuo nome" type="text" size="50" />
+                                        <label class="string optional" for="user-surname">Cognome*</label>
+                                        <input class="string optional" maxlength="255" name="user-surname" placeholder="Il tuo cognome" type="text" size="50" />
                                     </div>
 
                                 </div>
                                 <div class="sminputs">
                                     <div class="input full">
                                         <label class="string optional" for="user-email">Email*</label>
-                                        <input class="string optional" maxlength="255" name="user-email" placeholder="Email" type="email" size="50" />
+                                        <input class="string optional" maxlength="255" name="user-email" placeholder="La tua email" type="email" size="50" />
                                     </div> 
                                 </div>
                                 <div class="sminputs">
@@ -111,12 +109,19 @@
                                         <input class="string optional" maxlength="255" name="user-pw" placeholder="Password" type="text" size="50" />
                                     </div>
                                     <div class="input string optional">
-                                        <label class="string optional" for="user-pw-repeat">Repeat password *</label>
-                                        <input class="string optional" maxlength="255" name="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
+                                        <label class="string optional" for="user-pw-repeat">Ripeti password *</label>
+                                        <input class="string optional" maxlength="255" name="user-pw-repeat" placeholder="Ripeti password" type="text" size="50" />
                                     </div>
                                 </div>
                                 <div class="simform__actions">
-                                    <input id="submit-reg-stud" class="sumbit" name="commit" type="sumbit" value="Create Account" />
+                                    <!--
+                                    <input id="submit-reg-stud" class="sumbit" name="commit" type="sumbit" value="Create Account" /> -->
+
+                                    <a href="#0" id="submit-reg-stud" class="btn btn-lg btn-success" role="button"
+                                       data-toggle="popover" data-trigger="manual" data-content="" disabled="disabled"> 
+                                        Crea Account
+                                    </a>
+
                                     <span class="simform__actions-sidetext">
                                         <!--By creating an account you agree to our <a class="special" target="_blank" role="link">Terms & Privacy</a>-->
                                         <a data-toggle="tab" href="#login-stud">Torna al login</a>
@@ -141,13 +146,15 @@
                                         <span>Accedi con <strong>Facebook</strong></span>
                                     </div>
                                 </a>
-                                <a href="#" class="connect googleplus">
+                                <a href="#" id='googleplus-locatore'> <!-- class="connect googleplus">-->
+                                    <div id="signin-googleplus-locatore"></div>
+                                    <!--
                                     <div class="connect__icon">
                                         <i class="fa fa-google-plus"></i>
                                     </div>
                                     <div class="connect__context">
                                         <span>Accedi con <strong>Google+</strong></span>
-                                    </div>
+                                    </div>-->
                                 </a>
                             </div>
                         </div>
@@ -191,12 +198,6 @@
                                 </div> 
                             </form>
                         </div>
-                        <!--
-                                                <p class="cd-form-bottom-message2">
-                                                    <a href="#reg-loc" data-toggle="tab"> Non hai un account? </a>
-                                                </p> -->
-
-
                     </div> 
                     <!-- tab nasconsta: registrazione locatore --> 
                     <div id="reg-loc" class="tab-pane fade">
@@ -210,23 +211,23 @@
                                 <input type="hidden" name="action" value="signup-locatore" />
                                 <div class="sminputs">
                                     <div class="input string optional">
-                                        <label class="string optional" for="user-name">Name*</label>
+                                        <label class="string optional" for="user-name">Nome*</label>
                                         <input class="string optional" maxlength="255" name="user-name" placeholder="Il tuo nome" type="text" size="50" />
                                     </div>
                                     <div class="input string optional">
-                                        <label class="string optional" for="user-surname">Surname*</label>
-                                        <input class="string optional" maxlength="255" name="user-surname" placeholder="Il tuo nome" type="text" size="50" />
+                                        <label class="string optional" for="user-surname">Cognome*</label>
+                                        <input class="string optional" maxlength="255" name="user-surname" placeholder="Il tuo cognome" type="text" size="50" />
                                     </div>
 
                                 </div>
                                 <div class="sminputs">
                                     <div class="input string optional">
-                                        <label class="string optional" for="user-phone">Phone*</label>
-                                        <input class="string optional" maxlength="255" name="user-phone" placeholder="Phone number" type="text" size="50" />
+                                        <label class="string optional" for="user-phone">Numero di telefono*</label>
+                                        <input class="string optional" maxlength="255" name="user-phone" placeholder="Il tuo numero di telefono" type="text" size="50" />
                                     </div>
                                     <div class="input string optional">
                                         <label class="string optional" for="user-email">Email*</label>
-                                        <input class="string optional" maxlength="255" name="user-email" placeholder="Email" type="email" size="50" />
+                                        <input class="string optional" maxlength="255" name="user-email" placeholder="La tua email" type="email" size="50" />
                                     </div>
 
                                     <!--
@@ -238,17 +239,17 @@
                                 <div class="sminputs">
                                     <div class="input string optional">
                                         <label class="string optional" for="user-pw">Password *</label>
-                                        <input class="string optional" maxlength="255" name="user-pw" placeholder="Password" type="text" size="50" />
+                                        <input class="string optional" maxlength="255" name="user-pw" placeholder="Password" type="password" size="50" />
                                     </div>
                                     <div class="input string optional">
-                                        <label class="string optional" for="user-pw-repeat">Repeat password *</label>
-                                        <input class="string optional" maxlength="255" name="user-pw-repeat" placeholder="Repeat password" type="text" size="50" />
+                                        <label class="string optional" for="user-pw-repeat">Ripeti password *</label>
+                                        <input class="string optional" maxlength="255" name="user-pw-repeat" placeholder="Ripeti password" type="password" size="50" />
                                     </div>
                                 </div>
                                 <div class="simform__actions">
                                     <a href="#0" id="submit-reg-loc" class="btn btn-lg btn-success" role="button"
                                        data-toggle="popover" data-trigger="manual" data-content="" disabled="disabled"> 
-                                        Create Account
+                                        Crea Account
                                     </a>
 
                                     <!--
@@ -277,10 +278,10 @@
 <!-- FACEBOOK -->
 <form id="formLogin" method="POST" action="ServletController">
     <!-- Per far elaborare la richiesta dalla servlet -->
-    <input id="azione" type="hidden" name="action" value="loginFacebook">
-    <input type="hidden" id="userData" name="userData">
-    <input type="hidden" id="mailUser" name="mailUser">
-    <input type="hidden" id="profilo" name="profilo">
+    <input id="azione" type="hidden" name="action" value="loginFacebook"/>
+    <input type="hidden" id="userData" name="userData"/>
+    <input type="hidden" id="mailUser" name="mailUser"/>
+    <input type="hidden" id="profilo" name="profilo"/>
 </form>
 <!-- Per passare i parametri -->
 <div id="status"></div>
@@ -289,7 +290,17 @@
 
 <img id="profileImage">
 <!-- FACEBOOK -->
+<!-- Google+ -->
+<form id="form-login-googleplus" method="POST" action="ServletController">
+    <input type="hidden" name="action"  value="login-googleplus-"/>
+    <input type="hidden" name="name" value=""/>
+    <input type="hidden" name="surname"/>
+    <input type="hidden" name="url-profile-img"/>
+    <input type="hidden" name="phone"/>
+    <input type="text" id="id_token"  name="id_token">
+    <input type="text" id="id_access_token" name="access_token">
+</form>
 
 
-<script src="include/js/login/main.js"></script> <!-- Gem jQuery -->
-<script src="include/js/login/login_checks.js"></script>
+<script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
+<script src="include/js/login/ajax_req_and_stuff.js"></script>

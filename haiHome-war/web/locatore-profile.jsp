@@ -1,24 +1,31 @@
 <%-- 
-    Document   : index.jsp
-    Created on : 10-nov-2015, 16.56.24
-    Author     : Eugenio Liso
+    Document   : locatore-profile
+    Created on : 3-apr-2016, 0.36.09
+    Author     : nico
 --%>
+
+<%@page import="org.json.JSONObject"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="org.json.JSONObject"%> 
-<%@page import="java.util.ArrayList"%> 
-<%@page import="javax.servlet.http.HttpSession"%>
+
+<%
+    boolean session_exists = session.getAttribute("user-type") != null;
+    JSONObject user_data = (JSONObject) session.getAttribute("user-data");
+%>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>haiHome? Profilo Utente</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>haiHome? - Profilo Locatore </title>
+        
         <link rel="stylesheet" href="include/css/login/normalize.css">
 
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
 
         <link rel="stylesheet" href="include/css/login/style.css">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -51,13 +58,10 @@
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
-        </style>        
-
+        </style>
     </head>
     <body>
-        <%@include file="/login2.jsp" %> 
-        <%@include file="/header3Login.jsp" %> 
-
+        <%@include file="/header.jsp" %>
         <div class="container">
             <div class="row profile">
                 <div class="col-md-3">
@@ -65,59 +69,30 @@
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic">
                             <%
-                                sessione = request.getSession();
-                                JSONObject datiUtente = (JSONObject) sessione.getAttribute("JSONList");
-
+                                if (session_exists) {
+                                    out.println(
+                                            "<img src='" + user_data.getString("fotoProfilo") + "'"
+                                            + "class='img-responsive' alt=''/>"); 
+                                } else {
+                                    out.println("no login no party");
+                                }
                             %>
-                            <img src="<%= datiUtente.getString("Foto")%>" class="img-responsive" alt="">
+
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name">
-                                <%= datiUtente.getString("Nome") + " " + datiUtente.getString("Cognome")%>
-                            </div>
-                            <div class="profile-usertitle-job">
                                 <%
-                                    Boolean isStudente = (Boolean) sessione.getAttribute("IsStudente");
-                                    if (isStudente) {
-
+                                    if (session_exists) {
+                                        out.println(user_data.getString("nome") + " " + user_data.getString("cognome"));
+                                    }
                                 %>
-                                Studente
-                                <% } else {%>
-                                Locatore
-                                <% }%>
+                                <!--  < % = user_data.getString("Nome") + " " + user_data.getString("Cognome")%> -->
                             </div>
+                            <div class="profile-usertitle-job">Locatore</div>
                         </div>
 
-
-                        <!-- END SIDEBAR USER TITLE -->
-                        <!-- SIDEBAR BUTTONS -->
-                        <!-- END SIDEBAR BUTTONS -->
-                        <!-- SIDEBAR MENU -->
-                        <!--<div class="tabbable">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab1" data-toggle="tab">Request Audit</a></li>
-                                <li class=""><a href="#tab2" data-toggle="tab">Status</a></li>
-                                <li class=""><a href="#tab3" data-toggle="tab">Settings</a></li>
-                                <li class=""><a href="#tab4" data-toggle="tab">Help</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab1">
-                                    <p>Placeholder 1</p>
-                                </div>
-                                <div class="tab-pane" id="tab2">
-                                    <p>Placeholder 2</p>
-                                </div>
-                                <div class="tab-pane" id="tab3">
-                                    <p>Placeholder 3</p>
-                                </div>
-                                <div class="tab-pane" id="tab4">
-                                    <p>Placeholder</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
 
                         <div class="profile-usermenu"> <!-- required for floating -->
                             <!-- Nav tabs -->
@@ -136,30 +111,6 @@
 
 
 
-                        <!--<div class="profile-usermenu">
-                            <ul class="nav">
-                                <li class="active">
-                                    <a href="#">
-                                        <i class="glyphicon glyphicon-home"></i>
-                                        Overview </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        Account Settings </a>
-                                </li>
-                                <li>
-                                    <a href="#" target="_blank">
-                                        <i class="glyphicon glyphicon-ok"></i>
-                                        Tasks </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="glyphicon glyphicon-flag"></i>
-                                        Help </a>
-                                </li>
-                            </ul>
-                        </div>-->
                         <!-- END MENU -->
                     </div>
 
@@ -167,21 +118,34 @@
                 <div class="col-xs-9">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
-                        <div class="tab-pane active" id="home">
+                        <div class="tab-pane fade in active" id="home">
                             <table class="table table-user-information">
                                 <tbody>
                                     <tr>
                                         <td>Nome: </td>
-                                        <td><%= datiUtente.getString("Nome")%></td>
+                                        <td> 
+                                            <%= user_data.getString("nome")%> 
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Cognome:</td>
-                                        <td><%= datiUtente.getString("Cognome")%></td>
+                                        <td> 
+                                            <%= user_data.getString("cognome")%>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Email: </td>
-                                        <td><%= datiUtente.getString("Email")%></td>
+                                        <td>
+                                            <%= user_data.getString("email")%> 
+                                        </td>
                                     </tr>
+                                    <tr>
+                                        <td>Numero di telefono: </td>
+                                        <td>
+                                            <%= user_data.getString("telefono")%> 
+                                        </td>
+                                    </tr>
+                                    
 
                                     <tr>
                                         <td> </td>
@@ -190,22 +154,13 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="annunci">Annunci preferiti qui</div>
-                        <div class="tab-pane" id="filtri">Filtri utente qui</div>
+                        <div class="tab-pane fade" id="annunci">Annunci preferiti qui</div>
+                        <div class="tab-pane fade" id="filtri">Filtri utente qui</div>
                     </div>
                 </div>  
             </div>
         </div>
-        <br>
-        <br>     
 
-        <script>
-
-
-
-        </script>
-
-        <%@include file="/footer.jsp" %>
 
     </body>
 </html>
