@@ -21,7 +21,7 @@
         
 
         <link rel="stylesheet" href="../include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
-        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone.css">       
+        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone1.css">       
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -54,23 +54,23 @@
             </div> <!-- fine step superiori-->
 
             <!-- inizio pagine step -->
-            <form action="../ServletAnnuncio" method="post" id="formAnnuncio">
-                <input type="hidden" name="action" value="Annunci-newAnnuncio" />
-                <div class="row setup-content" id="step-1">
+        <!--    <form action="../ServletAnnuncio" method="post" enctype='multipart/form-data' id="formAnnuncio"> -->
+            <!--    <input type="hidden" name="action" value="Annunci-newAnnuncio" /> -->
+                <div class="row setup-content" id="step-1"> 
 
                     <%@include file="InserimentoInfoAppartamento.jsp" %>
                 </div>
 
                 <div class="row setup-content" id="step-2">
+                    
                     <%@include file="InserimentoInfoAnnuncio.jsp" %>
+                    
                 </div>
 
                 <div class="row setup-content" id="step-3">
-                    
-                   
+
                     <%@include file="InserimentoStanze.jsp" %>
-                                    
-                                    
+                                                                        
                 </div>
    
                 <div class="row setup-content" id="step-4">
@@ -79,7 +79,7 @@
                     
                 </div>
 
-            </form>
+         <!--   </form>  -->
 
 
 
@@ -87,7 +87,7 @@
 
 
         <script type="text/javascript">
-
+/*
             //codice per lo step-wizard
             $(document).ready(function () {
                 var navListItems = $('div.setup-panel div a'),
@@ -126,9 +126,17 @@
                         }
                     }
 
-                    if (isValid)
-                        nextStepWizard.removeAttr('disabled').trigger('click');
+                    if (isValid){
+                        console.log("Sono entrato");
+                        var form = allNextBtn.parent("form");
+                        var id = form.attr("id");
+                        console.log("   " + form + " " + id);
                         
+                        $('#'+id).ajaxForm(function () {
+                                console.log("Sia lodato");
+                        });
+                        nextStepWizard.removeAttr('disabled').trigger('click');
+                    }
                 });
 
                 jQuery('div.setup-panel div a.btn-primary').trigger('click');
@@ -140,7 +148,7 @@
 
 
             });
-
+*/
         </script>
 
 
@@ -152,18 +160,20 @@
         <script type="text/javascript"
                 src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
         </script>
+        
+                                <!--INIZIO - Form ajax plugin -->
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <!--FINE- Form ajax plugin -->
 
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/dataPicker.js"></script>
 
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/stanzeUtily.js"></script>
 
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone.js"></script>
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone1.js"></script>
         
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
         
-                        <!--INIZIO - Form ajax plugin -->
-        <script src="http://malsup.github.com/jquery.form.js"></script> 
-        <!--FINE- Form ajax plugin -->
+
 
 
     </body>

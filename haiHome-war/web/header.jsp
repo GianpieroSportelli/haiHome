@@ -2,12 +2,11 @@
 
 <header role="banner">
     <nav class="main-nav">
-        <ul>
+        <ul> 
             <%
-                // if a previous session exists 
                 if (session.getAttribute("user-type") != null) {
                     /* link al profilo , o all'index se ci si trova correntemente
-                     * nel profilo   */
+                         * nel profilo   */
                     String currentURL = request.getRequestURI().toString().replace(request.getContextPath().toString() + "/", "");
                     String url_target_page = "index.jsp", title_target_page = "Home";
 
@@ -25,7 +24,6 @@
                             + "<a class='cd-signup' href='javascript:;' onclick='parentNode.submit();'>Log out</a>"
                             + "</form></li>"
                     );
-
                 } else {
                     // bottone apertura modal 
                     out.println("<li><a class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li> ");

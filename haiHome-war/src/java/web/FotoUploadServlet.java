@@ -6,19 +6,23 @@
 package web;
 
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.io.PrintWriter;
 
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,21 +48,11 @@ public class FotoUploadServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String objarray = request.getParameter("annuncio").toString();
-            JSONObject jObj = new JSONObject(request.getParameter("annuncio").toString()); // this parses the json
-            Iterator it = jObj.keys(); //gets all the keys
-
-            while (it.hasNext()) {
-                String key = (String) it.next(); // get key
-                Object o = jObj.get(key); // get value
-                System.out.println("Chiave: " + key + " Valore: " + o.toString());
-                
-            }
 
             /* TODO output your page here. You may use following sample code. */
- /* CODICE PER PASSARE LE FOTO
-        String action = request.getParameter("action");
-            System.out.println(action);
+
+                String action = request.getParameter("action");
+                System.out.println(action);
                 Part filePart = request.getPart("file");
                 System.out.println("ciao");
                 
@@ -76,7 +70,7 @@ public class FotoUploadServlet extends HttpServlet {
                 prova.close();
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/Annunci_JSP/InserimentoStanze.jsp");
                 rd.forward(request, response);
-             */
+             
         }
     }
 

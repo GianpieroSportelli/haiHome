@@ -38,7 +38,7 @@ public class Verify {
   /** Replace this with the client ID you got from the Google APIs console.   */
   private static final String CLIENT_ID = "495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com";
   /** Optionally replace this with your application's name.  */
-  private static final String APPLICATION_NAME = "Google+ Java Token Verification";
+  private static final String APPLICATION_NAME = "haiHome? Token Verification";
   /** Default HTTP transport to use to make HTTP requests.  */
   private static final HttpTransport TRANSPORT = new NetHttpTransport();
   /** Default JSON factory to use to deserialize JSON.   */
@@ -93,7 +93,7 @@ public class Verify {
           // Check that the Access Token is valid.
           try {
             GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
-            Oauth2 oauth2 = new Oauth2.Builder(TRANSPORT, JSON_FACTORY, credential).build();
+            Oauth2 oauth2 = new Oauth2.Builder(TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
             Tokeninfo tokenInfo = oauth2.tokeninfo().setAccessToken(accessToken).execute();
             
             if (!tokenInfo.getIssuedTo().equals(CLIENT_ID)) {

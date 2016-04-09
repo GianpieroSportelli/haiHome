@@ -18,14 +18,14 @@ function startApp() {
         gapi.client.load('plus', 'v1').then(function () {
             /* render dei bottoni */
             gapi.signin2.render('signin-googleplus-studente', {
-                scope: 'https://www.googleapis.com/auth/plus.login',
+                scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email',
                 fetch_basic_profile: false,
                 theme: 'dark',
                 width: 568,
                 height: 60
             });
             gapi.signin2.render('signin-googleplus-locatore', {
-                scope: 'https://www.googleapis.com/auth/plus.login',
+                scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email',
                 fetch_basic_profile: false,
                 theme: 'dark',
                 width: 568,
@@ -33,17 +33,17 @@ function startApp() {
             });
             /* inizializza il listener */
             gapi.auth2.init({fetch_basic_profile: false,
-                scope: 'https://www.googleapis.com/auth/plus.login'}).then(
+                scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email'}).then(
                     function () {
                         console.log('init');
                         auth2 = gapi.auth2.getAuthInstance();
                         //auth2.isSignedIn.listen(updateSignIn);
-                        
+
                         if (auth2.isSignedIn.get()) {
-                            console.log('sign out forzato'); 
-                            auth2.signOut()
+                            console.log('sign out forzato');
+                            auth2.signOut();
                         }
-                        
+
                         console.log('mi metto in attesa del click');
                         auth2.isSignedIn.listen(signinChanged);
                     });
@@ -54,16 +54,16 @@ function startApp() {
 /* Handler for when the sign-in state changes.
  * @param {boolean} isSignedIn The new signed in state. */
 /*
-function updateSignIn() {
-    if (auth2.isSignedIn.get()) {
-        console.log('update sign in state...signed in');
-        //    alert("login"); 
-        onSignInCallback(gapi.auth2.getAuthInstance());
-    } else {
-        console.log('update sign in state...signed out');
-    }
-
-} */
+ function updateSignIn() {
+ if (auth2.isSignedIn.get()) {
+ console.log('update sign in state...signed in');
+ //    alert("login"); 
+ onSignInCallback(gapi.auth2.getAuthInstance());
+ } else {
+ console.log('update sign in state...signed out');
+ }
+ 
+ } */
 /* sta in attesa del login */
 var signinChanged = function (val) {
     if (val) {
@@ -90,9 +90,13 @@ function onSignInCallback(authResult) {
                      * To resize the image and crop it to a square, append the query string 
                      * ?sz=x, where x is the dimension in pixels of each side. */
                     $form.find('input[name="url-profile-img"]').val(profile.result.image.url);
-                    $form.submit();
 
-                    //   $('#userParameters').submit();     
+                    for (var i = 0; i < profile.result.emails.length; i++) {
+                        if (profile.result.emails[i].type === 'account')
+                            $form.find('input[name="email"]').val(profile.result.emails[i].value);
+                    }
+                    
+                    $form.submit();  
                 },
                 function (err) {
                     ; // da gestire più avanti magari

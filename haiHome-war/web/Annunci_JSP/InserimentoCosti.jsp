@@ -21,9 +21,9 @@
         <div>
             <div class="form-group" id="prezzoAppartamento" hidden>
             <label class="control-label">Prezzo Appartamento</label>
-            <input maxlength="100" type="text" required="required" class="form-control" /><br />
-            <input name='compresoCondominio' type="checkbox"  value="CC">Compreso Condominio<br>
-            <input name='compresoRiscaldamento' type="checkbox"  value="CR">Compreso Riscaldamento<br>
+            <input name = 'prezzoA' maxlength="100" type="text" required="required" class="form-control" /><br />
+            <input name='compresoCondominioA' type="checkbox"  value="CC">Compreso Condominio<br>
+            <input name='compresoRiscaldamentoA' type="checkbox"  value="CR">Compreso Riscaldamento<br>
             
         </div>
         </div>

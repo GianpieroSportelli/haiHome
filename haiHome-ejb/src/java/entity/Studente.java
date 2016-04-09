@@ -51,8 +51,12 @@ public class Studente implements Serializable {
      *
      * @return the value of listaFiltriPreferiti
      */
-    public Collection<FiltroDiRicerca> getListaFiltriPreferiti() {
-        return listaFiltriPreferiti;
+    public JSONArray getListaFiltriPreferiti() throws JSONException {
+        JSONArray result = new JSONArray();
+        for (FiltroDiRicerca x : listaFiltriPreferiti) {
+            result.put(x.toJSON());
+        }
+        return result;
     }
 
     /**
@@ -219,19 +223,19 @@ public class Studente implements Serializable {
             studenteJSON.accumulate("Foto", this.getFotoProfilo());
 
             //aggiungo Lista filtri preferiti
-            JSONArray JSONFiltriPreferiti = new JSONArray();
-            for (FiltroDiRicerca f : this.listaFiltriPreferiti) {
+            //JSONArray JSONFiltriPreferiti = new JSONArray();
+            //for (FiltroDiRicerca f : this.listaFiltriPreferiti) {
                 //     JSONFiltriPreferiti.put(f.toJSON());
-            }
+           // }
 
             //aggiungo Lista annunci preferiti
-            JSONArray JSONAnnunciPreferiti = new JSONArray();
-            for (Annuncio a : this.listaAnnunciPreferiti) {
-                JSONFiltriPreferiti.put(a.toJSON());
-            }
+            //JSONArray JSONAnnunciPreferiti = new JSONArray();
+           // for (Annuncio a : this.listaAnnunciPreferiti) {
+            //    JSONFiltriPreferiti.put(a.toJSON());
+           // }
 
-            studenteJSON.accumulate("FiltriPreferiti", JSONFiltriPreferiti);
-            studenteJSON.accumulate("AnnunciPreferiti", JSONAnnunciPreferiti);
+           // studenteJSON.accumulate("FiltriPreferiti", JSONFiltriPreferiti);
+           // studenteJSON.accumulate("AnnunciPreferiti", JSONAnnunciPreferiti);
 
         } catch (JSONException ex) {
             Logger.getLogger(Annuncio.class.getName()).log(Level.SEVERE, null, ex);
@@ -244,7 +248,7 @@ public class Studente implements Serializable {
         JSONArray array = new JSONArray();
 
         int contatore = 1;
-        for (FiltroDiRicerca f : this.getListaFiltriPreferiti()) {
+        for (FiltroDiRicerca f : this.listaFiltriPreferiti) {
             JSONObject obj = new JSONObject();
             try {
 
