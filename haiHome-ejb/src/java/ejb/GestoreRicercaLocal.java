@@ -42,5 +42,7 @@ public interface GestoreRicercaLocal {
     ArrayList<String> getTipoStanza();
 
     double[] geocodeCurrentCity();
+
+    boolean eseguiRicerca();
     
 }

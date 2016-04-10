@@ -330,3 +330,7 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
+
+.sol-label,.sol-selection {
+    margin-top: 10px;
+}

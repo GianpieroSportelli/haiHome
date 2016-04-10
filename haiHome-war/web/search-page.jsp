@@ -39,9 +39,6 @@
         <link rel="stylesheet" href="include/css/search/search-result.css">
         <link rel="stylesheet" href="include/css/search/search-page.css">
         <!-- FINE import SOL -->  
-        <!-- INIZIO import ajax-fun searchPage-->
-        <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
-        <!-- FINE import ajax-fun searchPage-->
         <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
@@ -57,7 +54,13 @@
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
-
+        <!-- INFO BOX -->
+        <script type="text/javascript" src="include/js/search/jquery.colorbox-min.js"></script>
+        <link rel="stylesheet" href="include/css/search/colorbox.css">
+        <!-- FINE INFO BOX-->
+        <!-- INIZIO import ajax-fun searchPage-->
+        <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
+        <!-- FINE import ajax-fun searchPage-->
     </head>
     <body>
         <%@include file="/header.jsp" %>
@@ -72,21 +75,25 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="ibox float-e-margins">
+
                                 <div class="ibox-content" id="list-result">
                                     <div class="hr-line-dashed"></div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-3">
-                    <div class="well">
+                    <div class="well" id="searchDiv">
                         <h1 align="center">Filtro di Ricerca</h1>
                         <form class="form-horizontal" id="searchForm" action="ServletController" method="post" >
                             <input type="hidden" name="action" value="search">
                             <div>
-                                <label class="sol-label" for="quartieri">Seleziona Quartieri</label>
+                                <label class="sol-label" for="quartieri"><span id="info-quartieri" class="glyphicon glyphicon-info-sign">
+                                        <a class="infobox btn" href="images/infobox.png" title="Mappa dei quartieri di Torino.">Seleziona quartieri</a>
+                                    </span></label>
+                                <p></p>
                                 <select class="sol-selection" name="quartieri" id="quartieri" multiple="multiple">
 
                                 </select>
@@ -108,31 +115,31 @@
                             </div>
 
                             <div class="form-group" id="divNLocali" style="display:none">
-                                <label for="detail-NLocali-Button" class="control-label">Numero Locali</label>
-                                <span class="input-group-btn glyphicon glyphicon-align-left">
+                                <label for="detail-NLocali-Button" class="control-label">Numero Locali
+
                                     <button id="detail-NLocali-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
-                                </span>
+                                </label>
                                 <div class="input-group" id="NLocali-div" style="display:none">
                                     <div class="input-group-addon" id="NLocali" >#</div>
                                     <input type="text" class="form-control" id="numeroLocali" name="numeroLocali" aria-describedby="NLocali">
                                 </div>
                             </div>
-                            
+
                             <div class="form-group" id="divNCamere" style="display:none">
-                                <label for="detail-numeroCamere-Button" class="control-label">Numero Camere</label>
-                                <span class="input-group-btn glyphicon glyphicon-align-left">
+                                <label for="detail-numeroCamere-Button" class="control-label">Numero Camere
+
                                     <button id="detail-numeroCamere-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
-                                </span>
+                                </label>
                                 <div class="input-group" id="numeroCamere-div" style="display:none">
                                     <div class="input-group-addon" id="NCamere" >#</div>
                                     <input type="text" class="form-control" id="numeroCamere" name="numeroCamere" aria-describedby="NCamere">
                                 </div>
                             </div>
                             <div class="form-group" id="divNBagni" style="display:none">
-                                <label for="detail-NBagni-Button" class="control-label">Numero Bagni</label>
-                                <span class="input-group-btn glyphicon glyphicon-align-left">
+                                <label for="detail-NBagni-Button" class="control-label">Numero Bagni
+
                                     <button id="detail-NBagni-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
-                                </span>
+                                </label>
                                 <div class="input-group" id="NBagni-div" style="display:none">
                                     <div class="input-group-addon" id="NBagni">#</div>
                                     <input type="text" class="form-control" id="numeroBagni" name="numeroBagni" aria-describedby="NBagni">
@@ -140,10 +147,9 @@
 
                             </div>
                             <div class="form-group" id="divMetratura" style="display:none">
-                                <label for="detail-metratura-Button" class="control-label">Metratura</label>
-                                <span class="input-group-btn glyphicon glyphicon-align-left">
+                                <label for="detail-metratura-Button" class="control-label">Metratura
                                     <button id="detail-metratura-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
-                                </span>
+                                </label>
                                 <div class="input-group" id="metratura-div" style="display:none">
                                     <div class="input-group-addon" id="divmet" >#</div>
                                     <input type="text" class="form-control" id="metratura" name="metratura" aria-describedby="divmet">
@@ -181,13 +187,14 @@
                 </div>
             </div>
         </div>
-
-
         <%@include file="/footer.jsp" %>
         <script>
             $(window).load(function () {
                 console.log(annunci_search());
                 console.log(init_filtro());
+            });
+            $(document).ready(function () {
+                $(".infobox").colorbox({rel: 'infobox'});
             });
 
             $("select").change(function () {
@@ -294,7 +301,7 @@
                     $("#detail-numeroCamere-Button").addClass("glyphicon-plus");
                 }
             });
-            
+
             $("#detail-NLocali-Button").click(function () {
                 if ($("#detail-NLocali-Button").hasClass("glyphicon-plus")) {
                     $("#NLocali-div").show("slow");
