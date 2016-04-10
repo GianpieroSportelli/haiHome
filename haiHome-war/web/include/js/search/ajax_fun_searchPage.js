@@ -19,20 +19,20 @@ var actual = 0;
 function annunci_search() {
     $.post("ServletController",
             {action: "Ricerca-geoCity"},
-    function (responseJson) {                               // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
-        var latlng = [0, 0];                                   // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
-        $.each(responseJson, function (index, item) {       // Iterate over the JSON array.
-            latlng[index] = item;                              // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
-        });
+            function (responseJson) {                               // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
+                var latlng = [0, 0];                                   // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
+                $.each(responseJson, function (index, item) {       // Iterate over the JSON array.
+                    latlng[index] = item;                              // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+                });
 
-        console.log(initialize(latlng[0], latlng[1]));
+                console.log(initialize(latlng[0], latlng[1]));
 
-        //Deferred serve pr delegare l'esecuzione di funzioni javascript
-        var load_A = $.Deferred();
-        load_A.done(load_Annunci);
-        load_A.resolve();
+                //Deferred serve pr delegare l'esecuzione di funzioni javascript
+                var load_A = $.Deferred();
+                load_A.done(load_Annunci);
+                load_A.resolve();
 
-    });
+            });
 }
 
 function initialize(lat, lng) {
@@ -48,28 +48,28 @@ function initialize(lat, lng) {
 function load_Annunci() {
     $.post("ServletController",
             {action: "Ricerca-getAnnunciFiltro"},
-    function (responseJson) {
-        annunci = [];
-        n_page = 0;
-        n_annunci = 0;
+            function (responseJson) {
+                annunci = [];
+                n_page = 0;
+                n_annunci = 0;
 
-        $("#list-result").empty();
+                $("#list-result").empty();
 
-        $.each(responseJson, function (index, annuncio) {
-            n_annunci += 1;
-            annunci[index] = annuncio;
-            console.log(addMarkerToJSON(annuncio, index));
-            //console.log(load_annuncio_image(annuncio));
-        });
+                $.each(responseJson, function (index, annuncio) {
+                    n_annunci += 1;
+                    annunci[index] = annuncio;
+                    console.log(addMarkerToJSON(annuncio, index));
+                    //console.log(load_annuncio_image(annuncio));
+                });
 
-        actual = 0;
-        n_page = n_annunci / N_ANNUNCI_X_PAGE;
+                actual = 0;
+                n_page = n_annunci / N_ANNUNCI_X_PAGE;
 
-        create_pageResult();
-        //add_button();
-        selectpage(1);
+                create_pageResult();
+                //add_button();
+                selectpage(1);
 
-    });
+            });
 }
 function create_pageResult() {
     page_annunci = [];
@@ -98,7 +98,7 @@ function create_pageResult() {
              var html = result_div + title + data_i + data_p + prezzo + quartiere + n_loc + loc + desc + met + close_div;
              */
             var html = getCodeCarousel(annunci[i], i);
-            page_html +="<div class=\"col-sm-"+12/N_ANNUNCI_X_PAGE+"\">"+ html+"</div>";
+            page_html += "<div class=\"col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">" + html + "</div>";
             var lat = annunci[i].Lat;
             var lng = annunci[i].Lng;
             var name = i;
@@ -123,7 +123,7 @@ function getCodeCarousel(annuncio, k) {
     var loc = annuncio.Locatore.nome;
     var desc = annuncio.Descrizione;
     var met = annuncio.Metratura;
-    var html = "<div class=\"panel panel-default\">"+"<div class='panel-heading'>"+
+    var html = "<div id=\"annuncio-" + k + "\" OnClick=send_Annuncio(" + k + ")><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
             "<div class=\"carousel slide qcar\" data-ride=\"carousel\" id=\"quote-carousel-" + k + "\">" +
             "<!-- Bottom Carousel Indicators -->" +
             "<ol class=\"carousel-indicators\">" +
@@ -136,36 +136,37 @@ function getCodeCarousel(annuncio, k) {
             "<!-- Quote 1 -->" +
             "<div class=\"item active\">" +
             "<blockquote>" +
-            "<img class=\"img-circle img-responsive\" src=\"http://www.reactiongifs.com/r/overbite.gif\" style=\"width: 200px;height:200px;\">" +
-            "<!--<img class=\"img-circle\" src=\"https://s3.amazonaws.com/uifaces/faces/twitter/kolage/128.jpg\" style=\"width: 150px;height:150px;\">-->" +   
+            "<img class=\"img-responsive img-thumbnail\" src=\"http://www.reactiongifs.com/r/overbite.gif\" style=\"width: 250px;height:250px;\">" +
+            "<!--<img class=\"img-responsive img-thumbnail\" src=\"https://s3.amazonaws.com/uifaces/faces/twitter/kolage/128.jpg\" style=\"width: 150px;height:150px;\">-->" +
             "</blockquote>" +
             "</div>" +
             "<!-- Quote 2 -->" +
             "<div class=\"item\">" +
             "<blockquote>" +
-            "<img class=\"img-circle img-responsive\" src=\"https://s3.amazonaws.com/uifaces/faces/twitter/mijustin/128.jpg\" style=\"width: 200px;height:200px;\">" +
+            "<img class=\"img-responsive img-thumbnail\" src=\"https://s3.amazonaws.com/uifaces/faces/twitter/mijustin/128.jpg\" style=\"width: 250px;height:250px;\">" +
             "</blockquote>" +
             "</div>" +
             "<!-- Quote 3 -->" +
             "<div class=\"item\">" +
             "<blockquote>" +
-            "<img class=\"img-circle img-responsive\" src=\"Immagini/appartamento_prova/cucina/cucina.jpg\" style=\"width: 200px;height:200px;\">" +
+            "<img class=\"img-responsive img-thumbnail\" src=\"Immagini/appartamento_prova/cucina/cucina.jpg\" style=\"width: 250px;height:250px;\">" +
             "</blockquote>" +
             "</div>" +
             "</div>" +
-            "</div>"+
-            "</div>"+
+            "</div>" +
+            "</div>" +
             //"</div>"+
             "<div class=\"panel-body snip\">" +
-            "<p>Titolo: " + title + "</p>" +
+            "<p class=\"text-muted\">" + title + "</p>" +
             //"<p>Data inizio: " + data_i + "</p>" +
             //"<p>Data pubblicazione: " + data_p + "</p>" +
             //"<p> Prezzo: " + prezzo + "</p>" +
-            "<p> Quartiere: " + quartiere + "</p>" +
+            "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + quartiere + "</p>" +
             //"<p>Numero locali: " + n_loc + "</p>" +
-            "<p>Locatore: " + loc + "</p>" +
-            "<p>Descrizione: " + desc + "</p>" +
+            "<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + loc + "</p>" +
+            "<p class=\"text-muted\">" + desc + "</p>" +
             //"<p>Metratura: " + met + "</p>" +
+            "</div>" +
             "</div>" +
             "</div>";
     return html;
@@ -259,31 +260,31 @@ function addMarkerToJSON(annuncio, index) {
 function init_filtro() {
     $.post("ServletController",
             {action: "Ricerca-getQuartieri"},
-    function (responseJson) {
-        var html = '';
-        $.each(responseJson, function (index, item) {
-            html = '<option value=\"' + item + '\">' + item + '</option>';
-            $("#quartieri").append(html);
-        });
-        $('#quartieri').searchableOptionList({
-            maxHeight: '250px'
-        });
-        var filtro_S = $.Deferred();
-        filtro_S.done(init_filtro_tipoStanze);
-        filtro_S.resolve();
-    });
+            function (responseJson) {
+                var html = '';
+                $.each(responseJson, function (index, item) {
+                    html = '<option value=\"' + item + '\">' + item + '</option>';
+                    $("#quartieri").append(html);
+                });
+                $('#quartieri').searchableOptionList({
+                    maxHeight: '250px'
+                });
+                var filtro_S = $.Deferred();
+                filtro_S.done(init_filtro_tipoStanze);
+                filtro_S.resolve();
+            });
 
 }
 function init_filtro_tipoStanze() {
     $.post("ServletController",
             {action: "Ricerca-getTipoStanza"},
-    function (responseJson) {
-        var html = '';
-        $.each(responseJson, function (index, item) {
-            html = '<option value=\"' + item + '\">' + item + '</option>';
-            $("#tipoStanza").append(html);
-        });
-    });
+            function (responseJson) {
+                var html = '';
+                $.each(responseJson, function (index, item) {
+                    html = '<option value=\"' + item + '\">' + item + '</option>';
+                    $("#tipoStanza").append(html);
+                });
+            });
 }
 /*function load_annuncio_image(annuncio) {
  //var stanze = annuncio.Stanze;
@@ -308,11 +309,54 @@ function init_filtro_tipoStanze() {
  });
  }*/
 
-$(window).scroll(function(){
-      if  ($(window).scrollTop() == $(document).height() - $(window).height()){
-           nextpage();
-      }
- });
- $(window).scroll(function(){    
-  $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "slow" );
+$(window).scroll(function () {
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+        nextpage();
+    }
 });
+/*$(window).scroll(function(){    
+ $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
+ });*/
+
+function send_Annuncio(k) {
+    var annuncio = annunci[k];
+    console.log(annuncio);
+    var url = "/haiHome-war/ServletController";
+    var url2="/haiHome-war/dettagliAnnuncio.jsp";
+    var json= JSON.stringify(annuncio);
+    console.log(k);
+    console.log(json);
+    /*$.ajax({
+        url: url,
+        //dataType: 'json', // I was pretty sure this would do the trick
+        data: $.param({ action: 'dettagliAnnuncio', data: json }),
+        type: 'POST',
+        success: function (data) {
+            window.location = data;
+        }
+    });*/
+    $.session.set('dettagli', json);
+    window.open(url2);
+}
+
+// implement JSON.stringify serialization
+JSON.stringify = JSON.stringify || function (obj) {
+    var t = typeof (obj);
+    if (t != "object" || obj === null) {
+        // simple data type
+        if (t == "string") obj = '"'+obj+'"';
+        return String(obj);
+    }
+    else {
+        // recurse array or object
+        var n, v, json = [], arr = (obj && obj.constructor == Array);
+        for (n in obj) {
+            v = obj[n]; t = typeof(v);
+            if (t == "string") v = '"'+v+'"';
+            else if (t == "object" && v !== null) v = JSON.stringify(v);
+            json.push((arr ? "" : '"' + n + '":') + String(v));
+        }
+        return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    }
+};
+

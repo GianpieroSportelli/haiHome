@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
@@ -21,6 +23,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -169,8 +173,18 @@ public class ServletRicerca extends HttpServlet {
                 }
 
                 out.close();
+            } else if (action.equalsIgnoreCase("dettagliAnnuncio")) {
+                System.out.println("Ecco");
+                System.out.println(request.getParameter("data"));
+                String urlToRedirect = "/haiHome-war/dettagliAnnuncio.jsp";
+                response.setContentType("application/json");
+                String json = new Gson().toJson(urlToRedirect);
+                System.out.println(json);
+                out.write(json);
+                //response.sendRedirect("/haiHome-war/dettagliAnnuncio.jsp");
+                //getServletContext().getRequestDispatcher("/dettagliAnnuncio.jsp").forward(request, response);
             } else {
-                out.println("<p> Che vuoi?? </p>");
+
             }
 
         }
