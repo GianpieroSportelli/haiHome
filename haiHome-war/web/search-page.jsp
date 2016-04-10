@@ -39,9 +39,6 @@
         <link rel="stylesheet" href="include/css/search/search-result.css">
         <link rel="stylesheet" href="include/css/search/search-page.css">
         <!-- FINE import SOL -->  
-        <!-- INIZIO import ajax-fun searchPage-->
-        <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
-        <!-- FINE import ajax-fun searchPage-->
         <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
@@ -61,6 +58,9 @@
         <script type="text/javascript" src="include/js/search/jquery.colorbox-min.js"></script>
         <link rel="stylesheet" href="include/css/search/colorbox.css">
         <!-- FINE INFO BOX-->
+        <!-- INIZIO import ajax-fun searchPage-->
+        <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
+        <!-- FINE import ajax-fun searchPage-->
     </head>
     <body>
         <%@include file="/header.jsp" %>
@@ -75,16 +75,17 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="ibox float-e-margins">
+
                                 <div class="ibox-content" id="list-result">
                                     <div class="hr-line-dashed"></div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-3">
-                    <div class="well">
+                    <div class="well" id="searchDiv">
                         <h1 align="center">Filtro di Ricerca</h1>
                         <form class="form-horizontal" id="searchForm" action="ServletController" method="post" >
                             <input type="hidden" name="action" value="search">
@@ -115,7 +116,7 @@
 
                             <div class="form-group" id="divNLocali" style="display:none">
                                 <label for="detail-NLocali-Button" class="control-label">Numero Locali
-                                
+
                                     <button id="detail-NLocali-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
                                 </label>
                                 <div class="input-group" id="NLocali-div" style="display:none">
@@ -126,7 +127,7 @@
 
                             <div class="form-group" id="divNCamere" style="display:none">
                                 <label for="detail-numeroCamere-Button" class="control-label">Numero Camere
-                                
+
                                     <button id="detail-numeroCamere-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
                                 </label>
                                 <div class="input-group" id="numeroCamere-div" style="display:none">
@@ -136,7 +137,7 @@
                             </div>
                             <div class="form-group" id="divNBagni" style="display:none">
                                 <label for="detail-NBagni-Button" class="control-label">Numero Bagni
-                                
+
                                     <button id="detail-NBagni-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
                                 </label>
                                 <div class="input-group" id="NBagni-div" style="display:none">
@@ -147,7 +148,7 @@
                             </div>
                             <div class="form-group" id="divMetratura" style="display:none">
                                 <label for="detail-metratura-Button" class="control-label">Metratura
-                                                <button id="detail-metratura-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
+                                    <button id="detail-metratura-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
                                 </label>
                                 <div class="input-group" id="metratura-div" style="display:none">
                                     <div class="input-group-addon" id="divmet" >#</div>
@@ -186,8 +187,6 @@
                 </div>
             </div>
         </div>
-
-
         <%@include file="/footer.jsp" %>
         <script>
             $(window).load(function () {
