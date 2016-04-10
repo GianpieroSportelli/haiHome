@@ -72,7 +72,7 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
        locatore = null; 
        
        for (Locatore l: listaLocatori) 
-           if (l.getEmail().compareToIgnoreCase(email) == 0) { 
+           if (l.getEmail().equalsIgnoreCase(email)) { 
                locatore = l; 
            }
        

@@ -5,9 +5,11 @@
  */
 package web;
 
+import ejb.GestoreAnnuncio;
+import ejb.GestoreAnnuncioLocal;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -23,7 +25,11 @@ import javax.servlet.http.Part;
  */
 public class ServletAnnuncio extends HttpServlet {
 
+    private GestoreAnnuncioLocal gestoreAnnuncio;
     private String citta;
+    
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,64 +43,54 @@ public class ServletAnnuncio extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            System.out.println("---- Entro In Servlet Annuncio -----------------!!!!\n\n");
-
-            String action = request.getParameter("action");
-
-            /*DA ELIMINARE
-             Map<String,String[]> parametri1 = request.getParameterMap();
-             Part filePart1 = request.getPart("file");
-             InputStream filecontent1 = filePart1.getInputStream();
              
-             //FINE DA ELIMINARE */
-            System.out.println("Azione richiesta: " + action + "\n\n");
-            if (action.equalsIgnoreCase("Annunci-newAnnuncio")) {
-
-                System.out.println("SIAMO DENTRO");
-
-                System.out.println("Elenco parametri disponibili");
-
-                Map<String, String[]> parametri = request.getParameterMap();
-
-                // prova per le foto
-                Part filePart = request.getPart("file");
-                InputStream filecontent = filePart.getInputStream();
-
-                //fine prova
-                //prendo i dati
-                System.out.println("Inizio A prendere i Dati dell'annuncio");
-                //Info Appartamento
-                String citta = request.getParameter("Città").trim();
-                String quartiere = request.getParameter("Quartiere").trim();
-                String indirizzo = request.getParameter("Indirizzo").trim();
-                String civico = request.getParameter("Civico").trim();
-
-                //info Annuncio (manca la data)
-                String descrizione = request.getParameter("Descrizione").trim();
-                String metratura = request.getParameter("Metratura").trim();
-
-                System.out.println("Appartamento");
-
-                System.out.println("  " + citta);
-                System.out.println("  " + quartiere);
-                System.out.println("  " + indirizzo);
-                System.out.println("  " + civico);
-                System.out.println("  " + descrizione);
-                System.out.println("  " + metratura);
+            String action = request.getParameter("action");
+            String header = request.getHeader("action");
+            
+            if(header!=null){
+            //System.out.println("    action: immaginistanza");
+            //Part filePart = request.getPart("file");
+                action="sa";   
+                Collection<Part> files = request.getParts();
+                System.out.println("----- STANZA");
+                for(Part filePart : files){
+                    String fileName = filePart.getSubmittedFileName();
+                    
+                    System.out.println("NOME FOTO: " + fileName);
+                    System.out.println("\n");
+                }
+                
+                
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                response.getWriter().write("SIAMO DENTRO");
+                out.write("Dati info Annuncio inseriti ");
+            }
 
-            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
 
-                System.out.println("    action: Annunci-newAnnuncio-infoAppartamento");
+            if(action.equalsIgnoreCase("Annunci-newAnnuncio-initialRequest")){
+                gestoreAnnuncio = new GestoreAnnuncio();
+                String idLocatore = request.getParameter("idLocatore");
+                System.out.println("ID LOCATORE: " + idLocatore );
+                
+                //creo annuncio
+                //boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
+                //System.out.println("CREA ANNUNCIO RESULT: " + result );
+                
+                
+            }else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
+
+                
+                System.out.println("----- INFO APPARTAMENTO:");
                 citta = request.getParameter("Città").trim();
                 String quartiere = request.getParameter("Quartiere").trim();
                 String indirizzo = request.getParameter("Indirizzo").trim();
                 String civico = request.getParameter("Civico").trim();
-                System.out.println("Dati letti:  " + citta + " - " + quartiere + " - " + indirizzo + ", " + civico);
-
+                //System.out.println("Dati letti:  " + citta + " - " + quartiere + " - " + indirizzo + ", " + civico);
+                System.out.println("CITTA: " + citta);
+                System.out.println("QUARTIERE: " + quartiere);
+                System.out.println("INDIRIZZO: " + indirizzo + ", " + civico);
+                System.out.println("\n");
                 
                // out.write("Dati InfoAppartamento Letti!");
                
@@ -103,18 +99,21 @@ public class ServletAnnuncio extends HttpServlet {
                out.write("Dati info Appartamento inseriti");
 
 
-            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAnnuncio")) {
+            }else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAnnuncio")) {
                 
                 
-                System.out.println("    action: Annunci-newAnnuncio-infoAnnuncio");
+                //System.out.println("    action: Annunci-newAnnuncio-infoAnnuncio");
+                System.out.println("-----INFO ANNUNCIO:");
                 String descrizione = request.getParameter("Descrizione").trim();
                 String metraturaApp = request.getParameter("Metratura").trim();
                 
                 //Da inserire la data
 
-                System.out.println("Dati letti:  " + descrizione + " - " + metraturaApp);
+                //System.out.println("Dati letti:  " + descrizione + " - " + metraturaApp);
                 //out.write("Dati InfoAnnuncio Letti!");
-                
+                System.out.println("DESCRIZIONE: " + descrizione);
+                System.out.println("METRATURA: " + metraturaApp);
+                System.out.println("\n");
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                  out.write("Dati info Annuncio inseriti " + citta);
@@ -125,7 +124,7 @@ public class ServletAnnuncio extends HttpServlet {
                 
                 System.out.println("    action: Annunci-newAnnuncio-infoStanze");
                 String[] tipologiaStanze = request.getParameterValues("TipologiaStanza");
-                
+                Map<String, String[]> parametri = request.getParameterMap();
                 String[] tipoL = request.getParameterValues("TipoL");
                 String[] tipoA = request.getParameterValues("TipoA");
                 
@@ -146,10 +145,58 @@ public class ServletAnnuncio extends HttpServlet {
                  out.write("Dati info Annuncio inseriti " + citta);
 
                 
+            }else if (action.equalsIgnoreCase("prova")) {
+                //System.out.println("    action: informazioni stanza");
+                System.out.println("INFO STANZA:");
+                
+                String tipologia = request.getParameter("TipologiaStanza").trim();     
+                String tipoL = request.getParameter("TipoL").trim();
+                String tipoA = request.getParameter("TipoA").trim();
+                
+                String metraturaS = request.getParameter("MetraturaS");
+                
+                //System.out.println("Tipo Letto " + tipoL + " Tipo Accessoria " + tipoA + " Metratura " + metraturaS);
+                System.out.println("TIPOLOGIA STANZA: " + tipologia);
+                System.out.println("TIPO STANZA LETTO: " + tipoL);  
+                System.out.println("TIPO STANZA ACCESSORIA: " + tipoA);
+                System.out.println("Metratura: " + metraturaS);
+                System.out.println("\n");
+            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoCosti")) {
+
+                //System.out.println("action: Annunci-newAnnuncio-infoAppartamento");
+                System.out.println("----- INFO COSTI:");
+                
+                String tipoCosti = request.getParameter("Tipo Costo").trim();
+                String prezzoA = request.getParameter("prezzoA").trim();
+                String compCondA = request.getParameter("compresoCondominioA").trim();
+                String compRiscA = request.getParameter("compresoRiscaldamentoA").trim();
+                //System.out.println("Dati letti:  " + citta + " - " + quartiere + " - " + indirizzo + ", " + civico);
+                
+                String[] prezzoS = request.getParameterValues("PrezzoS");
+                String[] compCondS = request.getParameterValues("compresoCondominioS");
+                String[] compRiscS = request.getParameterValues("compresoRiscaldamentoS");
+                
+                System.out.println("TIPO COSTI: " + tipoCosti);
+                System.out.println("PREZZO APPARTAMENTO: " + prezzoA);
+                System.out.println("COMPRESO CONDOMINIO APP: " + compCondA);
+                System.out.println("COMPRESO RISCALDAMENTO APP: " + compRiscA);
+                System.out.println("\n");
+                for(int i =0;i<prezzoS.length;i++){
+                    System.out.println("Stanza: " + i);
+                    System.out.println("PREZZO STANZA: " + prezzoS[i]);
+                    System.out.println("COMPRESO CONDOMINIO STA: " + compCondS[i]);
+                    System.out.println("COMPRESO RISCALDAMENTO STA: " + compRiscS[i]);
+                }
+                
+               // out.write("Dati InfoAppartamento Letti!");
+               
+               response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+               response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+               out.write("Dati info Appartamento inseriti");
+
+
             }else{
-                                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
-                response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                out.write("Random");
+                           
             }
             out.close();
         }

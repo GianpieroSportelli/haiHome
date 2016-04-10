@@ -13,6 +13,10 @@
 
     if (session_exists) {
         user_data = (JSONObject) session.getAttribute("user-data");
+    } else {
+        out.print("<script>alert('You have to log into your account');"
+                + "window.location.replace('index.jsp');</script>");
+
     }
 %>
 
@@ -72,14 +76,13 @@
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic">
-                            <%                                
-                                if (session_exists) {
-                                    out.println(
-                                            "<img src='" + user_data.getString("fotoProfilo") + "'"
-                                            + "class='img-responsive' alt=''/>");
-                                } else {
+                            <%             //                   if (session_exists) {
+                                out.println(
+                                        "<img src='" + user_data.getString("fotoProfilo") + "'"
+                                        + "class='img-responsive' alt=''/>");
+                                /*    } else {
                                     out.println("no login no party");
-                                }
+                                }*/
                             %>
 
                         </div>
@@ -87,34 +90,35 @@
                         <!-- SIDEBAR USER TITLE -->
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name">
-                                <%
-                                    if (session_exists) {
-                                        out.println(user_data.getString("nome") + " " + user_data.getString("cognome"));
-                                    }
+                                <%=
+                                    user_data.getString("nome") + " " + user_data.getString("cognome")
+                              //      out.println(user_data.getString("nome") + " " + user_data.getString("cognome"));
                                 %>
                                 <!--  < % = user_data.getString("Nome") + " " + user_data.getString("Cognome")%> -->
                             </div>
                             <div class="profile-usertitle-job">Locatore</div>
                         </div>
 
-
                         <div class="profile-usermenu"> <!-- required for floating -->
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs tabs-left">
                                 <li class="active"><a href="#home" data-toggle="tab">
                                         <i class="glyphicon glyphicon-user"></i>
-                                        Home</a></li>
+                                        Profilo
+                                    </a>
+                                </li>
                                 <li><a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
-                                        Annunci preferiti</a></li>
+                                        I tuoi annunci
+                                    </a>
+                                </li>
                                 <li><a href="#filtri" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
-                                        Filtri Preferiti</a></li>
+                                        Boh
+                                    </a>
+                                </li>
                             </ul>
                         </div>
-
-
-
                         <!-- END MENU -->
                     </div>
 
@@ -128,41 +132,25 @@
                                     <tr>
                                         <td>Nome: </td>
                                         <td> 
-                                            <%
-                                                if (session_exists) {
-                                                    out.println(user_data.getString("nome"));
-                                                }
-                                            %>
+                                            <%= user_data.getString("nome") %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Cognome:</td>
                                         <td>
-                                            <%
-                                                if (session_exists) {
-                                                    out.println(user_data.getString("cognome"));
-                                                }
-                                            %>
+                                            <%= user_data.getString("cognome") %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Email: </td>
                                         <td>
-                                            <%
-                                                if (session_exists) {
-                                                    out.println(user_data.getString("email"));
-                                                }
-                                            %>
+                                            <%= user_data.getString("email") %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Numero di telefono: </td>
                                         <td>
-                                            <%
-                                                if (session_exists) {
-                                                    out.println(user_data.getString("telefono"));
-                                                }
-                                            %>
+                                            <%= user_data.getString("telefono") %>
                                         </td>
                                     </tr>
 
@@ -180,7 +168,5 @@
                 </div>  
             </div>
         </div>
-
-
     </body>
 </html>
