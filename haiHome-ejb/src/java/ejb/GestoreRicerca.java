@@ -49,6 +49,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
     FiltroDiRicerca filtroAttuale = null;
 
     Città cittàAttuale = null;
+    private Collection<Annuncio> ricerca;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -143,6 +144,9 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             try {
                 Collection<Annuncio> listResult = new ArrayList<>();
                 Collection<Annuncio> annunci = filtroAttuale.getCittà().getAnnunci();
+                /*for(Annuncio x:annunci){
+                    System.out.println(x.toJSON());
+                }*/
                 Collection<String> quartieriFiltro = filtroAttuale.getListaQuartieri();
 
                 for (Annuncio x : annunci) {
@@ -318,6 +322,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         JSONArray result = new JSONArray();
         for (Annuncio x : annunci) {
             result.put(x.toJSON());
+            //result.put(x.getId());
         }
         return result;
     }
@@ -347,5 +352,23 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             return gmb.geocodingAddress(this.cittàAttuale.getNome());
         }
         return null;
+    }
+
+    @Override
+    public boolean eseguiRicerca() {
+        if (filtroAttuale != null) {
+            Collection<Annuncio> listResult = new ArrayList<>();
+            Collection<Annuncio> annunci = filtroAttuale.getCittà().getAnnunci();
+            Collection<String> quartieriFiltro = filtroAttuale.getListaQuartieri();
+            for (Annuncio x : annunci) {
+                if (acceptAnnuncio(x, quartieriFiltro)) {
+                    listResult.add(x);
+                }
+            }
+            this.ricerca=listResult;
+            return true;
+        }
+
+        return false;
     }
 }

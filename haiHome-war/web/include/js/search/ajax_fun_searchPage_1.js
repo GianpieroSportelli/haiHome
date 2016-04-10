@@ -65,9 +65,9 @@ function load_Annunci() {
         actual = 0;
         n_page = n_annunci / N_ANNUNCI_X_PAGE;
 
-        create_pageResult();
-        //add_button();
-        selectpage(1);
+        console.log(create_pageResult());
+        console.log(add_button());
+        console.log(selectpage(1));
 
     });
 }
@@ -84,7 +84,7 @@ function create_pageResult() {
         page_html = '';
         var names = new Array();
         var index = 0;
-        page_html += '<div class = "search-result row" id =' + (page + 1) + '_RESULT>';
+        page_html += '<div class = "search-result" id =' + (page + 1) + '_RESULT>';
         for (i = page * N_ANNUNCI_X_PAGE; (i < ((page + 1) * N_ANNUNCI_X_PAGE) && i < annunci.length); i++) {
             /*var title = '<h3 > <a href = "#" >' + annunci[i].Indirizzo + '</a></h3 >';
              var data_i = '<p > Data inizio: ' + annunci[i].DataInizioAffitto + '</p>';
@@ -98,7 +98,7 @@ function create_pageResult() {
              var html = result_div + title + data_i + data_p + prezzo + quartiere + n_loc + loc + desc + met + close_div;
              */
             var html = getCodeCarousel(annunci[i], i);
-            page_html +="<div class=\"col-sm-"+12/N_ANNUNCI_X_PAGE+"\">"+ html+"</div>";
+            page_html += html;
             var lat = annunci[i].Lat;
             var lng = annunci[i].Lng;
             var name = i;
@@ -123,7 +123,7 @@ function getCodeCarousel(annuncio, k) {
     var loc = annuncio.Locatore.nome;
     var desc = annuncio.Descrizione;
     var met = annuncio.Metratura;
-    var html = "<div class=\"panel panel-default\">"+"<div class='panel-heading'>"+
+    var html = "<div class=\"row\">"+"<div class='col-sm-3'>"+
             "<div class=\"carousel slide qcar\" data-ride=\"carousel\" id=\"quote-carousel-" + k + "\">" +
             "<!-- Bottom Carousel Indicators -->" +
             "<ol class=\"carousel-indicators\">" +
@@ -132,7 +132,7 @@ function getCodeCarousel(annuncio, k) {
             "<li data-target=\"#quote-carousel-" + k + "\" data-slide-to=\"2\"></li>" +
             "</ol>" +
             "<!-- Carousel Slides / Quotes -->" +
-            "<div class=\"carousel-inner\" align=\"center\">" +
+            "<div class=\"carousel-inner\">" +
             "<!-- Quote 1 -->" +
             "<div class=\"item active\">" +
             "<blockquote>" +
@@ -155,8 +155,7 @@ function getCodeCarousel(annuncio, k) {
             "</div>" +
             "</div>"+
             "</div>"+
-            //"</div>"+
-            "<div class=\"panel-body snip\">" +
+            "<div class=\"col-sm-9\">" +
             "<p>Titolo: " + title + "</p>" +
             //"<p>Data inizio: " + data_i + "</p>" +
             //"<p>Data pubblicazione: " + data_p + "</p>" +
@@ -186,16 +185,15 @@ function add_button() {
 
 function selectpage(page) {
     if (actual === 0) {
-        $("#list-result").append(page_annunci[page - 1]);
+        $("#button-div").before(page_annunci[page - 1]);
         activateCaroselli(page - 1);
-        //$("#" + page).addClass("disabled");
+        $("#" + page).addClass("disabled");
         actual = page;
     } else if (actual !== (+page)) {
-        //$("#" + (actual) + "_RESULT").remove();
-        //$("#button-div").before(page_annunci[page - 1]);
-        $("#" + (actual) + "_RESULT").after(page_annunci[page - 1]);
-        //$("#" + actual).removeClass("disabled");
-        //$("#" + page).addClass("disabled");
+        $("#" + (actual) + "_RESULT").remove();
+        $("#button-div").before(page_annunci[page - 1]);
+        $("#" + actual).removeClass("disabled");
+        $("#" + page).addClass("disabled");
         actual = +page;
     }
 }
@@ -308,11 +306,4 @@ function init_filtro_tipoStanze() {
  });
  }*/
 
-$(window).scroll(function(){
-      if  ($(window).scrollTop() == $(document).height() - $(window).height()){
-           nextpage();
-      }
- });
- $(window).scroll(function(){    
-  $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "slow" );
-});
+

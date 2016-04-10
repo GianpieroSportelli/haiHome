@@ -12,7 +12,7 @@
 </style>
 
 
-<div class="bottom">
+<div class="bottom" id="footerDiv">
     <div class="container">
         <div class="col-md-4">
             <h3><span class="glyphicon glyphicon-heart"></span> Footer section 1</h3>
