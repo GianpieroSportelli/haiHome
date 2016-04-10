@@ -58,7 +58,9 @@
             <!--    <input type="hidden" name="action" value="Annunci-newAnnuncio" /> -->
                 <div class="row setup-content" id="step-1"> 
 
-                    <%@include file="InserimentoInfoAppartamento.jsp" %>
+                    <%@include file="InserimentoInfoAppartamento.jsp" %>  <!-- ORIGINALE   prova.jsp -->
+                    
+                    
                 </div>
 
                 <div class="row setup-content" id="step-2">

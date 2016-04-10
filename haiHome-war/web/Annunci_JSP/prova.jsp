@@ -4,70 +4,49 @@
     Author     : giacomocavallo
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone1.css">  
 
-        <title>Example</title>
-    </head>
-    <body>
+<div id="stanza1" class="col-md-12 formContainer Stanza">
+    <form action="../ServletAnnuncio" method="post" id="prova">  
+        <input type="hidden" name="action" value="prova" />
+        
+        <div class="form-group col-md-6">
+        <div class="form-group">
+                <label class="control-label">Stanza</label>
+                <select name='TipologiaStanza' class="form-control" id="selStanza" onchange="cambiaSpecificheTipologiaStanza('stanza1')">
+                    <option value="1">Stanza da Letto</option>
+                    <option value="2">Stanza Accessoria</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Tipo di Stanza</label>
+                <select name='TipoL' class="form-control" id="seltipoLetto">
+                    <option value="Singola">Singola</option>
+                    <option value="Doppia">Doppia</option>
+                    <option value="Altro">Altro</option>
+                </select>
+                <select name='TipoA' class="form-control" id="seltipoAcc" style="display:none" >
+                    <option>Bagno</option><option>Cucina</option>
+                    <option>Soggiorno</option>
+                    <option>Altro</option>
+                </select>
+            </div>
 
-        <form id="my-awesome-dropzone" class="dropzone" enctype='multipart/form-data'>
-            <div class="dropzone-previews"></div> 
+        </div>
+        <div class="form-group col-md-6">
+            <div id="aggiungia" class="btn buttonElimina" onclick="eliminaStanza('stanza1'">-</div><br />
+            <label class="control-label">Metratura</label> <input name='MetraturaS' id="inpMetratura"maxlength="100" type="text" class="form-control" placeholder="Metratura" /><br />
+        </div>
+    </form>
+    <div class="form-group col-md-12">
+        <label class="control-label">Foto</label>
 
-            
-            <input type="email" name="username" />
-            <input type="password" name="password" />
+        <div  id="mydropzone1"  class="dropzone needsclick dz-clickable" >  
+            <div class="dz-message needsclick">Drop files here or click to upload.<br></div>
 
-            <button type="submit">Submit data and files!</button>
-        </form>
+        </div>
 
-    </body>
-    <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone1.js"></script>
-    <script type="text/javascript">
-        Dropzone.options.myAwesomeDropzone = { // The camelized version of the ID of the form element
-
-            // The configuration we've talked about above
-            url: "../ServletAnnuncio",
-            autoProcessQueue: false,
-            uploadMultiple: true,
-            parallelUploads: 100,
-            maxFiles: 100,
-            hiddenInputContainer: "form#my-awesome-dropzone",
-            // The setting up of the dropzone
-            init: function () {
-                var myDropzone = this;
-
-                // First change the button to actually tell Dropzone to process the queue.
-                this.element.querySelector("button[type=submit]").addEventListener("click", function (e) {
-                    // Make sure that the form isn't actually being sent.
-                    e.preventDefault();
-                    e.stopPropagation();
-                    myDropzone.processQueue();
-                });
-
-                // Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
-                // of the sending event because uploadMultiple is set to true.
-                this.on("sendingmultiple", function () {
-                    // Gets triggered when the form is actually being sent.
-                    // Hide the success button or the complete form.
-                });
-                this.on("successmultiple", function (files, response) {
-                    // Gets triggered when the files have successfully been sent.
-                    // Redirect user or notify of success.
-                });
-                this.on("errormultiple", function (files, response) {
-                    // Gets triggered when there was an error sending the files.
-                    // Maybe show form again, and notify user of error
-                });
-            }
-
-        }
-
-    </script>
+    </div>
+    <button type="button"  id="buttProva" class="btn btn-primary nextBtn btn-lg pull-right"> Next</button>
+</div>
 
 
-</html>

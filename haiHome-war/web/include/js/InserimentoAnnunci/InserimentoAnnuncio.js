@@ -6,13 +6,25 @@
 
 
 $(document).ready(function () {
+
+
+    
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
             allNextBtn = $('.nextBtn'),
             form1 = $('form#form-info-appartamento'),
             form2 = $('form#form-info-annuncio'),
-            form3 = $('form#form-info-stanze');
+            form3 = $('form#form-info-stanze'),
+            form4 = $('form#form-info-costi'),
+            formProva = $("form#prova");
 
+    var buttProva = $('button#buttProva');
+    
+
+    sendInitialRequest();
+
+    
+    
 
     allWells.hide();
 
@@ -53,12 +65,12 @@ $(document).ready(function () {
      nextStepWizard.removeAttr('disabled').trigger('click');
      }
      });*/
-    
+
     jQuery('div.setup-panel div a.btn-primary').trigger('click');
 
     //codice submit prima form
     form1.on('submit', function (e) {
-        alert("Entro nella submit ");
+        //alert("Entro nella submit ");
         e.preventDefault();
         var buttonForm = form1.find("button#butt1");
 
@@ -81,7 +93,7 @@ $(document).ready(function () {
 
     //codice submit seconda form
     form2.on('submit', function (e) {
-        alert("Entro nella submit");
+        //alert("Entro nella submit");
         e.preventDefault();
 
         var buttonForm = form2.find("button#butt2");
@@ -104,16 +116,16 @@ $(document).ready(function () {
 
     });
 
-    //codice submit terza form (stanze)
+    //codice submit terza form (stanze) //DA ELIMINARE
     form3.on('submit', function (e) {
-        alert("Entro nella submit della form id: " + form3.attr("id"));
+        //alert("Entro nella submit della form id: " + form3.attr("id"));
         e.preventDefault();
 
         var buttonForm = form3.find("button#butt3");
 
         console.log(buttonForm.attr("id"));
         var isValid = validateForm(buttonForm);
-        
+
         if (isValid) {
             console.log("Dati form validi");
             form3.ajaxSubmit({
@@ -129,7 +141,90 @@ $(document).ready(function () {
 
 
     });
+    
+    //form info costi
+        form4.on('submit', function (e) {
+        //alert("Entro nella submit della form id: " + form4.attr("id"));
+        e.preventDefault();
 
+        var buttonForm = form4.find("button#butt3");
+
+        console.log(buttonForm.attr("id"));
+        var isValid = validateForm(buttonForm);
+
+        if (isValid) {
+            console.log("Dati form validi");
+            form4.ajaxSubmit({
+                dataType: "text",
+                success: function (response) {
+                    generateCostiForm();
+                    console.log(response);
+                }
+            });
+        } else {
+            console.log("Dati form non validi");
+        }
+
+
+    });
+    
+
+
+
+    // PROVA INVIO STANZE   ---------------------------------------------------------------
+    
+
+
+
+/*
+//dichairo la dropzone
+var myDropzone = new Dropzone("div#mydropzone1", 
+{
+
+  // Prevents Dropzone from uploading dropped files immediately
+  autoProcessQueue: false,
+  url: "../ServletAnnuncio",
+  headers: {"action":"photoUpload"}
+
+});
+    //dichiaro il bottone di submit
+    var submitButton = document.querySelector("button#buttProva")
+       
+    //dichiaro la form
+    var myForm = $("form#prova");
+    
+
+    submitButton.addEventListener("click", function() {
+        alert("Clicco");
+      myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+      myForm.submit();
+      
+    });
+
+    //codice submit form prova
+    formProva.on('submit', function (e) {
+        alert("Entro nella submit della form id: " + formProva.attr("id"));
+        e.preventDefault();
+
+
+
+            console.log("Dati form validi");
+            formProva.ajaxSubmit({
+                dataType: "text",
+                success: function (response) {
+                    generateCostiForm();
+                    console.log(response);
+                }
+            });
+       
+
+
+    });
+
+
+
+    // FINE PROVA INVIO STANZE   ------------------------------------------------------------
+*/
 
 
 
@@ -137,43 +232,65 @@ $(document).ready(function () {
 });
 
 
-//genera l'ultima pagine dello step-wizard in base alle stanze inserite
-function generateCostiForm(){
+function sendInitialRequest(){
+    var IDLocatore ="prova";
     
-    $("#prezzoStanze").empty(); //svuoto tutte le form per le stanze (niente duplicati)
-        console.log("Inserisco codice delle stanze");
-        var i = 1;
-        //per ogni stanza che ho inserito
-        $(".Stanza").each(function() {
-            
-            //mi prendo la tipologia della stanza (1 - Letto | 2 - Accessoria)
-            var tipologiaStanza = $(this).contents().find("#selStanza").val();
-            /*controllo se è una camera da letto e quindi genero la form per il prezzo */
-            if (tipologiaStanza == 1){
-                //mi prendo un po di informazioni della stanza
-                var tipoStanza = $(this).contents().find("#seltipoLetto option:selected").val();
-                var metraturaStanza = $(this).contents().find("#inpMetratura").val();
-                var idStanza = $(this).attr("id");
-                //inserisco le informazioni in delle label
-                var PrezzoStanzaHTML = getPrezzoStanzaHTMLCode();
-                var codiceStanza = PrezzoStanzaHTML.replace('&_&', i);
-                codiceStanza = codiceStanza.replace('$_$_$', idStanza); 
-                codiceStanza = codiceStanza.replace('&_tipo&', tipoStanza);
-                codiceStanza = codiceStanza.replace('&_met&', metraturaStanza);
-                
-                //inserisco l'HTML nel DOM
-                $(codiceStanza).appendTo("#prezzoStanze");
-                console.log("Inserita stanza " + i);
-                i++;
-            }
+    $.ajax({
+      type: "POST",
+      url: "../ServletAnnuncio",
+      data: "action=Annunci-newAnnuncio-initialRequest&idLocatore=" + IDLocatore,
+      dataType: "text",
+      success: function(msg)
+      {
+        alert("Successo");
+      },
+      error: function()
+      {
+        alert("Chiamata fallita, si prega di riprovare...");
+      }
+    });
+    
+}
 
-        });
+
+
+//genera l'ultima pagine dello step-wizard in base alle stanze inserite
+function generateCostiForm() {
+
+    $("#prezzoStanze").empty(); //svuoto tutte le form per le stanze (niente duplicati)
+    console.log("Inserisco codice delle stanze");
+    var i = 1;
+    //per ogni stanza che ho inserito
+    $(".Stanza").each(function () {
+
+        //mi prendo la tipologia della stanza (1 - Letto | 2 - Accessoria)
+        var tipologiaStanza = $(this).contents().find("#selStanza").val();
+        /*controllo se è una camera da letto e quindi genero la form per il prezzo */
+        if (tipologiaStanza == 1) {
+            //mi prendo un po di informazioni della stanza
+            var tipoStanza = $(this).contents().find("#seltipoLetto option:selected").val();
+            var metraturaStanza = $(this).contents().find("#inpMetratura").val();
+            var idStanza = $(this).attr("id");
+            //inserisco le informazioni in delle label
+            var PrezzoStanzaHTML = getPrezzoStanzaHTMLCode();
+            var codiceStanza = PrezzoStanzaHTML.replace('&_&', i);
+            codiceStanza = codiceStanza.replace('$_$_$', idStanza);
+            codiceStanza = codiceStanza.replace('&_tipo&', tipoStanza);
+            codiceStanza = codiceStanza.replace('&_met&', metraturaStanza);
+
+            //inserisco l'HTML nel DOM
+            $(codiceStanza).appendTo("#prezzoStanze");
+            console.log("Inserita stanza " + i);
+            i++;
+        }
+
+    });
 }
 
 //utile a validare le form, prende in input il pulsante Next premuto e in base
 //      ad esso valida la form relativa
 function validateForm(buttonForm) {
-    console.log("Controllo Dati");
+    console.log("Controllo Dati " + buttonForm.attr("id"));
     var curStep = buttonForm.closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
             nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
