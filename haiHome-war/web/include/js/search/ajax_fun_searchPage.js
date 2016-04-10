@@ -12,6 +12,7 @@ var n_page = 0;
 var n_annunci = 0;
 var annunci = new Array();
 var page_annunci = new Array();
+var caroselli = new Array();
 var actual = 0;
 //Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
 function annunci_search() {
@@ -57,7 +58,7 @@ function load_Annunci() {
             n_annunci += 1;
             annunci[index] = annuncio;
             console.log(addMarkerToJSON(annuncio, index));
-            console.log(load_annuncio_image(annuncio));
+            //console.log(load_annuncio_image(annuncio));
         });
 
         actual = 0;
@@ -80,25 +81,93 @@ function create_pageResult() {
     }
     for (page = 0; page < n_page; page++) {
         page_html = '';
-        page_html += '<div id =' + (page + 1) + '_RESULT>';
+        var names = new Array();
+        var index = 0;
+        page_html += '<div class = "search-result" id =' + (page + 1) + '_RESULT>';
         for (i = page * N_ANNUNCI_X_PAGE; (i < ((page + 1) * N_ANNUNCI_X_PAGE) && i < annunci.length); i++) {
-            var title = '<h3 > <a href = "#" >' + annunci[i].Indirizzo + '</a></h3 >';
-            var data_i = '<p > Data inizio: ' + annunci[i].DataInizioAffitto + '</p>';
-            var data_p = '<p > Data pubblicazione: ' + annunci[i].DataPubblicazione + '</p>';
-            var prezzo = '<p > Prezzo: ' + annunci[i].Prezzo + '</p>';
-            var quartiere = '<p > Quartiere: ' + annunci[i].Quartiere + '</p>';
-            var n_loc = '<p > Numero Locali: ' + annunci[i].NumeroLocali + '</p>';
-            var loc = '<p > Locatore: ' + annunci[i].Locatore.nome + '</p>';
-            var desc = '<p > Descrizione: ' + annunci[i].Descrizione + '</p>';
-            var met = '<p > Metratura: ' + annunci[i].Metratura + '</p>';
-            var html = result_div + title + data_i + data_p + prezzo + quartiere + n_loc + loc + desc + met + close_div;
+            /*var title = '<h3 > <a href = "#" >' + annunci[i].Indirizzo + '</a></h3 >';
+             var data_i = '<p > Data inizio: ' + annunci[i].DataInizioAffitto + '</p>';
+             var data_p = '<p > Data pubblicazione: ' + annunci[i].DataPubblicazione + '</p>';
+             var prezzo = '<p > Prezzo: ' + annunci[i].Prezzo + '</p>';
+             var quartiere = '<p > Quartiere: ' + annunci[i].Quartiere + '</p>';
+             var n_loc = '<p > Numero Locali: ' + annunci[i].NumeroLocali + '</p>';
+             var loc = '<p > Locatore: ' + annunci[i].Locatore.nome + '</p>';
+             var desc = '<p > Descrizione: ' + annunci[i].Descrizione + '</p>';
+             var met = '<p > Metratura: ' + annunci[i].Metratura + '</p>';
+             var html = result_div + title + data_i + data_p + prezzo + quartiere + n_loc + loc + desc + met + close_div;
+             */
+            var html = getCodeCarousel(annunci[i], i);
             page_html += html;
+            var lat = annunci[i].Lat;
+            var lng = annunci[i].Lng;
+            var name = i;
+            names[index] = name;
+            index += 1;
         }
         page_html += close_div;
         page_annunci[page] = page_html;
+        caroselli[page] = names;
     }
 }
 
+function getCodeCarousel(annuncio, k) {
+    var lat = annuncio.Lat;
+    var lng = annuncio.Lng;
+    var title = annuncio.Indirizzo;
+    var data_i = annuncio.DataInizioAffitto;
+    var data_p = annuncio.DataPubblicazione;
+    var prezzo = annuncio.Prezzo;
+    var quartiere = annuncio.Quartiere;
+    var n_loc = annuncio.NumeroLocali;
+    var loc = annuncio.Locatore.nome;
+    var desc = annuncio.Descrizione;
+    var met = annuncio.Metratura;
+    var html = "<div class=\"row\">"+"<div class='col-sm-3'>"+
+            "<div class=\"carousel slide qcar\" data-ride=\"carousel\" id=\"quote-carousel-" + k + "\">" +
+            "<!-- Bottom Carousel Indicators -->" +
+            "<ol class=\"carousel-indicators\">" +
+            "<li data-target=\"#quote-carousel-" + k + "\" data-slide-to=\"0\" class=\"active\"></li>" +
+            "<li data-target=\"#quote-carousel-" + k + "\" data-slide-to=\"1\"></li>" +
+            "<li data-target=\"#quote-carousel-" + k + "\" data-slide-to=\"2\"></li>" +
+            "</ol>" +
+            "<!-- Carousel Slides / Quotes -->" +
+            "<div class=\"carousel-inner\">" +
+            "<!-- Quote 1 -->" +
+            "<div class=\"item active\">" +
+            "<blockquote>" +
+            "<img class=\"img-circle img-responsive\" src=\"http://www.reactiongifs.com/r/overbite.gif\" style=\"width: 200px;height:200px;\">" +
+            "<!--<img class=\"img-circle\" src=\"https://s3.amazonaws.com/uifaces/faces/twitter/kolage/128.jpg\" style=\"width: 150px;height:150px;\">-->" +   
+            "</blockquote>" +
+            "</div>" +
+            "<!-- Quote 2 -->" +
+            "<div class=\"item\">" +
+            "<blockquote>" +
+            "<img class=\"img-circle img-responsive\" src=\"https://s3.amazonaws.com/uifaces/faces/twitter/mijustin/128.jpg\" style=\"width: 200px;height:200px;\">" +
+            "</blockquote>" +
+            "</div>" +
+            "<!-- Quote 3 -->" +
+            "<div class=\"item\">" +
+            "<blockquote>" +
+            "<img class=\"img-circle img-responsive\" src=\"Immagini/appartamento_prova/cucina/cucina.jpg\" style=\"width: 200px;height:200px;\">" +
+            "</blockquote>" +
+            "</div>" +
+            "</div>" +
+            "</div>"+
+            "</div>"+
+            "<div class=\"col-sm-9\">" +
+            "<p>Titolo: " + title + "</p>" +
+            //"<p>Data inizio: " + data_i + "</p>" +
+            //"<p>Data pubblicazione: " + data_p + "</p>" +
+            //"<p> Prezzo: " + prezzo + "</p>" +
+            "<p> Quartiere: " + quartiere + "</p>" +
+            //"<p>Numero locali: " + n_loc + "</p>" +
+            "<p>Locatore: " + loc + "</p>" +
+            "<p>Descrizione: " + desc + "</p>" +
+            //"<p>Metratura: " + met + "</p>" +
+            "</div>" +
+            "</div>";
+    return html;
+}
 function add_button() {
     $("#list-result").append("<div class=\"text-center \" id = \"button-div\">");
     $("#button-div").append("<div class=\"btn-group\" id=\"group-button-page\">");
@@ -116,6 +185,7 @@ function add_button() {
 function selectpage(page) {
     if (actual === 0) {
         $("#button-div").before(page_annunci[page - 1]);
+        activateCaroselli(page - 1);
         $("#" + page).addClass("disabled");
         actual = page;
     } else if (actual !== (+page)) {
@@ -126,7 +196,15 @@ function selectpage(page) {
         actual = +page;
     }
 }
-
+function activateCaroselli(page) {
+    var names = caroselli[page];
+    for (var i = 0; i < names.length; i++) {
+        $('#quote-carousel-' + names[i]).carousel({
+            pause: true,
+            interval: 4000
+        });
+    }
+}
 function prevpage() {
 
     if (actual > 1) {
@@ -204,25 +282,25 @@ function init_filtro_tipoStanze() {
         });
     });
 }
-function load_annuncio_image(annuncio) {
-    //var stanze = annuncio.Stanze;
-    $.each(annuncio.Stanze, function (index, stanze) {
-        $.each(stanze, function (index2, stanza) {
-            var paths = stanza.Foto;
-            alert(paths);
-            var action = "Ricerca-getImageAnnuncio";
-            $.ajax({
-                type: "POST",
-                url: "ServletRicerca",
-                data: 'action=' +action  +'&srcImg=' + encodeURIComponent(paths),
-                dataType: "json",
-                success: function (responseJson) {
-
-                    $.each(responseJson, function (index, item) {
-
-                    });
-                }
-            });
-        });
-    });
-}
+/*function load_annuncio_image(annuncio) {
+ //var stanze = annuncio.Stanze;
+ $.each(annuncio.Stanze, function (index, stanze) {
+ $.each(stanze, function (index2, stanza) {
+ var paths = stanza.Foto;
+ alert(paths);
+ var action = "Ricerca-getImageAnnuncio";
+ $.ajax({
+ type: "POST",
+ url: "ServletRicerca",
+ data: 'action=' +action  +'&srcImg=' + encodeURIComponent(paths),
+ dataType: "json",
+ success: function (responseJson) {
+ 
+ $.each(responseJson, function (index, item) {
+ 
+ });
+ }
+ });
+ });
+ });
+ }*/
