@@ -23,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -183,6 +184,32 @@ public class ServletRicerca extends HttpServlet {
                 out.write(json);
                 //response.sendRedirect("/haiHome-war/dettagliAnnuncio.jsp");
                 //getServletContext().getRequestDispatcher("/dettagliAnnuncio.jsp").forward(request, response);
+            } else if (action.equalsIgnoreCase("Ricerca-salvaFiltro")) {
+                response.setContentType("text/html;charset=UTF-8");
+                HttpSession session = request.getSession();
+                if (session == null) {
+                    out.println("non sei loggato!!");
+                } else {
+                    String user_type = (String) session.getAttribute("user-type");
+                    if (user_type == null) {
+                        out.println("non sei loggato!!");
+                    } else if (user_type.equalsIgnoreCase("STUDENTE")) {
+                        JSONObject Jstudente = (JSONObject) session.getAttribute("user-data");
+                        try {
+                            String id_studente =""+ Jstudente.get("ID");
+                            gestoreRicerca.persistiFiltroAttuale(id_studente);
+                            out.write("ok");
+                        } catch (JSONException ex) {
+                            out.write("errore lettura ID studente da sessione");
+                            //Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    } else {
+                        //String json = new Gson().toJson("ok");
+                        //System.out.println(json);
+                        out.write("no studente");
+                    }
+                }
             } else {
 
             }

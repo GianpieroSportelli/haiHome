@@ -45,6 +45,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
     private CittàFacadeLocal cittàFacade;
     @EJB
     private GoogleMapsBeanLocal gmb;
+    @EJB
+    private GestoreStudenteLocal gestoreStudente;
 
     FiltroDiRicerca filtroAttuale = null;
 
@@ -186,9 +188,31 @@ public class GestoreRicerca implements GestoreRicercaLocal {
     }
 
     @Override
-    public boolean persistiFiltroAttuale(Studente studente) {
+    public boolean persistiFiltroAttuale(String id_studente) {
+        Studente studente=gestoreStudente.getStudenteByID(""+id_studente);
+        System.out.println(studente.toJSON());
         filtroAttuale.setStudente(studente);
         filtroDiRicercaFacade.create(filtroAttuale);
+        studente=gestoreStudente.getStudenteByID(""+id_studente);
+        JSONArray filtri;
+        try {
+            filtri = studente.getListaFiltriPreferiti();
+            System.out.println(filtri.length());
+        for(int i=0;i<filtri.length();i++){
+            JSONObject filtro;
+            
+            try {
+                filtro = filtri.getJSONObject(i);
+                System.out.println(filtro.toString());
+            } catch (JSONException ex) {
+                Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        } catch (JSONException ex) {
+            Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return filtroDiRicercaFacade.find(filtroAttuale.getId()) != null;
     }
 

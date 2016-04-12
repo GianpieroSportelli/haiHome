@@ -198,6 +198,8 @@
                                 </div>
                             </div>
                             <button id="searchButton"  type="submit" class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
+                            <button id="saveButton"  type="button" class="btn btn-danger glyphicon glyphicon-plus" onClick="persistiFiltro()">salva</button> <!--type="submit"-->
+                        
                         </form>
 
                     </div>

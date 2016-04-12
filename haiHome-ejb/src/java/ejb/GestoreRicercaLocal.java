@@ -35,7 +35,7 @@ public interface GestoreRicercaLocal {
 
     JSONObject attualeToJSON();
 
-    boolean persistiFiltroAttuale(Studente studente);
+    boolean persistiFiltroAttuale(String id_studente);
 
     ArrayList<String> getQuartieriCittà();
 

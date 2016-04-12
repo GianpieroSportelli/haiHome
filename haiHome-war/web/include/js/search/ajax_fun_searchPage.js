@@ -360,3 +360,15 @@ JSON.stringify = JSON.stringify || function (obj) {
     }
 };
 
+function persistiFiltro(){
+    console.log("salva filtro");
+    $.post("ServletController",
+            {action: "Ricerca-salvaFiltro"},
+            function (item) {
+                //var html = '';
+                
+                    alert(item);
+                
+            });
+}
+
