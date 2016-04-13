@@ -201,14 +201,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             System.out.println(filtri.length());
             for (int i = 0; i < filtri.length(); i++) {
                 JSONObject filtro;
-
-                try {
-                    filtro = filtri.getJSONObject(i);
-                    System.out.println(filtro.toString());
-                } catch (JSONException ex) {
-                    Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
+                filtro = filtri.getJSONObject(i);
+                System.out.println(filtro.toString());
             }
         } catch (JSONException ex) {
             Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
@@ -219,7 +213,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     private Annuncio acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
         //Ricordati di aggiungere compreso riscaldamento e compreso condominio
-        Annuncio result =new Annuncio();
+        Annuncio result = new Annuncio();
         result.setId(x.getId());
         result.setCittà(x.getCittà());
         result.setArchiviato(x.isArchiviato());
@@ -238,7 +232,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         result.setOscurato(x.isOscurato());
         result.setPrezzo(x.getPrezzo());
         result.setQuartiere(x.getQuartiere());
-        
+
         boolean accept = false;
         if (!x.isArchiviato() || !x.isOscurato()) {
             if (!quartieriFiltro.isEmpty()) {
@@ -319,8 +313,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             } else {
                 if (filtroAttuale.getPrezzo() != 0 && x.isAtomico() && x.getPrezzo() > filtroAttuale.getPrezzo()) {
                     accept = false;
-                }else{
-                    accept=true;
+                } else {
+                    accept = true;
                 }
                 if (!x.isAtomico()) {
                     boolean ok = false;
