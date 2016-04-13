@@ -15,6 +15,12 @@
         <title>haiHome!! - Search Page</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+         <!-- google+ login stuff -->
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
+        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <!-- end google+ login stuff -->
 
         <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
         <!-- Latest compiled and minified CSS -->
@@ -39,6 +45,7 @@
         <link rel="stylesheet" href="include/css/search/search-result.css">
         <link rel="stylesheet" href="include/css/search/search-page.css">
         <!-- FINE import SOL -->  
+        
         <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
@@ -54,13 +61,20 @@
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
+        
+         <!-- Import script Facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Fine Import script Facebook -->
+        
         <!-- INFO BOX -->
         <script type="text/javascript" src="include/js/search/jquery.colorbox-min.js"></script>
         <link rel="stylesheet" href="include/css/search/colorbox.css">
         <!-- FINE INFO BOX-->
+        
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
+        
         <!-- INIZIO import ajax-fun searchPage-->
         <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
         <!-- FINE import ajax-fun searchPage-->

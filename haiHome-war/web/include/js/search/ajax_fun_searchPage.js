@@ -171,7 +171,7 @@ function getCodeCarousel(annuncio, k) {
             "</div>";
     return html;
 }
-function add_button() {
+/*function add_button() {
     $("#list-result").append("<div class=\"text-center \" id = \"button-div\">");
     $("#button-div").append("<div class=\"btn-group\" id=\"group-button-page\">");
     $("#group-button-page").append("<button class=\"btn btn-white\"onClick=prevpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button>");
@@ -183,7 +183,7 @@ function add_button() {
     $("#group-button-page").append("<button class=\"btn btn-white\" onClick=nextpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-right\"></i> </button>");
     $("#button-div").append("</div>");
     $("#list-result").append("</div>");
-}
+}*/
 
 function selectpage(page) {
     if (actual === 0) {
@@ -223,7 +223,7 @@ function nextpage() {
         selectpage(page);
     }
 }
-function addMarker(location, label, contentString) {
+function addMarker(location, label) {
     //alert(label);
     // Add the marker at the clicked location, and add the next-available label
     // from the array of alphabetical characters.
@@ -233,18 +233,18 @@ function addMarker(location, label, contentString) {
         map: map
                 //icon: icon
     });
-    var infowindow = new google.maps.InfoWindow({
+    /*var infowindow = new google.maps.InfoWindow({
         content: contentString
     });
     marker.addListener('click', function () {
         infowindow.open(map, marker);
-    });
+    });*/
 }
 function addMarkerToJSON(annuncio, index) {
     var lat = annuncio.Lat;
     var lng = annuncio.Lng;
     var address = annuncio.Indirizzo;
-    var contentString = ' <div id = \"content\" > ' +
+    /*var contentString = ' <div id = \"content\" > ' +
             '<div id = \"siteNotice\" >' +
             '</div>' +
             '<div id = \"firstHeading\" > <span style =\"font-size:18px; font-weight:bold;\"> Uluru </span><br><br><img src=' + icon + ' style=\"max-width:100%;\" / > <br> <br> ' +
@@ -252,9 +252,9 @@ function addMarkerToJSON(annuncio, index) {
             '</div><div id=”bodyContent”>' +
             '<p> <b>' + address + ' </b> Lorem upsum</p >' +
             ' </div>' +
-            '</div>';
+            '</div>';*/
     var label = "Annuncio " + (index + 1);
-    window.addMarker(new google.maps.LatLng(lat, lng), label, contentString);
+    window.addMarker(new google.maps.LatLng(lat, lng), label);
 }
 
 function init_filtro() {
@@ -286,29 +286,6 @@ function init_filtro_tipoStanze() {
                 });
             });
 }
-/*function load_annuncio_image(annuncio) {
- //var stanze = annuncio.Stanze;
- $.each(annuncio.Stanze, function (index, stanze) {
- $.each(stanze, function (index2, stanza) {
- var paths = stanza.Foto;
- alert(paths);
- var action = "Ricerca-getImageAnnuncio";
- $.ajax({
- type: "POST",
- url: "ServletRicerca",
- data: 'action=' +action  +'&srcImg=' + encodeURIComponent(paths),
- dataType: "json",
- success: function (responseJson) {
- 
- $.each(responseJson, function (index, item) {
- 
- });
- }
- });
- });
- });
- }*/
-
 $(window).scroll(function () {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
         nextpage();
@@ -326,15 +303,6 @@ function send_Annuncio(k) {
     var json= JSON.stringify(annuncio);
     console.log(k);
     console.log(json);
-    /*$.ajax({
-        url: url,
-        //dataType: 'json', // I was pretty sure this would do the trick
-        data: $.param({ action: 'dettagliAnnuncio', data: json }),
-        type: 'POST',
-        success: function (data) {
-            window.location = data;
-        }
-    });*/
     $.session.set('dettagli', json);
     window.open(url2);
 }

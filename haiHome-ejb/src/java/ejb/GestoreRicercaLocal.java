@@ -44,5 +44,7 @@ public interface GestoreRicercaLocal {
     double[] geocodeCurrentCity();
 
     boolean eseguiRicerca();
+
+    public JSONArray getSupermarketNearBy(double lat, double lng, double rad);
     
 }

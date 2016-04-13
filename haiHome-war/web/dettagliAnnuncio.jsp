@@ -14,6 +14,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
 
         <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
         <!-- Latest compiled and minified CSS -->
@@ -37,14 +38,24 @@
         <link rel="stylesheet" href="include/css/search/sol.css">
         <link rel="stylesheet" href="include/css/search/search-result.css">
         <link rel="stylesheet" href="include/css/search/search-page.css">
-        <!-- FINE import SOL -->  
+        <!-- FINE import SOL --> 
+        
+        <!-- INIZIO import DetailPage css-->
+        <link rel="stylesheet" href="include/css/search/detailPage.css">
+        <!-- FINE import DetailPage css --> 
+        
         <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
-
+        
+         <!-- google+ login stuff -->
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
+        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <!-- end google+ login stuff -->
+        
         <!-- Robe di login2.jsp -->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-
         <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
         <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
         <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
@@ -53,30 +64,61 @@
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
-        <!-- INFO BOX -->
-        <script type="text/javascript" src="include/js/search/jquery.colorbox-min.js"></script>
-        <link rel="stylesheet" href="include/css/search/colorbox.css">
-        <!-- FINE INFO BOX-->
+        
+        <!-- Import script Facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Fine Import script Facebook -->
+        
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
-        <!-- INIZIO import ajax-fun searchPage-->
-        <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
-        <!-- FINE import ajax-fun searchPage-->
         
+        <!-- INIZIO import ajax-fun searchPage-->
+        <!--<script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>-->
+        <script type="text/javascript" src="include/js/search/detailPage.js"></script>
+        <!-- FINE import ajax-fun searchPage-->
+
         <script>
             var StrAnnuncio = $.session.get('dettagli');
-            console.log(StrAnnuncio);
             var annuncio = jQuery.parseJSON(StrAnnuncio);
-            $("head").append("<title>haiHome!! - Dettagli annuncio-"+annuncio.Indirizzo+" </title>");
+            console.log(annuncio);
+            $("head").append("<title>haiHome!! - Dettagli annuncio-" + annuncio.Indirizzo + " </title>");
         </script>
-    </head>
-    <body>
-        <%@include file="/header.jsp" %>
-        <div class="container" id="dettagli-page"></div>
+        <style>
+
+            #bg { min-width: 100%;
+                  height: 600px;
+                  border: 3px solid #73AD21;}
+            </style>
+        </head>
+        <body>
+            <%@include file="/header.jsp" %>
+            <div class="container" id="dettagli-page">
+            <div class="row">
+                <div class="col-sm-9 content">
+                    <div  id="result"> <!-- class="ibox-content"-->
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="ibox float-e-margins">
+                                <div id="map" class="" >   
+                                </div>
+                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&libraries=places"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 sidebar-outer"></div>
+            </div>
+        </div>
         <script>
-            $("#dettagli-page").append("<p>" + JSON.stringify(annuncio) + "</p>");
+
+            initialize(annuncio);
+            //$("#dettagli-page").append("<img src=\"images/bg.jpg\" id=\"bg\" alt=\"\">");
+            $("#result").append(getCodeCarousel(annuncio));
         </script>
+
         <%@include file="/footer.jsp" %>
     </body>
 

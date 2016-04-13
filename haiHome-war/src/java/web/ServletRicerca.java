@@ -10,7 +10,6 @@ import ejb.GestoreRicercaLocal;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -24,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -110,6 +110,8 @@ public class ServletRicerca extends HttpServlet {
                     String tS = request.getParameter("tipoStanza");
                     result = gestoreRicerca.aggiornaAFiltroStanza(tS);
                     System.out.println(gestoreRicerca.attualeToJSON());
+                }else{
+                    System.out.println(gestoreRicerca.attualeToJSON());
                 }
                 //ArrayList<String> quartieri_all = gestoreRicerca.getQuartieriCittà();
                 /*for (String q : quartieri) {
@@ -142,7 +144,9 @@ public class ServletRicerca extends HttpServlet {
             } else if (action.equalsIgnoreCase("Ricerca-getAnnunciFiltro")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
-                String json = gestoreRicerca.usaFiltroAttuale().toString(); //new Gson().toJson(gestoreRicerca.usaFiltroAttuale());
+                JSONArray ris = gestoreRicerca.usaFiltroAttuale();
+                System.out.println(ris.length());
+                String json = ris.toString(); //new Gson().toJson(gestoreRicerca.usaFiltroAttuale());
                 System.out.println(json);
                 out.write(json);
             } else if (action.equalsIgnoreCase("Ricerca-getQuartieri")) {
@@ -196,12 +200,12 @@ public class ServletRicerca extends HttpServlet {
                     } else if (user_type.equalsIgnoreCase("STUDENTE")) {
                         JSONObject Jstudente = (JSONObject) session.getAttribute("user-data");
                         try {
-                            String id_studente =""+ Jstudente.get("ID");
+                            String id_studente = "" + Jstudente.get("ID");
                             gestoreRicerca.persistiFiltroAttuale(id_studente);
                             out.write("ok");
                         } catch (JSONException ex) {
                             out.write("errore lettura ID studente da sessione");
-                            //Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                     } else {
@@ -210,6 +214,28 @@ public class ServletRicerca extends HttpServlet {
                         out.write("no studente");
                     }
                 }
+            } else if (action.equalsIgnoreCase("Ricerca-addServices")) {
+                //System.out.println("I'm in!!");
+                String jsonA = (String) request.getParameter("annuncio");
+                System.out.println(jsonA);
+                try {
+                    JSONObject annuncio = new JSONObject(jsonA);
+                    double lat = annuncio.getDouble("Lat");
+                    double lng = annuncio.getDouble("Lng");
+
+                    response.setContentType("application/json");
+                    JSONArray superJ=gestoreRicerca.getSupermarketNearBy(lat, lng, 500.0);
+                    String json =superJ.toString(); //new Gson().toJson();
+                    System.out.println(json);
+                    out.write(json);
+
+                } catch (JSONException ex) {
+                    String json = new Gson().toJson("ERRORE SUPERMARKET");
+                    System.out.println(json);
+                    out.write(json);
+                    Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             } else {
 
             }

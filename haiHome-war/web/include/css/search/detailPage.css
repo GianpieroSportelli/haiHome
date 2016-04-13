@@ -1,0 +1,17 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13-apr-2016, 15.33.34
+    Author     : SPORT
+*/
+
+.center {
+    margin: auto;
+    width: 60%;
+    /*border: 3px solid #73AD21;*/
+    padding: 10px;
+}
+
