@@ -76,6 +76,7 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 .search-result span.plus a:hover { background-color: #414141; }
 .search-result span.plus a i { color: #fff !important; }
 .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
+
 .snip {
      white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
      white-space: -pre-wrap;      /* Opera 4-6 */
@@ -85,5 +86,14 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
      word-break: break-all;
      white-space: normal;
 }
+
+/*.sidebar-outer {
+    position: relative;
+}
+@media (min-width: 768px) {
+    .sidebar {
+        position: fixed;
+    }
+}*/
 
                     

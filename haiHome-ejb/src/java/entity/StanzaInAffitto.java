@@ -173,6 +173,7 @@ public class StanzaInAffitto extends Stanza implements Serializable {
             stanzaJSON.accumulate("archiviato", this.archiviato);
             stanzaJSON.accumulate("compresoCondominio", this.compresoCondominio);
             stanzaJSON.accumulate("compresoRiscaldamento", this.compresoRiscaldamento);
+            stanzaJSON.accumulate("SuperTipo", "StanzaInAffitto");
             
             
         } catch (JSONException ex) {

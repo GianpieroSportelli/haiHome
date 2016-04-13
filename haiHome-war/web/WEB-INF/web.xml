@@ -44,6 +44,10 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>web.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TestServlet3</servlet-name>
+        <servlet-class>web.TestServlet3</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletController</servlet-name>
         <url-pattern>/ServletController</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestServlet3</servlet-name>
+        <url-pattern>/TestServlet3</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

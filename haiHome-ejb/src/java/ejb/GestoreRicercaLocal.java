@@ -35,7 +35,7 @@ public interface GestoreRicercaLocal {
 
     JSONObject attualeToJSON();
 
-    boolean persistiFiltroAttuale(Studente studente);
+    boolean persistiFiltroAttuale(String id_studente);
 
     ArrayList<String> getQuartieriCittà();
 
@@ -44,5 +44,7 @@ public interface GestoreRicercaLocal {
     double[] geocodeCurrentCity();
 
     boolean eseguiRicerca();
+
+    public JSONArray getSupermarketNearBy(double lat, double lng, double rad);
     
 }
