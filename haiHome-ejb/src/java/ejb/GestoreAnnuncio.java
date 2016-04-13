@@ -45,7 +45,6 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     private StanzaFacadeLocal stanzaFacade;
     
     
-    
     @EJB
     private CittàFacadeLocal cittàFacade;
     @EJB
@@ -64,7 +63,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean CreaAnnuncio(Locatore locatore) {
         
         this.annuncio = new Annuncio();
-        
+
         annuncio.setLocatore(locatore);
         
         /*
@@ -81,7 +80,10 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         @Override
     public boolean CreaAnnuncio(Object idLocatore) {
                 
+
+        
         this.annuncio = new Annuncio();
+        
         /*
         List<Locatore> locatori =locatoreFacade.findAll();
         
@@ -92,7 +94,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             }
         }
         */
-
+        System.out.println(idLocatore.toString());
         Locatore l = locatoreFacade.find(idLocatore);
         this.annuncio.setLocatore(l);
         return l != null;
@@ -126,13 +128,11 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico) {
+    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto) {
         this.annuncio.setDescrizione(descrizione);
         this.annuncio.setMetratura(metratura);
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
-        this.annuncio.setNumeroStanze(numeroStanze);
-        this.annuncio.setListaStanza(new ArrayList<>());
-        this.annuncio.setAtomico(atomico);
+        this.annuncio.setListaStanza(new ArrayList<>());        
         return true;
     }
 
@@ -285,7 +285,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng) {
+    public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng ,int numeroStanze, boolean atomico) {
        if(this.annuncio==null)
            return false;
 
@@ -325,7 +325,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico) {
+    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto,int numeroStanze, boolean atomico) {
         
         this.annuncio.setDescrizione(descrizione);
         this.annuncio.setMetratura(metratura);
@@ -496,6 +496,13 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
                 */
         return temp;
         }
+
+    @Override
+    public boolean inserisciInfoStanze(int numeroStanze, boolean atomico) {
+                this.annuncio.setNumeroStanze(numeroStanze);
+                this.annuncio.setAtomico(atomico);
+                return true;
+    }
 
 
     

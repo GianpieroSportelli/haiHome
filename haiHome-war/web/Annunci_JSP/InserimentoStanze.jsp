@@ -17,12 +17,14 @@
 
 
         <!-- contenitore stanze -->
+    <form action="../ServletAnnuncio" method="post" id="formStanze">
+        <input type="hidden" name="action" value="Annunci-newAnnuncio-infoStanze" /> 
         <div  class="col-md-12" id="contenitoreStanze">
 
 
 
         </div>
-
+    </form>
     
 
     <div class="form-group row">

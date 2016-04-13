@@ -120,7 +120,7 @@ public class TestServlet extends HttpServlet {
             gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
 
             /*ANNUNCIO 1 Via Cottolengo*/
-             gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 1", 90, new Date(2016, 3, 1), 5, true);
+             //gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 1", 90, new Date(2016, 3, 1), 5, true);
              gestoreAnnunci.inserisciInfoCostiAppartamento(850, true, true);
              double[] latlng=gmb.geocodingAddress(add_test1);
              gestoreAnnunci.inserisciInfoIndirizzo("Torino","Aurora", add_test1, latlng);
@@ -139,7 +139,7 @@ public class TestServlet extends HttpServlet {
             /* ANNUNCIO 2 Via Carlo Alberto, 41, Torino, TO, Italia*/
             if (gestoreLocatore.checkLocatore(email)) {
                 gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
-                gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 2", 110, new Date(2016, 3, 1), 4, false);
+                //gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 2", 110, new Date(2016, 3, 1), 4, false);
                 gestoreAnnunci.inserisciInfoCostiAppartamento(800, true, true);
 
                 /**/double[] latlng = gmb.geocodingAddress(add_test2);
@@ -157,7 +157,7 @@ public class TestServlet extends HttpServlet {
             /* ANNUNCIO 3 Via Gian Domenico Cassini, 15, 10129 Torino, TO, Italia, 41, Torino, TO, Italia*/
             if (gestoreLocatore.checkLocatore(email)) {
                 gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
-                gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 3", 110, new Date(2016, 3, 1), 5, false);
+                //gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 3", 110, new Date(2016, 3, 1), 5, false);
                 gestoreAnnunci.inserisciInfoCostiAppartamento(900, true, true);
 
                 /**/double[] latlng = gmb.geocodingAddress(add_test3);
@@ -177,7 +177,7 @@ public class TestServlet extends HttpServlet {
             //ANNUNCIO 4 Via Carlo Alberto, 41, Torino, TO, Italia
             if (gestoreLocatore.checkLocatore(email)) {
                 gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
-                gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 4", 110, new Date(2016, 3, 1), 4, false);
+                //gestoreAnnunci.inserisciInfoAnnuncio("Descrizione Annuncio 4", 110, new Date(2016, 3, 1), 4, false);
                 gestoreAnnunci.inserisciInfoCostiAppartamento(800, true, true);
                 ArrayList<String> bagno = new ArrayList<String>();
                 ArrayList<String> cucina = new ArrayList<String>();
