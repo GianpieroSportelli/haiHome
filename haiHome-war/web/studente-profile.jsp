@@ -257,7 +257,7 @@
 
                 if (filtri.length === 0) {
                     page_html += "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            "<div class=\"panel-body\"> Nessun Filtro Salvato." +
+                            "<div class=\"panel-body\"> Nessun Filtro Salvato."
                             +"</div>";
                 } else {
                     for (i = 1; i < (filtri.length + 1); i++) {
@@ -292,7 +292,7 @@
                         } else {
                             glyphRiscaldamento = "glyphicon glyphicon-remove";
                         }
-                        var html = "<div id=\"filtro-" + i + "\" OnClick=send_filtro(" + i + ")><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                        var html = "<div style=\"cursor:pointer\" id=\"filtro-" + i + "\" OnClick=send_filtro(" + i + ")><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                 "Filtro n." + i +
                                 "<div class=\"panel-body\">" +
                                 "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
