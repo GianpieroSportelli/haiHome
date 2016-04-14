@@ -51,10 +51,14 @@ public class Studente implements Serializable {
      *
      * @return the value of listaFiltriPreferiti
      */
-    public JSONArray getListaFiltriPreferiti() throws JSONException {
+    public JSONArray getListaFiltriPreferiti() {
         JSONArray result = new JSONArray();
         for (FiltroDiRicerca x : listaFiltriPreferiti) {
-            result.put(x.toJSON());
+            try {
+                result.put(x.toJSON());
+            } catch (JSONException ex) {
+                Logger.getLogger(Studente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return result;
     }
@@ -225,42 +229,20 @@ public class Studente implements Serializable {
             //aggiungo Lista filtri preferiti
             //JSONArray JSONFiltriPreferiti = new JSONArray();
             //for (FiltroDiRicerca f : this.listaFiltriPreferiti) {
-                //     JSONFiltriPreferiti.put(f.toJSON());
-           // }
-
+            //     JSONFiltriPreferiti.put(f.toJSON());
+            // }
             //aggiungo Lista annunci preferiti
             //JSONArray JSONAnnunciPreferiti = new JSONArray();
-           // for (Annuncio a : this.listaAnnunciPreferiti) {
+            // for (Annuncio a : this.listaAnnunciPreferiti) {
             //    JSONFiltriPreferiti.put(a.toJSON());
-           // }
-
-           // studenteJSON.accumulate("FiltriPreferiti", JSONFiltriPreferiti);
-           // studenteJSON.accumulate("AnnunciPreferiti", JSONAnnunciPreferiti);
-
+            // }
+            // studenteJSON.accumulate("FiltriPreferiti", JSONFiltriPreferiti);
+            // studenteJSON.accumulate("AnnunciPreferiti", JSONAnnunciPreferiti);
         } catch (JSONException ex) {
             Logger.getLogger(Annuncio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return studenteJSON;
-    }
-
-    public JSONArray getFiltriDiRicercaJSON() {
-        JSONArray array = new JSONArray();
-
-        int contatore = 1;
-        for (FiltroDiRicerca f : this.listaFiltriPreferiti) {
-            JSONObject obj = new JSONObject();
-            try {
-
-                obj.accumulate("FiltroDiRicerca" + String.valueOf(contatore), f);
-            } catch (JSONException ex) {
-                Logger.getLogger(Studente.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            array.put(obj);
-
-        }
-
-        return array;
     }
 
     public JSONArray getAnnunciJSON() {

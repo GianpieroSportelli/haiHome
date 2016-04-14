@@ -73,8 +73,7 @@
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic">
-                            <%                                
-                                if (session_exists) {
+                            <%                                if (session_exists) {
                                     out.println(
                                             "<img src='" + user_data.getString("Foto") + "'"
                                             + "class='img-responsive' alt=''/>");
@@ -140,7 +139,7 @@
                                 <li><a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         Annunci preferiti</a></li>
-                                <li><a href="#filtri" data-toggle="tab">
+                                <li><a href="#filtriUtente" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Filtri Preferiti</a></li>
                             </ul>
@@ -219,7 +218,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="annunci">Annunci preferiti qui</div>
-                        <div class="tab-pane" id="filtri">Filtri utente qui</div>
+                        <div class="tab-pane" id="filtriUtente"></div>
                     </div>
                 </div>  
             </div>
@@ -228,9 +227,104 @@
         <br>     
 
         <script>
+            //Memorizzo i filtri che usciranno negli snippet
+            var filtri = new Array();
+
+            $(document).ready(function () {
+                getListaFiltriPreferiti();
+            });
+
+            function getListaFiltriPreferiti() {
+                $.post("ServletController",
+                        {action: "get-lista-preferiti-studente"},
+                function (responseJson) {
+                    //console.log(responseJson);
+
+                    $.each(responseJson, function (index, item) {
+                        console.log(item);
+                        console.log(item.Id);
+                        filtri[index] = item;
+                    });
+
+                    constructFiltriPage();
+
+                }
+                );
+            }
+
+            function constructFiltriPage() {
+                var page_html = '';
+
+                if (filtri.length === 0) {
+                    page_html += "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                            "<div class=\"panel-body\"> Nessun Filtro Salvato." +
+                            +"</div>";
+                } else {
+                    for (i = 1; i < (filtri.length + 1); i++) {
+                        var citta = filtri[i - 1].Città;
+                        var compresoCondominio = filtri[i - 1].CompresoCondominio;
+                        var compresoRiscaldamento = filtri[i - 1].CompresoRiscaldamento;
+                        var idFiltro = filtri[i - 1].Id;
+                        var idStudente = filtri[i - 1].Id_Studente;
+                        var prezzo = filtri[i - 1].Prezzo;
+                        var quartieri = filtri[i - 1].Quartieri;
+
+                        var quartieriHTML = '';
+
+                        for (var indice in quartieri) {
+                            quartieriHTML += quartieri[indice] + " - ";
+                        }
+
+                        //Tolgo l'ultimo -
+                        quartieriHTML = quartieriHTML.substring(0, quartieriHTML.length - 2);
 
 
+                        var glyphCondominio = '';
+                        var glyphRiscaldamento = '';
+                        if (compresoCondominio === true) {
+                            glyphCondominio = "glyphicon glyphicon-ok";
+                        } else {
+                            glyphCondominio = "glyphicon glyphicon-remove";
+                        }
 
+                        if (compresoRiscaldamento === true) {
+                            glyphRiscaldamento = "glyphicon glyphicon-ok";
+                        } else {
+                            glyphRiscaldamento = "glyphicon glyphicon-remove";
+                        }
+                        var html = "<div id=\"filtro-" + i + "\" OnClick=send_filtro(" + i + ")><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                "Filtro n." + i +
+                                "<div class=\"panel-body\">" +
+                                "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
+                                "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Compreso Condominio: <i class=\"" + glyphCondominio + "\"></i> Compreso Riscaldamento: <i class=\"" + glyphRiscaldamento + "\"></i>" +
+                                "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Quartieri Selezionati: " + quartieriHTML +
+                                "</div>" +
+                                "</div>" +
+                                "</div>";
+
+                        page_html += '<div class="filtri row" id =' + i + '_RESULT>';
+                        page_html += html + "</div>";
+                    }
+
+                }
+
+
+                $("#filtriUtente").append(page_html);
+
+            }
+
+            function send_filtro(k) {
+                /*
+                 var annuncio = annunci[k];
+                 console.log(annuncio);
+                 var url = "/haiHome-war/ServletController";
+                 var url2 = "/haiHome-war/dettagliAnnuncio.jsp";
+                 var json = JSON.stringify(annuncio);
+                 console.log(k);
+                 console.log(json);
+                 $.session.set('dettagli', json);
+                 window.open(url2);*/
+            }
         </script>
 
         <%@include file="/footer.jsp" %>
