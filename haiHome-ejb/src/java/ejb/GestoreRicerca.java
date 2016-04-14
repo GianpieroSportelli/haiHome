@@ -248,12 +248,22 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         }
         if (accept) {
             //accept = true;
+            accept=false;
             if (filtroAttuale instanceof FiltroAppartamento) {
                 FiltroAppartamento attuale = (FiltroAppartamento) filtroAttuale;
                 if (!x.isAtomico()) {
                     accept = false;
                 } else {
-                    if (attuale.getPrezzo() != 0 && x.getPrezzo() > attuale.getPrezzo()) {
+                    boolean out_prezzo=attuale.getPrezzo() != 0 && x.getPrezzo() > attuale.getPrezzo();
+                    boolean out_locali=attuale.getNumeroLocali() != 0 && attuale.getNumeroLocali() > x.getNumeroStanze();
+                    int[] stanze = countRoom(x);
+                    boolean out_bagni=!out_locali && attuale.getNumeroBagni() != 0 && stanze[0] < attuale.getNumeroBagni();
+                    boolean out_camere_letto=!out_locali &&attuale.getNumeroCamereDaLetto() != 0 && stanze[1] < attuale.getNumeroCamereDaLetto();
+                    boolean out_met=!out_locali &&attuale.getMetratura() != 0 && attuale.getMetratura() > x.getMetratura();
+                    boolean cmpCon=attuale.isCompresoCondominio() && !x.isCompresoCondominio();
+                    boolean cmpRisc=attuale.isCompresoRiscaldamento() && !x.isCompresoRiscaldamento();
+                    accept=!out_bagni &&!out_camere_letto && !out_locali && !out_met && !out_prezzo && !cmpCon && !cmpRisc;
+                    /*if (attuale.getPrezzo() != 0 && x.getPrezzo() > attuale.getPrezzo()) {
                         accept = false;
                     }
                     if (attuale.getNumeroLocali() != 0 && attuale.getNumeroLocali() > x.getNumeroStanze()) {
@@ -279,12 +289,12 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                     }
                     if (attuale.isCompresoRiscaldamento() && !x.isCompresoRiscaldamento()) {
                         accept = false;
-                    }
+                    }*/
                 }
 
             } else if (filtroAttuale instanceof FiltroStanza) {
                 FiltroStanza attuale = (FiltroStanza) filtroAttuale;
-                boolean ok = false;
+                boolean ok;
                 if (!x.isAtomico()) {
                     Collection<Stanza> stanze = x.getListaStanza();
                     ArrayList<Stanza> newStanze = new ArrayList<Stanza>();
@@ -292,7 +302,12 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                         //Stanza s=stanze.get(i);
                         if (s instanceof StanzaInAffitto) {
                             StanzaInAffitto sF = (StanzaInAffitto) s;
-                            if (sF.isArchiviato()) {
+                            boolean archiviato=sF.isArchiviato();
+                            boolean out_prezzo=attuale.getPrezzo() != 0 && sF.getPrezzo() > attuale.getPrezzo();
+                            boolean cmpCond=attuale.isCompresoCondominio() && !sF.isCompresoCondominio();
+                            boolean cmpRisc=attuale.isCompresoRiscaldamento() && !sF.isCompresoRiscaldamento();
+                            boolean tipo=sF.getTipo() != attuale.getTipo();
+                            /*if (sF.isArchiviato()) {
                             } else if (attuale.getPrezzo() != 0 && sF.getPrezzo() > attuale.getPrezzo()) {
                             } else if (sF.getTipo() != attuale.getTipo()) {
                             } else if (attuale.isCompresoCondominio() && !sF.isCompresoCondominio()) {
@@ -300,6 +315,22 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                             } else {
                                 ok = true;
                                 newStanze.add(sF);
+                            }*/
+                            ok=!archiviato && !out_prezzo && !tipo && !cmpCond && !cmpRisc;
+                            if(ok){
+                              newStanze.add(sF);
+                              accept=true;
+                            }else{
+                              StanzaInAffitto newS=new StanzaInAffitto();
+                              newS.setId(sF.getId());
+                              newS.setArchiviato(true);
+                              newS.setCompresoCondominio(sF.isCompresoCondominio());
+                              newS.setCompresoRiscaldamento(sF.isCompresoRiscaldamento());
+                              newS.setFoto(sF.getFoto());
+                              newS.setMetratura(sF.getMetratura());
+                              newS.setPrezzo(sF.getPrezzo());
+                              newS.setTipo(sF.getTipo());
+                              newStanze.add(newS);
                             }
                         } else if (s instanceof StanzaAccessoria) {
                             StanzaAccessoria sA = (StanzaAccessoria) s;
@@ -307,33 +338,58 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                         }
                     }
                     result.setListaStanza(newStanze);
+                }else{
+                    accept=false;
                 }
 
-                accept = ok;
+                //accept = ok;
             } else {
-                if (filtroAttuale.getPrezzo() != 0 && x.isAtomico() && x.getPrezzo() > filtroAttuale.getPrezzo()) {
+                boolean out_prezzo_atomico=filtroAttuale.getPrezzo() != 0 && x.isAtomico() && x.getPrezzo() > filtroAttuale.getPrezzo();
+                boolean cmpCon_atomico=filtroAttuale.isCompresoCondominio() && x.isAtomico() && !x.isCompresoCondominio();
+                boolean cmpRisc_atomico=filtroAttuale.isCompresoRiscaldamento() && x.isAtomico() && !x.isCompresoRiscaldamento();
+                /*if (filtroAttuale.getPrezzo() != 0 && x.isAtomico() && x.getPrezzo() > filtroAttuale.getPrezzo()) {
                     accept = false;
                 } else {
                     accept = true;
-                }
+                }*/
+                accept=!out_prezzo_atomico && !cmpCon_atomico && !cmpRisc_atomico;
                 if (!x.isAtomico()) {
-                    boolean ok = false;
+                    boolean ok;
                     ArrayList<Stanza> newStanze = new ArrayList<Stanza>();
                     for (Stanza s : x.getListaStanza()) {
                         if (s instanceof StanzaInAffitto) {
                             StanzaInAffitto sF = (StanzaInAffitto) s;
-                            if (sF.isArchiviato()) {
+                            boolean archiviato=sF.isArchiviato();
+                            boolean out_prezzo=filtroAttuale.getPrezzo() != 0 && sF.getPrezzo() > filtroAttuale.getPrezzo();
+                            boolean cmpCond=filtroAttuale.isCompresoCondominio() && !sF.isCompresoCondominio();
+                            boolean cmpRisc=filtroAttuale.isCompresoRiscaldamento() && !sF.isCompresoRiscaldamento();
+                            /*if (sF.isArchiviato()) {
                             } else if (filtroAttuale.getPrezzo() != 0 && sF.getPrezzo() > filtroAttuale.getPrezzo()) {
                             } else {
                                 ok = true;
                                 newStanze.add(sF);
+                            }*/
+                            ok=!archiviato && !out_prezzo && !cmpCond && !cmpRisc;
+                            if(ok){
+                              newStanze.add(sF); 
+                              accept = ok;
+                            }else{
+                              StanzaInAffitto newS=new StanzaInAffitto();
+                              newS.setId(sF.getId());
+                              newS.setArchiviato(true);
+                              newS.setCompresoCondominio(sF.isCompresoCondominio());
+                              newS.setCompresoRiscaldamento(sF.isCompresoRiscaldamento());
+                              newS.setFoto(sF.getFoto());
+                              newS.setMetratura(sF.getMetratura());
+                              newS.setPrezzo(sF.getPrezzo());
+                              newS.setTipo(sF.getTipo());
+                              newStanze.add(newS);
                             }
                         } else {
                             newStanze.add((StanzaAccessoria) s);
                         }
                     }
                     result.setListaStanza(newStanze);
-                    accept = ok;
                 }
             }
         }
