@@ -20,6 +20,7 @@ import entity.TipoStanzaInAffitto;
 import facade.CittàFacadeLocal;
 import facade.FiltroDiRicercaFacadeLocal;
 import facade.QuartiereFacadeLocal;
+import facade.StudenteFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -52,6 +53,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     Città cittàAttuale = null;
     private Collection<Annuncio> ricerca;
+    @EJB
+    private StudenteFacadeLocal studenteFacade;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -192,8 +195,12 @@ public class GestoreRicerca implements GestoreRicercaLocal {
     public boolean persistiFiltroAttuale(String id_studente) {
         Studente studente = gestoreStudente.getStudenteByID("" + id_studente);
         System.out.println(studente.toJSON());
-        filtroAttuale.setStudente(studente);
+        //filtroAttuale.setStudente(studente);
         filtroDiRicercaFacade.create(filtroAttuale);
+        //System.out.println(filtroAttuale.getId());
+        //System.out.println(filtroDiRicercaFacade.find(filtroAttuale.getId()));
+        studente.addFiltro(filtroAttuale);
+        studenteFacade.edit(studente);
         studente = gestoreStudente.getStudenteByID("" + id_studente);
         JSONArray filtri;
         try {

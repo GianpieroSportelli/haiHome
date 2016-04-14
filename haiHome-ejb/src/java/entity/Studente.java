@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,27 +25,27 @@ import org.json.JSONObject;
  */
 @Entity
 public class Studente implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    
     private String nome;
-
+    
     private String cognome;
-
+    
     private String email;
-
+    
     private String password;
-
+    
     @OneToMany
     private Collection<Annuncio> listaAnnunciPreferiti = null;
-
+    
     private String fotoProfilo;
-
-    @OneToMany(mappedBy = "studente")
-    private Collection<FiltroDiRicerca> listaFiltriPreferiti = null;
+    
+    @OneToMany//(mappedBy = "studente")
+    private Collection<FiltroDiRicerca> listaFiltriPreferiti = new ArrayList<FiltroDiRicerca>();
 
     /**
      * Get the value of listaFiltriPreferiti
@@ -61,6 +62,10 @@ public class Studente implements Serializable {
             }
         }
         return result;
+    }
+
+    public void addFiltro(FiltroDiRicerca FiltroPreferito) {
+        this.listaFiltriPreferiti.add(FiltroPreferito);
     }
 
     /**
@@ -179,22 +184,22 @@ public class Studente implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
+    
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -207,17 +212,17 @@ public class Studente implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         String res = "Nome: " + getNome() + " - Cognome: " + getCognome() + " - Email: " + getEmail() + " - Foto: " + getFotoProfilo() + " - Password: " + getPassword() + "\n";
         return res;
     }
-
+    
     public JSONObject toJSON() {
-
+        
         JSONObject studenteJSON = new JSONObject();
-
+        
         try {
             studenteJSON.accumulate("ID", this.getId());
             studenteJSON.accumulate("Nome", this.getNome());
@@ -241,13 +246,13 @@ public class Studente implements Serializable {
         } catch (JSONException ex) {
             Logger.getLogger(Annuncio.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         return studenteJSON;
     }
-
+    
     public JSONArray getAnnunciJSON() {
         JSONArray array = new JSONArray();
-
+        
         int contatore = 1;
         for (Annuncio a : this.getListaAnnunciPreferiti()) {
             JSONObject obj = new JSONObject();
@@ -257,10 +262,10 @@ public class Studente implements Serializable {
                 Logger.getLogger(Studente.class.getName()).log(Level.SEVERE, null, ex);
             }
             array.put(obj);
-
+            
         }
-
+        
         return array;
     }
-
+    
 }
