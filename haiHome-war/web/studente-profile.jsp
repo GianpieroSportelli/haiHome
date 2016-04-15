@@ -67,7 +67,7 @@
         <%@include file="/header.jsp" %> 
         <!-- < %@include file="/header3Login.jsp" %>  -->
 
-        <div class="container box1">
+        <div class="container">
             <div class="row profile">
                 <div class="col-md-3">
                     <div class="profile-sidebar">
