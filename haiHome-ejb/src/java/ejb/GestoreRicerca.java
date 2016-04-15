@@ -193,29 +193,10 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     @Override
     public boolean persistiFiltroAttuale(String id_studente) {
-        Studente studente = gestoreStudente.getStudenteByID("" + id_studente);
-        System.out.println(studente.toJSON());
-        //filtroAttuale.setStudente(studente);
         filtroDiRicercaFacade.create(filtroAttuale);
-        //System.out.println(filtroAttuale.getId());
-        //System.out.println(filtroDiRicercaFacade.find(filtroAttuale.getId()));
-        studente.addFiltro(filtroAttuale);
-        studenteFacade.edit(studente);
-        studente = gestoreStudente.getStudenteByID("" + id_studente);
-        JSONArray filtri;
-        try {
-            filtri = studente.getListaFiltriPreferiti();
-            System.out.println(filtri.length());
-            for (int i = 0; i < filtri.length(); i++) {
-                JSONObject filtro;
-                filtro = filtri.getJSONObject(i);
-                System.out.println(filtro.toString());
-            }
-        } catch (JSONException ex) {
-            Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return filtroDiRicercaFacade.find(filtroAttuale.getId()) != null;
+        boolean persisti = filtroDiRicercaFacade.find(filtroAttuale.getId()) != null;
+        boolean salvato = gestoreStudente.addFiltroStudente(id_studente, filtroAttuale);
+        return persisti && salvato;
     }
 
     private Annuncio acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {

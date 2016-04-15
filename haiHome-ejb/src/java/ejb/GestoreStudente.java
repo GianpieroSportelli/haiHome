@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.FiltroDiRicerca;
 import entity.Studente;
 import facade.StudenteFacadeLocal;
 import java.util.ArrayList;
@@ -120,5 +121,30 @@ public class GestoreStudente implements GestoreStudenteLocal {
     public Studente getStudenteByID(String id) {
         Studente s = studenteFacade.find(Long.valueOf(id));
         return s;
+    }
+
+    @Override
+    public boolean reloadStudente() {
+        Studente newStudente = studenteFacade.find(this.getStudente().getId());
+
+        if (newStudente == null) {
+            return false; //Non ho trovato l'ID
+        } else {
+            this.studente = newStudente;
+            return true;
+        }
+
+    }
+
+    @Override
+    public boolean addFiltroStudente(String id, FiltroDiRicerca filtro) {
+        Studente stud = studenteFacade.find(Long.valueOf(id));
+
+        if (stud == null) {
+            return false;
+        }
+        stud.addFiltro(filtro);
+        studenteFacade.edit(stud);
+        return true;
     }
 }

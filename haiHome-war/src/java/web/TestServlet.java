@@ -70,7 +70,7 @@ public class TestServlet extends HttpServlet {
             add_test3 = add_test3.replace(" ", "+");
             add_test2 = add_test2.replace(" ", "+");
             add_test1 = add_test1.replace(" ", "+");
-            add_test4 = add_test4.replace(" ", "+");
+            add_test4 = add_test4.replace(" ", "+");*/
 
             gestoreTest.addCittà(nome);
             ArrayList<String> cities = gestoreTest.getAllCittàNome();
@@ -206,7 +206,7 @@ public class TestServlet extends HttpServlet {
             //gmb.getQuartiereByAddress(nome);
             out.println("</body>");
             out.println("</html>");*/
-            String add="Via Garibaldi, 1, Torino, TO, Italia";
+           /* String add="Via Garibaldi, 1, Torino, TO, Italia";
             String add_code=add.replace(" ", "+");
             if (gestoreLocatore.checkLocatore(email)) {
                 gestoreAnnunci.CreaAnnuncio(gestoreLocatore.getLocatore());
@@ -234,7 +234,7 @@ public class TestServlet extends HttpServlet {
                 } else {
                     System.out.println("errore");
                 }
-            }
+            }*/
 
         }
     }

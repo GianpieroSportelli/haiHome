@@ -258,7 +258,7 @@
                 if (filtri.length === 0) {
                     page_html += "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                             "<div class=\"panel-body\"> Nessun Filtro Salvato."
-                            +"</div>";
+                            + "</div>";
                 } else {
                     for (i = 1; i < (filtri.length + 1); i++) {
                         var citta = filtri[i - 1].Città;
@@ -298,6 +298,7 @@
                                 "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
                                 "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Compreso Condominio: <i class=\"" + glyphCondominio + "\"></i> Compreso Riscaldamento: <i class=\"" + glyphRiscaldamento + "\"></i>" +
                                 "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Quartieri Selezionati: " + quartieriHTML +
+                                "</div>" +
                                 "</div>" +
                                 "</div>" +
                                 "</div>";

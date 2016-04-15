@@ -23,7 +23,7 @@ import verifytoken.Verify;
  * @author gianp_000
  */
 public class ServletStudente extends HttpServlet {
-
+    
     @EJB
     private GestoreStudenteLocal gestoreStudente;
 
@@ -38,7 +38,7 @@ public class ServletStudente extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -59,7 +59,7 @@ public class ServletStudente extends HttpServlet {
             /*
              if (session.getAttribute("is-user-logged") == null) 
              session.setAttribute("is-user-logged", "false"); */
-
+            
             if (action.equalsIgnoreCase("signup-studente")) {
                 String name = request.getParameter("user-name").trim(),
                         surname = request.getParameter("user-surname").trim(),
@@ -67,22 +67,22 @@ public class ServletStudente extends HttpServlet {
                         pwd = request.getParameter("user-pw"),
                         pwd2 = request.getParameter("user-pw-repeat"),
                         op_result;
-
+                
                 if (gestoreStudente.checkStudente(email) == false) {
                     /* creo studente con avatar di default */
                     gestoreStudente.aggiungiStudente(email, name, surname,
                             "http://openmag.it/wp-content/uploads/2015/12/gianni_morandi.jpg",
                             pwd);
                     op_result = "OK";
-
+                    
                 } else {
                     op_result = "email address <" + email + "> is already registered";
                 }
-
+                
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(op_result);
-
+                
             } else if (action.equalsIgnoreCase("login-studente")) {
                 String email = request.getParameter("user-email").trim(),
                         pwd = request.getParameter("user-pw"),
@@ -90,7 +90,7 @@ public class ServletStudente extends HttpServlet {
 
                 if (gestoreStudente.checkStudente(email)) {
                     String curr_pwd = gestoreStudente.getStudente().getPassword();
-
+                    
                     if (curr_pwd != null) {
                         if (curr_pwd.equals(pwd)) {
                             // creo una nuova sessione 
@@ -120,11 +120,11 @@ public class ServletStudente extends HttpServlet {
                 } else {
                     op_result = "email non riconosciuta";
                 }
-
+                
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write(op_result);
-
+                
             } else if (action.equalsIgnoreCase("loginFacebookStudente")) {
                 /*
                  out.println("<!DOCTYPE html>");
@@ -133,7 +133,7 @@ public class ServletStudente extends HttpServlet {
                  out.println("<title>Servlet Facebook - Login</title>");
                  out.println("</head>");
                  out.println("<body>");*/
-
+                
                 String email = request.getParameter("mailUser");
                 String foto = request.getParameter("profilo");
                 //Il cognome è nella seconda posizione
@@ -177,7 +177,7 @@ public class ServletStudente extends HttpServlet {
                 String[] verify = Verify.getUserCredentials(
                         request.getParameter("id_token"),
                         request.getParameter("access_token"));
-
+                
                 if (verify != null) {
                     String name = request.getParameter("name");
                     String surname = request.getParameter("surname");
@@ -192,17 +192,21 @@ public class ServletStudente extends HttpServlet {
                     //          HttpSession session = request.getSession();
                     session.setAttribute("user-type", "studente");
                     session.setAttribute("user-data", this.gestoreStudente.toJSON());
-
+                    
                     getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-
+                    
                 } else {
                     out.println("errore nell'autenticazione");
                 }
             } else if (action.equalsIgnoreCase("get-lista-preferiti-studente")) {
                 response.setContentType("application/json");
-                String json = gestoreStudente.getStudente().getListaFiltriPreferiti().toString();
-                System.out.println(json);
-                out.write(json);
+                if (gestoreStudente.reloadStudente()) {
+                    String json = gestoreStudente.getStudente().getListaFiltriPreferiti().toString();
+                    System.out.println(json);
+                    out.write(json);
+                } else {
+                    out.write("ERRORE");
+                }
             }
         }
     }
