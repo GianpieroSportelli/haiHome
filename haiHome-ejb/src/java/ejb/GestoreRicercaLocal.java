@@ -5,8 +5,6 @@
  */
 package ejb;
 
-import entity.FiltroDiRicerca;
-import entity.Studente;
 import java.util.ArrayList;
 import javax.ejb.Local;
 import org.json.JSONArray;
@@ -42,8 +40,6 @@ public interface GestoreRicercaLocal {
     ArrayList<String> getTipoStanza();
 
     double[] geocodeCurrentCity();
-
-    boolean eseguiRicerca();
 
     public JSONArray getSupermarketNearBy(double lat, double lng, double rad);
     

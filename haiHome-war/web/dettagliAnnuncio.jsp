@@ -105,7 +105,7 @@
                                     <div id="map" class="" >   
                                     </div>
                                     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&libraries=places"></script>
-                                
+                                <div class="hr-line-dashed"></div>
                             </div>
                         </div>
                     </div>

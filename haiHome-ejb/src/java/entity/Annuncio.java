@@ -416,9 +416,10 @@ public class Annuncio implements Serializable {
             
             JSONObject annuncioJSON = new JSONObject();
         try {
+            annuncioJSON.accumulate("OID", this.getId());
             annuncioJSON.accumulate("Città", this.città.getNome());
-            annuncioJSON.accumulate("DataInizioAffitto", this.dataInizioAffitto.toString());
-            annuncioJSON.accumulate("DataPubblicazione", this.dataPubblicazione.toString());
+            annuncioJSON.accumulate("DataInizioAffitto", ""+this.dataInizioAffitto.getDay()+"/"+this.dataInizioAffitto.getMonth()+"/"+this.dataInizioAffitto.getYear());
+            annuncioJSON.accumulate("DataPubblicazione", ""+this.dataPubblicazione.getDay()+"/"+this.dataPubblicazione.getMonth()+"/"+this.dataPubblicazione.getYear());
             annuncioJSON.accumulate("Prezzo", this.prezzo);
             annuncioJSON.accumulate("Quartiere", this.quartiere);
             annuncioJSON.accumulate("NumeroLocali", this.numeroStanze);

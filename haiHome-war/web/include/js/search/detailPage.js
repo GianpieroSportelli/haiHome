@@ -3,159 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$('#quote-carousel').carousel({
-    pause: true,
-    interval: 4000
-});
-
-function getCodeCarouse(annuncio) {
-    var atomico = annuncio.Atomico;
-    if (atomico == true) {
-        return getCodeCarouser_Atomico(annuncio);
-    } else {
-        return getCodeCarouser_Stanza(annuncio);
-    }
-
-}
-
-function getCodeCarouser_Atomico(annuncio) {
-    var title = annuncio.Indirizzo;
-    var data_i = annuncio.DataInizioAffitto;
-    var data_p = annuncio.DataPubblicazione;
-    var prezzo = annuncio.Prezzo;
-    var quartiere = annuncio.Quartiere;
-    var n_loc = annuncio.NumeroLocali;
-    var loc = annuncio.Locatore.nome;
-    var desc = annuncio.Descrizione;
-    var met = annuncio.Metratura;
-    var html = "<div id=\"annuncio\">" +
-            "<div class=\"panel panel-default\">" +
-            "<div class='panel-heading'>" +
-            "<div class=\"center\">" +
-            "<p class=\"text-muted\"> Annuncio Appartamento</p>" +
-            +"</div>" +
-            "<div class=\"carousel slide qcar\" data-ride=\"carousel\" id=\"quote-carousel \">";
-    var stanze = annuncio.Stanze[0];
-    html += "<div class=\"carousel-inner\" align=\"center\">";
-    $.each(stanze, function (index, stanza) {
-        var fotos = stanza.Foto;
-        $.each(fotos, function (i, foto) {
-            if (index == 0 && i == 0) {
-                html += "<div class=\"item active\">";
-            } else {
-                html += "<div class=\"item\">";
-            }
-            html += "<blockquote>" +
-                    "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width: 500px;height:500px;\">" +
-                    "</blockquote>" +
-                    "</div>";
-        });
-    });
-    html += "</div>" +
-            "</div>" +
-            "</div>";
-    html += "<div class=\"panel-body snip\">" +
-            "<p class=\"text-muted\">" + title + "</p>" +
-            "<p class=\"text-muted\">Data inizio: " + data_i + "</p>" +
-            "<p class=\"text-muted\">Data pubblicazione: " + data_p + "</p>" +
-            "<p class=\"text-muted\"> Prezzo: " + prezzo + "</p>" +
-            "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + quartiere + "</p>" +
-            "<p class=\"text-muted\">Numero locali: " + n_loc + "</p>" +
-            "<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + loc + "</p>" +
-            "<p class=\"text-muted\">" + desc + "</p>" +
-            "<p class=\"text-muted\">Metratura: " + met + "</p>" +
-            "</div>" + //panel-body
-            "</div>" +
-            "</div>";
-    return html;
-}
-
-function getCodeCarouser_Stanza(annuncio) {
-    var html =
-            "<div id=\"annuncio\">" + //1
-            "<div class=\"panel panel-default\">" + //2
-            "<div class='panel-heading'>" + //3
-            "<div class=\"center\">" +
-            "<p class=\"text-muted\"> Annuncio per Stanze</p>" +
-            "<p class=\"text-muted\">" + annuncio.Indirizzo + "</p>" +
-            "<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
-            "<p class=\"text-muted\">Metratura Appartamento: " + annuncio.Metratura + "</p>" +
-            "<p class=\"text-muted\">Data inizio: " + annuncio.DataInizioAffitto + "</p>" +
-            "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>" +
-            "<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>" +
-            "</div>" +
-            "<div class=\"carousel slide qcar\" data-ride=\"carousel\" id=\"quote-carousel \">" + //4
-            "";
-    var stanze = annuncio.Stanze[0];
-    html += "<div class=\"carousel-inner\" align=\"center\">"; //5
-
-    $.each(stanze, function (index, stanza) {
-        var superT = stanza.SuperTipo;
-        if (superT == "StanzaInAffitto") {
-            var archiviato = stanza.achiviato;
-            //console.log(archiviato);
-            if (!archiviato) {
-                html += slide_Affitto(stanza, index);
-            }
-        } else {
-            html += slide_Accessoria(stanza, index);
-        }
-    });
-    html += "</div>" + //5
-            "</div>" + //4
-            "</div>" + //3
-            "</div>" + //2
-            "</div>"; //1
-    return html;
-}
-
-function slide_Accessoria(stanza, index) {
-    var html = "";
-    var fotos = stanza.Foto;
-    $.each(fotos, function (i, foto) {
-        if (index == 0 && i == 0) {
-            html += "<div class=\"item active\">"; //5.a
-        } else {
-            html += "<div class=\"item\">"; //5.b
-        }
-        html += "<blockquote>" +
-                "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width: 500px;height:500px;\">" +
-                "</div>" +
-                "<div class=\"panel-body snip\">" + //6
-                "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
-                "</div>" + //panel-body*/ //6
-                "</blockquote>" +
-                "</div>"; //5
-    });
-    return html;
-}
-
-function slide_Affitto(stanza, index) {
-    var html = "";
-    var fotos = stanza.Foto;
-    $.each(fotos, function (i, foto) {
-        if (index == 0 && i == 0) {
-            html += "<div class=\"item active\">";
-        } else {
-            html += "<div class=\"item\">";
-        }
-        html += "<blockquote>" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:500px;height:500px;\">" +
-                "<div class=\"panel-body snip\">" +
-                "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
-                "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + stanza.Prezzo + "</p>" +
-                "</div>" + //panel-body*/
-                "</blockquote>" +
-                "</div>";
-    });
-    return html;
-}
 
 var geocoder;
 var map;
 var geoAddress;
 var icon = "images/basket.png";
+var dim_image_car=500;
+
+$('#quote-carousel').carousel({
+    pause: true,
+    interval: 4000
+});
 
 function initialize(annuncio) {
     geocoder = new google.maps.Geocoder();
@@ -278,6 +136,10 @@ function create_corpo_affitto(stanza, first, atomico) {
     }
     html += "<div id=\"" + stanza.OID + "\" class=\"tab-pane fade center " + active + "\">" +
             "<h1>" + stanza.Tipo + "</h1>";
+    var visibile=stanza.visibile;
+    if(!visibile){
+    html += "<p class=\"text-muted\"> <span class=\"text-warning\">Questa camera non rispetta la tua ricerca ma è disponibile!!</span></p>";    
+    }
     html += create_carousel_stanza(stanza);
     //html += "<p>" + JSON.stringify(stanza) + "</p>" ;
     //html += "<div class=\"center\">";
@@ -295,8 +157,8 @@ function create_corpo_affitto(stanza, first, atomico) {
         } else {
             compreso += "non comprende le spese di <span class=\"text-primary\">Condomino</span> e di <span class=\"text-primary\">Riscaldamento</span>.";
         }
-
-        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + stanza.Prezzo + " €</p>";
+        
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + stanza.Prezzo + " &euro;</p>";
         html += "<p class=\"text-muted\"> " + compreso + "</p>";
     }
     //html += "</div>";//center close
@@ -326,7 +188,7 @@ function slide_Stanza(stanza) {
         }
         html += "<blockquote>" +
                 "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width: 500px;height:500px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:"+dim_image_car+"px;height:"+dim_image_car+"px;\">" +
                 "</div>" +
                 "</blockquote>" +
                 "</div>"; //5
@@ -363,29 +225,9 @@ function info_annuncio(annuncio) {
             "<p class=\"text-muted\"><span class=\"text-primary\"> Data inizio: </span> " + annuncio.DataInizioAffitto + "</p>" +
             "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     if (annuncio.Atomico) {
-        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + "</p>";
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
     html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
 }
-/*<ul class="nav nav-tabs">
- <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
- <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
- <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
- </ul>
- 
- <div class="tab-content">
- <div id="home" class="tab-pane fade in active">
- <h3>HOME</h3>
- <p>Some content.</p>
- </div>
- <div id="menu1" class="tab-pane fade">
- <h3>Menu 1</h3>
- <p>Some content in menu 1.</p>
- </div>
- <div id="menu2" class="tab-pane fade">
- <h3>Menu 2</h3>
- <p>Some content in menu 2.</p>
- </div>
- </div>*/

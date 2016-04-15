@@ -87,6 +87,14 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
      white-space: normal;
 }
 
+.div_snippet{
+    height:600px; 
+}
+
+.panel-heading{
+    height:300px;
+}
+
 /*.sidebar-outer {
     position: relative;
 }

@@ -37,6 +37,26 @@ public class StanzaInAffitto extends Stanza implements Serializable {
 
     private boolean compresoRiscaldamento;
 
+    private boolean visibile = true;
+
+    /**
+     * Get the value of visibile
+     *
+     * @return the value of visibile
+     */
+    public boolean isVisibile() {
+        return visibile;
+    }
+
+    /**
+     * Set the value of visibile
+     *
+     * @param visibile new value of visibile
+     */
+    public void setVisibile(boolean visibile) {
+        this.visibile = visibile;
+    }
+
     /**
      * Get the value of compresoRiscaldamento
      *
@@ -159,11 +179,10 @@ public class StanzaInAffitto extends Stanza implements Serializable {
     public String toString() {
         return "entity.StanzaInAffitto[ id=" + id + " ]";
     }
-    
-         public JSONObject toJSON(){
-        
-            
-            JSONObject stanzaJSON = new JSONObject();
+
+    public JSONObject toJSON() {
+
+        JSONObject stanzaJSON = new JSONObject();
         try {
             stanzaJSON.accumulate("OID", super.getId());
             stanzaJSON.accumulate("Foto", super.foto);
@@ -173,9 +192,9 @@ public class StanzaInAffitto extends Stanza implements Serializable {
             stanzaJSON.accumulate("archiviato", this.archiviato);
             stanzaJSON.accumulate("compresoCondominio", this.compresoCondominio);
             stanzaJSON.accumulate("compresoRiscaldamento", this.compresoRiscaldamento);
+            stanzaJSON.accumulate("visibile", this.visibile);
             stanzaJSON.accumulate("SuperTipo", "StanzaInAffitto");
-            
-            
+
         } catch (JSONException ex) {
             Logger.getLogger(Annuncio.class.getName()).log(Level.SEVERE, null, ex);
         }
