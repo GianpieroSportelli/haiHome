@@ -65,6 +65,9 @@
     </head>
     <body>
         <%@include file="/header.jsp" %> 
+
+
+        <%@include file="include/html/modalConfermaCancellazione.html"%>
         <!-- < %@include file="/header3Login.jsp" %>  -->
 
         <div class="container">
@@ -236,6 +239,9 @@
             var n_page = 0;
             var page_filtri = new Array();
 
+            //variabile utile per capire quale filtro cancellare
+            var filtroToDelete;
+
             $(document).ready(function () {
                 getListaFiltriPreferiti();
             });
@@ -320,8 +326,8 @@
                             var citta = filtri[k].Città;
                             var compresoCondominio = filtri[k].CompresoCondominio;
                             var compresoRiscaldamento = filtri[k].CompresoRiscaldamento;
-                            //var idFiltro = filtri[i - 1].Id;
-                            //var idStudente = filtri[i - 1].Id_Studente;
+                            var idFiltro = filtri[k].Id;
+                            //var idStudente = filtri[k].Id_Studente;
                             var prezzo = filtri[k].Prezzo;
                             var quartieri = filtri[k].Quartieri;
                             var numeroCamere = filtri[k].NumeroCamereDaLetto;
@@ -391,13 +397,20 @@
 
                             var htmltipoAnnuncio = '';
 
+                            /**PRIMA C'ERA K AL POSTO DI IDFILTRO!!!!!!!!!!!!!!!!!!!!!!!!*/
+                            /**
+                             * 
+                             * 
+                             * 
+                             * 
+                             */
                             if (tipoAnnuncio === "Stanza") {
-                                htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per stanze";
+                                htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per stanze <img onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton\" src=\"images/deleteButton.png\">";
                             } else {
-                                htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per appartamenti";
+                                htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per appartamenti <img onclick=\"deleteFilterModal(" + idFiltro + ")\"  class=\"deleteButton\" src=\"images/deleteButton.png\">";
                             }
 
-                            var html = "<div style=\"cursor:pointer\" id=\"filtro-" + k + "\" OnClick=send_filtro(" + k + ")><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                            var html = "<div><div class=\"panel panel-default\">" + "<div style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ") class='panel-heading'>" +
                                     htmltipoAnnuncio +
                                     "<div class=\"panel-body\">" +
                                     "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
@@ -414,14 +427,33 @@
 
                             page_html += html;
                         }
-                        
+
                         page_html += "</div>";
                         page_filtri[i - 1] = page_html;
                     }
                 }
             }
 
-            function send_filtro(k) {
+
+
+            //I BOTTONI CON LE X RICHIAMANO QUESTO METODO, MI SALVO L'ID DEL FILTRO DA ELIMINARE E VISUALIZZO 
+            //IL MODAL PER LA CANCELLAZIONE
+            function deleteFilterModal(idFiltro) {
+
+                //FORSE SERVIRA' ANCHE ID DELLO STUDENTE
+                filtroToDelete = idFiltro;
+
+                //IL MODAL VIENE CARICATO NELL'INCLUDE DELLA PAGINA
+                $('#modalCancellazione').modal('show');
+            }
+
+            //METODO RICHIAMATO DAL MODAL QUANDO SPINGI SI
+            function deleteFilter() {
+                alert("Dovrò cancellare il filtro:" + filtroToDelete);
+            }
+
+            //Richiama un filtro di ricerca
+            function send_filtro(idFiltro) {
                 /*
                  var annuncio = annunci[k];
                  console.log(annuncio);
