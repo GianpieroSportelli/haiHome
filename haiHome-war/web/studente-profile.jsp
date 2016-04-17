@@ -268,6 +268,8 @@
                     n_page = 0;
                     n_filtri = 0;
 
+
+
                     $.each(responseJson, function (index, item) {
                         n_filtri += 1;
                         filtri[index] = item;
@@ -275,9 +277,18 @@
                     actual = 0;
                     n_page = n_filtri / FIlTRI_X_PAGE;
 
-                    constructFiltriPage();
-                    selectpage(1);
-                    add_button();
+
+                    if (filtri.length === 0) {
+                        var page_html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                "<div class=\"panel-body\"> <i class=\"glyphicon glyphicon-remove-sign\"></i> Nessun Filtro Salvato."
+                                + "</div>";
+                        page_filtri[0] = page_html;
+                        selectpage(1);
+                    } else {
+                        constructFiltriPage();
+                        selectpage(1);
+                        add_button();
+                    }
 
                 }
                 );
@@ -312,126 +323,121 @@
             function constructFiltriPage() {
                 var page_html = '';
 
-                if (filtri.length === 0) {
-                    page_html += "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            "<div class=\"panel-body\"> <i class=\"glyphicon glyphicon-remove-sign\"></i> Nessun Filtro Salvato."
-                            + "</div>";
-                } else {
-                    for (i = 1; i < (n_page + 1); i++) {
-                        page_html = '';
-                        page_html += '<div class="filtri row" id =' + i + '_RESULT>';
+                for (i = 1; i < (n_page + 1); i++) {
+                    page_html = '';
+                    page_html += '<div class="filtri row" id =' + i + '_RESULT>';
 
-                        for (var k = (i - 1) * FIlTRI_X_PAGE; (k < (i * FIlTRI_X_PAGE) && k < filtri.length); k++) {
+                    for (var k = (i - 1) * FIlTRI_X_PAGE; (k < (i * FIlTRI_X_PAGE) && k < filtri.length); k++) {
 
-                            var citta = filtri[k].Città;
-                            var compresoCondominio = filtri[k].CompresoCondominio;
-                            var compresoRiscaldamento = filtri[k].CompresoRiscaldamento;
-                            var idFiltro = filtri[k].Id;
-                            //var idStudente = filtri[k].Id_Studente;
-                            var prezzo = filtri[k].Prezzo;
-                            var quartieri = filtri[k].Quartieri;
-                            var numeroCamere = filtri[k].NumeroCamereDaLetto;
-                            var numeroLocali = filtri[k].NumeroLocali;
-                            var numeroBagni = filtri[k].NumeroBagni;
-                            var metratura = filtri[k].Metratura;
-                            var tipoAnnuncio = filtri[k].Tipo;
+                        var citta = filtri[k].Città;
+                        var compresoCondominio = filtri[k].CompresoCondominio;
+                        var compresoRiscaldamento = filtri[k].CompresoRiscaldamento;
+                        var idFiltro = filtri[k].Id;
+                        //var idStudente = filtri[k].Id_Studente;
+                        var prezzo = filtri[k].Prezzo;
+                        var quartieri = filtri[k].Quartieri;
+                        var numeroCamere = filtri[k].NumeroCamereDaLetto;
+                        var numeroLocali = filtri[k].NumeroLocali;
+                        var numeroBagni = filtri[k].NumeroBagni;
+                        var metratura = filtri[k].Metratura;
+                        var tipoAnnuncio = filtri[k].Tipo;
 
-                            var quartieriHTML = '';
+                        var quartieriHTML = '';
 
-                            for (var indice in quartieri) {
-                                quartieriHTML += quartieri[indice] + " - ";
-                            }
-
-                            //Tolgo l'ultimo -
-                            quartieriHTML = quartieriHTML.substring(0, quartieriHTML.length - 2);
-
-
-                            var glyphCondominio = '';
-                            var glyphRiscaldamento = '';
-                            if (compresoCondominio === true) {
-                                glyphCondominio = "glyphicon glyphicon-ok";
-                            } else {
-                                glyphCondominio = "glyphicon glyphicon-remove";
-                            }
-
-                            if (compresoRiscaldamento === true) {
-                                glyphRiscaldamento = "glyphicon glyphicon-ok";
-                            } else {
-                                glyphRiscaldamento = "glyphicon glyphicon-remove";
-                            }
-
-                            var htmlNumeroCamere = '';
-
-                            if (numeroCamere == null) {
-                                htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero camere da letto: Non impostato";
-                            } else {
-                                htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero camere da letto: " + numeroCamere;
-
-                            }
-
-                            var htmlNumeroLocali = '';
-
-                            if (numeroLocali == null) {
-                                htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero locali: Non impostato";
-                            } else {
-                                htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero locali: " + numeroLocali;
-
-                            }
-
-                            var htmlNumeroBagni = '';
-
-                            if (numeroBagni == null) {
-                                htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero bagni: Non impostato";
-                            } else {
-                                htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero bagni: " + numeroBagni;
-
-                            }
-
-                            var htmlmetratura = '';
-
-                            if (metratura == null) {
-                                htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Metratura: Non impostata";
-                            } else {
-                                htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Metratura: " + metratura;
-                            }
-
-                            var htmltipoAnnuncio = '';
-
-                            /**PRIMA C'ERA K AL POSTO DI IDFILTRO!!!!!!!!!!!!!!!!!!!!!!!!*/
-                            /**
-                             * 
-                             * 
-                             * 
-                             * 
-                             */
-                            if (tipoAnnuncio === "Stanza") {
-                                htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per stanze <img onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton\" src=\"images/deleteButton.png\">";
-                            } else {
-                                htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per appartamenti <img onclick=\"deleteFilterModal(" + idFiltro + ")\"  class=\"deleteButton\" src=\"images/deleteButton.png\">";
-                            }
-
-                            var html = "<div><div class=\"panel panel-default\">" + "<div style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ") class='panel-heading'>" +
-                                    htmltipoAnnuncio +
-                                    "<div class=\"panel-body\">" +
-                                    "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
-                                    "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Compreso Condominio: <i class=\"" + glyphCondominio + "\"></i> Compreso Riscaldamento: <i class=\"" + glyphRiscaldamento + "\"></i>" +
-                                    "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Quartieri Selezionati: " + quartieriHTML +
-                                    htmlNumeroLocali +
-                                    htmlNumeroCamere +
-                                    htmlNumeroBagni +
-                                    htmlmetratura +
-                                    "</div>" +
-                                    "</div>" +
-                                    "</div>" +
-                                    "</div>";
-
-                            page_html += html;
+                        for (var indice in quartieri) {
+                            quartieriHTML += quartieri[indice] + " - ";
                         }
 
-                        page_html += "</div>";
-                        page_filtri[i - 1] = page_html;
+                        //Tolgo l'ultimo -
+                        quartieriHTML = quartieriHTML.substring(0, quartieriHTML.length - 2);
+
+
+                        var glyphCondominio = '';
+                        var glyphRiscaldamento = '';
+                        if (compresoCondominio === true) {
+                            glyphCondominio = "glyphicon glyphicon-ok";
+                        } else {
+                            glyphCondominio = "glyphicon glyphicon-remove";
+                        }
+
+                        if (compresoRiscaldamento === true) {
+                            glyphRiscaldamento = "glyphicon glyphicon-ok";
+                        } else {
+                            glyphRiscaldamento = "glyphicon glyphicon-remove";
+                        }
+
+                        var htmlNumeroCamere = '';
+
+                        if (numeroCamere == null) {
+                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero camere da letto: Non impostato";
+                        } else {
+                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero camere da letto: " + numeroCamere;
+
+                        }
+
+                        var htmlNumeroLocali = '';
+
+                        if (numeroLocali == null) {
+                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero locali: Non impostato";
+                        } else {
+                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero locali: " + numeroLocali;
+
+                        }
+
+                        var htmlNumeroBagni = '';
+
+                        if (numeroBagni == null) {
+                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero bagni: Non impostato";
+                        } else {
+                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero bagni: " + numeroBagni;
+
+                        }
+
+                        var htmlmetratura = '';
+
+                        if (metratura == null) {
+                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Metratura: Non impostata";
+                        } else {
+                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Metratura: " + metratura;
+                        }
+
+                        var htmltipoAnnuncio = '';
+
+                        /**PRIMA C'ERA K AL POSTO DI IDFILTRO!!!!!!!!!!!!!!!!!!!!!!!!*/
+                        /**
+                         * 
+                         * 
+                         * 
+                         * 
+                         */
+                        if (tipoAnnuncio === "Stanza") {
+                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per stanze <img onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton\" src=\"images/deleteButton.png\">";
+                        } else {
+                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per appartamenti <img onclick=\"deleteFilterModal(" + idFiltro + ")\"  class=\"deleteButton\" src=\"images/deleteButton.png\">";
+                        }
+
+                        var html = "<div><div class=\"panel panel-default\">" + "<div style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ") class='panel-heading'>" +
+                                htmltipoAnnuncio +
+                                "<div class=\"panel-body\">" +
+                                "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
+                                "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Compreso Condominio: <i class=\"" + glyphCondominio + "\"></i> Compreso Riscaldamento: <i class=\"" + glyphRiscaldamento + "\"></i>" +
+                                "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Quartieri Selezionati: " + quartieriHTML +
+                                htmlNumeroLocali +
+                                htmlNumeroCamere +
+                                htmlNumeroBagni +
+                                htmlmetratura +
+                                "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>";
+
+                        page_html += html;
                     }
+
+                    page_html += "</div>";
+                    page_filtri[i - 1] = page_html;
                 }
+
             }
 
 
