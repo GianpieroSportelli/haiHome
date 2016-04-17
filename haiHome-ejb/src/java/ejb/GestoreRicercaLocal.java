@@ -17,7 +17,7 @@ import org.json.JSONObject;
 @Local
 public interface GestoreRicercaLocal {
 
-    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri,boolean compresoCondominio, boolean compresoRiscaldamento);
+    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri, boolean compresoCondominio, boolean compresoRiscaldamento);
 
     boolean selezionaCittà(String città);
 
@@ -29,7 +29,7 @@ public interface GestoreRicercaLocal {
 
     boolean isFiltroAppartamento();
 
-   boolean cambiaFiltroAttuale(long id_FiltroDiRicerca);
+    boolean cambiaFiltroAttuale(long id_FiltroDiRicerca);
 
     JSONObject attualeToJSON();
 
@@ -42,5 +42,7 @@ public interface GestoreRicercaLocal {
     double[] geocodeCurrentCity();
 
     public JSONArray getSupermarketNearBy(double lat, double lng, double rad);
-    
+
+    public boolean removeFiltro(String id_filtro, String id_studente);
+
 }

@@ -110,7 +110,7 @@ public class ServletRicerca extends HttpServlet {
                     String tS = request.getParameter("tipoStanza");
                     result = gestoreRicerca.aggiornaAFiltroStanza(tS);
                     System.out.println(gestoreRicerca.attualeToJSON());
-                }else{
+                } else {
                     System.out.println(gestoreRicerca.attualeToJSON());
                 }
                 //ArrayList<String> quartieri_all = gestoreRicerca.getQuartieriCittà();
@@ -224,8 +224,8 @@ public class ServletRicerca extends HttpServlet {
                     double lng = annuncio.getDouble("Lng");
 
                     response.setContentType("application/json");
-                    JSONArray superJ=gestoreRicerca.getSupermarketNearBy(lat, lng, 500.0);
-                    String json =superJ.toString(); //new Gson().toJson();
+                    JSONArray superJ = gestoreRicerca.getSupermarketNearBy(lat, lng, 500.0);
+                    String json = superJ.toString(); //new Gson().toJson();
                     System.out.println(json);
                     out.write(json);
 
@@ -236,8 +236,30 @@ public class ServletRicerca extends HttpServlet {
                     Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-            } else {
+            } else if (action.equalsIgnoreCase("Ricerca-deleteFiltro")) {
+                response.setContentType("text/html;charset=UTF-8");
+                HttpSession session = request.getSession();
+                if (session == null) {
+                    out.println("non sei loggato!!");
+                } else {
+                    String id_filtro = request.getParameter("filtroID");
+                    JSONObject Jstudente = (JSONObject) session.getAttribute("user-data");
+                    if (id_filtro == null) {
+                        out.write("ERRORE");
+                    } else {
+                        try {
+                            String id_studente = "" + Jstudente.get("ID");
+                            if (gestoreRicerca.removeFiltro(id_filtro, id_studente)) {
+                                out.write("OK");
+                            } else {
+                                out.write("ERRORE");
+                            }
+                        } catch (JSONException ex) {
+                            Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 
+                    }
+                }
             }
 
         }

@@ -439,8 +439,6 @@
             //I BOTTONI CON LE X RICHIAMANO QUESTO METODO, MI SALVO L'ID DEL FILTRO DA ELIMINARE E VISUALIZZO 
             //IL MODAL PER LA CANCELLAZIONE
             function deleteFilterModal(idFiltro) {
-
-                //FORSE SERVIRA' ANCHE ID DELLO STUDENTE
                 filtroToDelete = idFiltro;
 
                 //IL MODAL VIENE CARICATO NELL'INCLUDE DELLA PAGINA
@@ -449,7 +447,18 @@
 
             //METODO RICHIAMATO DAL MODAL QUANDO SPINGI SI
             function deleteFilter() {
-                alert("Dovrò cancellare il filtro:" + filtroToDelete);
+                $.post("ServletController",
+                        {action: "Ricerca-deleteFiltro", filtroID: filtroToDelete},
+                function (data) {
+                    if (data == "OK") {
+                        //Resetto tutto
+                        $('#filtriUtente').empty();
+                        getListaFiltriPreferiti();
+                    } else {
+                        //Errore
+                        alert(data);
+                    }
+                });
             }
 
             //Richiama un filtro di ricerca
