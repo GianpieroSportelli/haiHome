@@ -8,6 +8,7 @@ package ejb;
 import entity.Annuncio;
 import entity.Locatore;
 import entity.Stanza;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import javax.ejb.Local;
@@ -66,6 +67,10 @@ public interface GestoreAnnuncioLocal {
     
     public boolean eliminaStanza(Stanza s);
     
+    
+    //UTILY FOTO
+    
+    public String persistiFoto(InputStream fotoStream,String nomePhoto, String denominazioneLocatore, String denominazioneStanza);
     
     
     
