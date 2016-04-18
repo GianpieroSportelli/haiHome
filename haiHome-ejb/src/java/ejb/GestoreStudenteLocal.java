@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.FiltroDiRicerca;
 import entity.Studente;
 import java.util.List;
 import javax.ejb.Local;
@@ -28,6 +29,12 @@ public interface GestoreStudenteLocal {
     public JSONObject toJSON();
 
     public Studente getStudente();
-    
+
     public Studente getStudenteByID(String id);
+
+    public boolean reloadStudente();
+
+    public boolean addFiltroStudente(String id, FiltroDiRicerca filtro);
+
+    public boolean removeFiltroStudente(String id, FiltroDiRicerca filtro);
 }

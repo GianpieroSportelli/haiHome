@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="container">
+            <!-- Modal -->
+            <div class="modal fade" id="modalCancellazione" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Cancellazione Filtro</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Sei sicuro di voler eliminare il filtro?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" onclick="deleteFilter()" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-ok delete"></i>SI</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-remove nodelete"></i>NO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

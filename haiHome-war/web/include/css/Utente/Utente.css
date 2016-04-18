@@ -102,7 +102,20 @@ Licensed under MIT
 
 /* Profile Content */
 .profile-content {
-    padding: 20px;
     background: #fff;
     min-height: 460px;
+}
+
+.deleteButton{
+    float: right;
+    max-height: 3%;
+    max-width: 3%;
+}
+
+.delete{
+    font-size: 15px;
+}
+
+.nodelete {
+    font-size: 15px;
 }
