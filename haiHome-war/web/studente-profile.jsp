@@ -65,6 +65,9 @@
     </head>
     <body>
         <%@include file="/header.jsp" %> 
+
+
+        <%@include file="include/html/modalConfermaCancellazione.html"%>
         <!-- < %@include file="/header3Login.jsp" %>  -->
 
         <div class="container">
@@ -229,45 +232,115 @@
         <script>
             //Memorizzo i filtri che usciranno negli snippet
             var filtri = new Array();
+            var actual;
+            var n_filtri = 0;
+
+            var FIlTRI_X_PAGE = 3;
+            var n_page = 0;
+            var page_filtri = new Array();
+
+            //variabile utile per capire quale filtro cancellare
+            var filtroToDelete;
 
             $(document).ready(function () {
                 getListaFiltriPreferiti();
             });
 
+            function add_button() {
+                $("#filtriUtente").append("<div class=\"text-center \" id = \"button-div\">");
+                $("#button-div").append("<div class=\"btn-group\" id=\"group-button-page\">");
+                $("#group-button-page").append("<button class=\"btn btn-white\"onClick=prevpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button>");
+                for (i = 0; i < n_page; i++) {
+
+                    var html = '<button class=\"btn btn-white\" onClick=selectpage(this.id) id=\"' + (i + 1) + '\"> ' + (i + 1) + '</button>';
+                    $("#group-button-page").append(html);
+                }
+                $("#group-button-page").append("<button class=\"btn btn-white\" onClick=nextpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-right\"></i> </button>");
+                $("#button-div").append("</div>");
+                $("#filtriUtente").append("</div>");
+            }
+
             function getListaFiltriPreferiti() {
                 $.post("ServletController",
                         {action: "get-lista-preferiti-studente"},
                 function (responseJson) {
-                    //console.log(responseJson);
+                    filtri = [];
+                    n_page = 0;
+                    n_filtri = 0;
+
+
 
                     $.each(responseJson, function (index, item) {
-                        console.log(item);
-                        console.log(item.Id);
+                        n_filtri += 1;
                         filtri[index] = item;
                     });
+                    actual = 0;
+                    n_page = n_filtri / FIlTRI_X_PAGE;
 
-                    constructFiltriPage();
+
+                    if (filtri.length === 0) {
+                        var page_html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                "<div class=\"panel-body\"> <i class=\"glyphicon glyphicon-remove-sign\"></i> Nessun Filtro Salvato."
+                                + "</div>";
+                        page_filtri[0] = page_html;
+                        selectpage(1);
+                    } else {
+                        constructFiltriPage();
+                        selectpage(1);
+                        add_button();
+                    }
 
                 }
                 );
             }
 
+            function prevpage() {
+
+                if (actual > 1) {
+                    var page = actual - 1;
+                    selectpage(page);
+                }
+            }
+            function nextpage() {
+
+                if (actual < n_page) {
+                    var page = actual + 1;
+                    selectpage(page);
+                }
+            }
+
+            function selectpage(page) {
+                if (actual === 0) {
+                    $("#filtriUtente").append(page_filtri[page - 1]);
+                    actual = page;
+                } else if (actual !== (+page)) {
+                    $("#" + (actual) + "_RESULT").before(page_filtri[page - 1]);
+                    $("#" + (actual) + "_RESULT").remove();
+                    actual = +page;
+                }
+            }
+
             function constructFiltriPage() {
                 var page_html = '';
 
-                if (filtri.length === 0) {
-                    page_html += "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            "<div class=\"panel-body\"> Nessun Filtro Salvato."
-                            + "</div>";
-                } else {
-                    for (i = 1; i < (filtri.length + 1); i++) {
-                        var citta = filtri[i - 1].Città;
-                        var compresoCondominio = filtri[i - 1].CompresoCondominio;
-                        var compresoRiscaldamento = filtri[i - 1].CompresoRiscaldamento;
-                        var idFiltro = filtri[i - 1].Id;
-                        var idStudente = filtri[i - 1].Id_Studente;
-                        var prezzo = filtri[i - 1].Prezzo;
-                        var quartieri = filtri[i - 1].Quartieri;
+                for (i = 1; i < (n_page + 1); i++) {
+                    page_html = '';
+                    page_html += '<div class="filtri row" id =' + i + '_RESULT>';
+
+                    for (var k = (i - 1) * FIlTRI_X_PAGE; (k < (i * FIlTRI_X_PAGE) && k < filtri.length); k++) {
+
+                        var citta = filtri[k].Città;
+                        var compresoCondominio = filtri[k].CompresoCondominio;
+                        var compresoRiscaldamento = filtri[k].CompresoRiscaldamento;
+                        var idFiltro = filtri[k].Id;
+                        //var idStudente = filtri[k].Id_Studente;
+                        var prezzo = filtri[k].Prezzo;
+                        var quartieri = filtri[k].Quartieri;
+                        var numeroCamere = filtri[k].NumeroCamereDaLetto;
+                        var numeroLocali = filtri[k].NumeroLocali;
+                        var numeroBagni = filtri[k].NumeroBagni;
+                        var metratura = filtri[k].Metratura;
+                        var tipoAnnuncio = filtri[k].Tipo;
 
                         var quartieriHTML = '';
 
@@ -292,29 +365,110 @@
                         } else {
                             glyphRiscaldamento = "glyphicon glyphicon-remove";
                         }
-                        var html = "<div style=\"cursor:pointer\" id=\"filtro-" + i + "\" OnClick=send_filtro(" + i + ")><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                                "Filtro n." + i +
+
+                        var htmlNumeroCamere = '';
+
+                        if (numeroCamere == null) {
+                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero camere da letto: Non impostato";
+                        } else {
+                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero camere da letto: " + numeroCamere;
+
+                        }
+
+                        var htmlNumeroLocali = '';
+
+                        if (numeroLocali == null) {
+                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero locali: Non impostato";
+                        } else {
+                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero locali: " + numeroLocali;
+
+                        }
+
+                        var htmlNumeroBagni = '';
+
+                        if (numeroBagni == null) {
+                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero bagni: Non impostato";
+                        } else {
+                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero bagni: " + numeroBagni;
+
+                        }
+
+                        var htmlmetratura = '';
+
+                        if (metratura == null) {
+                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Metratura: Non impostata";
+                        } else {
+                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Metratura: " + metratura;
+                        }
+
+                        var htmltipoAnnuncio = '';
+
+                        /**PRIMA C'ERA K AL POSTO DI IDFILTRO!!!!!!!!!!!!!!!!!!!!!!!!*/
+                        /**
+                         * 
+                         * 
+                         * 
+                         * 
+                         */
+                        if (tipoAnnuncio === "Stanza") {
+                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per stanze <img onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton\" src=\"images/deleteButton.png\">";
+                        } else {
+                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per appartamenti <img onclick=\"deleteFilterModal(" + idFiltro + ")\"  class=\"deleteButton\" src=\"images/deleteButton.png\">";
+                        }
+
+                        var html = "<div><div class=\"panel panel-default\">" + "<div style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ") class='panel-heading'>" +
+                                htmltipoAnnuncio +
                                 "<div class=\"panel-body\">" +
                                 "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
                                 "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Compreso Condominio: <i class=\"" + glyphCondominio + "\"></i> Compreso Riscaldamento: <i class=\"" + glyphRiscaldamento + "\"></i>" +
                                 "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Quartieri Selezionati: " + quartieriHTML +
+                                htmlNumeroLocali +
+                                htmlNumeroCamere +
+                                htmlNumeroBagni +
+                                htmlmetratura +
                                 "</div>" +
                                 "</div>" +
                                 "</div>" +
                                 "</div>";
 
-                        page_html += '<div class="filtri row" id =' + i + '_RESULT>';
-                        page_html += html + "</div>";
+                        page_html += html;
                     }
 
+                    page_html += "</div>";
+                    page_filtri[i - 1] = page_html;
                 }
-
-
-                $("#filtriUtente").append(page_html);
 
             }
 
-            function send_filtro(k) {
+
+
+            //I BOTTONI CON LE X RICHIAMANO QUESTO METODO, MI SALVO L'ID DEL FILTRO DA ELIMINARE E VISUALIZZO 
+            //IL MODAL PER LA CANCELLAZIONE
+            function deleteFilterModal(idFiltro) {
+                filtroToDelete = idFiltro;
+
+                //IL MODAL VIENE CARICATO NELL'INCLUDE DELLA PAGINA
+                $('#modalCancellazione').modal('show');
+            }
+
+            //METODO RICHIAMATO DAL MODAL QUANDO SPINGI SI
+            function deleteFilter() {
+                $.post("ServletController",
+                        {action: "Ricerca-deleteFiltro", filtroID: filtroToDelete},
+                function (data) {
+                    if (data == "OK") {
+                        //Resetto tutto
+                        $('#filtriUtente').empty();
+                        getListaFiltriPreferiti();
+                    } else {
+                        //Errore
+                        alert(data);
+                    }
+                });
+            }
+
+            //Richiama un filtro di ricerca
+            function send_filtro(idFiltro) {
                 /*
                  var annuncio = annunci[k];
                  console.log(annuncio);

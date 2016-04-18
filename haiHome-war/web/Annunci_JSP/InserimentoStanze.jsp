@@ -30,6 +30,7 @@
     <div class="form-group row">
         <div class="col-md-10"></div>
         <button class="btn btn-primary nextBtn btn-lg pull-right col-md-2" id="buttStanze" type="button" >Next</button>
+        <button class="btn btn-primary nextBtn btn-lg pull-right col-md-2" id="buttStanze2" type="button" >Invia Form</button>
     </div>
 
 </div>

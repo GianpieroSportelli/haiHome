@@ -35,4 +35,6 @@ public interface GestoreStudenteLocal {
     public boolean reloadStudente();
 
     public boolean addFiltroStudente(String id, FiltroDiRicerca filtro);
+
+    public boolean removeFiltroStudente(String id, FiltroDiRicerca filtro);
 }

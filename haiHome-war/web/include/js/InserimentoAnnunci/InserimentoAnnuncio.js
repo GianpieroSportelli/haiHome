@@ -107,7 +107,7 @@ $(document).ready(function () {
             form4.ajaxSubmit({
                 dataType: "text",
                 success: function (response) {
-                    generateCostiForm();
+                    //generateCostiForm();
                     console.log(response);
                 }
             });
@@ -126,7 +126,7 @@ $(document).ready(function () {
 
 //Invia richiesta iniziale 
 function sendInitialRequest(){
-    var IDLocatore ="101";
+    var IDLocatore ="51";
     
     $.ajax({
       type: "POST",
@@ -168,6 +168,7 @@ function generateCostiForm() {
             var PrezzoStanzaHTML = getPrezzoStanzaHTMLCode();
             var codiceStanza = PrezzoStanzaHTML.replace('&_&', i);
             codiceStanza = codiceStanza.replace('$_$_$', idStanza);
+            codiceStanza = codiceStanza.replace('$__$', idStanza);
             codiceStanza = codiceStanza.replace('&_tipo&', tipoStanza);
             codiceStanza = codiceStanza.replace('&_met&', metraturaStanza);
 
@@ -178,6 +179,8 @@ function generateCostiForm() {
         }
 
     });
+            var codiceFinale = "<div><input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"true\">Compreso Condominio<br><input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"true\" checked>Compreso Riscaldamento</div>";
+            $(codiceFinale).appendTo("#prezzoStanze");
 }
 
 //utile a validare le form, prende in input il pulsante Next premuto e in base

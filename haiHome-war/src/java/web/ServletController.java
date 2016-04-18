@@ -95,6 +95,8 @@ public class ServletController extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("get-lista-preferiti-studente")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
+            } else if (action.equalsIgnoreCase("Ricerca-deleteFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
             } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 

@@ -8,23 +8,23 @@
 // variabili globali
 
 var numStanze = 0;
-var PrezzoStanzaHTML =
-"<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
+var PrezzoStanzaHTML ="<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
             <div class=\"col-md-6\">\n\
+                <input type=\"hidden\" name=\"idStanza\" value=\"$__$\" />\n\
                 <label class=\"control-label\">Tipo: </label> <label class=\"control-label\">&_tipo&</label><br />\n\
                 <label class=\"control-label\">Metratura: </label> <label class=\"control-label\">&_met&</label><br />\n\
             </div>\n\
             <div class=\"col-md-6\">\n\
                 <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
                 <input name='PrezzoS' maxlength=\"100\" type=\"text\" required=\"required\" class=\"form-control prezzoStanza\" /><br />\n\
-                <input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"CC\">Compreso Condominio<br>\n\
-                <input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"CR\" checked>Compreso Riscaldamento<br>\n\
             </div>\n\
         </div>";
-var dropzones = new Array();
-var dropzoneMaps = new Map();
-//var stanzeForms = new Array();
 
+
+var dropzones = new Array();
+
+//var stanzeForms = new Array();
+var dropzoneMaps = new Map();
 
 //aggiunge un elemento all'arrey delle dropzone
 function addDropzoneStanza(dz, i){
@@ -46,6 +46,7 @@ return PrezzoStanzaHTML;
 
 var submitButton2 = document.querySelector("button#buttStanze");
 
+var submitFormButton = document.querySelector("button#buttStanze2");
 
 
         
@@ -61,15 +62,10 @@ function nuovaStanza1(){
         // Prevents Dropzone from uploading dropped files immediately
         autoProcessQueue: false,
         url: "../ServletAnnuncio",
-        headers: {"action":"photoUpload", "numStanza":numStanze},
         parallelUploads: 100,
         uploadMultiple: true,
         paramName: "file[]",
-        addRemoveLinks: true,
-        success : function(){
-            alert("Successo!! " + numStanze);
-            
-        }});
+        addRemoveLinks: true});
     addDropzoneStanza(myDropzone, numStanze);
 
     
@@ -179,11 +175,11 @@ console.log("ciao");
 //restituisce il codice HTML della stanza
 function getStanzaHTMLCode(number){
 var StanzaCode =
-        "<div id=\"stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
+        "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
     <div class=\"form-group col-md-6\">\n\
         <div class=\"form-group\">\n\
             <label class=\"control-label\">Stanza</label>\n\
-            <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('stanza" + number + "')\">\n\
+            <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('Stanza" + number + "')\">\n\
                 <option value=\"1\">Stanza da Letto</option>\n\
                 <option value=\"2\">Stanza Accessoria</option>\n\
             </select>\n\
@@ -217,12 +213,12 @@ var StanzaCode =
 </div>";
     //    <form action=\"../ServletAnnuncio\" method=\"post\" id=\"formStanza" + number + "\">\n\ </form>
         var StanzaCode2 =
-        "<div id=\"stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
-        <input type=\"hidden\" name=\"action\" value=\"prova\" /> \
+        "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
+        <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
         <div class=\"form-group col-md-6\">\n\
             <div class=\"form-group\">\n\
                 <label class=\"control-label\">Stanza</label>\n\
-                <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('stanza" + number + "')\">\n\
+                <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('Stanza" + number + "')\">\n\
                     <option value=\"1\">Stanza da Letto</option>\n\
                     <option value=\"2\">Stanza Accessoria</option>\n\
                 </select>\n\
@@ -262,27 +258,28 @@ function sendData(){
     var myRequest = new XMLHttpRequest();
     var url = "../ServletAnnuncio";
     var method ="post";
-    /*
+    
     myRequest.onreadystatechange = function() {
-    if (myRequest.readyState == XMLHttpRequest.DONE) {
-        alert("tutto OK");
-        $('form#form-info-costi').ajaxSubmit({
+    if (myRequest.readyState === XMLHttpRequest.DONE) {
+        console.log("tutto OK");
+        
+        $('form#formStanze').ajaxSubmit({
                 dataType: "text",
                 success: function (response) {
                     console.log(response);
                 }
             });
     }
-}*/
+};
 
-    myRequest.open(method, url, true);
+    myRequest.open(method, url, false);
     
     var formData = new FormData();
 
     
     for(var key of dropzoneMaps.keys()){
             
-            //qui sta sbagliato
+           
             var files = dropzoneMaps.get(key).getQueuedFiles();
             console.log("Coda file numero "+ key + " " + files.toString());
             
@@ -319,12 +316,25 @@ submitButton2.addEventListener("click", function() {
         }*/
         alert("Pronto ad inviare i dati");
         sendData();
-    
-
+        generateCostiForm();
+        validateFormStanze(butt);
+        
     } else{
         //alert("Dati non Validi");
     }
 });
+
+//prova attuale
+/*)
+submitFormButton.addEventListener("click", function() {
+    $('form#formStanze').ajaxSubmit({
+                dataType: "text",
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+});*/
+
 
 
 
