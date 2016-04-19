@@ -409,14 +409,14 @@
                          * 
                          */
                         if (tipoAnnuncio === "Stanza") {
-                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per stanze <img onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton\" src=\"images/deleteButton.png\">";
+                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per stanze <img style=\"cursor:pointer\" onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton\" src=\"images/deleteButton.png\">";
                         } else {
-                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per appartamenti <img onclick=\"deleteFilterModal(" + idFiltro + ")\"  class=\"deleteButton\" src=\"images/deleteButton.png\">";
+                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per appartamenti <img style=\"cursor:pointer\" onclick=\"deleteFilterModal(" + idFiltro + ")\"  class=\"deleteButton\" src=\"images/deleteButton.png\">";
                         }
 
-                        var html = "<div><div class=\"panel panel-default\">" + "<div style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ") class='panel-heading'>" +
+                        var html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                 htmltipoAnnuncio +
-                                "<div class=\"panel-body\">" +
+                                "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
                                 "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
                                 "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Compreso Condominio: <i class=\"" + glyphCondominio + "\"></i> Compreso Riscaldamento: <i class=\"" + glyphRiscaldamento + "\"></i>" +
                                 "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Quartieri Selezionati: " + quartieriHTML +
