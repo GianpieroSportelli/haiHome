@@ -225,9 +225,7 @@
                     </div>
                 </div>  
             </div>
-        </div>
-        <br>
-        <br>     
+        </div> 
 
         <script>
             //Memorizzo i filtri che usciranno negli snippet
@@ -469,11 +467,15 @@
 
             //Richiama un filtro di ricerca
             function send_filtro(idFiltro) {
-                
+
                 $.post("ServletController",
-                        {action: "Ricerca-setFiltro", ID: filtroToDelete},
+                        {action: "Ricerca-setFiltro", ID: idFiltro},
                 function (data) {
-                   alert('data');
+                    if (data == "true") {
+                        var url = "/haiHome-war/search-page.jsp";
+                        window.open(url);
+                    } else
+                        alert('ERRORE');
                 });
                 /*
                  var annuncio = annunci[k];

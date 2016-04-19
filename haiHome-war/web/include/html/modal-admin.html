@@ -30,7 +30,7 @@
                                 <div class="simform__actions"> 
 
                                     <a onclick="takeData()" id="submit-admin" class="btn btn-lg btn-success" role="button"
-                                            data-toggle="popover" data-trigger="manual" data-content="" > 
+                                       data-toggle="popover" data-trigger="manual" data-content="" > 
                                         Log In 
                                     </a>
                                 </div> 
@@ -46,7 +46,18 @@
 
 <script>
     function takeData() {
-       document.getElementById("admin-login").submit();
+        //document.getElementById("admin-login").submit();
+        var email = document.getElementById("admin-email").value;
+        var pw = document.getElementById("admin-pw").value;
+        $.post("ServletController",
+                {action: "login-admin", adminEmail: email, adminPW: pw},
+        function (data) {
+            if (data == "OK") {
+                //Redirect al pannello admin
+                location.assign("/haiHome-war/admin.jsp");
+            } else
+                alert(data);
+        });
     }
 </script>
 <!--

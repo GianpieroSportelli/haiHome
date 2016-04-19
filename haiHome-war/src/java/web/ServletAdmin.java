@@ -5,8 +5,10 @@
  */
 package web;
 
+import ejb.GestoreAdminLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author gianp_000
  */
 public class ServletAdmin extends HttpServlet {
-
+    
+    @EJB
+    private GestoreAdminLocal gestoreAdmin;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,15 +35,22 @@ public class ServletAdmin extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
+            
             String action = request.getParameter("action");
-
+            
             if (action.equalsIgnoreCase("login-admin")) {
-                String email = request.getParameter("admin-email");
-                String pass = request.getParameter("admin-pw");
-
-                System.out.println(email + " " + pass);
-
+                
+                String email = request.getParameter("adminEmail");
+                String pass = request.getParameter("adminPW");
+                //System.out.println(email + " " + pass);
+                
+                //gestoreAdmin.addAdmin("admin@haihome.it", "haihome");
+                if (gestoreAdmin.checkAdmin(email) == true) {
+                    //E' presente un admin con quelle credenziali
+                    out.write("OK");
+                } else {
+                    out.write("Credenziali ADMIN errate.");
+                }
                 //getServletContext().getRequestDispatcher("/admin.jsp").forward(request, response);
             }
         }
