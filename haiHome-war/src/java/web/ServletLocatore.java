@@ -102,7 +102,7 @@ public class ServletLocatore extends HttpServlet {
                    a un account con password    */
                 // eventuale registrazione se è il primo accesso 
                 if (gestoreLocatore.checkLocatore(email) == false) {
-                    gestoreLocatore.aggiungiLocatore(email, null, dataUser[0], dataUser[1], null, foto);
+                    gestoreLocatore.aggiungiLocatore(email, null, dataUser[0], dataUser[1], "", foto);
                 }
                 // si potrebbe aggiornare l'immagine del profilo, possibile che sia cambiata...
 
@@ -126,7 +126,7 @@ public class ServletLocatore extends HttpServlet {
                     String phone = request.getParameter("phone"); //da recuperare dal profilo...boh
 
                     if (gestoreLocatore.checkLocatore(email) == false) {
-                        gestoreLocatore.aggiungiLocatore(email, null, name, surname, null, url_img);
+                        gestoreLocatore.aggiungiLocatore(email, null, name, surname, "", url_img);
                     }
                     // creo sessione 
 
@@ -138,6 +138,17 @@ public class ServletLocatore extends HttpServlet {
                 } else {
                     out.println("errore nell'autenticazione");
                 }
+            }
+            else if (action.equalsIgnoreCase("locatore-edit-profile")) {
+                String phone = request.getParameter("phone"), 
+                       descrizione = request.getParameter("description"); 
+                
+                gestoreLocatore.modificaInfoProfilo(phone, descrizione); 
+                session.setAttribute("user-data", this.gestoreLocatore.toJSON()); //refresh sessione
+
+                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+                response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+                response.getWriter().write("ok");
             }
         }
     }

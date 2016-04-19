@@ -1,8 +1,4 @@
-<%-- 
-    Document   : locatore-profile
-    Created on : 3-apr-2016, 0.36.09
-    Author     : nico
---%>
+
 
 <%@page import="org.json.JSONObject"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -61,6 +57,8 @@
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
 
+        <script type="text/javascript" src="include/js/locatore-profile.js"></script>
+
         <style>
             body {
                 padding-top: 50px;
@@ -75,29 +73,32 @@
                 <div class="col-md-3">
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
-                        <div class="profile-userpic">
-                            <%             //                   if (session_exists) {
-                                out.println(
+                        <div class="profile-userpic"> 
+                            <% out.println(
                                         "<img src='" + user_data.getString("fotoProfilo") + "'"
-                                        + "class='img-responsive' alt=''/>");
-                                /*    } else {
-                                    out.println("no login no party");
-                                }*/
+                                        + "class='img-responsive' alt=''/>"
+                                );
+
                             %>
 
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
                         <div class="profile-usertitle">
+                            Info su di me: 
                             <div class="profile-usertitle-name">
-                                <%=
-                                    user_data.getString("nome") + " " + user_data.getString("cognome")
-                              //      out.println(user_data.getString("nome") + " " + user_data.getString("cognome"));
-                                %>
-                                <!--  < % = user_data.getString("Nome") + " " + user_data.getString("Cognome")%> -->
+                                <%=user_data.getString("nome") + " " + user_data.getString("cognome")%>
+
                             </div>
-                            <div class="profile-usertitle-job">Locatore</div>
+                            <div class="profile-usertitle-job"><%--
+                                <span>
+                                    <span class="glyphicon glyphicon-envelope"></span>
+                                    <%=user_data.getString("email")%>
+                                </span> --%>
+                            </div>
                         </div>
+
+
 
                         <div class="profile-usermenu"> <!-- required for floating -->
                             <!-- Nav tabs -->
@@ -118,7 +119,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> 
                         <!-- END MENU -->
                     </div>
 
@@ -128,43 +129,76 @@
                     <div class="profile-content tab-content">
                         <div class="tab-pane fade in active" id="home">
                             <table class="table table-user-information">
+                                <thead> 
+                                <div id="edit-buttons" align="right">
+                                    <a href="#0" id="edit">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                        Modifica informazioni
+                                    </a>
+                                    <a href="#0" id="save-edit" style="display: none">
+                                        <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                                        Salva modifiche 
+                                    </a>
+                                    <a href="#0" id="cancel-edit" style="display: none">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        Annulla modifiche
+                                    </a>
+                                </div>
+                                </thead>
                                 <tbody>
                                     <tr>
                                         <td>Nome: </td>
                                         <td> 
-                                            <%= user_data.getString("nome") %>
+                                            <%= user_data.getString("nome")%>
+
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Cognome:</td>
                                         <td>
-                                            <%= user_data.getString("cognome") %>
+                                            <%= user_data.getString("cognome")%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Email: </td>
                                         <td>
-                                            <%= user_data.getString("email") %>
+                                            <%= user_data.getString("email")%>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Password</td>
+                                        <td>eheheh</td>
                                     </tr>
                                     <tr>
                                         <td>Numero di telefono: </td>
                                         <td>
-                                            <%= user_data.getString("telefono") %>
+                                            <input name="phone" type="text" value="<%= user_data.getString("telefono")%>" 
+                                                   disabled="disabled" placeholder="Aggiungi il tuo numero di telefono"
+                                                   style="border: none;border-color: transparent;background: transparent;"/>
                                         </td>
                                     </tr>
 
-
                                     <tr>
-                                        <td> </td>
-                                        <td> </td>
+                                        <td>Descrizione</td>
+                                        <td> 
+                                            <textarea name="description" rows="4" cols="50" 
+                                                      disabled="disabled" placeholder="Aggiungi una breve descrizione di te"
+                                                      style="border: none;border-color: transparent;background: transparent;"><%=
+                                                    user_data.getString("descrizione")
+                                                %></textarea>
+                                            
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane fade" id="annunci">Annunci preferiti qui</div>
-                        <div class="tab-pane fade" id="filtri">Filtri utente qui</div>
-                    </div>
+                        <div class="tab-pane fade" id="annunci">
+                            Annunci preferiti qui
+                        </div>
+                        <div class="tab-pane fade" id="filtri">
+                            Filtri utente qui
+                        </div>
+                    </div> 
                 </div>  
             </div>
         </div>

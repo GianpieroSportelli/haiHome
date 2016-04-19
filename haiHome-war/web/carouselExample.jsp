@@ -56,8 +56,8 @@
         <link rel="stylesheet" href="include/css/login/style.css">
         <!--CAROSELLO BELLO -->
 
-        <link rel="stylesheet" type="text/css" href="include/carosello/css/carousel.css">
-        <script type="text/javascript" src="include/carosello/js/carousel.js"></script>
+        <link rel="stylesheet" type="text/css" href="include/carosello1/css/carousel.css">
+        <script type="text/javascript" src="include/carosello1/js/carousel.js"></script>
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <!-- FINE CAROSELLO -->
     </head>

@@ -55,6 +55,14 @@
 
         <header role="banner">
             <nav class="main-nav">
+                <ul>
+                    <%
+                        String url_target_page = "index.jsp", title_target_page = "Home";
+
+                        out.println("<li><a class='cd-signup' href='" + url_target_page + "'>"
+                                + title_target_page + "</a></li>");
+                    %>
+                </ul>
             </nav>
         </header>
 
@@ -83,46 +91,19 @@
                             </div>
                             <div class="profile-usertitle-job">Admin Panel</div>
                         </div>
-                        <!-- END SIDEBAR USER TITLE -->
-                        <!-- SIDEBAR BUTTONS -->
-                        <!-- END SIDEBAR BUTTONS -->
-                        <!-- SIDEBAR MENU -->
-                        <!--<div class="tabbable">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab1" data-toggle="tab">Request Audit</a></li>
-                                <li class=""><a href="#tab2" data-toggle="tab">Status</a></li>
-                                <li class=""><a href="#tab3" data-toggle="tab">Settings</a></li>
-                                <li class=""><a href="#tab4" data-toggle="tab">Help</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab1">
-                                    <p>Placeholder 1</p>
-                                </div>
-                                <div class="tab-pane" id="tab2">
-                                    <p>Placeholder 2</p>
-                                </div>
-                                <div class="tab-pane" id="tab3">
-                                    <p>Placeholder 3</p>
-                                </div>
-                                <div class="tab-pane" id="tab4">
-                                    <p>Placeholder</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
 
                         <div class="profile-usermenu"> <!-- required for floating -->
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs tabs-left">
                                 <li class="active"><a href="#1" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
-                                        CITT&Aacute;</a></li>
+                                        Citt&aacute;</a></li>
                                 <li><a href="#2" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
-                                        Annunci preferiti</a></li>
+                                        Altre funzioni TO DO</a></li>
                                 <li><a href="#3" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
-                                        Filtri Preferiti</a></li>
+                                        Altre funzioni TO DO</a></li>
                             </ul>
                         </div>
 

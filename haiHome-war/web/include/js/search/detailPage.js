@@ -8,9 +8,10 @@ var geocoder;
 var map;
 var geoAddress;
 var icon = "images/basket.png";
-var dim_image_car=500;
+var dim_image_car = 500;
+var dim_image_prof = 100;
 
-$('#quote-carousel').carousel({
+$('.qcar').carousel({
     pause: true,
     interval: 4000
 });
@@ -31,7 +32,7 @@ function initialize(annuncio) {
     map.setZoom(16);
     addServices(annuncio);
 }
-//window.initialize();
+
 function addServices(annuncio) {
     $.ajax({
         url: "ServletController",
@@ -51,6 +52,7 @@ function addServices(annuncio) {
         }
     });
 }
+
 function addMarker(location, label) {
 //alert(label);
 // Add the marker at the clicked location, and add the next-available label
@@ -62,6 +64,7 @@ function addMarker(location, label) {
         icon: icon
     });
 }
+
 function create_Page(annuncio) {
     var html = "";
     html += info_annuncio(annuncio);
@@ -136,9 +139,9 @@ function create_corpo_affitto(stanza, first, atomico) {
     }
     html += "<div id=\"" + stanza.OID + "\" class=\"tab-pane fade center " + active + "\">" +
             "<h1>" + stanza.Tipo + "</h1>";
-    var visibile=stanza.visibile;
-    if(!visibile){
-    html += "<p class=\"text-muted\"> <span class=\"text-warning\">Questa camera non rispetta la tua ricerca ma è disponibile!!</span></p>";    
+    var visibile = stanza.visibile;
+    if (!visibile) {
+        html += "<p class=\"text-muted\"> <span class=\"text-warning\">Questa camera non rispetta la tua ricerca ma è disponibile!!</span></p>";
     }
     html += create_carousel_stanza(stanza);
     //html += "<p>" + JSON.stringify(stanza) + "</p>" ;
@@ -157,7 +160,7 @@ function create_corpo_affitto(stanza, first, atomico) {
         } else {
             compreso += "non comprende le spese di <span class=\"text-primary\">Condomino</span> e di <span class=\"text-primary\">Riscaldamento</span>.";
         }
-        
+
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + stanza.Prezzo + " &euro;</p>";
         html += "<p class=\"text-muted\"> " + compreso + "</p>";
     }
@@ -188,13 +191,14 @@ function slide_Stanza(stanza) {
         }
         html += "<blockquote>" +
                 "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:"+dim_image_car+"px;height:"+dim_image_car+"px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
                 "</div>" +
                 "</blockquote>" +
                 "</div>"; //5
     });
     return html;
 }
+
 function indicator(stanza) {
     var html = "<ol class=\"carousel-indicators\">";
     var fotos = stanza.Foto;
@@ -212,8 +216,9 @@ function indicator(stanza) {
     html += "</ol>";
     return html;
 }
+
 function info_annuncio(annuncio) {
-    var html = "<div //class=\"center\">";
+    var html = "<div class=\"center\">";
     if (annuncio.Atomico) {
         html += "<h1 class=\"text-muted\"> Annuncio Appartamento</h1>";
     } else {
@@ -227,7 +232,44 @@ function info_annuncio(annuncio) {
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
+    html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-danger\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
     html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
+}
+
+function init_info(annuncio) {
+    var locatore = annuncio.Locatore;
+    console.log(locatore);
+    return info_loc(locatore);
+}
+function info_loc(locatore) {
+    var html = "";
+    html += "<div id=\"info_locatore\" class=\"center\">";
+    html += "<img src='" + locatore.fotoProfilo + "'class='img-responsive img-circle' alt=''style=\"width:" + dim_image_prof + "px;height:" + dim_image_prof + "px;\" \>";
+    //html+="<p>"+JSON.stringify(locatore)+"</p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">Nome:</span>" + locatore.nome + "</p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">Cognome:</span>" + locatore.cognome + "</p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">Descrizione:</span>" + locatore.descrizione + "</p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">email:</span>" + locatore.email + "</p>";
+    html += "</div>";
+    return html;
+}
+
+function loggatoStudente() {
+    //console.log("verifica log Studente");
+    $.post("ServletController",
+            {action: "Ricerca-loggatoStudente"},
+            function (item) {
+                //var html = '';
+                //alert(item);
+                console.log("Studente loggato?: " + item);
+                if (item == "true") {
+                    $("#saveButton").show("fast");
+                }
+            });
+}
+
+function salvaAnnuncioPreferiti(){
+    alert("Salvo l'annuncio nei Preferiti");
 }
