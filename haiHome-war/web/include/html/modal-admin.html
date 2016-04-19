@@ -1,0 +1,48 @@
+<div id="adminModal" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                <h4 class="modal-title">PANNELLO ADMIN</h4>
+            </div> <!-- fine header -->
+            <div class="modal-body">
+                <div class="tab-content">
+                    <!-- tab login studente -->
+                    <div id="login-admin" class="tab-pane fade in active">
+                        <div class="logmod__form">
+                            <form id="studente-login" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
+                                <input type="hidden" name="action" value="login-admin" />
+                                <div class="sminputs">
+                                    <div class="input full">
+                                        <label class="string optional" for="admin-email">Email*</label>
+                                        <input class="string optional" maxlength="255" name="admin-email" placeholder="Email" type="email" size="50" />
+                                    </div>
+                                </div>
+                                <div class="sminputs">
+                                    <div class="input full">
+                                        <label class="string optional" for="admin-pw">Password *</label>
+                                        <input class="string optional" maxlength="255" name="admin-pw" placeholder="Password" type="password" size="50" />
+                                        <span class="hide-password">Show</span>
+                                    </div>
+                                </div>
+                                <div class="simform__actions"> 
+
+                                    <a href="#0" id="submit-admin" class="btn btn-lg btn-success" role="button"
+                                       data-toggle="popover" data-trigger="manual" data-content=""> 
+                                        Log In 
+                                    </a>
+                                </div> 
+                            </form>
+                        </div>
+                    </div>
+                </div> <!-- tab content --> 
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="include/js/login/modal_validation_and_stuff.js"></script> 
+<script src="include/js/login/ajax_req_and_stuff.js"></script> 

@@ -28,3 +28,11 @@
         </div>
     </div>
 </div>
+
+<div>
+    <div class="row">
+        <a class="btn btn-primary" data-toggle="modal" href="#adminModal" >Admin Panel</a>
+    </div>
+</div>
+
+<%@include file="/include/html/modal-admin.html"%>
