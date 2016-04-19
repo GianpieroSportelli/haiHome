@@ -5,7 +5,13 @@
  */
 
 
+
+
+  
+
+    
 $(document).ready(function () {
+
 
 
     
@@ -15,10 +21,42 @@ $(document).ready(function () {
             form2 = $('form#form-info-annuncio'),
             form3 = $('form#form-info-stanze'),
             form4 = $('form#form-info-costi');
+            
+
+    var dataInizio = $('#inpDataInizio:input');
+
+    
+    
+    dataInizio.datepicker({
+      showOn: "button",
+      buttonImage: "../images/calendario.png",
+      buttonImageOnly: true,
+      minDate: 0,
+      monthNames: [ "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre" ],
+      dayNamesMin: [ "Do", "Lu", "Ma", "Me", "Gi", "Ve", "Sa" ],
+      dateFormat: "dd-mm-yy"
+    });
+    
+    
+
+/*    
+$(function() {
+    $('input#inpDataInizio').datetimepicker({
+      pickTime: false,
+      buttonImage: "",
+      buttonImageOnly: true,
+      minDate: 0,
+      changeMonth : true
+
+    });
+  });*/
+    
     
 
     //prendo il codice del locatore e istanzio l'Annuncio
     sendInitialRequest();
+    
+    
 
 
     allWells.hide();
@@ -105,10 +143,12 @@ $(document).ready(function () {
         if (isValid) {
             console.log("Dati form validi");
             form4.ajaxSubmit({
-                dataType: "text",
+                dataType: "json",
                 success: function (response) {
                     //generateCostiForm();
                     console.log(response);
+                    //generaAnteprima(response);
+                    
                 }
             });
         } else {
@@ -122,11 +162,14 @@ $(document).ready(function () {
 
 });
 
+function generaAnteprima(annuncio){
+    $('#modalBody').append("Ciao giampiero");
+}
 
 
 //Invia richiesta iniziale 
 function sendInitialRequest(){
-    var IDLocatore ="51";
+    var IDLocatore ="1";
     
     $.ajax({
       type: "POST",

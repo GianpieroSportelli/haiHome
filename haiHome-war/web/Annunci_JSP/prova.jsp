@@ -4,7 +4,7 @@
     Author     : giacomocavallo
 --%>
 
-
+<!--
 <div id="stanza1" class="col-md-12 formContainer Stanza">
     <form action="../ServletAnnuncio" method="post" id="prova">  
         <input type="hidden" name="action" value="prova" />
@@ -50,3 +50,54 @@
 </div>
 
 
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>datepicker demo</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+</head>
+<body>
+ 
+<div id="datepicker"></div>
+ 
+<script>
+$( "#datepicker" ).datepicker();
+</script>
+ 
+</body>
+</html>
+
+-->
+<html>
+    <head></head>
+    <body>
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        
+       
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Anteprima Annuncio</h4>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+        
+        
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
