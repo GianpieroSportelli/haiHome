@@ -15,7 +15,7 @@
         <title>haiHome!! - Search Page</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        
         <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -30,6 +30,12 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
 
+         <!-- google+ login stuff -->
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
+        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <!-- end google+ login stuff -->
+        
         <link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
 
@@ -39,6 +45,7 @@
         <link rel="stylesheet" href="include/css/search/search-result.css">
         <link rel="stylesheet" href="include/css/search/search-page.css">
         <!-- FINE import SOL -->  
+        
         <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
@@ -60,21 +67,31 @@
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
+        
+         <!-- Import script Facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Fine Import script Facebook -->
+        
         <!-- INFO BOX -->
         <script type="text/javascript" src="include/js/search/jquery.colorbox-min.js"></script>
         <link rel="stylesheet" href="include/css/search/colorbox.css">
         <!-- FINE INFO BOX-->
+        
+        <!-- SESSION -->
+        <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
+        <!-- FINE SESSION -->
+        
         <!-- INIZIO import ajax-fun searchPage-->
         <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
         <!-- FINE import ajax-fun searchPage-->
+        
     </head>
     <body>
         <%@include file="/header.jsp" %>
         <div class="container">
             <div id="mydiv"></div>
             <div class="row">
-                <div class="col-sm-9">
-
+                <div class="col-sm-9 content">
                     <div id="map" class="" >   
                     </div>
                     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&libraries=places"></script>
@@ -90,15 +107,23 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3">
-                    <div class="well" id="searchDiv">
+                <div class="col-sm-3 sidebar-outer">
+                    <div class="well sidebar" id="searchDiv">
                         <h1 align="center">Filtro di Ricerca</h1>
                         <form class="form-horizontal" id="searchForm" action="ServletController" method="post" >
                             <input type="hidden" name="action" value="search">
                             <div>
-                                <label class="sol-label" for="quartieri"><span id="info-quartieri" class="glyphicon glyphicon-info-sign">
-                                        <a class="infobox btn" href="images/infobox.png" title="Mappa dei quartieri di Torino.">Seleziona quartieri</a>
-                                    </span></label>
+
+                                <label class="sol-label" for="quartieri">
+                                    <div class="row">
+                                        Seleziona quartieri
+                                        <a class="infobox btn" href="images/infobox.png" title="Mappa dei quartieri di Torino.">
+                                            <span id="info-quartieri" class="glyphicon glyphicon-info-sign" style="inline">
+
+                                            </span>
+                                        </a>
+                                    </div>
+                                </label>
                                 <p></p>
                                 <select class="sol-selection" name="quartieri" id="quartieri" multiple="multiple">
 
@@ -108,9 +133,9 @@
                             <div class="form-group">
                                 <label for="tipo" class="control-label">Tipo Annuncio</label>
                                 <select class="form-control" name="tipo" id="tipo">
-                                    <option value="all">-</option>
-                                    <option value="Appartamento">Appartamento</option>
-                                    <option value="Stanza">Stanza</option>
+                                    <option id="tipo-all" value="all">-</option>
+                                    <option id="tipo-Appartamento" value="Appartamento">Appartamento</option>
+                                    <option id="tipo-Stanza" value="Stanza">Stanza</option>
                                 </select>
                             </div>
                             <div class="form-group" id="divTipoStanza" style="display:none">
@@ -121,9 +146,11 @@
                             </div>
 
                             <div class="form-group" id="divNLocali" style="display:none">
-                                <label for="detail-NLocali-Button" class="control-label">Numero Locali
-
-                                    <button id="detail-NLocali-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
+                                <label for="detail-NLocali-Button" class="control-label">
+                                    <!--<div class="row"> -->
+                                    Numero Locali
+                                    <span id="detail-NLocali-Button" class="btn btn-sm glyphicon glyphicon-plus my-btn"></span>
+                                    <!--</div> -->
                                 </label>
                                 <div class="input-group" id="NLocali-div" style="display:none">
                                     <div class="input-group-addon" id="NLocali" >#</div>
@@ -132,9 +159,11 @@
                             </div>
 
                             <div class="form-group" id="divNCamere" style="display:none">
-                                <label for="detail-numeroCamere-Button" class="control-label">Numero Camere
-
-                                    <button id="detail-numeroCamere-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
+                                <label for="detail-numeroCamere-Button" class="control-label">
+                                    <!--<div class="row"> -->
+                                    Numero Camere
+                                    <span id="detail-numeroCamere-Button" class="btn btn-sm glyphicon glyphicon-plus my-btn"></span>
+                                    <!--</div> -->
                                 </label>
                                 <div class="input-group" id="numeroCamere-div" style="display:none">
                                     <div class="input-group-addon" id="NCamere" >#</div>
@@ -142,9 +171,11 @@
                                 </div>
                             </div>
                             <div class="form-group" id="divNBagni" style="display:none">
-                                <label for="detail-NBagni-Button" class="control-label">Numero Bagni
-
-                                    <button id="detail-NBagni-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
+                                <label for="detail-NBagni-Button" class="control-label">
+                                    <!--<div class="row">-->
+                                    Numero Bagni
+                                    <span id="detail-NBagni-Button" class="btn btn-sm glyphicon glyphicon-plus my-btn" float:right></span>
+                                    <!--</div> -->
                                 </label>
                                 <div class="input-group" id="NBagni-div" style="display:none">
                                     <div class="input-group-addon" id="NBagni">#</div>
@@ -154,7 +185,7 @@
                             </div>
                             <div class="form-group" id="divMetratura" style="display:none">
                                 <label for="detail-metratura-Button" class="control-label">Metratura
-                                    <button id="detail-metratura-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
+                                    <span id="detail-metratura-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></span>
                                 </label>
                                 <div class="input-group" id="metratura-div" style="display:none">
                                     <div class="input-group-addon" id="divmet" >#</div>
@@ -167,7 +198,7 @@
                                     <div class="input-group-addon" id="basic-addon1">Euro</div>
                                     <input type="text" class="form-control number" id="pricefrom" name="pricefrom" aria-describedby="basic-addon1">
                                     <span class="input-group-btn">
-                                        <button id="detail-price-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></button>
+                                        <span id="detail-price-Button" class="btn btn-sm glyphicon glyphicon-plus my-btn"></span>
                                     </span>
                                 </div>
                             </div>
@@ -187,6 +218,8 @@
                                 </div>
                             </div>
                             <button id="searchButton"  type="submit" class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
+                            <button id="saveButton"  type="button" class="btn btn-danger" onClick="persistiFiltro()" style="display:none"></button> <!--type="submit" glyphicon glyphicon-plus-->
+                        
                         </form>
 
                     </div>
@@ -196,13 +229,14 @@
         <%@include file="/footer.jsp" %>
         <script>
             $(window).load(function () {
-                console.log(annunci_search());
-                console.log(init_filtro());
+                init_filtro();
+                annunci_search();
+                loggatoStudente();
             });
+            
             $(document).ready(function () {
                 $(".infobox").colorbox({rel: 'infobox'});
             });
-
             $("select").change(function () {
                 if ($("#tipo").val() === "Appartamento") {
                     //alert("Appartamento");
@@ -254,12 +288,6 @@
                         //alert("prezzo 0");
                     }
                 }
-            });
-
-            $(document).ready(function () {
-                $('#searchForm').ajaxForm(function () {
-                    console.log(annunci_search());
-                });
             });
 
             $("#detail-price-Button").click(function () {

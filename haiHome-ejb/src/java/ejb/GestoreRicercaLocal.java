@@ -5,8 +5,6 @@
  */
 package ejb;
 
-import entity.FiltroDiRicerca;
-import entity.Studente;
 import java.util.ArrayList;
 import javax.ejb.Local;
 import org.json.JSONArray;
@@ -19,7 +17,7 @@ import org.json.JSONObject;
 @Local
 public interface GestoreRicercaLocal {
 
-    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri,boolean compresoCondominio, boolean compresoRiscaldamento);
+    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri, boolean compresoCondominio, boolean compresoRiscaldamento);
 
     boolean selezionaCittà(String città);
 
@@ -31,11 +29,11 @@ public interface GestoreRicercaLocal {
 
     boolean isFiltroAppartamento();
 
-   boolean cambiaFiltroAttuale(long id_FiltroDiRicerca);
+    boolean cambiaFiltroAttuale(long id_FiltroDiRicerca);
 
     JSONObject attualeToJSON();
 
-    boolean persistiFiltroAttuale(Studente studente);
+    boolean persistiFiltroAttuale(String id_studente);
 
     ArrayList<String> getQuartieriCittà();
 
@@ -43,6 +41,10 @@ public interface GestoreRicercaLocal {
 
     double[] geocodeCurrentCity();
 
-    boolean eseguiRicerca();
-    
+    public JSONArray getSupermarketNearBy(double lat, double lng, double rad);
+
+    public boolean removeFiltro(String id_filtro, String id_studente);
+
+    boolean loadFiltro(String id);
+
 }

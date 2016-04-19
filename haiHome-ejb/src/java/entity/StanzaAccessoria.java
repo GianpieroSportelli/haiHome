@@ -90,6 +90,7 @@ public class StanzaAccessoria extends Stanza implements Serializable {
             stanzaJSON.accumulate("Foto", super.foto);
             stanzaJSON.accumulate("Metratura", super.metratura);
             stanzaJSON.accumulate("Tipo", this.tipo.name());
+            stanzaJSON.accumulate("SuperTipo", "StanzaAccessoria");
             
             
         } catch (JSONException ex) {

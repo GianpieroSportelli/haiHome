@@ -22,8 +22,8 @@ import org.json.JSONObject;
 @Entity
 public class FiltroDiRicerca implements Serializable {
 
-    @ManyToOne
-    protected Studente studente = null;
+    /*@ManyToOne
+    protected Studente studente = null;*/
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,7 +60,7 @@ public class FiltroDiRicerca implements Serializable {
         result.accumulate("CompresoCondominio", this.compresoCondominio);
         result.accumulate("CompresoRiscaldamento", this.compresoRiscaldamento);
         
-        result.accumulate("Id_Studente", "Ricorda di cambiare in getID");//this.studente.getId();
+        //result.accumulate("Id_Studente", "Ricorda di cambiare in getID");//this.studente.getId();
         return result;
     }
     /**
@@ -68,9 +68,9 @@ public class FiltroDiRicerca implements Serializable {
      *
      * @param studente
      */
-    public void setStudente(Studente studente) {
+    /*public void setStudente(Studente studente) {
         this.studente=studente;
-    }
+    }*/
 
 
     /**
@@ -78,9 +78,9 @@ public class FiltroDiRicerca implements Serializable {
      *
      * @return the value of numeroCamereDaLetto
      */
-    public Studente getStudente() {
+    /*public Studente getStudente() {
         return this.studente;
-    }
+    }*/
     /**
      * Set the value of compresoRiscaldamento
      *

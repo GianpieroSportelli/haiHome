@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -34,12 +33,12 @@ public class ServletController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             //response.setContentType("text/html;charset=UTF-8");
             /*
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Esempio ServletController</title>");
-            out.println("</head>");
-            out.println("<body>");*/
+             out.println("<!DOCTYPE html>");
+             out.println("<html>");
+             out.println("<head>");
+             out.println("<title>Esempio ServletController</title>");
+             out.println("</head>");
+             out.println("<body>");*/
 
             //Prende il parametro "action" dalla form della pagina JSP ed elabora la richiesta
             String action = request.getParameter("action");
@@ -58,11 +57,10 @@ public class ServletController extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("login-googleplus-studente")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
-                
-            }
-            else if (action.equalsIgnoreCase("login-googleplus-locatore")) {
+
+            } else if (action.equalsIgnoreCase("login-googleplus-locatore")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
-            
+
             } else if (action.equalsIgnoreCase("setCity")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
@@ -78,26 +76,44 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("Ricerca-getTipoStanza")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
+            } else if (action.equalsIgnoreCase("Ricerca-salvaFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-addServices")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
             } else if (action.equalsIgnoreCase("search")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("dettagliAnnuncio")) {
+                System.out.println("Dettagli annuncio");
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {
                 request.getRequestDispatcher("/LogoutServlet").forward(request, response);
-                
-            } 
-            else if (action.equalsIgnoreCase("locatore-edit-profile")) {
-                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
-                
-            }
-            else {
+
+            } else if (action.equalsIgnoreCase("get-lista-preferiti-studente")) {
+                request.getRequestDispatcher("/ServletStudente").forward(request, response);
+            } else if (action.equalsIgnoreCase("Ricerca-deleteFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+            } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }
             /*
-            out.println(
-                    "</body>");
-            out.println(
-                    "</html>");*/
+             out.println(
+             "</body>");
+             out.println(
+             "</html>");*/
 
         }
     }

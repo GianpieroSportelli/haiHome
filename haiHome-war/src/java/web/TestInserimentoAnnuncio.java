@@ -66,7 +66,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
                
                 if (i % 2 == 0) {
                      //Meglio InfoAnnuncio
-                    gestoreAnnuncio.inserisciInfoAnnuncio("descrizione"+i, 200, new Date(), 3, true);
+                    //gestoreAnnuncio.inserisciInfoAnnuncio("descrizione"+i, 200, new Date(), 3, true);
 
                     gestoreAnnuncio.inserisciNuovaStanzaInAffitto("Singola", foto, 50);
 
@@ -78,7 +78,7 @@ public class TestInserimentoAnnuncio extends HttpServlet {
                     gestoreAnnuncio.inserisciInfoCostiAppartamento(500, false, false);
                 }else{
                    //Meglio InfoAnnuncio
-                    gestoreAnnuncio.inserisciInfoAnnuncio("descrizione" + 1, 300, new Date(), 4, false);
+                    //gestoreAnnuncio.inserisciInfoAnnuncio("descrizione" + 1, 300, new Date(), 4, false);
 
                     gestoreAnnuncio.inserisciNuovaStanzaInAffitto("Singola", foto, true, true, 50, 250);
                     
