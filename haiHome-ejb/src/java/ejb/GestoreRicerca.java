@@ -60,7 +60,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                 cittàAttuale = cit;
                 filtroAttuale = new FiltroDiRicerca();
                 filtroAttuale.setCittà(cittàAttuale);
-                filtroAttuale.setListaQuartieri(this.getQuartieriCittà());
+                filtroAttuale.setListaQuartieri(new ArrayList<String>());
                 filtroAttuale.setPrezzo(0);
                 filtroAttuale.setCompresoCondominio(false);
                 filtroAttuale.setCompresoRiscaldamento(false);
@@ -76,7 +76,9 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         if (filtroAttuale == null) {
             return false;
         } else {
+            Long id=filtroAttuale.getId();
             filtroAttuale = new FiltroDiRicerca();
+            filtroAttuale.setId(id);
             filtroAttuale.setCittà(cittàAttuale);
             filtroAttuale.setListaQuartieri(listaQuartieri);
             filtroAttuale.setPrezzo(prezzo);
@@ -95,6 +97,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         } else {
 
             FiltroAppartamento nuovoAttuale = new FiltroAppartamento();
+            nuovoAttuale.setId(filtroAttuale.getId());
             nuovoAttuale.setCittà(filtroAttuale.getCittà());
             nuovoAttuale.setPrezzo(filtroAttuale.getPrezzo());
             nuovoAttuale.setListaQuartieri(filtroAttuale.getListaQuartieri());
@@ -121,6 +124,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                 return false;
             } else {
                 FiltroStanza nuovoAttuale = new FiltroStanza();
+                nuovoAttuale.setId(filtroAttuale.getId());
                 nuovoAttuale.setCittà(filtroAttuale.getCittà());
                 nuovoAttuale.setPrezzo(filtroAttuale.getPrezzo());
                 nuovoAttuale.setListaQuartieri(filtroAttuale.getListaQuartieri());
@@ -188,10 +192,22 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     @Override
     public boolean persistiFiltroAttuale(String id_studente) {
-        filtroDiRicercaFacade.create(filtroAttuale);
-        boolean persisti = filtroDiRicercaFacade.find(filtroAttuale.getId()) != null;
-        boolean salvato = gestoreStudente.addFiltroStudente(id_studente, filtroAttuale);
-        return persisti && salvato;
+        System.out.println(filtroAttuale.getId());
+        if (filtroAttuale.getId() != null) {
+            this.removeFiltro("" + filtroAttuale.getId(), id_studente);
+            filtroAttuale.setId(null);
+            System.out.println("Filtro Cancellato: "+filtroAttuale.getId());
+        }
+            filtroDiRicercaFacade.create(filtroAttuale);
+            boolean persisti = filtroDiRicercaFacade.find(filtroAttuale.getId()) != null;
+            boolean salvato = gestoreStudente.addFiltroStudente(id_studente, filtroAttuale);
+            try {
+                System.out.println("Filtro Creato- ID: " + filtroAttuale.getId() + " filtro: " + filtroAttuale.toJSON());
+            } catch (JSONException ex) {
+                Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return persisti && salvato;
+        
     }
 
     private Annuncio acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
@@ -420,4 +436,18 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return gestoreStudente.removeFiltroStudente(id_studente, filtroToDelete);
 
     }
+
+    @Override
+    public boolean loadFiltro(String id) {
+        filtroAttuale = filtroDiRicercaFacade.find(Long.valueOf(id));
+        cittàAttuale = filtroAttuale.getCittà();
+        try {
+            System.out.println(filtroAttuale.toJSON().toString());
+        } catch (JSONException ex) {
+            Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return filtroAttuale!=null;
+    }
+
 }

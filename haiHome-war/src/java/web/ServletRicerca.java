@@ -7,16 +7,12 @@ package web;
 
 import com.google.gson.Gson;
 import ejb.GestoreRicercaLocal;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -53,20 +49,25 @@ public class ServletRicerca extends HttpServlet {
             RequestDispatcher rd = null;
             String action = request.getParameter("action");
             System.out.println(action);
-            if (action.equalsIgnoreCase("setCity")) {
+            if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
+                response.setContentType("application/json");
+                String json = gestoreRicerca.attualeToJSON().toString();
+                System.out.println("Filtro: " + json);
+                out.write(json);
+            } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+                String id = request.getParameter("ID");
+                boolean esito=gestoreRicerca.loadFiltro(id);
+                out.write(""+esito);
+            } else if (action.equalsIgnoreCase("setCity_551")) {
+                String id = "" + 501;
+                gestoreRicerca.loadFiltro(id);
+                getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
+            } else if (action.equalsIgnoreCase("setCity")) {
                 String city = request.getParameter("city");
                 gestoreRicerca.selezionaCittà(city);
                 //invia quartieri
                 System.out.println("Filtro Creato:");
                 System.out.println(gestoreRicerca.attualeToJSON());
-                /*PROVA AJAX
-                 ArrayList<String> quartieri = gestoreRicerca.getQuartieriCittà();
-                 ArrayList<String> tipoStanza=gestoreRicerca.getTipoStanza();
-                 request.setAttribute("quartieri", quartieri);
-                 request.setAttribute("tipoStanza", tipoStanza);
-                 request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
-                 request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
-                 */
                 getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("search")) {
@@ -79,7 +80,7 @@ public class ServletRicerca extends HttpServlet {
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();
                 if (quartieri == null) {
-                    quartieriSel = quartieriCittà;
+                   // quartieriSel = quartieriCittà;
                 } else {
                     for (String selection : quartieri) {
                         //System.out.println(selection);
@@ -161,33 +162,6 @@ public class ServletRicerca extends HttpServlet {
                 String json = new Gson().toJson(gestoreRicerca.getTipoStanza());
                 System.out.println(json);
                 out.write(json);
-            } else if (action.equalsIgnoreCase("Ricerca-getImageAnnuncio")) {
-                response.setContentType("image/jpeg");
-                String[] paths = request.getParameterValues("srcImg");
-                if (paths == null) {
-                    System.out.println("NULLO!!");
-                } else {
-                    for (String path : paths) {
-                        System.out.println(path);
-                        String pathToWeb = getServletContext().getRealPath(File.separator);
-                        File f = new File(pathToWeb + path.substring(2));
-                        BufferedImage bi = ImageIO.read(f);
-                        //OutputStream out = response.getOutputStream();
-                        ImageIO.write(bi, "jpg", (ImageOutputStream) out);
-                    }
-                }
-
-                out.close();
-            } else if (action.equalsIgnoreCase("dettagliAnnuncio")) {
-                System.out.println("Ecco");
-                System.out.println(request.getParameter("data"));
-                String urlToRedirect = "/haiHome-war/dettagliAnnuncio.jsp";
-                response.setContentType("application/json");
-                String json = new Gson().toJson(urlToRedirect);
-                System.out.println(json);
-                out.write(json);
-                //response.sendRedirect("/haiHome-war/dettagliAnnuncio.jsp");
-                //getServletContext().getRequestDispatcher("/dettagliAnnuncio.jsp").forward(request, response);
             } else if (action.equalsIgnoreCase("Ricerca-salvaFiltro")) {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
@@ -265,7 +239,7 @@ public class ServletRicerca extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

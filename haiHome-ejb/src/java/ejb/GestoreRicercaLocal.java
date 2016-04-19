@@ -45,4 +45,6 @@ public interface GestoreRicercaLocal {
 
     public boolean removeFiltro(String id_filtro, String id_studente);
 
+    boolean loadFiltro(String id);
+
 }
