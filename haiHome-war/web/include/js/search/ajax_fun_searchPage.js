@@ -26,7 +26,7 @@ function annunci_search() {
                     latlng[index] = item;                              // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
                 });
 
-                console.log(initialize(latlng[0], latlng[1]));
+                initialize(latlng[0], latlng[1]);
 
                 //Deferred serve pr delegare l'esecuzione di funzioni javascript
                 var load_A = $.Deferred();
@@ -59,7 +59,7 @@ function load_Annunci() {
                 $.each(responseJson, function (index, annuncio) {
                     n_annunci += 1;
                     annunci[index] = annuncio;
-                    console.log(addMarkerToJSON(annuncio, index));
+                    addMarkerToJSON(annuncio, index);
                     //console.log(load_annuncio_image(annuncio));
                 });
                 actual = 0;
@@ -346,6 +346,13 @@ function getfiltro() {
                     $("#divMetratura").hide();
 
                 }
+                var id = filtro.Id;
+                console.log("id filtro: " + id);
+                if (id == undefined) {
+                    $("#saveButton").text("Salva");
+                } else {
+                     $("#saveButton").text("Modifica");
+                }
             });
     // });
 }
@@ -402,30 +409,35 @@ function persistiFiltro() {
             {action: "Ricerca-salvaFiltro"},
             function (item) {
                 //var html = '';
-
                 alert(item);
-
+                var getf = $.Deferred();
+                getf.done(getfiltro);
+                getf.resolve();
             });
 }
 
-function persistixFiltro() {
+$(document).ready(function () {
     $('#searchForm').ajaxForm(function () {
         annunci_search();
-        salvaFiltro();
+        var getf = $.Deferred();
+        getf.done(getfiltro);
+        getf.resolve();
     });
-}
+});
+
 
 function loggatoStudente() {
-    console.log("salva filtro");
+    //console.log("verifica log Studente");
     $.post("ServletController",
             {action: "Ricerca-loggatoStudente"},
             function (item) {
                 //var html = '';
                 //alert(item);
-                if(item=="true"){
-                    $("#saveButton").show("slow");
+                console.log("Studente loggato?: " + item);
+                if (item == "true") {
+                    $("#saveButton").show("fast");
                 }
-
             });
 }
+
 

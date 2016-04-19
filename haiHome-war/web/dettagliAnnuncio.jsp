@@ -111,14 +111,17 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3 sidebar-outer"></div>
+                <div class="col-sm-3 sidebar-outer" id="info"></div>
             </div>
         </div>
         <script>
 
             initialize(annuncio);
+            
             //$("#dettagli-page").append("<img src=\"images/bg.jpg\" id=\"bg\" alt=\"\">");
             $("#result").append(create_Page(annuncio));
+            $("#info").append(init_info(annuncio));
+            loggatoStudente();
         </script>
 
         <%@include file="/footer.jsp" %>
