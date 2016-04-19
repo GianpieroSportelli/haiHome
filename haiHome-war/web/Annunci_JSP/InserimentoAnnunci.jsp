@@ -60,12 +60,12 @@
             <!-- inizio pagine step -->
 
             
-                
+                <%@include file="prova.jsp" %>
             
             
                 <div class="row setup-content" id="step-1"> 
 
-                    <%@include file="InserimentoInfoAppartamento.jsp" %>  <!-- ORIGINALE   prova.jsp -->
+                    <%@include file="InserimentoInfoAppartamento.jsp" %>
                     
                     
                 </div>
