@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -83,6 +82,15 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("Ricerca-addServices")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
+            } else if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
             } else if (action.equalsIgnoreCase("search")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
@@ -97,7 +105,11 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
             } else if (action.equalsIgnoreCase("Ricerca-deleteFiltro")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
-            } else {
+            } else if (action.equalsIgnoreCase("locatore-edit-profile")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+                
+            }            
+            else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }

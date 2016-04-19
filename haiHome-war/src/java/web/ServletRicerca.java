@@ -7,16 +7,12 @@ package web;
 
 import com.google.gson.Gson;
 import ejb.GestoreRicercaLocal;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -53,20 +49,27 @@ public class ServletRicerca extends HttpServlet {
             RequestDispatcher rd = null;
             String action = request.getParameter("action");
             System.out.println(action);
-            if (action.equalsIgnoreCase("setCity")) {
+            if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
+                response.setContentType("application/json");
+                String json = gestoreRicerca.attualeToJSON().toString();
+                System.out.println("Filtro: " + json);
+                out.write(json);
+                
+            } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+                String id = request.getParameter("ID");
+                boolean esito = gestoreRicerca.loadFiltro(id);
+                out.write("" + esito);
+                
+            } else if (action.equalsIgnoreCase("setCity_601")) {
+                String id = "" + 601;
+                gestoreRicerca.loadFiltro(id);
+                getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
+            } else if (action.equalsIgnoreCase("setCity")) {
                 String city = request.getParameter("city");
                 gestoreRicerca.selezionaCittà(city);
                 //invia quartieri
                 System.out.println("Filtro Creato:");
                 System.out.println(gestoreRicerca.attualeToJSON());
-                /*PROVA AJAX
-                 ArrayList<String> quartieri = gestoreRicerca.getQuartieriCittà();
-                 ArrayList<String> tipoStanza=gestoreRicerca.getTipoStanza();
-                 request.setAttribute("quartieri", quartieri);
-                 request.setAttribute("tipoStanza", tipoStanza);
-                 request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
-                 request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
-                 */
                 getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("search")) {
@@ -79,7 +82,7 @@ public class ServletRicerca extends HttpServlet {
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();
                 if (quartieri == null) {
-                    quartieriSel = quartieriCittà;
+                    // quartieriSel = quartieriCittà;
                 } else {
                     for (String selection : quartieri) {
                         //System.out.println(selection);
@@ -113,34 +116,26 @@ public class ServletRicerca extends HttpServlet {
                 } else {
                     System.out.println(gestoreRicerca.attualeToJSON());
                 }
-                //ArrayList<String> quartieri_all = gestoreRicerca.getQuartieriCittà();
-                /*for (String q : quartieri) {
-                 System.out.println(q);
-                 }*/
-                //ArrayList<String> tipoStanza = gestoreRicerca.getTipoStanza();
-
-                /*request.setAttribute("quartieri", quartieri_all);
-                 request.setAttribute("tipoStanza", tipoStanza);
-                 request.setAttribute("JSONAnnunci", gestoreRicerca.usaFiltroAttuale());
-                 request.setAttribute("latlng", gestoreRicerca.geocodeCurrentCity());
-                 getServletContext().getRequestDispatcher("/search.jsp").forward(request, response);*/
                 response.setContentType("application/json");
                 System.out.println(" Filtro Aggiornato: " + result);
                 String json = new Gson().toJson("" + result);
                 System.out.println(json);
                 out.write(json);
+
             } else if (action.equalsIgnoreCase("AjaxGetInfo")) {
                 System.out.println("I'm in!!");
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.geocodeCurrentCity());
                 System.out.println(json);
                 out.write(json);
+
             } else if (action.equalsIgnoreCase("Ricerca-geoCity")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.geocodeCurrentCity());
                 //System.out.println(json);
                 out.write(json);
+
             } else if (action.equalsIgnoreCase("Ricerca-getAnnunciFiltro")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
@@ -149,45 +144,21 @@ public class ServletRicerca extends HttpServlet {
                 String json = ris.toString(); //new Gson().toJson(gestoreRicerca.usaFiltroAttuale());
                 System.out.println(json);
                 out.write(json);
+
             } else if (action.equalsIgnoreCase("Ricerca-getQuartieri")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.getQuartieriCittà());
                 System.out.println(json);
                 out.write(json);
+
             } else if (action.equalsIgnoreCase("Ricerca-getTipoStanza")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.getTipoStanza());
                 System.out.println(json);
                 out.write(json);
-            } else if (action.equalsIgnoreCase("Ricerca-getImageAnnuncio")) {
-                response.setContentType("image/jpeg");
-                String[] paths = request.getParameterValues("srcImg");
-                if (paths == null) {
-                    System.out.println("NULLO!!");
-                } else {
-                    for (String path : paths) {
-                        System.out.println(path);
-                        String pathToWeb = getServletContext().getRealPath(File.separator);
-                        File f = new File(pathToWeb + path.substring(2));
-                        BufferedImage bi = ImageIO.read(f);
-                        //OutputStream out = response.getOutputStream();
-                        ImageIO.write(bi, "jpg", (ImageOutputStream) out);
-                    }
-                }
 
-                out.close();
-            } else if (action.equalsIgnoreCase("dettagliAnnuncio")) {
-                System.out.println("Ecco");
-                System.out.println(request.getParameter("data"));
-                String urlToRedirect = "/haiHome-war/dettagliAnnuncio.jsp";
-                response.setContentType("application/json");
-                String json = new Gson().toJson(urlToRedirect);
-                System.out.println(json);
-                out.write(json);
-                //response.sendRedirect("/haiHome-war/dettagliAnnuncio.jsp");
-                //getServletContext().getRequestDispatcher("/dettagliAnnuncio.jsp").forward(request, response);
             } else if (action.equalsIgnoreCase("Ricerca-salvaFiltro")) {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
@@ -214,6 +185,7 @@ public class ServletRicerca extends HttpServlet {
                         out.write("no studente");
                     }
                 }
+
             } else if (action.equalsIgnoreCase("Ricerca-addServices")) {
                 //System.out.println("I'm in!!");
                 String jsonA = (String) request.getParameter("annuncio");
@@ -260,48 +232,64 @@ public class ServletRicerca extends HttpServlet {
 
                     }
                 }
+            } else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
+                response.setContentType("text/html;charset=UTF-8");
+                HttpSession session = request.getSession();
+                boolean result = false;
+                if (session != null) {
+                    String user_type = (String) session.getAttribute("user-type");
+                    if (user_type != null) {
+                        if (user_type.equalsIgnoreCase("STUDENTE")) {
+                            result=true;
+                        }
+                    }
+                }
+                out.write(""+result);
             }
-
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+            /**
+             * Handles the HTTP <code>GET</code> method.
+             *
+             * @param request servlet request
+             * @param response servlet response
+             * @throws ServletException if a servlet-specific error occurs
+             * @throws IOException if an I/O error occurs
+             */
+            @Override
+            protected void doGet
+            (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    }
+                processRequest(request, response);
+            }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            /**
+             * Handles the HTTP <code>POST</code> method.
+             *
+             * @param request servlet request
+             * @param response servlet response
+             * @throws ServletException if a servlet-specific error occurs
+             * @throws IOException if an I/O error occurs
+             */
+            @Override
+            protected void doPost
+            (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    }
+                processRequest(request, response);
+            }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+            /**
+             * Returns a short description of the servlet.
+             *
+             * @return a String containing servlet description
+             */
+            @Override
+            public String getServletInfo
+            
+                () {
         return "Short description";
-    }// </editor-fold>
+            }// </editor-fold>
 
-}
+        }

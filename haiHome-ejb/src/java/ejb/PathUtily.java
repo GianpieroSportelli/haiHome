@@ -16,10 +16,10 @@ public class PathUtily {
     */
     
     private static final String GiacomoPath = "//Users//giacomocavallo//Desktop//foto//";
-    
-    
+    private static final String GianpieroPath ="C:\\Users\\SPORT\\Pictures\\haiHome!!\\";
+    private static final String EugenioPath = "C://Users//Eugenio Liso//Desktop//foto//";
     
     public static String getPhotoPath(){
-        return GiacomoPath;
+        return EugenioPath;
     }
 }

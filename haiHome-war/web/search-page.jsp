@@ -16,12 +16,6 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-         <!-- google+ login stuff -->
-        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
-        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
-        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
-        <!-- end google+ login stuff -->
-
         <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -36,6 +30,12 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
 
+         <!-- google+ login stuff -->
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
+        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <!-- end google+ login stuff -->
+        
         <link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
 
@@ -50,6 +50,12 @@
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
 
+        <!-- google+ login stuff -->
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
+        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <!-- end google+ login stuff -->
+        
         <!-- Robe di login2.jsp -->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
@@ -127,9 +133,9 @@
                             <div class="form-group">
                                 <label for="tipo" class="control-label">Tipo Annuncio</label>
                                 <select class="form-control" name="tipo" id="tipo">
-                                    <option value="all">-</option>
-                                    <option value="Appartamento">Appartamento</option>
-                                    <option value="Stanza">Stanza</option>
+                                    <option id="tipo-all" value="all">-</option>
+                                    <option id="tipo-Appartamento" value="Appartamento">Appartamento</option>
+                                    <option id="tipo-Stanza" value="Stanza">Stanza</option>
                                 </select>
                             </div>
                             <div class="form-group" id="divTipoStanza" style="display:none">
@@ -212,7 +218,7 @@
                                 </div>
                             </div>
                             <button id="searchButton"  type="submit" class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
-                            <button id="saveButton"  type="button" class="btn btn-danger glyphicon glyphicon-plus" onClick="persistiFiltro()">salva</button> <!--type="submit"-->
+                            <button id="saveButton"  type="button" class="btn btn-danger" onClick="persistiFiltro()" style="display:none"></button> <!--type="submit" glyphicon glyphicon-plus-->
                         
                         </form>
 
@@ -223,9 +229,11 @@
         <%@include file="/footer.jsp" %>
         <script>
             $(window).load(function () {
-                console.log(annunci_search());
-                console.log(init_filtro());
+                init_filtro();
+                annunci_search();
+                loggatoStudente();
             });
+            
             $(document).ready(function () {
                 $(".infobox").colorbox({rel: 'infobox'});
             });
@@ -280,12 +288,6 @@
                         //alert("prezzo 0");
                     }
                 }
-            });
-
-            $(document).ready(function () {
-                $('#searchForm').ajaxForm(function () {
-                    console.log(annunci_search());
-                });
             });
 
             $("#detail-price-Button").click(function () {
