@@ -169,7 +169,6 @@
                 var citta = document.getElementById("citta").value;
                 alert(citta);
             }
-
         </script>
     </body>
 </html>
