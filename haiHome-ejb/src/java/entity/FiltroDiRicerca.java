@@ -60,7 +60,7 @@ public class FiltroDiRicerca implements Serializable {
         result.accumulate("CompresoCondominio", this.compresoCondominio);
         result.accumulate("CompresoRiscaldamento", this.compresoRiscaldamento);
         
-        result.accumulate("Id_Studente", "Ricorda di cambiare in getID");//this.studente.getId();
+        //result.accumulate("Id_Studente", "Ricorda di cambiare in getID");//this.studente.getId();
         return result;
     }
     /**

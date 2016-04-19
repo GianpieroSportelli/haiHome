@@ -14,7 +14,7 @@ var annunci = new Array();
 var page_annunci = new Array();
 var caroselli = new Array();
 var actual = 0;
-var dim_image_car=250; //dimensione immagine del carosello
+var dim_image_car = 250; //dimensione immagine del carosello
 
 //Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
 function annunci_search() {
@@ -116,18 +116,18 @@ function getCodeCarousel(annuncio, k) {
 
 function create_info_annuncio(annuncio) {
     var html = "";
-    var tipoAnnuncio="Annuncio Stanze";
+    var tipoAnnuncio = "Annuncio Stanze";
     if (annuncio.Atomico) {
-        tipoAnnuncio="Annuncio Appartamento";
+        tipoAnnuncio = "Annuncio Appartamento";
     }
     html += "<div class=\"center\">" +
-            "<h1>"+tipoAnnuncio+"</h1>"+
+            "<h1>" + tipoAnnuncio + "</h1>" +
             "<p class=\"text-muted\">" + annuncio.Indirizzo + "</p>" +
             //"<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
             "<p class=\"text-muted\"><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + "</p>" +
             "<p class=\"text-muted\"><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
-            "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>" ;
-            //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
+            "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
+    //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"><span class=\"text-primary\">Numero locali: </span>" + annuncio.NumeroLocali + "</p>" +
                 "<p class=\"text-muted\"><span class=\"text-primary\"> Prezzo: </span>" + annuncio.Prezzo + " &euro;</p>";
@@ -169,7 +169,7 @@ function slide_Accessoria(stanza, index) {
         }
         html += "<blockquote>" +
                 "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:"+dim_image_car+"px;height:"+dim_image_car+"px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
                 "</div>" +
                 "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
                 "</blockquote>" +
@@ -188,7 +188,7 @@ function slide_Affitto(stanza, index, atomico) {
             html += "<div class=\"item\">";
         }
         html += "<blockquote>" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:"+dim_image_car+"px;height:"+dim_image_car+"px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
                 "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + " ";
         if (!atomico) {
             html += "<span class=\"text-primary\"> Prezzo: </span> " + stanza.Prezzo + "&euro;";
@@ -273,11 +273,8 @@ function init_filtro() {
             function (responseJson) {
                 var html = '';
                 $.each(responseJson, function (index, item) {
-                    html = '<option value=\"' + item + '\">' + item + '</option>';
+                    html = '<option id=\"' + item + '\" value=\"' + item + '\">' + item + '</option>';
                     $("#quartieri").append(html);
-                });
-                $('#quartieri').searchableOptionList({
-                    maxHeight: '250px'
                 });
                 var filtro_S = $.Deferred();
                 filtro_S.done(init_filtro_tipoStanze);
@@ -292,10 +289,65 @@ function init_filtro_tipoStanze() {
             function (responseJson) {
                 var html = '';
                 $.each(responseJson, function (index, item) {
-                    html = '<option value=\"' + item + '\">' + item + '</option>';
+                    html = '<option id=\"tipoStanza-' + item + '\" value=\"' + item + '\">' + item + '</option>';
                     $("#tipoStanza").append(html);
                 });
+                var getf = $.Deferred();
+                getf.done(getfiltro);
+                getf.resolve();
             });
+}
+
+function getfiltro() {
+    $.post("ServletController",
+            {action: "Ricerca-getFiltro"},
+            function (filtro) {
+                //alert(JSON.stringify(responseJson));
+                //var html = '';
+                //$.each(responseJson, function (index, filtro) {
+                console.log(filtro);
+                var Quartieri = filtro.Quartieri;
+                console.log(Quartieri);
+                //alert(Quartieri);
+                $.each(Quartieri, function (index, quart) {
+                    //$('#quartieri')._processSelectOption($('#' + quart));
+                    $('#' + quart).prop('selected', true);
+                });
+                $('#quartieri').searchableOptionList({
+                    maxHeight: '250px'
+                });
+                $('#pricefrom').val(filtro.Prezzo);
+                if (filtro.CompresoCondominio) {
+                    $('#compresoCondominio').prop('selected', true);
+                }
+                if (filtro.CompresoRiscaldamento) {
+                    $('#compresoRiscaldamento').prop('selected', true);
+                }
+                var tipo = filtro.Tipo;
+                if (tipo == "Appartamento") {
+                    $('#tipo-' + tipo).prop('selected', true);
+                    $('#numeroLocali').val(filtro.NumeroLocali);
+                    $('#numeroCamere').val(filtro.NumeroCamereDaLetto);
+                    $('#numeroBagni').val(filtro.NumeroBagni);
+                    $('#metratura').val(filtro.Metratura);
+                    $("#divTipoStanza").hide();
+                    $("#divNLocali").show("slow");
+                    $("#divNCamere").show("slow");
+                    $("#divNBagni").show("slow");
+                    $("#divMetratura").show("slow");
+                } else if (tipo == "Stanza") {
+                    $('#tipo-' + tipo).prop('selected', true);
+                    var tipoStanza = filtro.TipoStanza;
+                    $('#tipoStanza-' + tipoStanza).prop('selected', true);
+                     $("#divTipoStanza").show("slow");
+                    $("#divNLocali").hide();
+                    $("#divNCamere").hide();
+                    $("#divNBagni").hide();
+                    $("#divMetratura").hide();
+
+                }
+            });
+    // });
 }
 
 $(window).scroll(function () {

@@ -83,6 +83,12 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("Ricerca-addServices")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
+            } else if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
             } else if (action.equalsIgnoreCase("search")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 

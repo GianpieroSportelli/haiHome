@@ -127,9 +127,9 @@
                             <div class="form-group">
                                 <label for="tipo" class="control-label">Tipo Annuncio</label>
                                 <select class="form-control" name="tipo" id="tipo">
-                                    <option value="all">-</option>
-                                    <option value="Appartamento">Appartamento</option>
-                                    <option value="Stanza">Stanza</option>
+                                    <option id="tipo-all" value="all">-</option>
+                                    <option id="tipo-Appartamento" value="Appartamento">Appartamento</option>
+                                    <option id="tipo-Stanza" value="Stanza">Stanza</option>
                                 </select>
                             </div>
                             <div class="form-group" id="divTipoStanza" style="display:none">
@@ -223,9 +223,10 @@
         <%@include file="/footer.jsp" %>
         <script>
             $(window).load(function () {
-                console.log(annunci_search());
-                console.log(init_filtro());
+                init_filtro();
+                annunci_search();              
             });
+            
             $(document).ready(function () {
                 $(".infobox").colorbox({rel: 'infobox'});
             });
