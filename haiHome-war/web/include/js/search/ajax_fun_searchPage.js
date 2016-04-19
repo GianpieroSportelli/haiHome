@@ -169,7 +169,7 @@ function slide_Accessoria(stanza, index) {
         }
         html += "<blockquote>" +
                 "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
                 "</div>" +
                 "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
                 "</blockquote>" +
@@ -188,7 +188,7 @@ function slide_Affitto(stanza, index, atomico) {
             html += "<div class=\"item\">";
         }
         html += "<blockquote>" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
                 "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + " ";
         if (!atomico) {
             html += "<span class=\"text-primary\"> Prezzo: </span> " + stanza.Prezzo + "&euro;";

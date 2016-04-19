@@ -126,20 +126,20 @@ public class TestServlet extends HttpServlet {
                 ArrayList<String> cucina = new ArrayList<String>();
                 ArrayList<String> stanza1 = new ArrayList<String>();
                 ArrayList<String> stanza2 = new ArrayList<String>();
-
+                String url="C:\\Users\\SPORT\\Pictures\\haiHome!!\\";
                 //il path poi se non funziona te lo aggiusti tu
-                bagno.add("/Immagini/appartamento_prova/bagno/bagno.jpg");
-                bagno.add("/Immagini/appartamento_prova/bagno/bagno1.jpg");
-                bagno.add("/Immagini/appartamento_prova/bagno/bagno2.jpg");
-                cucina.add("/Immagini/appartamento_prova/cucina/cucina.jpg");
-                cucina.add("/Immagini/appartamento_prova/cucina/cucina1.jpg");
-                cucina.add("/Immagini/appartamento_prova/cucina/cucina2.jpg");
-                stanza1.add("/Immagini//appartamento_prova/stanza1/stanza1.jpg");
-                stanza1.add("/Immagini//appartamento_prova/stanza1/singola1.jpg");
-                stanza1.add("/Immagini//appartamento_prova/stanza1/singola2.jpg");
-                stanza2.add("/Immagini/appartamento_prova/stanza2/stanza2.jpg");
-                stanza2.add("/Immagini/appartamento_prova/stanza2/doppia1.jpg");
-                stanza2.add("/Immagini/appartamento_prova/stanza2/doppia2.jpg");
+                bagno.add(url+"bagno.jpg");
+                bagno.add(url+"bagno1.jpg");
+                bagno.add(url+"bagno2.jpg");
+                cucina.add(url+"cucina.jpg");
+                cucina.add(url+"cucina1.jpg");
+                cucina.add(url+"cucina2.jpg");
+                stanza1.add(url+"stanza1.jpg");
+                stanza1.add(url+"singola1.jpg");
+                stanza1.add(url+"singola2.jpg");
+                stanza2.add(url+"stanza2.jpg");
+                stanza2.add(url+"doppia1.jpg");
+                stanza2.add(url+"doppia2.jpg");
 
                 double[] latlng = gmb.geocodingAddress(add_code);
                 gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Centro", add, latlng);
@@ -164,18 +164,18 @@ public class TestServlet extends HttpServlet {
                 ArrayList<String> stanza1_3 = new ArrayList<String>();
 
                 //il path poi se non funziona te lo aggiusti tu
-                bagno1.add("/Immagini/appartamento_prova/bagno/bagno.jpg");
-                bagno1.add("/Immagini/appartamento_prova/bagno/bagno1.jpg");
-                bagno1.add("/Immagini/appartamento_prova/bagno/bagno2.jpg");
-                cucina1.add("/Immagini/appartamento_prova/cucina/cucina.jpg");
-                cucina1.add("/Immagini/appartamento_prova/cucina/cucina1.jpg");
-                cucina1.add("/Immagini/appartamento_prova/cucina/cucina2.jpg");
-                stanza1_1.add("/Immagini//appartamento_prova/stanza1/stanza1.jpg");
-                stanza1_1.add("/Immagini//appartamento_prova/stanza1/singola1.jpg");
-                stanza1_2.add("/Immagini/appartamento_prova/stanza1/stanza1.jpg");
-                stanza1_2.add("/Immagini/appartamento_prova/stanza1/singola2.jpg");
-                stanza1_3.add("/Immagini/appartamento_prova/stanza1/singola1.jpg");
-                stanza1_3.add("/Immagini/appartamento_prova/stanza1/singola2.jpg");
+                bagno1.add(url+"bagno.jpg");
+                bagno1.add(url+"bagno1.jpg");
+                bagno1.add(url+"bagno2.jpg");
+                cucina1.add(url+"cucina.jpg");
+                cucina1.add(url+"cucina1.jpg");
+                cucina1.add(url+"cucina2.jpg");
+                stanza1_1.add(url+"stanza1.jpg");
+                stanza1_1.add(url+"singola1.jpg");
+                stanza1_1.add(url+"singola2.jpg");
+                stanza1_2.add(url+"stanza2.jpg");
+                stanza1_2.add(url+"doppia1.jpg");
+                stanza1_2.add(url+"doppia2.jpg");
 
                 double[] latlng1 = gmb.geocodingAddress(add_code1);
                 gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Aurora", add1, latlng1);

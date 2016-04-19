@@ -191,7 +191,7 @@ function slide_Stanza(stanza) {
         }
         html += "<blockquote>" +
                 "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
                 "</div>" +
                 "</blockquote>" +
                 "</div>"; //5
