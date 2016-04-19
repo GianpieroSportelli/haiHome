@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -87,6 +86,9 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("search")) {

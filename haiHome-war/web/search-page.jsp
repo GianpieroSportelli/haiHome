@@ -212,7 +212,7 @@
                                 </div>
                             </div>
                             <button id="searchButton"  type="submit" class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
-                            <button id="saveButton"  type="button" class="btn btn-danger glyphicon glyphicon-plus" onClick="persistiFiltro()">salva</button> <!--type="submit"-->
+                            <button id="saveButton"  type="button" class="btn btn-danger glyphicon glyphicon-plus" onClick="persistiFiltro()" style="display:none">salva</button> <!--type="submit"-->
                         
                         </form>
 
@@ -224,7 +224,8 @@
         <script>
             $(window).load(function () {
                 init_filtro();
-                annunci_search();              
+                annunci_search();
+                loggatoStudente();
             });
             
             $(document).ready(function () {
@@ -285,7 +286,7 @@
 
             $(document).ready(function () {
                 $('#searchForm').ajaxForm(function () {
-                    console.log(annunci_search());
+                    annunci_search();
                 });
             });
 

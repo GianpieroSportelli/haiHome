@@ -339,7 +339,7 @@ function getfiltro() {
                     $('#tipo-' + tipo).prop('selected', true);
                     var tipoStanza = filtro.TipoStanza;
                     $('#tipoStanza-' + tipoStanza).prop('selected', true);
-                     $("#divTipoStanza").show("slow");
+                    $("#divTipoStanza").show("slow");
                     $("#divNLocali").hide();
                     $("#divNCamere").hide();
                     $("#divNBagni").hide();
@@ -404,6 +404,27 @@ function persistiFiltro() {
                 //var html = '';
 
                 alert(item);
+
+            });
+}
+
+function persistixFiltro() {
+    $('#searchForm').ajaxForm(function () {
+        annunci_search();
+        salvaFiltro();
+    });
+}
+
+function loggatoStudente() {
+    console.log("salva filtro");
+    $.post("ServletController",
+            {action: "Ricerca-loggatoStudente"},
+            function (item) {
+                //var html = '';
+                //alert(item);
+                if(item=="true"){
+                    $("#saveButton").show("slow");
+                }
 
             });
 }
