@@ -12,25 +12,25 @@
                     <!-- tab login studente -->
                     <div id="login-admin" class="tab-pane fade in active">
                         <div class="logmod__form">
-                            <form id="studente-login" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
+                            <form id="admin-login" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
                                 <input type="hidden" name="action" value="login-admin" />
                                 <div class="sminputs">
                                     <div class="input full">
                                         <label class="string optional" for="admin-email">Email*</label>
-                                        <input class="string optional" maxlength="255" name="admin-email" placeholder="Email" type="email" size="50" />
+                                        <input class="string optional" maxlength="255" id="admin-email" name="admin-email" placeholder="Email" type="email" size="50" />
                                     </div>
                                 </div>
                                 <div class="sminputs">
                                     <div class="input full">
                                         <label class="string optional" for="admin-pw">Password *</label>
-                                        <input class="string optional" maxlength="255" name="admin-pw" placeholder="Password" type="password" size="50" />
+                                        <input class="string optional" maxlength="255" id="admin-pw" name="admin-pw" placeholder="Password" type="password" size="50" />
                                         <span class="hide-password">Show</span>
                                     </div>
                                 </div>
                                 <div class="simform__actions"> 
 
-                                    <a href="#0" id="submit-admin" class="btn btn-lg btn-success" role="button"
-                                       data-toggle="popover" data-trigger="manual" data-content=""> 
+                                    <a onclick="takeData()" id="submit-admin" class="btn btn-lg btn-success" role="button"
+                                            data-toggle="popover" data-trigger="manual" data-content="" > 
                                         Log In 
                                     </a>
                                 </div> 
@@ -44,5 +44,11 @@
     </div>
 </div>
 
+<script>
+    function takeData() {
+       document.getElementById("admin-login").submit();
+    }
+</script>
+<!--
 <script src="include/js/login/modal_validation_and_stuff.js"></script> 
-<script src="include/js/login/ajax_req_and_stuff.js"></script> 
+<script src="include/js/login/ajax_req_and_stuff.js"></script> -->

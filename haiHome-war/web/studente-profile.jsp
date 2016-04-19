@@ -469,6 +469,12 @@
 
             //Richiama un filtro di ricerca
             function send_filtro(idFiltro) {
+                
+                $.post("ServletController",
+                        {action: "Ricerca-setFiltro", ID: filtroToDelete},
+                function (data) {
+                   alert('data');
+                });
                 /*
                  var annuncio = annunci[k];
                  console.log(annuncio);

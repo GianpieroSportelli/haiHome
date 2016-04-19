@@ -35,7 +35,12 @@ public class ServletAdmin extends HttpServlet {
             String action = request.getParameter("action");
 
             if (action.equalsIgnoreCase("login-admin")) {
-                System.out.println("YES");
+                String email = request.getParameter("admin-email");
+                String pass = request.getParameter("admin-pw");
+
+                System.out.println(email + " " + pass);
+
+                //getServletContext().getRequestDispatcher("/admin.jsp").forward(request, response);
             }
         }
     }
