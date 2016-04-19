@@ -84,7 +84,12 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {
                 request.getRequestDispatcher("/LogoutServlet").forward(request, response);
                 
-            } else {
+            } 
+            else if (action.equalsIgnoreCase("locatore-edit-profile")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+                
+            }
+            else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }
