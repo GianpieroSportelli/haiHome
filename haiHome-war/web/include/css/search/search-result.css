@@ -77,24 +77,6 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 .search-result span.plus a i { color: #fff !important; }
 .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
 
-.snip {
-     white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
-     white-space: -pre-wrap;      /* Opera 4-6 */
-     white-space: -o-pre-wrap;    /* Opera 7 */
-     white-space: pre-wrap;       /* css-3 */
-     word-wrap: break-word;       /* Internet Explorer 5.5+ */
-     word-break: break-all;
-     white-space: normal;
-}
-
-.div_snippet{
-    height:600px; 
-}
-
-.panel-heading{
-    height:300px;
-}
-
 /*.sidebar-outer {
     position: relative;
 }

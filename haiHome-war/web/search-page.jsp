@@ -116,12 +116,13 @@
 
                                 <label class="sol-label" for="quartieri">
                                     <div class="row">
-                                        Seleziona quartieri
+                                        <p id="selezionaQ">Seleziona quartieri
                                         <a class="infobox btn" href="images/infobox.png" title="Mappa dei quartieri di Torino.">
                                             <span id="info-quartieri" class="glyphicon glyphicon-info-sign" style="inline">
 
                                             </span>
                                         </a>
+                                        </p>
                                     </div>
                                 </label>
                                 <p></p>

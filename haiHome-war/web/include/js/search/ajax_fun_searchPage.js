@@ -16,7 +16,7 @@ var annunci = new Array();
 var page_annunci = new Array();
 var caroselli = new Array();
 var actual = 0;
-var dim_image_car = 250; //dimensione immagine del carosello
+var dim_image_car = 500; //dimensione immagine del carosello
 var foto_page = new Array();
 
 //Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
@@ -75,6 +75,8 @@ function load_Annunci() {
 }
 
 function create_pageResult() {
+    console.log("CREATE");
+    console.log(12 / N_ANNUNCI_X_PAGE);
     page_annunci = [];
     var result_div = '<div class = "search-result" >';
     var close_div = '</div>';
@@ -127,17 +129,20 @@ function create_info_annuncio(annuncio) {
     if (annuncio.Atomico) {
         tipoAnnuncio = "Annuncio Appartamento";
     }
+    var indirizzo=annuncio.Indirizzo;
+    var indirizzo_arr=indirizzo.split(",");
+    indirizzo=indirizzo_arr[0]+","+indirizzo_arr[1];
     html += "<div class=\"center\">" +
             "<h1>" + tipoAnnuncio + "</h1>" +
-            "<p class=\"text-muted\">" + annuncio.Indirizzo + "</p>" +
+            "<p>" + indirizzo + "</p>" +
             //"<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
-            "<p class=\"text-muted\"><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + "</p>" +
-            "<p class=\"text-muted\"><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
-            "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
+            "<p><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + "</p>" +
+            "<p><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
+            "<p> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
     if (annuncio.Atomico) {
-        html += "<p class=\"text-muted\"><span class=\"text-primary\">Numero locali: </span>" + annuncio.NumeroLocali + "</p>" +
-                "<p class=\"text-muted\"><span class=\"text-primary\"> Prezzo: </span>" + annuncio.Prezzo + " &euro;</p>";
+        html += "<p><span class=\"text-primary\">Numero locali: </span>" + annuncio.NumeroLocali + "</p>" +
+                "<p><span class=\"text-primary\"> Prezzo: </span>" + annuncio.Prezzo + " &euro;</p>";
     }
     html += "</div>"; //chiusura center
     return html;
@@ -259,7 +264,7 @@ function callFoto(foto_OID) {
     var id_foto_ext_arr = id_foto_ext.split(".");
     var id_foto = id_foto_ext_arr[0];
     var type = id_foto_ext_arr[1];
-    console.log("in load: " + id_foto + " ext: " + type);
+    //console.log("in load: " + id_foto + " ext: " + type);
     //console.log("in load " + id_foto);
     $.ajax({
         url: "ServletController",
@@ -269,7 +274,7 @@ function callFoto(foto_OID) {
         data: {action: "Ricerca-getImage", url: foto, type: type},
         success: function (base64Image) {
             //console.log(foto + ": " + base64Image);
-            var f = "<img class=\"img-responsive img-thumbnail\" src=\"data:image/" + type + ";base64, " + base64Image + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">";
+            var f = "<img class=\"img-responsive img-thumbnail\" src=\"data:image/" + type + ";base64, " + base64Image + "\" style=\"width:" + dim_image_car/N_ANNUNCI_X_PAGE + "px;height:" + dim_image_car/N_ANNUNCI_X_PAGE + "px;\">";
             $("#"+OID+"-" + id_foto + "").append(f);
         }
     });
@@ -413,7 +418,7 @@ function getfiltro() {
                 //alert(JSON.stringify(responseJson));
                 //var html = '';
                 //$.each(responseJson, function (index, filtro) {
-                //console.log(filtro);
+                console.log(filtro);
                 var Quartieri = filtro.Quartieri;
                 //console.log(Quartieri);
                 //alert(Quartieri);
@@ -523,7 +528,7 @@ function persistiFiltro() {
                 getf.resolve();
             });
 }
-
+//Invio della form tramite PLUGIN
 $(document).ready(function () {
     $('#searchForm').ajaxForm(function () {
         annunci_search();
