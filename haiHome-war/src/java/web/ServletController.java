@@ -97,6 +97,9 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
+            } else if (action.equalsIgnoreCase("Ricerca-getImage")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
             } else if (action.equalsIgnoreCase("search")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 

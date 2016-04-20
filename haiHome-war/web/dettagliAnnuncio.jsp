@@ -120,6 +120,7 @@
             $("#result").append(create_Page(annuncio));
             $("#info").append(init_info(annuncio));
             loggatoStudente();
+            loadAllfoto();
         </script>
 
         <%@include file="/footer.jsp" %>
