@@ -33,7 +33,6 @@ public class GestoreCitta implements GestoreCittaLocal {
         Città city = new Città();
         city.setNome(nome);
         cittàFacade.create(city);
-        System.out.println(city.getId());
         return cittàFacade.find(city.getId()) != null;
     }
 
