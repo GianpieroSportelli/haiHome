@@ -79,7 +79,13 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("Ricerca-salvaFiltro")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
-            } else if (action.equalsIgnoreCase("Ricerca-addServices")) {
+            } else if (action.equalsIgnoreCase("Ricerca-addSuperMarket")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-addBus")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-addBank")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
@@ -89,6 +95,9 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Ricerca-getImage")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("search")) {
@@ -110,6 +119,10 @@ public class ServletController extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("login-admin")) {
                 request.getRequestDispatcher("/ServletAdmin").forward(request, response);
+            } else if (action.equalsIgnoreCase("inserisci-citta")) {
+                request.getRequestDispatcher("/ServletCitta").forward(request, response);
+            } else if (action.equalsIgnoreCase("cancella-citta")) {
+                request.getRequestDispatcher("/ServletCitta").forward(request, response);
             } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 

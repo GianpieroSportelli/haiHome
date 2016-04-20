@@ -21,5 +21,9 @@ public interface GoogleMapsBeanLocal {
     ArrayList<JSONObject> getSupermarketNearBy(double lat, double lng, double rad);
 
     String getQuartiereByAddress(String address);
+
+    public ArrayList<JSONObject> getBankNearBy(double lat, double lng, double rad);
+
+    public ArrayList<JSONObject> getBusNearBy(double lat, double lng, double rad);
     
 }

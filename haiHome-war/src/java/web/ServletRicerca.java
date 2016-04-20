@@ -7,21 +7,28 @@ package web;
 
 import com.google.gson.Gson;
 import ejb.GestoreRicercaLocal;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+//import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -31,6 +38,8 @@ public class ServletRicerca extends HttpServlet {
 
     @EJB
     private GestoreRicercaLocal gestoreRicerca;
+
+    private double dist = 500d;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,12 +63,12 @@ public class ServletRicerca extends HttpServlet {
                 String json = gestoreRicerca.attualeToJSON().toString();
                 System.out.println("Filtro: " + json);
                 out.write(json);
-                
+
             } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
                 String id = request.getParameter("ID");
                 boolean esito = gestoreRicerca.loadFiltro(id);
                 out.write("" + esito);
-                
+
             } else if (action.equalsIgnoreCase("setCity_601")) {
                 String id = "" + 601;
                 gestoreRicerca.loadFiltro(id);
@@ -186,7 +195,7 @@ public class ServletRicerca extends HttpServlet {
                     }
                 }
 
-            } else if (action.equalsIgnoreCase("Ricerca-addServices")) {
+            } else if (action.equalsIgnoreCase("Ricerca-addSuperMarket")) {
                 //System.out.println("I'm in!!");
                 String jsonA = (String) request.getParameter("annuncio");
                 System.out.println(jsonA);
@@ -196,13 +205,57 @@ public class ServletRicerca extends HttpServlet {
                     double lng = annuncio.getDouble("Lng");
 
                     response.setContentType("application/json");
-                    JSONArray superJ = gestoreRicerca.getSupermarketNearBy(lat, lng, 500.0);
+                    JSONArray superJ = gestoreRicerca.getSupermarketNearBy(lat, lng, dist);
                     String json = superJ.toString(); //new Gson().toJson();
                     System.out.println(json);
                     out.write(json);
 
                 } catch (JSONException ex) {
                     String json = new Gson().toJson("ERRORE SUPERMARKET");
+                    System.out.println(json);
+                    out.write(json);
+                    Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else if (action.equalsIgnoreCase("Ricerca-addBank")) {
+                //System.out.println("I'm in!!");
+                String jsonA = (String) request.getParameter("annuncio");
+                System.out.println(jsonA);
+                try {
+                    JSONObject annuncio = new JSONObject(jsonA);
+                    double lat = annuncio.getDouble("Lat");
+                    double lng = annuncio.getDouble("Lng");
+
+                    response.setContentType("application/json");
+                    JSONArray superJ = gestoreRicerca.getBankNearBy(lat, lng, dist);
+                    String json = superJ.toString(); //new Gson().toJson();
+                    System.out.println(json);
+                    out.write(json);
+
+                } catch (JSONException ex) {
+                    String json = new Gson().toJson("ERRORE BANK");
+                    System.out.println(json);
+                    out.write(json);
+                    Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else if (action.equalsIgnoreCase("Ricerca-addBus")) {
+                //System.out.println("I'm in!!");
+                String jsonA = (String) request.getParameter("annuncio");
+                System.out.println(jsonA);
+                try {
+                    JSONObject annuncio = new JSONObject(jsonA);
+                    double lat = annuncio.getDouble("Lat");
+                    double lng = annuncio.getDouble("Lng");
+
+                    response.setContentType("application/json");
+                    JSONArray superJ = gestoreRicerca.getBusNearBy(lat, lng, dist);
+                    String json = superJ.toString(); //new Gson().toJson();
+                    System.out.println(json);
+                    out.write(json);
+
+                } catch (JSONException ex) {
+                    String json = new Gson().toJson("ERRORE BUS");
                     System.out.println(json);
                     out.write(json);
                     Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
@@ -240,56 +293,72 @@ public class ServletRicerca extends HttpServlet {
                     String user_type = (String) session.getAttribute("user-type");
                     if (user_type != null) {
                         if (user_type.equalsIgnoreCase("STUDENTE")) {
-                            result=true;
+                            result = true;
                         }
                     }
                 }
-                out.write(""+result);
+                out.write("" + result);
+            } else if (action.equalsIgnoreCase("Ricerca-getImage")) {
+                String url = request.getParameter("url");
+                String type=request.getParameter("type");
+                //String encoded = Base64.encodeFromFile("data/inputImage.png");
+                String imageString = null;
+               BufferedImage originalImage = ImageIO.read(new File(url));
+               //originalImage.getT
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                try {
+                    ImageIO.write(originalImage, type, bos);
+                    byte[] imageBytes = bos.toByteArray();
+                    BASE64Encoder encoder = new BASE64Encoder();
+                    imageString = encoder.encode(imageBytes);
+                    System.out.println(url);
+                    out.write(imageString);
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //return imageString;
             }
         }
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-            /**
-             * Handles the HTTP <code>GET</code> method.
-             *
-             * @param request servlet request
-             * @param response servlet response
-             * @throws ServletException if a servlet-specific error occurs
-             * @throws IOException if an I/O error occurs
-             */
-            @Override
-            protected void doGet
-            (HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                processRequest(request, response);
-            }
+        processRequest(request, response);
+    }
 
-            /**
-             * Handles the HTTP <code>POST</code> method.
-             *
-             * @param request servlet request
-             * @param response servlet response
-             * @throws ServletException if a servlet-specific error occurs
-             * @throws IOException if an I/O error occurs
-             */
-            @Override
-            protected void doPost
-            (HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                processRequest(request, response);
-            }
+        processRequest(request, response);
+    }
 
-            /**
-             * Returns a short description of the servlet.
-             *
-             * @return a String containing servlet description
-             */
-            @Override
-            public String getServletInfo
-            
-                () {
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
-            }// </editor-fold>
+    }// </editor-fold>
 
-        }
+}

@@ -142,17 +142,31 @@
                     <div class="profile-content tab-content">
                         <div class="tab-pane active" id="1">
                             <form id="formCitta" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
-                                <input type="hidden" name="action" value="Aggiungi-Citta" />
                                 <div class="sminputs">
                                     <div class="input full">
                                         <label class="string optional" for="citta">Inserisci Citt&Agrave;</label>
-                                        <input style="background-color:f2f2f2" class="string optional" maxlength="255" id="citta" name="citta" placeholder="Citt&agrave;" size="50" />
+                                        <input style="background-color:#f2f2f2" class="string optional" maxlength="255" id="citta" name="citta" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Citt&agrave;'" placeholder="Citt&agrave;" size="50" />
                                     </div>
                                 </div>
                                 <div class="simform__actions"> 
                                     <a onclick="insertCitta()" class="btn btn-lg btn-success" role="button"
                                        data-toggle="popover" data-trigger="manual" data-content="" > 
                                         Inserisci
+                                    </a>
+                                </div> 
+                            </form>
+
+                            <form id="formCitta2" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
+                                <div class="sminputs">
+                                    <div class="input full">
+                                        <label class="string optional" for="citta2">Cancella Citt&Agrave;</label>
+                                        <input style="background-color:#f2f2f2" class="string optional" maxlength="255" id="citta2" name="citta2" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Citt&agrave;'" placeholder="Citt&agrave;" size="50" />
+                                    </div>
+                                </div>
+                                <div class="simform__actions"> 
+                                    <a onclick="deleteCitta()" class="btn btn-lg btn-success" role="button"
+                                       data-toggle="popover" data-trigger="manual" data-content="" > 
+                                        Cancella
                                     </a>
                                 </div> 
                             </form>
@@ -167,7 +181,26 @@
         <script>
             function insertCitta() {
                 var citta = document.getElementById("citta").value;
-                alert(citta);
+                $.post("ServletController",
+                        {action: "inserisci-citta", NomeCitta: citta},
+                function (data) {
+                    if (data == "OK") {
+                        alert('Città ' + citta + " inserita con successo.");
+                    } else
+                        alert('ERRORE INSERIMENTO');
+                });
+            }
+
+            function deleteCitta() {
+                var citta = document.getElementById("citta2").value;
+                $.post("ServletController",
+                        {action: "cancella-citta", NomeCitta: citta},
+                function (data) {
+                    if (data == "OK") {
+                        alert('Città ' + citta + " cancellata con successo.");
+                    } else
+                        alert('ERRORE CANCELLAZIONE');
+                });
             }
         </script>
     </body>

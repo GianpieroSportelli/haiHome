@@ -32,6 +32,7 @@ public class PathUtily {
     }
     
     public static String getPhotoPath(){
-        return pathLettura;
+        return GiacomoPath;
     }
+    
 }

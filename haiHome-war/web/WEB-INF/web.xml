@@ -48,6 +48,10 @@
         <servlet-name>TestServlet3</servlet-name>
         <servlet-class>web.TestServlet3</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletCitta</servlet-name>
+        <servlet-class>web.ServletCitta</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletController</servlet-name>
         <url-pattern>/ServletController</url-pattern>
@@ -103,6 +107,10 @@
     <servlet-mapping>
         <servlet-name>TestServlet3</servlet-name>
         <url-pattern>/TestServlet3</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletCitta</servlet-name>
+        <url-pattern>/ServletCitta</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

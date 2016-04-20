@@ -5,7 +5,6 @@
  */
 package web;
 
-import com.google.gson.Gson;
 import ejb.GestoreStudenteLocal;
 import java.io.IOException;
 import java.io.PrintWriter;

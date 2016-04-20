@@ -170,12 +170,12 @@ public class TestServlet extends HttpServlet {
                 cucina1.add(url+"cucina.jpg");
                 cucina1.add(url+"cucina1.jpg");
                 cucina1.add(url+"cucina2.jpg");
-                stanza1_1.add(url+"stanza1.jpg");
-                stanza1_1.add(url+"singola1.jpg");
                 stanza1_1.add(url+"singola2.jpg");
-                stanza1_2.add(url+"stanza2.jpg");
-                stanza1_2.add(url+"doppia1.jpg");
-                stanza1_2.add(url+"doppia2.jpg");
+                stanza1_1.add(url+"singola1.jpg");
+                stanza1_2.add(url+"singola2.jpg");
+                stanza1_2.add(url+"singola1.jpg");
+                stanza1_3.add(url+"singola1.jpg");
+                stanza1_3.add(url+"singola2.jpg");
 
                 double[] latlng1 = gmb.geocodingAddress(add_code1);
                 gestoreAnnunci.inserisciInfoIndirizzo("Torino", "Aurora", add1, latlng1);
