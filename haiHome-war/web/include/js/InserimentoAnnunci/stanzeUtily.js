@@ -106,11 +106,10 @@ function validateFormStanze(butt) {
 
 //elimina una stanza
 function eliminaStanza(num){
-$("div#stanza" + num).remove();
+$("div#Stanza" + num).remove();
         dropzones[num - 1] = null;
         var key = "Stanza" + num;
         dropzoneMaps.delete(key);
-        //stanzeForms[num] = null;
 }
 
 
@@ -199,7 +198,7 @@ var StanzaCode =
         </div>\n\
     </div>\n\
     <div class=\"form-group col-md-6\">\n\
-        <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('stanza" + number + "')\">-</div><br />\n\
+        <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('Stanza" + number + "')\">-</div><br />\n\
         <label class=\"control-label\">Metratura</label> <input name='MetraturaS' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
     </div>\n\
     <div class=\"form-group col-md-12\">\n\
