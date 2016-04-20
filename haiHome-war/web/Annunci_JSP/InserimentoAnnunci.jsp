@@ -23,8 +23,7 @@
         <link rel="stylesheet" href="../include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
         <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone1.css">  
         
-        <!-- datapicker CSS -->
-          <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -39,19 +38,19 @@
             <div class="stepwizard col-md-offset-3">
                 <div class="stepwizard-row setup-panel">
                     <div class="stepwizard-step">
-                        <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                        <a href="#step-1" type="button" class="btn btn-primary btn-circle" id="1">1</a>
                         <p>Info Indirizzo</p>
                     </div>
                     <div class="stepwizard-step">
-                        <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                        <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled" id="2">2</a>
                         <p>Info Annuncio </p>
                     </div>
                     <div class="stepwizard-step">
-                        <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                        <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled" id="3">3</a>
                         <p>Inserimento Stanze</p>
                     </div>
                     <div class="stepwizard-step">
-                        <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                        <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled" id="4">4</a>
                         <p>Specifica Costi</p>
                     </div>
                 </div>
@@ -59,7 +58,7 @@
 
             <!-- inizio pagine step -->
 
-            
+            <!-- modal -->
                 <%@include file="prova.jsp" %>
             
             
@@ -127,6 +126,7 @@
         
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
         
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/anteprima.js"></script>
 
 
     </body>

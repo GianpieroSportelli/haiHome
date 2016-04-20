@@ -7,56 +7,56 @@
 
 
 
-  
 
-    
+
+
 $(document).ready(function () {
 
 
 
-    
+
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
             form1 = $('form#form-info-appartamento'),
             form2 = $('form#form-info-annuncio'),
             form3 = $('form#form-info-stanze'),
             form4 = $('form#form-info-costi');
-            
+
 
     var dataInizio = $('#inpDataInizio:input');
 
-    
-    
+
+
     dataInizio.datepicker({
-      showOn: "button",
-      buttonImage: "../images/calendario.png",
-      buttonImageOnly: true,
-      minDate: 0,
-      monthNames: [ "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre" ],
-      dayNamesMin: [ "Do", "Lu", "Ma", "Me", "Gi", "Ve", "Sa" ],
-      dateFormat: "dd-mm-yy"
+        showOn: "button",
+        buttonImage: "../images/calendario.png",
+        buttonImageOnly: true,
+        minDate: 0,
+        monthNames: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+        dayNamesMin: ["Do", "Lu", "Ma", "Me", "Gi", "Ve", "Sa"],
+        dateFormat: "dd-mm-yy"
     });
-    
-    
 
-/*    
-$(function() {
-    $('input#inpDataInizio').datetimepicker({
-      pickTime: false,
-      buttonImage: "",
-      buttonImageOnly: true,
-      minDate: 0,
-      changeMonth : true
 
-    });
-  });*/
-    
-    
+
+    /*    
+     $(function() {
+     $('input#inpDataInizio').datetimepicker({
+     pickTime: false,
+     buttonImage: "",
+     buttonImageOnly: true,
+     minDate: 0,
+     changeMonth : true
+     
+     });
+     });*/
+
+
 
     //prendo il codice del locatore e istanzio l'Annuncio
     sendInitialRequest();
-    
-    
+
+
 
 
     allWells.hide();
@@ -66,10 +66,20 @@ $(function() {
         e.preventDefault();
         var $target = $($(this).attr('href')),
                 $item = $(this);
-
+        console.log("Id bottoncino di su" + $item.attr("id") + " " + !$item.hasClass('disabled'));
         if (!$item.hasClass('disabled')) {
             navListItems.removeClass('btn-primary').addClass('btn-default');
             $item.addClass('btn-primary');
+            var idSelectedItem = $item.attr("id");
+            navListItems.each(function () {
+                var $myitem = $(this);
+                var idmyitem = $myitem.attr("id");
+                if((idmyitem>idSelectedItem)){
+                   $myitem.attr('disabled', 'disabled');
+                }
+                
+            });
+            
             allWells.hide();
             $target.show();
             $target.find('input:eq(0)').focus();
@@ -128,10 +138,10 @@ $(function() {
 
     });
 
-    
-    
-        //form info costi
-        form4.on('submit', function (e) {
+
+
+    //form info costi
+    form4.on('submit', function (e) {
 
         e.preventDefault();
 
@@ -148,7 +158,15 @@ $(function() {
                     //generateCostiForm();
                     console.log(response);
                     //generaAnteprima(response);
-                    
+                    var preview_Page = create_Preview_Page(response);
+                    $(preview_Page).appendTo("#modalBody");
+                    /*
+                    var myModal = $('#myModal');
+                    console.log("Modal id: " + myModal.attr("id"));
+                    myModal.modal('show');
+                    $('#myModal').on('shown.bs.modal', function () {
+                        $('#myInput').focus();
+                    }); */
                 }
             });
         } else {
@@ -157,35 +175,35 @@ $(function() {
 
 
     });
-   
+
 
 
 });
 
-function generaAnteprima(annuncio){
+function generaAnteprima(annuncio) {
     $('#modalBody').append("Ciao giampiero");
 }
 
 
 //Invia richiesta iniziale 
-function sendInitialRequest(){
-    var IDLocatore ="1";
-    
+function sendInitialRequest() {
+    var IDLocatore = "1";
+
     $.ajax({
-      type: "POST",
-      url: "../ServletAnnuncio",
-      data: "action=Annunci-newAnnuncio-initialRequest&idLocatore=" + IDLocatore,
-      dataType: "text",
-      success: function(msg)
-      {
-        alert("Successo");
-      },
-      error: function()
-      {
-        alert("Chiamata fallita, si prega di riprovare...");
-      }
+        type: "POST",
+        url: "../ServletAnnuncio",
+        data: "action=Annunci-newAnnuncio-initialRequest&idLocatore=" + IDLocatore,
+        dataType: "text",
+        success: function (msg)
+        {
+            alert("Successo");
+        },
+        error: function ()
+        {
+            alert("Chiamata fallita, si prega di riprovare...");
+        }
     });
-    
+
 }
 
 
@@ -222,8 +240,8 @@ function generateCostiForm() {
         }
 
     });
-            var codiceFinale = "<div><input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"true\">Compreso Condominio<br><input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"true\" checked>Compreso Riscaldamento</div>";
-            $(codiceFinale).appendTo("#prezzoStanze");
+    var codiceFinale = "<div><input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"true\">Compreso Condominio<br><input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"true\" checked>Compreso Riscaldamento</div>";
+    $(codiceFinale).appendTo("#prezzoStanze");
 }
 
 //utile a validare le form, prende in input il pulsante Next premuto e in base

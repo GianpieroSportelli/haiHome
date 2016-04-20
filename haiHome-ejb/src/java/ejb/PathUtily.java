@@ -18,8 +18,20 @@ public class PathUtily {
     private static final String GiacomoPath = "//Users//giacomocavallo//Desktop//foto//";
     private static final String GianpieroPath ="C:\\Users\\SPORT\\Pictures\\haiHome!!\\";
     private static final String EugenioPath = "C://Users//Eugenio Liso//Desktop//foto//";
+    private static final String GiacomoPath2 = "//Users//giacomocavallo//NetBeansProjects//ProgettoSSCSWeb//haiHome//haiHome-war//ImmaginiApp//";
+    
+    private static final String pathInternoS = "//Users//giacomocavallo//NetBeansProjects//ProgettoSSCSWeb//haiHome//haiHome-war//web//Immagini//AppPhoto//";
+
+     
+    private static final String pathLettura = "./ImmaginiApp//";
+    private static final String pathInternoL = ".//Immagini//AppPhoto//";
+            
+            
+    public static String getSavePhotoPath(){
+        return GiacomoPath2;
+    }
     
     public static String getPhotoPath(){
-        return EugenioPath;
+        return pathLettura;
     }
 }

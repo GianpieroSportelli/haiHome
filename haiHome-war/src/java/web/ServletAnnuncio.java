@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Set;
@@ -200,22 +199,6 @@ public class ServletAnnuncio extends HttpServlet {
 
                     String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, "", numStanza);
 
-                    /*
-                    (new File(stanzaFolderName)).mkdir();
-                    
-                    String path = stanzaFolderName + "//" + fileName;
-
-                    FileOutputStream tempFile = new FileOutputStream(path);
-                    
-                    int read = 0;
-                    final byte[] bytes = new byte[1024];
-                    while ((read = filecontent.read(bytes)) != -1) {
-                        tempFile.write(bytes, 0, read);
-                    }
-                    
-                    filecontent.close();
-                    tempFile.close();
-                     */
                     if (!photoTempPath.containsKey(numStanza)) {
                         ArrayList<String> temp = new ArrayList();
                         temp.add(path);
@@ -292,9 +275,10 @@ public class ServletAnnuncio extends HttpServlet {
 
                     boolean CRS = request.getParameter("compresoRiscaldamentoS") != null;
 
-                    for (String idStanze1 : idStanze) {
+                    for (int i=0;i< idStanze.length;i++) {
+                        String idStanze1 = idStanze[i];
                         ArrayList<String> infoStanza = stanzeInfo.get(idStanze1);
-                        gestoreAnnuncio.inserisciNuovaStanzaInAffitto(infoStanza.get(1), photoTempPath.get(idStanze1), CCS, CRS, Double.parseDouble(infoStanza.get(2)), 0);
+                        gestoreAnnuncio.inserisciNuovaStanzaInAffitto(infoStanza.get(1), photoTempPath.get(idStanze1), CCS, CRS, Double.parseDouble(infoStanza.get(2)), Double.parseDouble(prezzoS[i]));
                         stanzeInfo.remove(idStanze1);
                     }
                     
