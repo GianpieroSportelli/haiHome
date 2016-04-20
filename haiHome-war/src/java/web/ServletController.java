@@ -119,6 +119,10 @@ public class ServletController extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("login-admin")) {
                 request.getRequestDispatcher("/ServletAdmin").forward(request, response);
+            } else if (action.equalsIgnoreCase("inserisci-citta")) {
+                request.getRequestDispatcher("/ServletCitta").forward(request, response);
+            } else if (action.equalsIgnoreCase("cancella-citta")) {
+                request.getRequestDispatcher("/ServletCitta").forward(request, response);
             } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
