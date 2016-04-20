@@ -47,4 +47,8 @@ public interface GestoreRicercaLocal {
 
     boolean loadFiltro(String id);
 
+    public JSONArray getBankNearBy(double lat, double lng, double rad);
+
+    public JSONArray getBusNearBy(double lat, double lng, double rad);
+
 }

@@ -432,6 +432,28 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         }
         return result;
     }
+    
+    @Override
+    public JSONArray getBankNearBy(double lat, double lng, double rad) {
+        JSONArray result = new JSONArray();
+        ArrayList<JSONObject> superM = gmb.getBankNearBy(lat, lng, rad);
+        for (JSONObject x : superM) {
+            result.put(x);
+            //result.put(x.getId());
+        }
+        return result;
+    }
+    
+    @Override
+    public JSONArray getBusNearBy(double lat, double lng, double rad) {
+        JSONArray result = new JSONArray();
+        ArrayList<JSONObject> superM = gmb.getBusNearBy(lat, lng, rad);
+        for (JSONObject x : superM) {
+            result.put(x);
+            //result.put(x.getId());
+        }
+        return result;
+    }
 
     @Override
     public boolean removeFiltro(String id_filtro, String id_studente) {

@@ -31,6 +31,8 @@ public class ServletRicerca extends HttpServlet {
 
     @EJB
     private GestoreRicercaLocal gestoreRicerca;
+    
+    private double dist=500d;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -186,7 +188,7 @@ public class ServletRicerca extends HttpServlet {
                     }
                 }
 
-            } else if (action.equalsIgnoreCase("Ricerca-addServices")) {
+            } else if (action.equalsIgnoreCase("Ricerca-addSuperMarket")) {
                 //System.out.println("I'm in!!");
                 String jsonA = (String) request.getParameter("annuncio");
                 System.out.println(jsonA);
@@ -196,13 +198,57 @@ public class ServletRicerca extends HttpServlet {
                     double lng = annuncio.getDouble("Lng");
 
                     response.setContentType("application/json");
-                    JSONArray superJ = gestoreRicerca.getSupermarketNearBy(lat, lng, 500.0);
+                    JSONArray superJ = gestoreRicerca.getSupermarketNearBy(lat, lng, dist);
                     String json = superJ.toString(); //new Gson().toJson();
                     System.out.println(json);
                     out.write(json);
 
                 } catch (JSONException ex) {
                     String json = new Gson().toJson("ERRORE SUPERMARKET");
+                    System.out.println(json);
+                    out.write(json);
+                    Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else if (action.equalsIgnoreCase("Ricerca-addBank")) {
+                //System.out.println("I'm in!!");
+                String jsonA = (String) request.getParameter("annuncio");
+                System.out.println(jsonA);
+                try {
+                    JSONObject annuncio = new JSONObject(jsonA);
+                    double lat = annuncio.getDouble("Lat");
+                    double lng = annuncio.getDouble("Lng");
+
+                    response.setContentType("application/json");
+                    JSONArray superJ = gestoreRicerca.getBankNearBy(lat, lng, dist);
+                    String json = superJ.toString(); //new Gson().toJson();
+                    System.out.println(json);
+                    out.write(json);
+
+                } catch (JSONException ex) {
+                    String json = new Gson().toJson("ERRORE BANK");
+                    System.out.println(json);
+                    out.write(json);
+                    Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else if (action.equalsIgnoreCase("Ricerca-addBus")) {
+                //System.out.println("I'm in!!");
+                String jsonA = (String) request.getParameter("annuncio");
+                System.out.println(jsonA);
+                try {
+                    JSONObject annuncio = new JSONObject(jsonA);
+                    double lat = annuncio.getDouble("Lat");
+                    double lng = annuncio.getDouble("Lng");
+
+                    response.setContentType("application/json");
+                    JSONArray superJ = gestoreRicerca.getBusNearBy(lat, lng, dist);
+                    String json = superJ.toString(); //new Gson().toJson();
+                    System.out.println(json);
+                    out.write(json);
+
+                } catch (JSONException ex) {
+                    String json = new Gson().toJson("ERRORE BUS");
                     System.out.println(json);
                     out.write(json);
                     Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);

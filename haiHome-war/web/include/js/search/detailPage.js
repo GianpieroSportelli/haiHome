@@ -7,9 +7,15 @@
 var geocoder;
 var map;
 var geoAddress;
-var icon = "images/basket.png";
+var supermarket = "images/basket.png";
+var bank = "images/bank.png";
+var bus="images/transport.png";
 var dim_image_car = 500;
 var dim_image_prof = 100;
+var markers = [];
+var StrAnnuncio = $.session.get('dettagli');
+var annuncio = jQuery.parseJSON(StrAnnuncio);
+console.log(annuncio);
 
 $('.qcar').carousel({
     pause: true,
@@ -21,7 +27,8 @@ function initialize(annuncio) {
     var latlng = new google.maps.LatLng(annuncio.Lat, annuncio.Lng);
     var mapOptions = {
         zoom: 8,
-        center: latlng
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.TERRAIN
     };
     map = new google.maps.Map(document.getElementById("map"), mapOptions);
     var marker = new google.maps.Marker({
@@ -30,15 +37,17 @@ function initialize(annuncio) {
         title: 'geocode request address'
     });
     map.setZoom(16);
-    addServices(annuncio);
+    addServices_superMarket(annuncio);
+    addServices_Bank(annuncio);
+    addServices_Bus(annuncio);
 }
 
-function addServices(annuncio) {
+function addServices_superMarket(annuncio) {
     $.ajax({
         url: "ServletController",
         type: 'post',
         dataType: 'json',
-        data: {action: "Ricerca-addServices", annuncio: JSON.stringify(annuncio)},
+        data: {action: "Ricerca-addSuperMarket", annuncio: JSON.stringify(annuncio)},
         success: function (responseJson) {
             //console.log(responseJson);
             $.each(responseJson, function (index, item) {
@@ -47,13 +56,53 @@ function addServices(annuncio) {
                 var lng = item.location.lng;
                 var label = item.name;
                 var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label);
+                addMarker(location, label,supermarket);
             });
         }
     });
 }
 
-function addMarker(location, label) {
+function addServices_Bus(annuncio) {
+    $.ajax({
+        url: "ServletController",
+        type: 'post',
+        dataType: 'json',
+        data: {action: "Ricerca-addBus", annuncio: JSON.stringify(annuncio)},
+        success: function (responseJson) {
+            //console.log(responseJson);
+            $.each(responseJson, function (index, item) {
+                //console.log(item);
+                var lat = item.location.lat;
+                var lng = item.location.lng;
+                var label = item.name;
+                var location = new google.maps.LatLng(lat, lng);
+                addMarker(location, label,bus);
+            });
+        }
+    });
+}
+
+function addServices_Bank(annuncio) {
+    $.ajax({
+        url: "ServletController",
+        type: 'post',
+        dataType: 'json',
+        data: {action: "Ricerca-addBank", annuncio: JSON.stringify(annuncio)},
+        success: function (responseJson) {
+            //console.log(responseJson);
+            $.each(responseJson, function (index, item) {
+                //console.log(item);
+                var lat = item.location.lat;
+                var lng = item.location.lng;
+                var label = item.name;
+                var location = new google.maps.LatLng(lat, lng);
+                addMarker(location, label,bank);
+            });
+        }
+    });
+}
+
+function addMarker(location, label, icon) {
 //alert(label);
 // Add the marker at the clicked location, and add the next-available label
 // from the array of alphabetical characters.
@@ -63,11 +112,16 @@ function addMarker(location, label) {
         map: map,
         icon: icon
     });
+    //markers.push(marker);
 }
 
 function create_Page(annuncio) {
     var html = "";
     html += info_annuncio(annuncio);
+    /*html+="<div class=\"hr-line-dashed\"></div>";
+     html+="<div id=\"map\" class=\"\" >";   
+     html+="</div>";
+     html+="<div class=\"hr-line-dashed\"></div>";*/
     var open_ul = "<ul class=\"nav nav-tabs\">";
     html += open_ul;
     var stanze = annuncio.Stanze[0];
@@ -191,7 +245,7 @@ function slide_Stanza(stanza) {
         }
         html += "<blockquote>" +
                 "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"." + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
                 "</div>" +
                 "</blockquote>" +
                 "</div>"; //5
@@ -232,7 +286,7 @@ function info_annuncio(annuncio) {
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
-    html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-danger\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
+    html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
     html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
@@ -245,13 +299,19 @@ function init_info(annuncio) {
 }
 function info_loc(locatore) {
     var html = "";
-    html += "<div id=\"info_locatore\" class=\"center\">";
+    html += "<div id=\"info_locatore\" class=\"center blockLoc\">";
+    html += "<div class=\"row center\">";
     html += "<img src='" + locatore.fotoProfilo + "'class='img-responsive img-circle' alt=''style=\"width:" + dim_image_prof + "px;height:" + dim_image_prof + "px;\" \>";
+    html += "</div>";
     //html+="<p>"+JSON.stringify(locatore)+"</p>";
-    html += "<p class=\"text-muted\"><span class=\"text-primary\">Nome:</span>" + locatore.nome + "</p>";
-    html += "<p class=\"text-muted\"><span class=\"text-primary\">Cognome:</span>" + locatore.cognome + "</p>";
-    html += "<p class=\"text-muted\"><span class=\"text-primary\">Descrizione:</span>" + locatore.descrizione + "</p>";
-    html += "<p class=\"text-muted\"><span class=\"text-primary\">email:</span>" + locatore.email + "</p>";
+    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Nome: </span>" + locatore.nome + "</p>";
+    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
+    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
+    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">email: </span>" + locatore.email + "</p>";
+    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"seganalaAnnuncio()\">Seganala</button>";
+    html += "</div>";
+    html += "<div class=\"center blockLoc\">";
+    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" onClick=\"getServices()\">Cancella marker</button>";
     html += "</div>";
     return html;
 }
@@ -266,10 +326,19 @@ function loggatoStudente() {
                 console.log("Studente loggato?: " + item);
                 if (item == "true") {
                     $("#saveButton").show("fast");
+                    $("#segnalaBtn").show("fast");
                 }
             });
 }
 
-function salvaAnnuncioPreferiti(){
+function salvaAnnuncioPreferiti() {
     alert("Salvo l'annuncio nei Preferiti");
+}
+function segnalaAnnuncio() {
+    alert("annuncio Segnalato");
+}
+
+function getServices(){
+    addServices_superMarket(annuncio);
+    addServices_Bank(annuncio); 
 }
