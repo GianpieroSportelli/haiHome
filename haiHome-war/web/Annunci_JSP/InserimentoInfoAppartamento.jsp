@@ -4,15 +4,6 @@
     Author     : giacomocavallo
 --%>
 
-<!-- NOTE:
-ToDO:
-    Riempire le select con i valori presenti nel DB
-    Inserire l'autocompletamento di Google nel selezionate l'indirizzo
-    Modificare qualcosina graficamente
-
--->
-<!-- inizio pagine tutto cio esterno al commento va eliminato -->
-
 <div class="col-xs-6 col-md-offset-3">
     <div class="col-md-12">
 
@@ -50,5 +41,3 @@ ToDO:
          
     </div>
 </div>
-
-<!-- FINE -->

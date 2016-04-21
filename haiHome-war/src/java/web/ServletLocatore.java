@@ -41,9 +41,6 @@ public class ServletLocatore extends HttpServlet {
             String action = request.getParameter("action");
 
             HttpSession session = request.getSession();
-            /*
-           if (session.getAttribute("is-user-logged") == null) 
-               session.setAttribute("is-user-logged", false);*/
 
             if (action.equalsIgnoreCase("signup-locatore")) {
                 /* registrazione */
@@ -79,6 +76,7 @@ public class ServletLocatore extends HttpServlet {
                 if (gestoreLocatore.checkLocatore(email)) {
                     if (gestoreLocatore.getLocatore().getPassword().equals(pwd)) {
                         if (gestoreLocatore.getLocatore() != null) {
+                            session.setAttribute("user-access", "");
                             session.setAttribute("user-type", "locatore");
                             session.setAttribute("user-data", this.gestoreLocatore.toJSON());
                         }
@@ -107,6 +105,7 @@ public class ServletLocatore extends HttpServlet {
                 // si potrebbe aggiornare l'immagine del profilo, possibile che sia cambiata...
 
                 // creo sessione 
+                session.setAttribute("user-access", "fb");
                 session.setAttribute("user-type", "locatore");
                 session.setAttribute("user-data", this.gestoreLocatore.toJSON());
                 // redirect 
@@ -123,13 +122,13 @@ public class ServletLocatore extends HttpServlet {
                     //            String email = verify[1];
                     String email = request.getParameter("email");
                     String url_img = request.getParameter("url-profile-img");// + "?sz=200";
-                    String phone = request.getParameter("phone"); //da recuperare dal profilo...boh
 
                     if (gestoreLocatore.checkLocatore(email) == false) {
                         gestoreLocatore.aggiungiLocatore(email, null, name, surname, "", url_img);
                     }
                     // creo sessione 
 
+                    session.setAttribute("user-access", "g+");
                     session.setAttribute("user-type", "locatore");
                     session.setAttribute("user-data", this.gestoreLocatore.toJSON());
                     // redirect 
@@ -138,17 +137,24 @@ public class ServletLocatore extends HttpServlet {
                 } else {
                     out.println("errore nell'autenticazione");
                 }
-            }
-            else if (action.equalsIgnoreCase("locatore-edit-profile")) {
-                String phone = request.getParameter("phone"), 
-                       descrizione = request.getParameter("description"); 
+            } else if (action.equalsIgnoreCase("locatore-edit-profile")) {
+                String old_pwd = request.getParameter("old-pwd"),
+                        new_pwd = request.getParameter("new-pwd"),
+                        phone = request.getParameter("phone"),
+                        descrizione = request.getParameter("description"); 
+                boolean res = true;  
+
                 
-                gestoreLocatore.modificaInfoProfilo(phone, descrizione); 
+                if (old_pwd.equalsIgnoreCase("") == false) {
+                    res = gestoreLocatore.modificaPassword(old_pwd, new_pwd);
+                }
+                
+                gestoreLocatore.modificaInfoProfilo(phone, descrizione);
                 session.setAttribute("user-data", this.gestoreLocatore.toJSON()); //refresh sessione
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                response.getWriter().write("ok");
+                response.getWriter().write(res ? "ok" : "no");
             }
         }
     }

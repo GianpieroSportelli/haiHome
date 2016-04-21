@@ -21,7 +21,10 @@
         
 
         <link rel="stylesheet" href="../include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
-        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone1.css">       
+        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone1.css">  
+        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -35,30 +38,33 @@
             <div class="stepwizard col-md-offset-3">
                 <div class="stepwizard-row setup-panel">
                     <div class="stepwizard-step">
-                        <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                        <a href="#step-1" type="button" class="btn btn-primary btn-circle" id="1">1</a>
                         <p>Info Indirizzo</p>
                     </div>
                     <div class="stepwizard-step">
-                        <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                        <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled" id="2">2</a>
                         <p>Info Annuncio </p>
                     </div>
                     <div class="stepwizard-step">
-                        <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                        <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled" id="3">3</a>
                         <p>Inserimento Stanze</p>
                     </div>
                     <div class="stepwizard-step">
-                        <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                        <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled" id="4">4</a>
                         <p>Specifica Costi</p>
                     </div>
                 </div>
             </div> <!-- fine step superiori-->
 
             <!-- inizio pagine step -->
-        <!--    <form action="../ServletAnnuncio" method="post" enctype='multipart/form-data' id="formAnnuncio"> -->
-            <!--    <input type="hidden" name="action" value="Annunci-newAnnuncio" /> -->
+
+            <!-- modal -->
+                <%@include file="prova.jsp" %>
+            
+            
                 <div class="row setup-content" id="step-1"> 
 
-                    <%@include file="InserimentoInfoAppartamento.jsp" %>  <!-- ORIGINALE   prova.jsp -->
+                    <%@include file="InserimentoInfoAppartamento.jsp" %>
                     
                     
                 </div>
@@ -89,68 +95,7 @@
 
 
         <script type="text/javascript">
-/*
-            //codice per lo step-wizard
-            $(document).ready(function () {
-                var navListItems = $('div.setup-panel div a'),
-                        allWells = $('.setup-content'),
-                        allNextBtn = $('.nextBtn');
 
-                allWells.hide();
-
-                navListItems.click(function (e) {
-                    e.preventDefault();
-                    var $target = $($(this).attr('href')),
-                            $item = $(this);
-
-                    if (!$item.hasClass('disabled')) {
-                        navListItems.removeClass('btn-primary').addClass('btn-default');
-                        $item.addClass('btn-primary');
-                        allWells.hide();
-                        $target.show();
-                        $target.find('input:eq(0)').focus();
-                    }
-                });
-
-
-                allNextBtn.click(function () {
-                    var curStep = $(this).closest(".setup-content"),
-                            curStepBtn = curStep.attr("id"),
-                            nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-                            curInputs = curStep.find("input[type='text'],input[type='url']"),
-                            isValid = true;
-
-                    $(".form-group").removeClass("has-error");
-                    for (var i = 0; i < curInputs.length; i++) {
-                        if (!curInputs[i].validity.valid) {
-                            isValid = false;
-                            $(curInputs[i]).closest(".form-group").addClass("has-error");
-                        }
-                    }
-
-                    if (isValid){
-                        console.log("Sono entrato");
-                        var form = allNextBtn.parent("form");
-                        var id = form.attr("id");
-                        console.log("   " + form + " " + id);
-                        
-                        $('#'+id).ajaxForm(function () {
-                                console.log("Sia lodato");
-                        });
-                        nextStepWizard.removeAttr('disabled').trigger('click');
-                    }
-                });
-
-                jQuery('div.setup-panel div a.btn-primary').trigger('click');
-
-
-
-
-
-
-
-            });
-*/
         </script>
 
 
@@ -163,7 +108,13 @@
                 src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
         </script>
         
-                                <!--INIZIO - Form ajax plugin -->
+                <!-- Datapicker JQuery-->
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        
+        
+        
+        <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
 
@@ -175,7 +126,7 @@
         
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
         
-
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/anteprima.js"></script>
 
 
     </body>
