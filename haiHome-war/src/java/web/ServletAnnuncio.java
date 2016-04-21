@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import org.json.JSONObject;
 
 @MultipartConfig
 /**
@@ -118,10 +119,14 @@ public class ServletAnnuncio extends HttpServlet {
 
                 String descrizione = request.getParameter("Descrizione").trim();
                 double metraturaApp = Double.parseDouble(request.getParameter("Metratura").trim());
-                //Da inserire la data
-                Date dataInizioAffitto = new Date();
+                
+                
+                String[] data = request.getParameter("DataInizioAffitto").split("-");
+                System.out.println(data[0]+ " - " + data[1] + " - " + data[2]);
+                GregorianCalendar gc = new GregorianCalendar(Integer.parseInt(data[2]),Integer.parseInt(data[1]) -1,Integer.parseInt(data[0]));
                 //Da gestire la data inizio affitto Date dataInizioAffitto = new Date();
-                gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, dataInizioAffitto);
+                System.out.println(gc.getTime());
+                gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, gc.getTime());
 
                 System.out.println("DESCRIZIONE: " + descrizione);
                 System.out.println("METRATURA: " + metraturaApp);
@@ -194,22 +199,6 @@ public class ServletAnnuncio extends HttpServlet {
 
                     String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, "", numStanza);
 
-                    /*
-                    (new File(stanzaFolderName)).mkdir();
-                    
-                    String path = stanzaFolderName + "//" + fileName;
-
-                    FileOutputStream tempFile = new FileOutputStream(path);
-                    
-                    int read = 0;
-                    final byte[] bytes = new byte[1024];
-                    while ((read = filecontent.read(bytes)) != -1) {
-                        tempFile.write(bytes, 0, read);
-                    }
-                    
-                    filecontent.close();
-                    tempFile.close();
-                     */
                     if (!photoTempPath.containsKey(numStanza)) {
                         ArrayList<String> temp = new ArrayList();
                         temp.add(path);
@@ -286,10 +275,11 @@ public class ServletAnnuncio extends HttpServlet {
 
                     boolean CRS = request.getParameter("compresoRiscaldamentoS") != null;
 
-                    for(int j=0;j<idStanze.length;j++){
-                        ArrayList<String> infoStanza = stanzeInfo.get(idStanze[j]);
-                        gestoreAnnuncio.inserisciNuovaStanzaInAffitto(infoStanza.get(1), photoTempPath.get(idStanze[j]),CCS,CRS, Double.parseDouble(infoStanza.get(2)),0);
-                        stanzeInfo.remove(idStanze[j]);
+                    for (int i=0;i< idStanze.length;i++) {
+                        String idStanze1 = idStanze[i];
+                        ArrayList<String> infoStanza = stanzeInfo.get(idStanze1);
+                        gestoreAnnuncio.inserisciNuovaStanzaInAffitto(infoStanza.get(1), photoTempPath.get(idStanze1), CCS, CRS, Double.parseDouble(infoStanza.get(2)), Double.parseDouble(prezzoS[i]));
+                        stanzeInfo.remove(idStanze1);
                     }
                     
                     Set<String> listaChiavi = stanzeInfo.keySet();
@@ -319,13 +309,14 @@ public class ServletAnnuncio extends HttpServlet {
                 }
                 
                 //inserisco info finali sull'annuncio
-                
+                JSONObject annuncio = gestoreAnnuncio.toJSON();
                 //non qui da mettere l'anteprima e la conferma
                 boolean result = gestoreAnnuncio.rendiAnnuncioPersistente();
-
-                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+                System.out.println(annuncio);
+                System.out.println("Annuncio persistito : " + result);
+                response.setContentType("application/json");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                out.write("Appartamento inserito, risultato: " + result);
+                out.write(annuncio.toString());
 
             } else {
 

@@ -4,11 +4,7 @@
     Author     : giacomocavallo
 --%>
 
-<!-- Note:
-ToDo:
-    Migliorare lo stile del datepiker
-    piccole migliorie metratura e descrizione 
--->
+
 <div class="col-xs-6 col-md-offset-3">
     <div class="col-md-12">
 
@@ -26,7 +22,7 @@ ToDo:
 
             <div class="form-group">
                 <label class="control-label">Data inizio Affitto</label>
-
+                <input id='inpDataInizio' name='DataInizioAffitto' required="required" class="" />
             </div>
             <button type="submit"  id="butt2" class="btn btn-primary nextBtn btn-lg pull-right"> Next</button>
 

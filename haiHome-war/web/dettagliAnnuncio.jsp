@@ -92,34 +92,41 @@
             <%@include file="/header.jsp" %>
             <div class="container" id="dettagli-page">
             <div class="row">
-                <div class="col-sm-9 content">
-
+                <div class="col-sm-9"><!--content -->
                     <div class="row">
-                        <!--<div class="col-sm-12">-->
-                        <div class="ibox float-e-margins">
-                            <div  id="result"> <!-- class="ibox-content"-->
+                        <!--<div class="ibox float-e-margins">-->
+                            <div  id="result"> 
                             </div>
-                            <div class="hr-line-dashed"></div>
-                            <div id="map" class="" >   
-                            </div>
-                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&libraries=places"></script>
-                            <div class="hr-line-dashed"></div>
-                        </div>
                         <!--</div>-->
                     </div>
                 </div>
 
-                <div class="col-sm-3 sidebar-outer" id="info"></div>
+                <div class="col-sm-3"> <!--sidebar-outer -->
+                    <div id="info"></div>    
+                <div id="service_info" class="center service_info"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9 content">
+                    <div class="hr-line-dashed"></div>
+                    <div id="map" class="" >   
+                    </div>
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&libraries=places"></script>
+                    <div class="hr-line-dashed"></div>
+                </div>
+                <div class="col-sm-3 sidebar-outer" id="service"></div>
             </div>
         </div>
         <script>
-
-            initialize(annuncio);
+            var opt = [true, true, true];
+            initialize(annuncio, opt);
 
             //$("#dettagli-page").append("<img src=\"images/bg.jpg\" id=\"bg\" alt=\"\">");
             $("#result").append(create_Page(annuncio));
             $("#info").append(init_info(annuncio));
             loggatoStudente();
+            loadAllfoto();
+            $("#service").append(service());
         </script>
 
         <%@include file="/footer.jsp" %>

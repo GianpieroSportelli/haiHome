@@ -3,6 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+var split = "\\";
+var split2="/";
 var geocoder;
 var map;
 var geoAddress;
@@ -14,7 +16,8 @@ var annunci = new Array();
 var page_annunci = new Array();
 var caroselli = new Array();
 var actual = 0;
-var dim_image_car = 250; //dimensione immagine del carosello
+var dim_image_car = 500; //dimensione immagine del carosello
+var foto_page = new Array();
 
 //Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
 function annunci_search() {
@@ -65,11 +68,15 @@ function load_Annunci() {
                 actual = 0;
                 n_page = n_annunci / N_ANNUNCI_X_PAGE;
                 create_pageResult();
-                //selectpage(1);
+                if (n_page != 0) {
+                    selectpage(1);
+                }
             });
 }
 
 function create_pageResult() {
+    console.log("CREATE");
+    console.log(12 / N_ANNUNCI_X_PAGE);
     page_annunci = [];
     var result_div = '<div class = "search-result" >';
     var close_div = '</div>';
@@ -83,6 +90,7 @@ function create_pageResult() {
         var names = new Array();
         var index = 0;
         page_html += '<div class = "search-result row" id =' + (page + 1) + '_RESULT>';
+        var foto_page_actual = new Array();
         for (var i = page * N_ANNUNCI_X_PAGE; (i < ((page + 1) * N_ANNUNCI_X_PAGE) && i < annunci.length); i++) {
             var html = getCodeCarousel(annunci[i], i);
             page_html += "<div class=\"col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">" + html + "</div>";
@@ -91,13 +99,14 @@ function create_pageResult() {
             var name = i;
             names[index] = name;
             index += 1;
+            foto_page_actual = savePath(foto_page_actual, annunci[i]);
         }
         page_html += close_div;
         page_annunci[page] = page_html;
-        if (page == 0) {
-            selectpage(1);
-        }
+        foto_page[page] = foto_page_actual;
+        foto_page_actual = new Array();
     }
+    //console.log(foto_page);
 }
 
 function getCodeCarousel(annuncio, k) {
@@ -120,17 +129,20 @@ function create_info_annuncio(annuncio) {
     if (annuncio.Atomico) {
         tipoAnnuncio = "Annuncio Appartamento";
     }
+    var indirizzo=annuncio.Indirizzo;
+    var indirizzo_arr=indirizzo.split(",");
+    indirizzo=indirizzo_arr[0]+","+indirizzo_arr[1];
     html += "<div class=\"center\">" +
             "<h1>" + tipoAnnuncio + "</h1>" +
-            "<p class=\"text-muted\">" + annuncio.Indirizzo + "</p>" +
+            "<p>" + indirizzo + "</p>" +
             //"<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
-            "<p class=\"text-muted\"><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + "</p>" +
-            "<p class=\"text-muted\"><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
-            "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
+            "<p><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + "</p>" +
+            "<p><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
+            "<p> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
     if (annuncio.Atomico) {
-        html += "<p class=\"text-muted\"><span class=\"text-primary\">Numero locali: </span>" + annuncio.NumeroLocali + "</p>" +
-                "<p class=\"text-muted\"><span class=\"text-primary\"> Prezzo: </span>" + annuncio.Prezzo + " &euro;</p>";
+        html += "<p><span class=\"text-primary\">Numero locali: </span>" + annuncio.NumeroLocali + "</p>" +
+                "<p><span class=\"text-primary\"> Prezzo: </span>" + annuncio.Prezzo + " &euro;</p>";
     }
     html += "</div>"; //chiusura center
     return html;
@@ -167,9 +179,38 @@ function slide_Accessoria(stanza, index) {
         } else {
             html += "<div class=\"item\">"; //5.b
         }
+        var id_foto_arr = foto.split(split);
+        if(id_foto_arr.length==1){
+           var id_foto_arr = foto.split(split2); 
+        }
+        var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
+        var id_foto_ext_arr = id_foto_ext.split(".");
+        var id_foto = id_foto_ext_arr[0];
+        var type = id_foto_ext_arr[1];
+        //console.log("div: "+stanza.OID+"-"+ id_foto + " ext: " + type);
+        //console.log(id_foto);
+        html += "<blockquote>" ;
+        html+= "<div id=\"" +stanza.OID+"-"+ id_foto + "\" class=\" carousel-item \"></div>";
+        //html += "<img class=\"img-responsive img-thumbnail\" src=\"\\" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">";
+        html +="<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
+                "</blockquote>" +
+                "</div>"; //5
+    });
+    return html;
+}
+
+function slide_Accessoria_old(stanza, index) {
+    var html = "";
+    var fotos = stanza.Foto;
+    $.each(fotos, function (i, foto) {
+        if (index == 0 && i == 0) {
+            html += "<div class=\"item active\">"; //5.a
+        } else {
+            html += "<div class=\"item\">"; //5.b
+        }
         html += "<blockquote>" +
                 "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
+                "<img class=\"img-responsive img-thumbnail\" src=\"\\" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
                 "</div>" +
                 "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
                 "</blockquote>" +
@@ -187,9 +228,20 @@ function slide_Affitto(stanza, index, atomico) {
         } else {
             html += "<div class=\"item\">";
         }
-        html += "<blockquote>" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
-                "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + " ";
+        var id_foto_arr = foto.split(split);
+        if(id_foto_arr.length==1){
+           var id_foto_arr = foto.split(split2); 
+        }
+        var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
+        var id_foto_ext_arr = id_foto_ext.split(".");
+        var id_foto = id_foto_ext_arr[0];
+        var type = id_foto_ext_arr[1];
+        //console.log("div: "+stanza.OID+"-"+ id_foto + " ext: " + type);
+        //(id_foto);
+        html += "<blockquote>";
+        html+= "<div id=\"" +stanza.OID+"-"+ id_foto + "\" class=\" carousel-item \"></div>";
+                //"<img class=\"img-responsive img-thumbnail\" src=\"\\" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
+        html+="<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + " ";
         if (!atomico) {
             html += "<span class=\"text-primary\"> Prezzo: </span> " + stanza.Prezzo + "&euro;";
         }
@@ -200,13 +252,74 @@ function slide_Affitto(stanza, index, atomico) {
     return html;
 }
 
-function selectpage(page) {
+function callFoto(foto_OID) {
+    var foto_arr=foto_OID.split("$");
+    var foto=foto_arr[1];
+    var OID=foto_arr[0];
+    var id_foto_arr = foto.split(split);
+    if(id_foto_arr.length==1){
+           var id_foto_arr = foto.split(split2); 
+        }
+    var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
+    var id_foto_ext_arr = id_foto_ext.split(".");
+    var id_foto = id_foto_ext_arr[0];
+    var type = id_foto_ext_arr[1];
+    //console.log("in load: " + id_foto + " ext: " + type);
+    //console.log("in load " + id_foto);
+    $.ajax({
+        url: "ServletController",
+        type: 'get',
+        dataType: 'text',
+        //contentType: "image/jpg",
+        data: {action: "Ricerca-getImage", url: foto, type: type},
+        success: function (base64Image) {
+            //console.log(foto + ": " + base64Image);
+            var f = "<img class=\"img-responsive img-thumbnail\" src=\"data:image/" + type + ";base64, " + base64Image + "\" style=\"width:" + dim_image_car/N_ANNUNCI_X_PAGE + "px;height:" + dim_image_car/N_ANNUNCI_X_PAGE + "px;\">";
+            $("#"+OID+"-" + id_foto + "").append(f);
+        }
+    });
+}
+function loadAllfoto(page) {
+    //console.log(page);
+    var fotoPage = foto_page[page];
+    //console.log("foto pagina: " + fotoPage);
+    for (var i = 0; i < fotoPage.length; i++) {
+        var foto = fotoPage[i];
+        callFoto(foto);
+    }
+    activateCaroselli();
+}
+function savePath(list, annuncio) {
+    var stanze = annuncio.Stanze[0];
+    $.each(stanze, function (index, stanza) {
+        var fotos = stanza.Foto;
+        $.each(fotos, function (i, foto) {
+            list.push(stanza.OID+"$"+foto);
+        });
+    });
+    return list;
+}
+
+function selectpage_old(page) {
     if (actual === 0) {
         $("#list-result").append(page_annunci[page - 1]);
         activateCaroselli();
         actual = page;
     } else if (actual !== (+page)) {
         $("#" + (actual) + "_RESULT").after(page_annunci[page - 1]);
+        actual = +page;
+    }
+}
+
+function selectpage(page) {
+    if (actual === 0) {
+        $("#list-result").append(page_annunci[page - 1]);
+        loadAllfoto(page - 1);
+        
+        actual = page;
+    } else if (actual !== (+page)) {
+        $("#" + (actual) + "_RESULT").after(page_annunci[page - 1]);
+        loadAllfoto(page - 1);
         actual = +page;
     }
 }
@@ -307,7 +420,7 @@ function getfiltro() {
                 //$.each(responseJson, function (index, filtro) {
                 console.log(filtro);
                 var Quartieri = filtro.Quartieri;
-                console.log(Quartieri);
+                //console.log(Quartieri);
                 //alert(Quartieri);
                 $.each(Quartieri, function (index, quart) {
                     //$('#quartieri')._processSelectOption($('#' + quart));
@@ -347,11 +460,11 @@ function getfiltro() {
 
                 }
                 var id = filtro.Id;
-                console.log("id filtro: " + id);
+                //console.log("id filtro: " + id);
                 if (id == undefined) {
                     $("#saveButton").text("Salva");
                 } else {
-                     $("#saveButton").text("Modifica");
+                    $("#saveButton").text("Modifica");
                 }
             });
     // });
@@ -369,12 +482,12 @@ $(window).scroll(function () {
 
 function send_Annuncio(k) {
     var annuncio = annunci[k];
-    console.log(annuncio);
+    //console.log(annuncio);
     var url = "/haiHome-war/ServletController";
     var url2 = "/haiHome-war/dettagliAnnuncio.jsp";
     var json = JSON.stringify(annuncio);
-    console.log(k);
-    console.log(json);
+    //console.log(k);
+    //console.log(json);
     $.session.set('dettagli', json);
     window.open(url2);
 }
@@ -415,7 +528,7 @@ function persistiFiltro() {
                 getf.resolve();
             });
 }
-
+//Invio della form tramite PLUGIN
 $(document).ready(function () {
     $('#searchForm').ajaxForm(function () {
         annunci_search();

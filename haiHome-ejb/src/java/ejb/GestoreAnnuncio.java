@@ -505,8 +505,9 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public String persistiFoto(InputStream fotoStream, String nomePhoto, String denominazioneLocatore, String denominazioneStanza) {
 
-        String pathStanza = PathUtily.getPhotoPath() /* + denominazioneStanza*/;
+        String pathStanza = PathUtily.getSavePhotoPath() /* + denominazioneStanza*/;
 
+        
         //creo cartella riferita alla stanza se non esiste
         /*
         File cartellaStanza = (new File(pathStanza));
@@ -514,7 +515,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             cartellaStanza.mkdir();
         }
         */
-        String pathFoto = /*cartellaStanza.getAbsolutePath()*/ pathStanza + "//" + nomePhoto;
+        String pathFoto = /*cartellaStanza.getAbsolutePath()*/ pathStanza + nomePhoto;
 
         try {
             try (FileOutputStream tempFile = new FileOutputStream(pathFoto)) {
@@ -538,7 +539,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             Logger.getLogger(GestoreAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return pathFoto;
+        
+        return PathUtily.getPhotoPath() + nomePhoto;
     }
 
 }
