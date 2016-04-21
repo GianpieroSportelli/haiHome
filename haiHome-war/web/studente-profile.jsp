@@ -415,7 +415,7 @@
                         }
 
                         var html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                                htmltipoAnnuncio +
+                                htmltipoAnnuncio + "</div>" +
                                 "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
                                 "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
                                 "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Compreso Condominio: <i class=\"" + glyphCondominio + "\"></i> Compreso Riscaldamento: <i class=\"" + glyphRiscaldamento + "\"></i>" +
