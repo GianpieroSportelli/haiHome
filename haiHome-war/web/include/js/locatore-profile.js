@@ -27,6 +27,7 @@ jQuery(document).ready(function ($) {
             $div_modify_pwd.css('display', 'inline');
 
         $phone.prop('disabled', false);
+        $old_pwd.prop('disabled', false);
         $description.prop('disabled', false);
 
         backup_phone = $phone.val();
@@ -46,6 +47,7 @@ jQuery(document).ready(function ($) {
         $description.val(backup_description);
 
         $phone.prop('disabled', 'disabled');
+        $old_pwd.prop('disabled', 'disabled');
         $description.prop('disabled', 'disabled');
     });
 
@@ -53,7 +55,7 @@ jQuery(document).ready(function ($) {
     $('#save-edit').on('click', function () {
         var phone_regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
                 phone_val = $phone.val().trim(), description_val = $description.val().trim();
-        var pwd = $new_pwd.val(), pwd_confirm = $new_pwd2.val(); 
+        var pwd = $new_pwd.val(), pwd_confirm = $new_pwd2.val();
 
         if (phone_val === "" || phone_regex.test(phone_val)) {
             $.post(
@@ -73,16 +75,17 @@ jQuery(document).ready(function ($) {
             );
             if (login_by_credentials) {
                 $div_modify_pwd.toggle();
-                $old_pwd.val(""); 
-                $new_pwd.val(""); 
-                $new_pwd2.val(""); 
-                
+                $old_pwd.val("");
+                $new_pwd.val("");
+                $new_pwd2.val("");
+
             }
             $('#edit').toggle();
             $('#save-edit').toggle();
             $('#cancel-edit').toggle();
             $phone.prop('disabled', 'disabled');
             $description.prop('disabled', 'disabled');
+            $old_pwd.prop('disabled', 'disabled');
 
 
         } else {
