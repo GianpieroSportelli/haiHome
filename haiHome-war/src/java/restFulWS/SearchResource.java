@@ -93,27 +93,17 @@ public class SearchResource {
     @Consumes(MediaType.APPLICATION_JSON)
     //@Produces(MediaType.APPLICATION_JSON)
     public String search(String content) throws JSONException {
-        /*JSONArray result = new JSONArray();
-        JSONObject obj = null;
-        try {
-            obj = new JSONObject(content);
-            System.out.println("put OK!!");
-            System.out.println(obj.toString());
-            JSONObject ok = new JSONObject();
-            ok.accumulate("status", "true");
-            result.put(ok);
-            result.put(obj);
-            return result.toString();
-        } catch (JSONException ex) {
-            JSONObject err = new JSONObject();
-            err.accumulate("status", "false");
-            result.put(err);
-            return result.toString();
-        }*/
         JSONObject obj = null;
         obj = new JSONObject(content);
         JSONObject result=gestoreRicerca.create_useFilter(obj);
         System.out.println("on resource: "+result.toString());
         return result.toString();
+    }
+    
+    @GET
+    @Path("getQuartieri/{city}")
+    public String getQuartieri(@PathParam("city") String city){
+        JSONObject quartieri=gestoreRicerca.getQuartieri(city);
+        return quartieri.toString();
     }
 }

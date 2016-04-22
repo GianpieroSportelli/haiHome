@@ -53,4 +53,6 @@ public interface GestoreRicercaLocal {
 
     public JSONObject create_useFilter(JSONObject obj);
 
+    public JSONObject getQuartieri(String Città);
+
 }

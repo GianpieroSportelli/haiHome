@@ -509,5 +509,34 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         System.out.println(result.toString());
         return result;
     }
+    
+    @Override
+    public JSONObject getQuartieri(String Città){
+        JSONObject result=new JSONObject();
+        if(this.selezionaCittà(Città)){
+            JSONObject ok = new JSONObject();
+            try {
+                ok.accumulate("status", true);
+                result.accumulate("esito",ok);
+                ArrayList<String> quartieri=this.getQuartieriCittà();
+                JSONArray quart=new JSONArray();
+                for(String q:quartieri){
+                    quart.put(q);
+                }
+                result.accumulate("risultato", quart);
+            } catch (JSONException ex) {
+                Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+            }           
+        }else{
+            JSONObject err = new JSONObject();
+            try {
+                err.accumulate("status", false);
+                result.accumulate("esito",err);
+            } catch (JSONException ex1) {
+                Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return result;
+    }
 
 }
