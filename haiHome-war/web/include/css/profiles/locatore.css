@@ -23,6 +23,21 @@ textarea {
     padding:3px;
 }
 
+.pwd {
+    width: 20%;
+    float: left; 
+    padding-left: 1px;
+}
+
+
+a:link:hover, a:visited:hover {
+    color: initial;
+}
+
+.modify-field {
+    color: transparent; 
+}
+
 .edit {
     float: right; 
 } 
@@ -201,6 +216,7 @@ button.btn-interest:hover{
     position: relative;
     left: 18%;     
 }
+/*
 textarea:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -220,7 +236,7 @@ input[type="color"]:focus,
     border-color: rgba(228, 131, 18, 0.6);
     box-shadow: 0 1px 1px rgba(228, 131, 18, 0.6) inset, 0 0 8px rgba(228, 131, 18, 0.6);
     outline: 0 none;
-}
+} */
 .white-element{
     background: #fff;
     position: relative;

@@ -146,12 +146,16 @@
                                     <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
                                     Salva modifiche 
                                 </a>
-                                
+
                             </div>
                             <div class="tbody panel-body">
                                 <div class="trow">
-                                    <div class="field-name">Nome: </div>
-                                    <div class="field-value"><%=user_data.getString("nome")%></div> 
+                                    <div class="field-name">
+                                        Nome:
+                                    </div>
+                                    <div class="field-value">
+                                        <%=user_data.getString("nome")%>
+                                    </div> 
                                 </div>
                                 <div class="trow">
                                     <div class="field-name">Cognome: </div>
@@ -161,34 +165,38 @@
                                     <div class="field-name">Email: </div>
                                     <div class="field-value"><%=user_data.getString("email")%></div>
                                 </div>
-                                <div id="rigapwd" class="trow">
+                                <div id="rigapwd" class="trow form-group has-error">
                                     <div class="field-name">Password: </div>
                                     <div class="field-value"> 
-                                        <input name="old-pwd" type="password" placeholder="*****************" disabled="disabled"/>
-                                        <div id="modify-pwd-stuff" style="display: none;">
-                                            <input name="pwd" type="password" placeholder="Nuova password...">
-                                            <input name="pwd-confirm" type="password" placeholder="Conferma password..."/>
+                                        <input class="form-control pwd" name="old-pwd" type="password" placeholder="*****************" disabled="disabled"/>
+                                        <div id="modify-pwd-stuff" class="form-group has-error">
+                                            <input class="form-control pwd" name="pwd" type="password" placeholder="Nuova password...">
+                                            <input class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..."/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="trow">
-                                    <div class="field-name">Telefono: </div>
-                                    <div class="field-value"> 
-                                        <input name="phone" type="text" value="<%=user_data.getString("telefono")%>" 
-                                               disabled="disabled" placeholder="..."/>
+                                <div class="trow form-group">
+                                    <div class="field-name">
+                                        <label for="telefono" class="control-label">Telefono</label>
                                     </div>
+                                    <div class="field-value"> 
+                                        <input class="form-control" id="telefono" name="phone" type="text" value="<%=user_data.getString("telefono")%>" 
+                                               disabled="disabled" placeholder="..."/>
+                                    </div> 
                                 </div>
-                                <div class="trow">
-                                    <div class="field-name">Descrizione</div>
+                                <div class="trow form-group ">
+                                    <div class="field-name">
+                                        <label for="descrizione" class="control-label">Descrizione</label>
+                                    </div>
                                     <div class="field-value textwrapper">
-                                        <textarea name="description" rows="5" cols="50" maxlength="255" disabled="disabled" 
+                                        <textarea class="form-control" id="descrizione" name="description" rows="5" cols="50" maxlength="255" disabled="disabled" 
                                                   placeholder="Scrivi qualcosa su di te"><%=user_data.getString("descrizione")%></textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="annunci">
-                            I tuoi annunci
+                            <!-- contenuto caricato tramite ajax -->
                         </div>
                         <div class="tab-pane fade" id="filtri">
                             Tab random

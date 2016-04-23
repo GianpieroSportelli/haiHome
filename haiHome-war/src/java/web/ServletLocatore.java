@@ -6,6 +6,7 @@
 package web;
 
 import ejb.GestoreLocatoreLocal;
+import entity.Annuncio;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -146,10 +147,37 @@ public class ServletLocatore extends HttpServlet {
                 gestoreLocatore.modificaInfoProfilo(phone, descrizione);
                 //refresh sessione
                 session.setAttribute("user-data", this.gestoreLocatore.toJSON());
+                
+                if (gestoreLocatore.getAnnunci() != null) {
+                    System.out.println("ZAN ZAN ZAN!!!");
+                    System.out.println("Numero annunci: " + gestoreLocatore.getAnnunci().size());
+                    for (Annuncio a: gestoreLocatore.getAnnunci()) {
+                        System.out.println(a.toJSON().toString());
+                    }
+                }
+                else {
+                    System.out.println("NULLLLLL"); 
+                }
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write(res ? "ok" : "no");
+            }
+            else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
+                String results = "";
+                int i = 1; 
+                
+                for (Annuncio a: gestoreLocatore.getAnnunci()) {
+                    JSONObject json = a.toJSON();
+                    
+                    results += "Annuncio " + i++ + "</br>";
+                    results += json.toString() + "</br>";
+                }
+               
+                
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(results); 
             }
         }
     }
