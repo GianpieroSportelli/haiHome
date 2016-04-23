@@ -18,6 +18,7 @@ var caroselli = new Array();
 var actual = 0;
 var dim_image_car = 500; //dimensione immagine del carosello
 var foto_page = new Array();
+var marker_annunci=new Array();
 
 //Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
 function annunci_search() {
@@ -49,6 +50,44 @@ function initialize(lat, lng) {
     map = new google.maps.Map(document.getElementById("map"), mapOptions);
 }
 
+function addMarker(location, label) {
+    var marker = new google.maps.Marker({
+        position: location,
+        title: label,
+        map: map
+                //icon: icon
+    });  
+    return marker;
+}
+
+function addMarkerToJSON(annuncio, index) {
+    var lat = annuncio.Lat;
+    var lng = annuncio.Lng;
+    var address = annuncio.Indirizzo;
+    var descrizione=annuncio.Descrizione;
+    var label = "Annuncio " + (index + 1);
+    var marker=addMarker(new google.maps.LatLng(lat, lng), label);
+    var infowindow = new google.maps.InfoWindow({
+        content: "<div id=\"" + index + "\"><p class=\"text-muted\">" + address + "</p><p class=\"text-muted\">" + descrizione + "</p>"
+    });
+    marker.addListener('click', function () {
+        infowindow.open(map, marker);
+    });
+    return marker;
+}
+
+// Sets the map on all markers in the array.
+function setMapOnAll(map,markers) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers(markers) {
+  setMapOnAll(null,markers);
+}
+
 function load_Annunci() {
     $.post("ServletController",
             {action: "Ricerca-getAnnunciFiltro"},
@@ -62,7 +101,8 @@ function load_Annunci() {
                 $.each(responseJson, function (index, annuncio) {
                     n_annunci += 1;
                     annunci[index] = annuncio;
-                    addMarkerToJSON(annuncio, index);
+                    var marker=addMarkerToJSON(annuncio, index);
+                    marker_annunci.push(marker);
                     //console.log(load_annuncio_image(annuncio));
                 });
                 actual = 0;
@@ -199,26 +239,6 @@ function slide_Accessoria(stanza, index) {
     return html;
 }
 
-function slide_Accessoria_old(stanza, index) {
-    var html = "";
-    var fotos = stanza.Foto;
-    $.each(fotos, function (i, foto) {
-        if (index == 0 && i == 0) {
-            html += "<div class=\"item active\">"; //5.a
-        } else {
-            html += "<div class=\"item\">"; //5.b
-        }
-        html += "<blockquote>" +
-                "<div class=\" carousel-item \">" +
-                "<img class=\"img-responsive img-thumbnail\" src=\"\\" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
-                "</div>" +
-                "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
-                "</blockquote>" +
-                "</div>"; //5
-    });
-    return html;
-}
-
 function slide_Affitto(stanza, index, atomico) {
     var html = "";
     var fotos = stanza.Foto;
@@ -345,40 +365,7 @@ function nextpage() {
     }
 }
 
-function addMarker(location, label) {
-    //alert(label);
-    // Add the marker at the clicked location, and add the next-available label
-    // from the array of alphabetical characters.
-    var marker = new google.maps.Marker({
-        position: location,
-        title: label,
-        map: map
-                //icon: icon
-    });
-    /*var infowindow = new google.maps.InfoWindow({
-     content: contentString
-     });
-     marker.addListener('click', function () {
-     infowindow.open(map, marker);
-     });*/
-}
 
-function addMarkerToJSON(annuncio, index) {
-    var lat = annuncio.Lat;
-    var lng = annuncio.Lng;
-    var address = annuncio.Indirizzo;
-    /*var contentString = ' <div id = \"content\" > ' +
-     '<div id = \"siteNotice\" >' +
-     '</div>' +
-     '<div id = \"firstHeading\" > <span style =\"font-size:18px; font-weight:bold;\"> Uluru </span><br><br><img src=' + icon + ' style=\"max-width:100%;\" / > <br> <br> ' +
-     'Contact info <br> Phone: + 65 123456789 <br> Email: <a href =\"mailto:info@example.com\"> info@example.com </a>' +
-     '</div><div id=”bodyContent”>' +
-     '<p> <b>' + address + ' </b> Lorem upsum</p >' +
-     ' </div>' +
-     '</div>';*/
-    var label = "Annuncio " + (index + 1);
-    window.addMarker(new google.maps.LatLng(lat, lng), label);
-}
 
 function init_filtro() {
     $.post("ServletController",
@@ -531,12 +518,17 @@ function persistiFiltro() {
 //Invio della form tramite PLUGIN
 $(document).ready(function () {
     $('#searchForm').ajaxForm(function () {
-        annunci_search();
+        //annunci_search();
+        clearMarkers(marker_annunci);
+        marker_annunci=new Array();
+        load_Annunci();
         var getf = $.Deferred();
         getf.done(getfiltro);
         getf.resolve();
     });
 });
+
+
 
 
 function loggatoStudente() {
