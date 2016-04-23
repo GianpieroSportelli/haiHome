@@ -4,34 +4,87 @@ html, body{
     background:	whitesmoke;
 }
 
+.tbody {
+    border:1px solid #999999;
+    padding-top: 4%;
+}
+
+textarea {
+    border:1px solid #999999;
+    width:98%;
+    margin:5px 0;
+    padding:1%;
+}
+
+.textwrapper {
+    float: left;
+    border: 1px solid #999999;
+    margin:5px 0;
+    padding:3px;
+}
+
+.pwd {
+    width: 20%;
+    float: left; 
+    padding-left: 1px;
+}
+
+
+a:link:hover, a:visited:hover {
+    color: initial;
+}
+
+.modify-field {
+    color: transparent; 
+}
+
+.edit {
+    float: right; 
+} 
+
 .edit-buttons {
+    width: 100%;
     float: right;
     display: block; 
-}
+} 
 
 .trow {
     display: block; 
     clear: right;
     height: 43px;
-    
     padding-top: 10px;
-    
-    border: 1px solid #73AD21; 
-    
+
+    /*  border: 1px solid #73AD21; */
+
 }
 
 .field-name {
     display: inline;
     float: left; 
     width: 25%;
-    
     padding-left: 10px;
 }
 
 .field-value {
     display: inline; 
-/*    float: right; */
+    /*    float: right; */
     position: relative;
+}
+
+input:disabled  {
+    border: none;
+    border-color: transparent;
+    background: transparent;
+}
+
+textarea {
+    resize: none; 
+}
+
+textarea:disabled {
+    border: none;
+    border-color: transparent;
+    background: transparent;
 }
 
 
@@ -163,6 +216,7 @@ button.btn-interest:hover{
     position: relative;
     left: 18%;     
 }
+/*
 textarea:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -182,7 +236,7 @@ input[type="color"]:focus,
     border-color: rgba(228, 131, 18, 0.6);
     box-shadow: 0 1px 1px rgba(228, 131, 18, 0.6) inset, 0 0 8px rgba(228, 131, 18, 0.6);
     outline: 0 none;
-}
+} */
 .white-element{
     background: #fff;
     position: relative;

@@ -5,7 +5,9 @@
  */
 package ejb;
 
+import entity.Annuncio;
 import entity.Locatore;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Local;
 import org.json.JSONObject;
@@ -22,13 +24,27 @@ public interface GestoreLocatoreLocal {
 //        String foto, String password, String descrizione);
     public boolean aggiungiLocatore(String email, String password, String nome, 
             String cognome, String telefono, String img_profilo); 
+    
     public List<String> getLocatori(); 
+    
     public boolean checkLocatore(String email);
+    
+    public boolean checkLocatore(String email, String password); 
+    
     public boolean removeLocatore();
+    
+    public Collection<Annuncio> getAnnunci();
+    
     /* Gestione profilo del locatore*/
     public void modificaInfoProfilo(String telefono, String descrizione); 
-    public boolean modificaPassword(String oldpassword, String newpassword);   
+    
+    public void modificaAvatarByURL(String img); 
+    
+    public boolean modificaPassword(String oldpassword, String newpassword);  
+    
+    public void modificaPassword(String newpassword); 
     
     public JSONObject toJSON();
+    
     public Locatore getLocatore(); 
 }
