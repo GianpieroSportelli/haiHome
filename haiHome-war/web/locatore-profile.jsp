@@ -37,8 +37,9 @@
         <link rel="stylesheet" href="tutcss.css">
 
         <!-- Robe di UserProfile-->
-        <link rel="stylesheet" href="include/css/Utente/Utente.css">
-        <link rel="stylesheet" href="include/css/Utente/bootstrap.vertical-tabs.css">
+        <link rel="stylesheet" href="include/css/Utente/Utente.css"> 
+        <link rel="stylesheet" href="include/css/Utente/bootstrap.vertical-tabs.css"> 
+        <link rel="stylesheet" href="include/css/profiles/locatore.css">
         <!-- Fine Robe di UserProfile-->
 
         <!-- Robe di login2.jsp -->
@@ -68,6 +69,10 @@
     </head>
     <body>
         <%@include file="/header.jsp" %>
+
+        <div id="user-access" style="display:none"><%= session.getAttribute("user-access")%></div>
+
+
         <div class="container">
             <div class="row profile">
                 <div class="col-md-3">
@@ -127,76 +132,74 @@
                 <div class="col-xs-9">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
-                        <div class="tab-pane fade in active" id="home">
-                            <table class="table table-user-information">
-                                <thead> 
-                                <div id="edit-buttons" align="right">
-                                    <a href="#0" id="edit">
-                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                        Modifica informazioni
-                                    </a>
-                                    <a href="#0" id="save-edit" style="display: none">
-                                        <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
-                                        Salva modifiche 
-                                    </a>
-                                    <a href="#0" id="cancel-edit" style="display: none">
-                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        Annulla modifiche
-                                    </a>
+                        <div class="tab-pane fade in active panel panel-default" id="home">
+                            <div class="edit-buttons panel-heading">
+                                <a href="#0" id="edit" class="edit">
+                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    Modifica informazioni
+                                </a>
+                                <a href="#0" id="cancel-edit" class="edit" style="display: none">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    Annulla modifiche
+                                </a>
+                                <a href="#0" id="save-edit" class="edit" style="display: none">
+                                    <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                                    Salva modifiche 
+                                </a>
+
+                            </div>
+                            <div class="tbody panel-body">
+                                <div class="trow">
+                                    <div class="field-name">
+                                        Nome:
+                                    </div>
+                                    <div class="field-value">
+                                        <%=user_data.getString("nome")%>
+                                    </div> 
                                 </div>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Nome: </td>
-                                        <td> 
-                                            <%= user_data.getString("nome")%>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cognome:</td>
-                                        <td>
-                                            <%= user_data.getString("cognome")%>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email: </td>
-                                        <td>
-                                            <%= user_data.getString("email")%>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Password</td>
-                                        <td>eheheh</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Numero di telefono: </td>
-                                        <td>
-                                            <input name="phone" type="text" value="<%= user_data.getString("telefono")%>" 
-                                                   disabled="disabled" placeholder="Aggiungi il tuo numero di telefono"
-                                                   style="border: none;border-color: transparent;background: transparent;"/>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Descrizione</td>
-                                        <td> 
-                                            <textarea name="description" rows="4" cols="50" 
-                                                      disabled="disabled" placeholder="Aggiungi una breve descrizione di te"
-                                                      style="border: none;border-color: transparent;background: transparent;"><%=
-                                                    user_data.getString("descrizione")
-                                                %></textarea>
-                                            
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <div class="trow">
+                                    <div class="field-name">Cognome: </div>
+                                    <div class="field-value"><%=user_data.getString("cognome")%></div>
+                                </div>
+                                <div class="trow">
+                                    <div class="field-name">Email: </div>
+                                    <div class="field-value"><%=user_data.getString("email")%></div>
+                                </div>
+                                <div id="rigapwd" class="trow form-group has-error">
+                                    <div class="field-name">Password: </div>
+                                    <div class="field-value"> 
+                                        <input class="form-control pwd" name="old-pwd" type="password" placeholder="*****************" disabled="disabled"/>
+                                        <div id="modify-pwd-stuff" class="form-group has-error">
+                                            <input class="form-control pwd" name="pwd" type="password" placeholder="Nuova password...">
+                                            <input class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..."/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="trow form-group">
+                                    <div class="field-name">
+                                        <label for="telefono" class="control-label">Telefono</label>
+                                    </div>
+                                    <div class="field-value"> 
+                                        <input class="form-control" id="telefono" name="phone" type="text" value="<%=user_data.getString("telefono")%>" 
+                                               disabled="disabled" placeholder="..."/>
+                                    </div> 
+                                </div>
+                                <div class="trow form-group ">
+                                    <div class="field-name">
+                                        <label for="descrizione" class="control-label">Descrizione</label>
+                                    </div>
+                                    <div class="field-value textwrapper">
+                                        <textarea class="form-control" id="descrizione" name="description" rows="5" cols="50" maxlength="255" disabled="disabled" 
+                                                  placeholder="Scrivi qualcosa su di te"><%=user_data.getString("descrizione")%></textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="annunci">
-                            Annunci preferiti qui
+                            <!-- contenuto caricato tramite ajax -->
                         </div>
                         <div class="tab-pane fade" id="filtri">
-                            Filtri utente qui
+                            Tab random
                         </div>
                     </div> 
                 </div>  

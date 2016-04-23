@@ -76,7 +76,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         if (filtroAttuale == null) {
             return false;
         } else {
-            Long id=filtroAttuale.getId();
+            Long id = filtroAttuale.getId();
             filtroAttuale = new FiltroDiRicerca();
             filtroAttuale.setId(id);
             filtroAttuale.setCittà(cittàAttuale);
@@ -198,20 +198,20 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (filtroAttuale.getId() != null) {
-            String id_filtro="" + filtroAttuale.getId();
+            String id_filtro = "" + filtroAttuale.getId();
             this.removeFiltro(id_filtro, id_studente);
             filtroAttuale.setId(null);
-            System.out.println("Filtro Cancellato: "+id_filtro);
+            System.out.println("Filtro Cancellato: " + id_filtro);
         }
-            filtroDiRicercaFacade.create(filtroAttuale);
-            boolean persisti = filtroDiRicercaFacade.find(filtroAttuale.getId()) != null;
-            boolean salvato = gestoreStudente.addFiltroStudente(id_studente, filtroAttuale);
-            try {
-                System.out.println("Filtro Creato- ID: " + filtroAttuale.getId() + " filtro: " + filtroAttuale.toJSON());
-            } catch (JSONException ex) {
-                Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return persisti && salvato;    
+        filtroDiRicercaFacade.create(filtroAttuale);
+        boolean persisti = filtroDiRicercaFacade.find(filtroAttuale.getId()) != null;
+        boolean salvato = gestoreStudente.addFiltroStudente(id_studente, filtroAttuale);
+        try {
+            System.out.println("Filtro Creato- ID: " + filtroAttuale.getId() + " filtro: " + filtroAttuale.toJSON());
+        } catch (JSONException ex) {
+            Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return persisti && salvato;
     }
 
     private Annuncio acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
@@ -432,7 +432,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         }
         return result;
     }
-    
+
     @Override
     public JSONArray getBankNearBy(double lat, double lng, double rad) {
         JSONArray result = new JSONArray();
@@ -443,7 +443,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         }
         return result;
     }
-    
+
     @Override
     public JSONArray getBusNearBy(double lat, double lng, double rad) {
         JSONArray result = new JSONArray();
@@ -473,7 +473,70 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return filtroAttuale!=null;
+        return filtroAttuale != null;
+    }
+
+    @Override
+    public JSONObject create_useFilter(JSONObject obj) {
+        JSONObject result = new JSONObject();
+        System.out.println(obj.toString());
+        try {
+            String citta = obj.getString("City");
+            System.out.println(citta);
+            boolean sel=this.selezionaCittà(citta);
+            if(sel){
+            JSONArray resultSearch = this.usaFiltroAttuale();
+            JSONObject ok = new JSONObject();
+            ok.accumulate("status", true);
+            result.accumulate("esito",ok);
+            result.accumulate("risultato",resultSearch);
+            }else{
+                JSONObject err = new JSONObject();
+                err.accumulate("status", false);
+                result.accumulate("esito",err);
+            }
+        } catch (JSONException ex) {
+             //Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+            JSONObject err = new JSONObject();
+            try {
+                err.accumulate("status", false);
+                result.accumulate("esito",err);
+            } catch (JSONException ex1) {
+                Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            //result.put(err);
+        }
+        System.out.println(result.toString());
+        return result;
+    }
+    
+    @Override
+    public JSONObject getQuartieri(String Città){
+        JSONObject result=new JSONObject();
+        if(this.selezionaCittà(Città)){
+            JSONObject ok = new JSONObject();
+            try {
+                ok.accumulate("status", true);
+                result.accumulate("esito",ok);
+                ArrayList<String> quartieri=this.getQuartieriCittà();
+                JSONArray quart=new JSONArray();
+                for(String q:quartieri){
+                    quart.put(q);
+                }
+                result.accumulate("risultato", quart);
+            } catch (JSONException ex) {
+                Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+            }           
+        }else{
+            JSONObject err = new JSONObject();
+            try {
+                err.accumulate("status", false);
+                result.accumulate("esito",err);
+            } catch (JSONException ex1) {
+                Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return result;
     }
 
 }

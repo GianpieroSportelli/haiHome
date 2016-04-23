@@ -12,21 +12,28 @@ var bank = "images/bank.png";
 var bus = "images/transport.png";
 var dim_image_car = 500;
 var dim_image_prof = 100;
-var markers = [];
+
+var markers_bus = [];
+var markers_super=[];
+var markers_bank=[];
+
 var StrAnnuncio = $.session.get('dettagli');
 var annuncio = jQuery.parseJSON(StrAnnuncio);
 console.log(annuncio);
 
 var split = "\\";
-var split2="/";
+var split2 = "/";
 var foto_page = new Array();
+
+var service_info = "#service_info";
+ var bus_info = "bus_info";
 
 $('.qcar').carousel({
     pause: true,
     interval: 4000
 });
 
-function initialize(annuncio) {
+function initialize(annuncio, opt) {
     geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(annuncio.Lat, annuncio.Lng);
     var mapOptions = {
@@ -41,9 +48,17 @@ function initialize(annuncio) {
         title: 'geocode request address'
     });
     map.setZoom(16);
-    addServices_superMarket(annuncio);
-    addServices_Bank(annuncio);
-    addServices_Bus(annuncio);
+
+    $(service_info).html("");
+    if (opt[0]) {
+        addServices_superMarket(annuncio);
+    }
+    if (opt[1]) {
+        addServices_Bank(annuncio);
+    }
+    if (opt[2]) {
+        addServices_Bus(annuncio);
+    }
 }
 
 function addServices_superMarket(annuncio) {
@@ -60,10 +75,15 @@ function addServices_superMarket(annuncio) {
                 var lng = item.location.lng;
                 var label = item.name;
                 var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label, supermarket);
+                var marker=addMarker(location, label, supermarket, index + "-super");
+                markers_super.push(marker);
             });
         }
     });
+}
+
+function html_tail(html_old, new_tag) {
+    return html_old + new_tag;
 }
 
 function addServices_Bus(annuncio) {
@@ -73,18 +93,49 @@ function addServices_Bus(annuncio) {
         dataType: 'json',
         data: {action: "Ricerca-addBus", annuncio: JSON.stringify(annuncio)},
         success: function (responseJson) {
-            //console.log(responseJson);
+            var html = html_tail("", "<div id=\"" + bus_info + "\">" + "\n");
+            //console.log("risposta:" + responseJson);
+            //console.log(html);
+            html = html_tail(html, "<h1 > Fermate vicine</h1>" + "\n"); //class=\"text-muted\"
+            var fermate = "fermate_info";
+            html = html_tail(html, "<div id=\"" + fermate + "\" style=\"overflow-y:scroll\">" + "\n");
+            //$(fermate).css("overflow-y", "scroll");
             $.each(responseJson, function (index, item) {
                 //console.log(item);
                 var lat = item.location.lat;
                 var lng = item.location.lng;
                 var label = item.name;
+                var label_arr = label.split(" ");
+                var head = label_arr[0];
+                label = "";
+                for (var x = 1; x < label_arr.length; x++) {
+                    label = html_tail(label, " " + label_arr[x]);
+                }
+                html = html_tail(html, "<p class=\"text-muted fermata\" id=\""+index+"-busM\"><span class=\"glyphicon glyphicon-map-marker\"></span> " + label + "</p>" + "\n");
                 var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label, bus);
+                var marker=addMarker(location, label, bus, index + "-bus");
+                markers_bus.push(marker);
             });
+            html = html_tail(html, "</div>" + "\n");
+            html = html_tail(html, "</div>" + "\n");
+            //console.log(html);
+            $(service_info).append(html);
         }
     });
 }
+ $(document).ready(function () {
+        $(document).on('click', '.fermata', function () {
+            var target = $( event.target );
+            var id=target.attr("id");
+            var id_arr=id.split("-");
+            id=id_arr[0];
+            console.log("fermata: "+id);
+            google.maps.event.trigger(markers_bus[id], 'click');
+            document.getElementById('map').scrollIntoView();
+            //$("html, body").animate({ scrollTop: $("#map").offset().top }, "slow");
+            
+        });
+    });
 
 function addServices_Bank(annuncio) {
     $.ajax({
@@ -100,13 +151,14 @@ function addServices_Bank(annuncio) {
                 var lng = item.location.lng;
                 var label = item.name;
                 var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label, bank);
+                var marker=addMarker(location, label, bank, index + "-bank");
+                markers_bank.push(marker);
             });
         }
     });
 }
 
-function addMarker(location, label, icon) {
+function addMarker(location, label, icon, id) {
 //alert(label);
 // Add the marker at the clicked location, and add the next-available label
 // from the array of alphabetical characters.
@@ -116,7 +168,14 @@ function addMarker(location, label, icon) {
         map: map,
         icon: icon
     });
-    //markers.push(marker);
+    var infowindow = new google.maps.InfoWindow({
+        content: "<p class=\"text-muted\" id=\"" + id + "\">" + label + "</p>"
+    });
+    marker.addListener('click', function () {
+        infowindow.open(map, marker);
+    });
+
+    return marker;
 }
 
 function create_Page(annuncio) {
@@ -133,20 +192,27 @@ function create_Page(annuncio) {
 
     $.each(stanze, function (index, stanza) {
         //console.log(stanza);
-        var active = "";
+        var classe_tab = "class=\"tab-stanza";
         if (index == 0) {
-            active = "class=\"active\"";
+            classe_tab = "class=\"tab-stanza active";
         }
         if (stanza.SuperTipo == "StanzaInAffitto") {
             //console.log(stanza.archiviato);
             var archiviato = stanza.archiviato;
+            var visibile = stanza.visibile;
+            console.log(visibile);
             //console.log(archiviato);
-            if (!archiviato) {
-                html += "<li " + active + "><a data-toggle=\"tab\" href=\"#" + stanza.OID + "\">" + stanza.Tipo + "</a></li>"; //"-" + stanza.OID +
+            if (archiviato) {
+                classe_tab += " archiviato\"";
+            } else if (!visibile) {
+                classe_tab += " out_search\"";
+            } else {
+                classe_tab += "\"";
             }
         } else {
-            html += "<li " + active + "><a data-toggle=\"tab\" href=\"#" + stanza.OID + "\">" + stanza.Tipo + "</a></li>"; //"-" + stanza.OID +
+            classe_tab += "\"";
         }
+        html += "<li " + classe_tab + "><a data-toggle=\"tab\" href=\"#" + stanza.OID + "\">" + stanza.Tipo + "</a></li>"; //"-" + stanza.OID +
     });
     var close_ul = "</ul>";
     html += close_ul;
@@ -250,8 +316,8 @@ function slide_Stanza(stanza) {
             html += "<div class=\"item\">"; //5.b
         }
         var id_foto_arr = foto.split(split);
-        if(id_foto_arr.length==1){
-           var id_foto_arr = foto.split(split2); 
+        if (id_foto_arr.length == 1) {
+            var id_foto_arr = foto.split(split2);
         }
         var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
         var id_foto_ext_arr = id_foto_ext.split(".");
@@ -285,11 +351,11 @@ function indicator(stanza) {
 }
 
 function info_annuncio(annuncio) {
-    var html = "<div class=\"center\">";
+    var html = "<div id=\"info_annuncio\">";
     if (annuncio.Atomico) {
-        html += "<h1 class=\"text-muted\"> Annuncio Appartamento</h1>";
+        html += "<h1> Annuncio Appartamento</h1>";
     } else {
-        html += "<h1 class=\"text-muted\"> Annuncio Stanze</h1>";
+        html += "<h1> Annuncio Stanze</h1>";
     }
     html += "<p class=\"text-muted\">" + annuncio.Indirizzo + "</p>" +
             "<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
@@ -310,21 +376,38 @@ function init_info(annuncio) {
     console.log(locatore);
     return info_loc(locatore);
 }
+
 function info_loc(locatore) {
     var html = "";
     html += "<div id=\"info_locatore\" class=\"center blockLoc\">";
+    html += "<h1>Locatore</h1>";
     html += "<div class=\"row center\">";
     html += "<img src='" + locatore.fotoProfilo + "'class='img-responsive img-circle' alt=''style=\"width:" + dim_image_prof + "px;height:" + dim_image_prof + "px;\" \>";
     html += "</div>";
     //html+="<p>"+JSON.stringify(locatore)+"</p>";
-    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Nome: </span>" + locatore.nome + "</p>";
-    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
-    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
-    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">email: </span>" + locatore.email + "</p>";
-    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"seganalaAnnuncio()\">Seganala</button>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">Nome: </span>" + locatore.nome + "</p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">email: </span><span id=\"mail\">" + locatore.email + "</span></p>";
+    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Seganala</button>";
     html += "</div>";
-    html += "<div class=\"center blockLoc\">";
-    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" onClick=\"getServices()\">Cancella marker</button>";
+    return html;
+}
+
+function service() {
+    var html = "";
+    html += "<div class=\"center blockService\" id=\"MapOptionDiv\">";
+    html += "<h1>Servizi</h1>";
+    html += "<div class=\"checkbox services\">";
+    html += "<label><input id=\"super\" class=\"checkbox_service\" type=\"checkbox\" checked>SuperMercati</label>";
+    html += "</div>";
+    html += "<div class=\"checkbox services\">";
+    html += "<label><input id=\"banche\" class=\"checkbox_service\" type=\"checkbox\" checked>Banche</label>";
+    html += "</div>";
+    html += "<div class=\"checkbox services\">";
+    html += "<label><input id=\"bus\" class=\"checkbox_service\" type=\"checkbox\" checked>Fermate bus</label>";
+    html += "</div>";
+    //html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" onClick=\"getServices()\">Cancella marker</button>";
     html += "</div>";
     return html;
 }
@@ -347,13 +430,9 @@ function loggatoStudente() {
 function salvaAnnuncioPreferiti() {
     alert("Salvo l'annuncio nei Preferiti");
 }
+
 function segnalaAnnuncio() {
     alert("annuncio Segnalato");
-}
-
-function getServices() {
-    addServices_superMarket(annuncio);
-    addServices_Bank(annuncio);
 }
 
 function callFoto(foto_OID) {
@@ -361,9 +440,9 @@ function callFoto(foto_OID) {
     var foto = foto_arr[1];
     var OID = foto_arr[0];
     var id_foto_arr = foto.split(split);
-    if(id_foto_arr.length==1){
-           var id_foto_arr = foto.split(split2); 
-        }
+    if (id_foto_arr.length == 1) {
+        var id_foto_arr = foto.split(split2);
+    }
     var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
     var id_foto_ext_arr = id_foto_ext.split(".");
     var id_foto = id_foto_ext_arr[0];
@@ -383,6 +462,7 @@ function callFoto(foto_OID) {
         }
     });
 }
+
 function loadAllfoto() {
     //console.log(page);
     var fotoPage = foto_page;
@@ -393,6 +473,7 @@ function loadAllfoto() {
     }
     //activateCaroselli();
 }
+
 function savePath(list, annuncio) {
     var stanze = annuncio.Stanze[0];
     $.each(stanze, function (index, stanza) {
@@ -402,4 +483,54 @@ function savePath(list, annuncio) {
         });
     });
     return list;
+}
+
+/*$(window).scroll(function(){    
+ $("#MapOptionDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
+ });*/
+$(document).ready(function () {
+    $('.checkbox_service').click(function () {
+        console.log("IN check");
+        /*if (!$(this).is(':checked')) {
+         return confirm("Are you sure?");
+         }*/
+        var bus = $("#bus").is(':checked');
+        var banche = $("#banche").is(':checked');
+        var superM = $("#super").is(':checked');
+
+        console.log("super: " + superM + " banche: " + banche + " bus: " + bus);
+        var opt = [superM, banche, bus];
+        
+        if(superM){
+            setMapOnAll(map,markers_super);
+        }else{
+           setMapOnAll(null,markers_super); 
+        }
+        
+        if(bus){
+            setMapOnAll(map,markers_bus);
+            $("#"+bus_info).show();
+        }else{
+           setMapOnAll(null,markers_bus);
+            $("#"+bus_info).hide(); 
+        }
+        
+        if(banche){
+            setMapOnAll(map,markers_bank);
+        }else{
+            setMapOnAll(null,markers_bank);
+        }
+    });
+});
+
+// Sets the map on all markers in the array.
+function setMapOnAll(map,markers) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers(markers) {
+  setMapOnAll(null,markers);
 }
