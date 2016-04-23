@@ -12,7 +12,11 @@ var bank = "images/bank.png";
 var bus = "images/transport.png";
 var dim_image_car = 500;
 var dim_image_prof = 100;
+
 var markers_bus = [];
+var markers_super=[];
+var markers_bank=[];
+
 var StrAnnuncio = $.session.get('dettagli');
 var annuncio = jQuery.parseJSON(StrAnnuncio);
 console.log(annuncio);
@@ -22,6 +26,7 @@ var split2 = "/";
 var foto_page = new Array();
 
 var service_info = "#service_info";
+ var bus_info = "bus_info";
 
 $('.qcar').carousel({
     pause: true,
@@ -70,7 +75,8 @@ function addServices_superMarket(annuncio) {
                 var lng = item.location.lng;
                 var label = item.name;
                 var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label, supermarket, index + "-super");
+                var marker=addMarker(location, label, supermarket, index + "-super");
+                markers_super.push(marker);
             });
         }
     });
@@ -87,7 +93,6 @@ function addServices_Bus(annuncio) {
         dataType: 'json',
         data: {action: "Ricerca-addBus", annuncio: JSON.stringify(annuncio)},
         success: function (responseJson) {
-            var bus_info = "#bus_info";
             var html = html_tail("", "<div id=\"" + bus_info + "\">" + "\n");
             //console.log("risposta:" + responseJson);
             //console.log(html);
@@ -122,7 +127,8 @@ function addServices_Bus(annuncio) {
         $(document).on('click', '.fermata', function () {
             var target = $( event.target );
             var id=target.attr("id");
-            id=id.substring(0,1);
+            var id_arr=id.split("-");
+            id=id_arr[0];
             console.log("fermata: "+id);
             google.maps.event.trigger(markers_bus[id], 'click');
             document.getElementById('map').scrollIntoView();
@@ -145,7 +151,8 @@ function addServices_Bank(annuncio) {
                 var lng = item.location.lng;
                 var label = item.name;
                 var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label, bank, index + "-bank");
+                var marker=addMarker(location, label, bank, index + "-bank");
+                markers_bank.push(marker);
             });
         }
     });
@@ -493,6 +500,37 @@ $(document).ready(function () {
 
         console.log("super: " + superM + " banche: " + banche + " bus: " + bus);
         var opt = [superM, banche, bus];
-        initialize(annuncio, opt);
+        
+        if(superM){
+            setMapOnAll(map,markers_super);
+        }else{
+           setMapOnAll(null,markers_super); 
+        }
+        
+        if(bus){
+            setMapOnAll(map,markers_bus);
+            $("#"+bus_info).show();
+        }else{
+           setMapOnAll(null,markers_bus);
+            $("#"+bus_info).hide(); 
+        }
+        
+        if(banche){
+            setMapOnAll(map,markers_bank);
+        }else{
+            setMapOnAll(null,markers_bank);
+        }
     });
 });
+
+// Sets the map on all markers in the array.
+function setMapOnAll(map,markers) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers(markers) {
+  setMapOnAll(null,markers);
+}

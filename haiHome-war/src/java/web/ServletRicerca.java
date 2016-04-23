@@ -6,6 +6,7 @@
 package web;
 
 import com.google.gson.Gson;
+import ejb.GestoreImmaginiLocal;
 import ejb.GestoreRicercaLocal;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -38,8 +39,11 @@ public class ServletRicerca extends HttpServlet {
 
     @EJB
     private GestoreRicercaLocal gestoreRicerca;
+    
+    @EJB
+    private GestoreImmaginiLocal gestoreImmagini;
 
-    private double dist = 500d;
+    private final double dist = 500d;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -300,24 +304,10 @@ public class ServletRicerca extends HttpServlet {
                 out.write("" + result);
             } else if (action.equalsIgnoreCase("Ricerca-getImage")) {
                 String url = request.getParameter("url");
-                String type=request.getParameter("type");
-                //String encoded = Base64.encodeFromFile("data/inputImage.png");
-                String imageString = null;
-               BufferedImage originalImage = ImageIO.read(new File(url));
-               //originalImage.getT
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                try {
-                    ImageIO.write(originalImage, type, bos);
-                    byte[] imageBytes = bos.toByteArray();
-                    BASE64Encoder encoder = new BASE64Encoder();
-                    imageString = encoder.encode(imageBytes);
-                    System.out.println(url);
-                    out.write(imageString);
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //return imageString;
+                String type = request.getParameter("type");
+                String image="";
+                image=gestoreImmagini.getImage(url,type);
+                out.write(image);
             }
         }
     }
