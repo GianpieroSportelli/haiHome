@@ -5,7 +5,9 @@
  */
 package ejb;
 
+import entity.Annuncio;
 import entity.Locatore;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Local;
 import org.json.JSONObject;
@@ -30,6 +32,8 @@ public interface GestoreLocatoreLocal {
     public boolean checkLocatore(String email, String password); 
     
     public boolean removeLocatore();
+    
+    public Collection<Annuncio> getAnnunci();
     
     /* Gestione profilo del locatore*/
     public void modificaInfoProfilo(String telefono, String descrizione); 

@@ -72,7 +72,7 @@ public class TestServlet extends HttpServlet {
             add_test1 = add_test1.replace(" ", "+");
             add_test4 = add_test4.replace(" ", "+");*/
 
-            /*gestoreTest.addCittà(nome);
+            gestoreTest.addCittà(nome);
             ArrayList<String> cities = gestoreTest.getAllCittàNome();
             if (cities.isEmpty()) {
                 out.println("<p>Non sono Presenti città nel DB</p>");
@@ -111,7 +111,7 @@ public class TestServlet extends HttpServlet {
              /*double[] latlng=gmb.geocodingAddress(add_test);
              System.out.println("lat: "+latlng[0]+" lng: "+latlng[1]);*/
             
-            
+            /*
             String email = "sportelligianpiero@gmail.com";
             String add = "Via Garibaldi, 1, Torino, TO, Italia";
             String add1 = "Via San Giuseppe Benedetto Cottolengo, Torino, TO, Italia";
@@ -189,7 +189,7 @@ public class TestServlet extends HttpServlet {
                 } else {
                     System.out.println("errore");
                 }
-            }
+            }*/
 
         }
     }

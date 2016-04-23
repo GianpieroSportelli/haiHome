@@ -5,9 +5,11 @@
  */
 package ejb;
 
+import entity.Annuncio;
 import entity.Locatore;
 import facade.LocatoreFacadeLocal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -140,6 +142,12 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
             this.locatore.setFotoProfilo(img);
             rendiModifichePersistenti();
         }
+    }
+    
+    
+    @Override
+    public Collection<Annuncio> getAnnunci() {
+        return this.locatore.getListaAnnunci(); 
     }
 
     @Override

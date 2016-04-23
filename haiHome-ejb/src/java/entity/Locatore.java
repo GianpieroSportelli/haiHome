@@ -119,6 +119,7 @@ public class Locatore implements Serializable {
     public void setListaAnnunci(Collection<Annuncio> listaAnnunci) {
         this.listaAnnunci = listaAnnunci;
     }
+    
 
     /**
      * Get the value of telefono
