@@ -51,4 +51,8 @@ public interface GestoreRicercaLocal {
 
     public JSONArray getBusNearBy(double lat, double lng, double rad);
 
+    public JSONObject create_useFilter(JSONObject obj);
+
+    public JSONObject getQuartieri(String Città);
+
 }
