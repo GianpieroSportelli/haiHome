@@ -5,6 +5,7 @@
  */
 package restFulWS;
 
+import ejb.GestoreImmaginiLocal;
 import ejb.GestoreRicercaLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +36,9 @@ public class SearchResource {
     @EJB
     GestoreRicercaLocal gestoreRicerca;
 
+    @EJB
+    GestoreImmaginiLocal gestoreImmagini;
+    
     @Context
     private UriInfo context;
 
@@ -87,12 +90,14 @@ public class SearchResource {
     public String testRest(@PathParam("request") String test) {
         return "I'm in!!!: " + test;
     }
+    
 
     @POST
     @Path("getFilter/")
     @Consumes(MediaType.APPLICATION_JSON)
     //@Produces(MediaType.APPLICATION_JSON)
     public String search(String content) throws JSONException {
+        System.out.println("SEARCH");
         JSONObject obj = null;
         obj = new JSONObject(content);
         JSONObject result=gestoreRicerca.create_useFilter(obj);
@@ -103,7 +108,36 @@ public class SearchResource {
     @GET
     @Path("getQuartieri/{city}")
     public String getQuartieri(@PathParam("city") String city){
+        System.out.println("GET QUARTIERI");
         JSONObject quartieri=gestoreRicerca.getQuartieri(city);
+        System.out.println(quartieri.toString());
         return quartieri.toString();
+    }
+    
+    @GET
+    @Path("getTipoStanza/")
+    public String getTipoStanza(){
+        System.out.println("GET TipoStanza");
+        JSONObject tipoStanza=gestoreRicerca.getTipoStanzaJSON();
+        System.out.println(tipoStanza.toString());
+        return tipoStanza.toString();
+    }
+    
+    @POST
+    @Path("getImage/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    //@Produces(MediaType.APPLICATION_JSON)
+    public String getImage(String content) throws JSONException {
+        System.out.println("GET IMAGE");
+        JSONObject obj = null;
+        obj = new JSONObject(content);
+        System.out.println(obj.toString());
+        if(obj.has("url")){
+            String res=gestoreImmagini.getImage(obj.getString("url"), obj.getString("ext"));
+            System.out.println(res);
+            return res;
+        }else{
+            return null;
+        }
     }
 }
