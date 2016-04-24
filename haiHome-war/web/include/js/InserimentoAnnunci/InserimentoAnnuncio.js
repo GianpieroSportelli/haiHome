@@ -155,18 +155,16 @@ $(document).ready(function () {
             form4.ajaxSubmit({
                 dataType: "json",
                 success: function (response) {
-                    //generateCostiForm();
                     console.log(response);
-                    //generaAnteprima(response);
-                    var preview_Page = create_Preview_Page(response);
-                    $(preview_Page).appendTo("#modalBody");
-                    /*
-                    var myModal = $('#myModal');
-                    console.log("Modal id: " + myModal.attr("id"));
-                    myModal.modal('show');
-                    $('#myModal').on('shown.bs.modal', function () {
-                        $('#myInput').focus();
-                    }); */
+                    //creo anteprima
+                    
+                    //initialize(response);
+                    //$("#dettagli-page").append("<img src=\"images/bg.jpg\" id=\"bg\" alt=\"\">");
+                    $("#modalBody").append(create_Page(response));
+                    loadAllfoto();
+
+
+
                 }
             });
         } else {
@@ -187,16 +185,20 @@ function generaAnteprima(annuncio) {
 
 //Invia richiesta iniziale 
 function sendInitialRequest() {
-    var IDLocatore = "1";
+    
 
     $.ajax({
         type: "POST",
         url: "../ServletAnnuncio",
-        data: "action=Annunci-newAnnuncio-initialRequest&idLocatore=" + IDLocatore,
+        data: "action=Annunci-newAnnuncio-initialRequest",
         dataType: "text",
         success: function (msg)
         {
-            alert("Successo");
+            if(msg==="OK"){
+                alert("Successo");
+            }else{
+                alert("Qualcosa è andato storto...");
+            }
         },
         error: function ()
         {
