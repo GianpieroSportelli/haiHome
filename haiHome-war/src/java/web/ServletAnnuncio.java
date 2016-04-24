@@ -6,6 +6,9 @@
 package web;
 
 import ejb.GestoreAnnuncioLocal;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -14,15 +17,21 @@ import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import org.json.JSONException;
 import org.json.JSONObject;
+import sun.misc.BASE64Encoder;
 
 @MultipartConfig
 /**
@@ -60,7 +69,7 @@ public class ServletAnnuncio extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JSONException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
@@ -75,21 +84,43 @@ public class ServletAnnuncio extends HttpServlet {
 
             if (action.equalsIgnoreCase("Annunci-newAnnuncio-initialRequest")) {
 
-                String idLocatore = request.getParameter("idLocatore");
-                System.out.println("ID LOCATORE: " + idLocatore);
-
-                //creo annuncio
-                boolean result = gestoreAnnuncio.CreaAnnuncio(Long.parseLong(idLocatore));
-                System.out.println("CREA ANNUNCIO RESULT: " + result);
-
+                 System.out.println("----- RICHIESTA INIZIALE:");
+                
+                //prendo la sessione
+                HttpSession session = request.getSession();
+                
+                //preparo la risposta
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
+                    
+                //controllo il tipo utente
+                String userType = (String) session.getAttribute("user-type");
+                
+                if(userType == null){
+                    userType = "random";
+                }
+                if((userType.equalsIgnoreCase("locatore")) /*(userType.equalsIgnoreCase("locatore"))*/){
+                    JSONObject locatoreJSON = (JSONObject) session.getAttribute("user-data");
+                    long idLocatore = (long) locatoreJSON.get("id");
+                    System.out.println("Tipo utente: " + userType);
+                    System.out.println("Id locatore : " + idLocatore );
+                    boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
+                    System.out.println("Annuncio inizializzato : " + result);
+                    //scrivo la risposa
+                    out.write("OK");  
+                }else{
+                    long idLocatore = 1;
+                    boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
+                    System.out.println("ID LOCATORE aggiunto manualmente: " + idLocatore);
+                    System.out.println("Annuncio inizializzato : " + result);
+                    //scrivo la risposta
+                    out.write("NO");  
+                    
+                }
                 //inizializzo arrayList stanze
                 photoTempPath = new HashMap();
                 stanzeInfo = new HashMap();
 
-                //Elaboro la Risposta
-                response.setContentType("text/plain");
-                response.setCharacterEncoding("UTF-8");
-                out.write("Locatore confermato - Annuncio Inizializzato");
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
 
@@ -318,11 +349,31 @@ public class ServletAnnuncio extends HttpServlet {
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 out.write(annuncio.toString());
 
-            } else {
+            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getImage")) {
+
+                String url = request.getParameter("url");
+                String type=request.getParameter("type");
+ 
+                String imageString = null;
+                BufferedImage originalImage = ImageIO.read(new File(url));
+                
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                try {
+                    ImageIO.write(originalImage, type, bos);
+                    byte[] imageBytes = bos.toByteArray();
+                    BASE64Encoder encoder = new BASE64Encoder();
+                    imageString = encoder.encode(imageBytes);
+                    System.out.println(url);
+                    out.write(imageString);
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //return imageString;
+
+            }  else {
 
             }
-
-            System.out.println("Errori nella response: " + out.checkError());
             out.close();
         }
     }
@@ -339,7 +390,11 @@ public class ServletAnnuncio extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JSONException ex) {
+            Logger.getLogger(ServletAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -353,7 +408,11 @@ public class ServletAnnuncio extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JSONException ex) {
+            Logger.getLogger(ServletAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

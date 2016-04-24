@@ -21,35 +21,44 @@
 <html>
     <head>
         <title>haiHome? Profilo Utente</title>
-        <link rel="stylesheet" href="include/css/login/normalize.css">
-
-        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
-
-        <link rel="stylesheet" href="include/css/login/style.css">
-
+        <!-- IMPORT NECESSARI BOOTSTRAP JS ICONE E ALTRO -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+        <!-- FINEIMPORT NECESSARI BOOTSTRAP E ICONE -->
 
-        <link rel="stylesheet" href="tutcss.css">
+        <!--<link rel="stylesheet" href="include/css/login/normalize.css"> -->
+
+        <!-- -->
+
+
 
         <!-- Robe di UserProfile-->
+        <script src="include/js/userProfile/intro.js"></script>
+        <link rel="stylesheet" href="include/css/Utente/introjs.css">
         <link rel="stylesheet" href="include/css/Utente/Utente.css">
         <link rel="stylesheet" href="include/css/Utente/bootstrap.vertical-tabs.css">
         <!-- Fine Robe di UserProfile-->
 
-        <!-- Robe di login2.jsp -->
-        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-
-        <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
-        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
-        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
-        <!-- robe del login bello -->
-        <link rel="stylesheet" href="include/css/login/normalize.css">
-        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <link rel="stylesheet" href="include/css/login/style.css">
+        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style 
+ 
+        <link rel="stylesheet" href="include/css/login/normalize.css">
+        
+        <!--<link rel="stylesheet" href="tutcss.css">-->
+        <!-- robe del login bello -->
+        <!--<link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
+
+        <!-- Robe di login2.jsp -->
+
+        <!--<link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
+        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
+
 
         <!-- Import script Facebook -->
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
@@ -142,7 +151,7 @@
                                 <li><a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         Annunci preferiti</a></li>
-                                <li><a href="#filtriUtente" data-toggle="tab">
+                                <li><a href="#filtriUtente" data-toggle="tab"  onclick="startTutorial()">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Filtri Preferiti</a></li>
                             </ul>
@@ -178,47 +187,37 @@
                     </div>
 
                 </div>
-                <div class="col-xs-9">
+                <div data-intro="Qui puoi visualizzare i tuoi filtri memorizzati." class="col-xs-9">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
                         <div class="tab-pane active" id="home">
-                            <table class="table table-user-information">
-                                <tbody>
-                                    <tr>
-                                        <td>Nome: </td>
-                                        <td>
-                                            <% if (session_exists) {
-                                                    out.println(user_data.getString("Nome"));
-                                                }
-                                            %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cognome:</td>
-                                        <td>
-                                            <%
-                                                if (session_exists) {
-                                                    out.println(user_data.getString("Cognome"));
-                                                }
-                                            %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email: </td>
-                                        <td>
-                                            <% if (session_exists) {
-                                                    out.println(user_data.getString("Email"));
-                                                }
-                                            %>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td> </td>
-                                        <td> </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="panel panel-default">
+                                <div class="panel-heading"> 
+                                    <p class="text-primary" style="text-align:center" >  <img src="include\\css\\Utente\\userImage-30.png"> <span class="text-primary">Informazioni Profilo</span> </p>
+                                </div>
+                                <div class="panel-body">
+                                    <p><span class="text-primary">Nome</span>:
+                                        <% if (session_exists) {
+                                                out.println(user_data.getString("Nome"));
+                                            }
+                                        %>
+                                    </p>
+                                    <hr>
+                                    <p> <span class="text-primary">Cognome</span>:
+                                        <% if (session_exists) {
+                                                out.println(user_data.getString("Cognome"));
+                                            }
+                                        %>
+                                    </p>
+                                    <hr>
+                                    <p> <span class="text-primary">Email</span>:
+                                        <% if (session_exists) {
+                                                out.println(user_data.getString("Email"));
+                                            }
+                                        %>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane" id="annunci">Annunci preferiti qui</div>
                         <div class="tab-pane" id="filtriUtente"></div>
@@ -228,6 +227,7 @@
         </div> 
 
         <script>
+
             //Memorizzo i filtri che usciranno negli snippet
             var filtri = new Array();
             var actual;
@@ -239,6 +239,22 @@
 
             //variabile utile per capire quale filtro cancellare
             var filtroToDelete;
+            //Variabile per intro.js
+            var tutorialAttivato = false;
+            var activatedTutorial = false;
+
+            function startTutorial() {
+
+                if (!activatedTutorial) {
+                    //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
+                    //Il problema nasce dal fatto che i tab sono dinamici
+                    var millisecondsToWait = 10;
+                    setTimeout(function () {
+                        introJs().start();
+                        activatedTutorial = true;
+                    }, millisecondsToWait);
+                }
+            }
 
             $(document).ready(function () {
                 getListaFiltriPreferiti();
@@ -277,9 +293,12 @@
 
 
                     if (filtri.length === 0) {
-                        var page_html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                                "<div class=\"panel-body\"> <i class=\"glyphicon glyphicon-remove-sign\"></i> Nessun Filtro Salvato."
-                                + "</div>";
+                        var page_html = "<div>" +
+                                "<div class=\"panel panel-default\">" +
+                                "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include\\css\\Utente\\Error-30.png\"> Nessun Filtro Salvato </p>"
+                                + "</div> " +
+                                "</div>" +
+                                "</div>";
                         page_filtri[0] = page_html;
                         selectpage(1);
                     } else {
@@ -339,6 +358,7 @@
                         var numeroBagni = filtri[k].NumeroBagni;
                         var metratura = filtri[k].Metratura;
                         var tipoAnnuncio = filtri[k].Tipo;
+                        var tipoStanza = filtri[k].TipoStanza;
 
                         var quartieriHTML = '';
 
@@ -346,57 +366,60 @@
                             quartieriHTML += quartieri[indice] + " - ";
                         }
 
-                        //Tolgo l'ultimo -
-                        quartieriHTML = quartieriHTML.substring(0, quartieriHTML.length - 2);
-
+                        if (quartieriHTML === '') {
+                            quartieriHTML = "Nessun quartiere selezionato";
+                        } else {
+                            //Tolgo l'ultimo -
+                            quartieriHTML = quartieriHTML.substring(0, quartieriHTML.length - 2);
+                        }
 
                         var glyphCondominio = '';
                         var glyphRiscaldamento = '';
                         if (compresoCondominio === true) {
-                            glyphCondominio = "glyphicon glyphicon-ok";
+                            glyphCondominio = "include\\css\\Utente\\check-30.png";
                         } else {
-                            glyphCondominio = "glyphicon glyphicon-remove";
+                            glyphCondominio = "include\\css\\Utente\\notChecked-30.png";
                         }
 
                         if (compresoRiscaldamento === true) {
-                            glyphRiscaldamento = "glyphicon glyphicon-ok";
+                            glyphRiscaldamento = "include\\css\\Utente\\check-30.png";
                         } else {
-                            glyphRiscaldamento = "glyphicon glyphicon-remove";
+                            glyphRiscaldamento = "include\\css\\Utente\\notChecked-30.png";
                         }
 
                         var htmlNumeroCamere = '';
 
-                        if (numeroCamere == null) {
-                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero camere da letto: Non impostato";
+                        if (numeroCamere == 0) {
+                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero camere da letto</span>: Non impostato";
                         } else {
-                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero camere da letto: " + numeroCamere;
+                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero camere da letto</span>: " + numeroCamere;
 
                         }
 
                         var htmlNumeroLocali = '';
 
-                        if (numeroLocali == null) {
-                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero locali: Non impostato";
+                        if (numeroLocali == 0) {
+                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero locali</span>: Non impostato";
                         } else {
-                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero locali: " + numeroLocali;
+                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero locali</span>: " + numeroLocali;
 
                         }
 
                         var htmlNumeroBagni = '';
 
-                        if (numeroBagni == null) {
-                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero bagni: Non impostato";
+                        if (numeroBagni == 0) {
+                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero bagni</span>: Non impostato";
                         } else {
-                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Numero bagni: " + numeroBagni;
+                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero bagni</span>: " + numeroBagni;
 
                         }
 
                         var htmlmetratura = '';
 
-                        if (metratura == null) {
-                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Metratura: Non impostata";
+                        if (metratura == 0) {
+                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\"> Metratura </span>: Non impostata";
                         } else {
-                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Metratura: " + metratura;
+                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\"> Metratura </span>: " + metratura;
                         }
 
                         var htmltipoAnnuncio = '';
@@ -408,27 +431,98 @@
                          * 
                          * 
                          */
+                        var tipoVisualizzazione;
                         if (tipoAnnuncio === "Stanza") {
-                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per stanze <img style=\"cursor:pointer\" onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton\" src=\"images/deleteButton.png\">";
+                            tipoVisualizzazione = 1;
+                            htmltipoAnnuncio = "<p class=\"text-primary\" style=\"text-align:center\"> <span class=\"titoloAnnuncio\"> Ricerca per stanze </span> <a onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton btn btn-danger \"><i class=\"fa fa-trash-o\" title=\"Delete\" aria-hidden=\"true\"></i> <span class=\"sr-only\">Delete</span> Elimina </a> </p> ";
                         } else {
-                            htmltipoAnnuncio = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Ricerca per appartamenti <img style=\"cursor:pointer\" onclick=\"deleteFilterModal(" + idFiltro + ")\"  class=\"deleteButton\" src=\"images/deleteButton.png\">";
+                            tipoVisualizzazione = 2;
+                            htmltipoAnnuncio = "<p class=\"text-primary\" style=\"text-align:center\"> <span class=\"titoloAnnuncio\"> Ricerca per appartamenti </span> <a onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\" deleteButton btn btn-danger\"><i class=\"fa fa-trash-o\" title=\"Delete\" aria-hidden=\"true\"></i> <span class=\"sr-only\">Delete</span> Elimina </a> </p>  ";
                         }
 
-                        var html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                                htmltipoAnnuncio +
-                                "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                "<p> <i class=\"glyphicon glyphicon-home\"></i> Città: " + citta + "&nbsp; <i class=\"glyphicon glyphicon-euro\"></i> Prezzo: " + prezzo +
-                                "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Compreso Condominio: <i class=\"" + glyphCondominio + "\"></i> Compreso Riscaldamento: <i class=\"" + glyphRiscaldamento + "\"></i>" +
-                                "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> Quartieri Selezionati: " + quartieriHTML +
-                                htmlNumeroLocali +
-                                htmlNumeroCamere +
-                                htmlNumeroBagni +
-                                htmlmetratura +
-                                "</div>" +
-                                "</div>" +
-                                "</div>" +
-                                "</div>";
+                        var html = '';
+                        //HTML per Appartamenti
+                        if (tipoVisualizzazione === 2) {
+                            if (!tutorialAttivato) {
+                                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                        htmltipoAnnuncio + "</div>" +
+                                        "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp; <img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro" +
+                                        "<hr>" +
+                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML +
+                                        "<hr>" +
+                                        htmlNumeroLocali +
+                                        "<hr>" +
+                                        htmlNumeroCamere +
+                                        "<hr>" +
+                                        htmlNumeroBagni +
+                                        "<hr>" +
+                                        htmlmetratura +
+                                        "<hr>" +
+                                        "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        //"</div>" +
+                                        "</div>";
+                                tutorialAttivato = true;
+                            } else {
+                                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                        htmltipoAnnuncio + "</div>" +
+                                        "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp; <img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro" +
+                                        "<hr>" +
+                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML +
+                                        "<hr>" +
+                                        htmlNumeroLocali +
+                                        "<hr>" +
+                                        htmlNumeroCamere +
+                                        "<hr>" +
+                                        htmlNumeroBagni +
+                                        "<hr>" +
+                                        htmlmetratura +
+                                        "<hr>" +
+                                        "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        //"</div>" +
+                                        "</div>";
+                            }
 
+                            //HTML per stanza
+                        } else {
+                            if (!tutorialAttivato) {
+                                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                        htmltipoAnnuncio + "</div>" +
+                                        "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                                        "<p > <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp; <img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro" +
+                                        "<hr>" +
+                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML +
+                                        "<hr>" +
+                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Tipo stanza</span>: " + tipoStanza +
+                                        "<hr>" +
+                                        "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        //"</div>" +
+                                        "</div>";
+                                tutorialAttivato = true;
+                            } else {
+                                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                        htmltipoAnnuncio + "</div>" +
+                                        "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                                        "<p > <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp; <img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro" +
+                                        "<hr>" +
+                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML +
+                                        "<hr>" +
+                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Tipo stanza</span>: " + tipoStanza +
+                                        "<hr>" +
+                                        "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        //"</div>" +
+                                        "</div>";
+                            }
+                        }
                         page_html += html;
                     }
 

@@ -89,7 +89,7 @@ function nuovaStanza1(){
 
 // per ora va solo avanti
 function validateFormStanze(butt) {
-    alert("Validazione form");
+    //alert("Validazione form");
     var curStep = butt.closest(".setup-content");
     var curStepBtn = curStep.attr("id");
     var nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
@@ -313,7 +313,7 @@ submitButton2.addEventListener("click", function() {
             //stanzeForms[i].submit();
             }   
         }*/
-        alert("Pronto ad inviare i dati");
+        //alert("Pronto ad inviare i dati");
         sendData();
         generateCostiForm();
         validateFormStanze(butt);

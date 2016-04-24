@@ -126,7 +126,7 @@
         
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
         
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/anteprima.js"></script>
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/anteprimaAnnuncio.js"></script>
 
 
     </body>

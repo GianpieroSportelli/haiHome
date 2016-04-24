@@ -71,7 +71,7 @@ $( "#datepicker" ).datepicker();
 
 -->
 
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -89,7 +89,8 @@ $( "#datepicker" ).datepicker();
           
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="confermaAnteprima" class="btn btn-success btn-lg pull-right">Conferma</button>
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
       </div>
         
         
