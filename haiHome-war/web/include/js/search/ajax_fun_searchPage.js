@@ -418,10 +418,10 @@ function getfiltro() {
                 });
                 $('#pricefrom').val(filtro.Prezzo);
                 if (filtro.CompresoCondominio) {
-                    $('#compresoCondominio').prop('selected', true);
+                    $('#compCondominio').prop('checked', true);
                 }
                 if (filtro.CompresoRiscaldamento) {
-                    $('#compresoRiscaldamento').prop('selected', true);
+                    $('#compRiscaldamento').prop('checked', true);
                 }
                 var tipo = filtro.Tipo;
                 if (tipo == "Appartamento") {

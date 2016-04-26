@@ -206,14 +206,14 @@
                             <div class="form-group" id="detail-price" style="display:none">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="true" name="compCondomino">
+                                        <input type="checkbox" value="true" id="compCondominio">
                                         Compreso Condominio
                                     </label>
                                 </div>
 
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="true" name="compRiscaldamento">
+                                        <input type="checkbox" value="true" id="compRiscaldamento">
                                         Compreso Riscaldamento
                                     </label>
                                 </div>
