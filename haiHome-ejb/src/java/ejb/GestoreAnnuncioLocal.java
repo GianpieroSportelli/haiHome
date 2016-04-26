@@ -78,4 +78,7 @@ public interface GestoreAnnuncioLocal {
     public JSONObject toJSON();
     
     public Annuncio predniAnnuncio(long oid);
+    
+    //METODI DI SUPPORTO
+    public boolean svuotaStante();
 }
