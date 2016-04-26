@@ -245,7 +245,11 @@
 
             function startTutorial() {
 
+                //Ho messo due variabili perche' non aggiorna la sessione in real-time
                 if (!activatedTutorial) {
+            <% if (session.getAttribute("tutorial") == null) {
+                    session.setAttribute("tutorial", true);
+            %>
                     //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
                     //Il problema nasce dal fatto che i tab sono dinamici
                     var millisecondsToWait = 10;
@@ -253,6 +257,7 @@
                         introJs().start();
                         activatedTutorial = true;
                     }, millisecondsToWait);
+            <% }%>
                 }
             }
 
@@ -366,11 +371,11 @@
                             quartieriHTML += quartieri[indice] + " - ";
                         }
 
-                        if (quartieriHTML === '') {
-                            quartieriHTML = "Nessun quartiere selezionato";
-                        } else {
+                        if (quartieriHTML !== '') {
                             //Tolgo l'ultimo -
                             quartieriHTML = quartieriHTML.substring(0, quartieriHTML.length - 2);
+                            quartieriHTML = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML + "<hr>";
+
                         }
 
                         var glyphCondominio = '';
@@ -389,37 +394,33 @@
 
                         var htmlNumeroCamere = '';
 
-                        if (numeroCamere == 0) {
-                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero camere da letto</span>: Non impostato";
-                        } else {
-                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero camere da letto</span>: " + numeroCamere;
+                        if (numeroCamere != 0) {
+                            htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero camere da letto</span>: " + numeroCamere + "<hr>";
 
                         }
 
                         var htmlNumeroLocali = '';
 
-                        if (numeroLocali == 0) {
-                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero locali</span>: Non impostato";
-                        } else {
-                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero locali</span>: " + numeroLocali;
+                        if (numeroLocali != 0) {
+                            htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero locali</span>: " + numeroLocali + "<hr>";
 
                         }
 
                         var htmlNumeroBagni = '';
 
-                        if (numeroBagni == 0) {
-                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero bagni</span>: Non impostato";
-                        } else {
-                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero bagni</span>: " + numeroBagni;
-
+                        if (numeroBagni != 0) {
+                            htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero bagni</span>: " + numeroBagni + "<hr>";
                         }
 
                         var htmlmetratura = '';
 
-                        if (metratura == 0) {
-                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\"> Metratura </span>: Non impostata";
-                        } else {
-                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\"> Metratura </span>: " + metratura;
+                        if (metratura != 0) {
+                            htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\"> Metratura </span>: " + metratura + "<hr>";
+                        }
+
+                        var htmlprezzo = '';
+                        if (prezzo != 0) {
+                            htmlprezzo = "<img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro";
                         }
 
                         var htmltipoAnnuncio = '';
@@ -435,9 +436,12 @@
                         if (tipoAnnuncio === "Stanza") {
                             tipoVisualizzazione = 1;
                             htmltipoAnnuncio = "<p class=\"text-primary\" style=\"text-align:center\"> <span class=\"titoloAnnuncio\"> Ricerca per stanze </span> <a onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\"deleteButton btn btn-danger \"><i class=\"fa fa-trash-o\" title=\"Delete\" aria-hidden=\"true\"></i> <span class=\"sr-only\">Delete</span> Elimina </a> </p> ";
-                        } else {
+                        } else if (tipoAnnuncio === "Appartamento") {
                             tipoVisualizzazione = 2;
                             htmltipoAnnuncio = "<p class=\"text-primary\" style=\"text-align:center\"> <span class=\"titoloAnnuncio\"> Ricerca per appartamenti </span> <a onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\" deleteButton btn btn-danger\"><i class=\"fa fa-trash-o\" title=\"Delete\" aria-hidden=\"true\"></i> <span class=\"sr-only\">Delete</span> Elimina </a> </p>  ";
+                        } else {
+                            tipoVisualizzazione = 3;
+                            htmltipoAnnuncio = "<p class=\"text-primary\" style=\"text-align:center\"> <span class=\"titoloAnnuncio\"> Ricerca per appartamenti-stanze </span> <a onclick=\"deleteFilterModal(" + idFiltro + ")\" class=\" deleteButton btn btn-danger\"><i class=\"fa fa-trash-o\" title=\"Delete\" aria-hidden=\"true\"></i> <span class=\"sr-only\">Delete</span> Elimina </a> </p>  ";
                         }
 
                         var html = '';
@@ -447,18 +451,14 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp; <img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro" +
+                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        htmlprezzo +
                                         "<hr>" +
-                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML +
-                                        "<hr>" +
+                                        quartieriHTML +
                                         htmlNumeroLocali +
-                                        "<hr>" +
                                         htmlNumeroCamere +
-                                        "<hr>" +
                                         htmlNumeroBagni +
-                                        "<hr>" +
                                         htmlmetratura +
-                                        "<hr>" +
                                         "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
                                         "</div>" +
                                         "</div>" +
@@ -469,18 +469,14 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp; <img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro" +
+                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        htmlprezzo +
                                         "<hr>" +
-                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML +
-                                        "<hr>" +
+                                        quartieriHTML +
                                         htmlNumeroLocali +
-                                        "<hr>" +
                                         htmlNumeroCamere +
-                                        "<hr>" +
                                         htmlNumeroBagni +
-                                        "<hr>" +
                                         htmlmetratura +
-                                        "<hr>" +
                                         "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
                                         "</div>" +
                                         "</div>" +
@@ -489,15 +485,15 @@
                             }
 
                             //HTML per stanza
-                        } else {
+                        } else if (tipoVisualizzazione === 1) {
                             if (!tutorialAttivato) {
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p > <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp; <img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro" +
+                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        htmlprezzo +
                                         "<hr>" +
-                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML +
-                                        "<hr>" +
+                                        quartieriHTML +
                                         "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Tipo stanza</span>: " + tipoStanza +
                                         "<hr>" +
                                         "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
@@ -510,12 +506,41 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p > <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp; <img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro" +
+                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        htmlprezzo +
                                         "<hr>" +
-                                        "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML +
-                                        "<hr>" +
+                                        quartieriHTML +
                                         "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Tipo stanza</span>: " + tipoStanza +
                                         "<hr>" +
+                                        "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        //"</div>" +
+                                        "</div>";
+                            }
+                        } else if (tipoVisualizzazione === 3) {
+                            if (!tutorialAttivato) {
+                                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                        htmltipoAnnuncio + "</div>" +
+                                        "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        htmlprezzo +
+                                        "<hr>" +
+                                        quartieriHTML +
+                                        "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
+                                        "</div>" +
+                                        "</div>" +
+                                        //"</div>" +
+                                        "</div>";
+                                tutorialAttivato = true;
+                            } else {
+                                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                                        htmltipoAnnuncio + "</div>" +
+                                        "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        htmlprezzo +
+                                        "<hr>" +
+                                        quartieriHTML +
                                         "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
                                         "</div>" +
                                         "</div>" +
