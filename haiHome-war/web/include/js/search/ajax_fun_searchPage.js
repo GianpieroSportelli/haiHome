@@ -1,37 +1,35 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 var split = "\\";
-var split2="/";
+var split2 = "/";
+var foto_page = new Array();
+var dim_image_car = 500; //dimensione immagine del carosello
+
 var geocoder;
 var map;
 var geoAddress;
-var icon = "images/basket.png";
+var marker_annunci = new Array();
+
 var N_ANNUNCI_X_PAGE = 2;
 var n_page = 0;
 var n_annunci = 0;
 var annunci = new Array();
 var page_annunci = new Array();
 var caroselli = new Array();
+
 var actual = 0;
-var dim_image_car = 500; //dimensione immagine del carosello
-var foto_page = new Array();
-var marker_annunci=new Array();
+
+
 
 //Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
 function annunci_search() {
     $.post("ServletController",
             {action: "Ricerca-geoCity"},
-            function (responseJson) {                               // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
-                var latlng = [0, 0];                                   // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
-                $.each(responseJson, function (index, item) {       // Iterate over the JSON array.
-                    latlng[index] = item;                              // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+            function (responseJson) {
+                var latlng = [0, 0];
+                $.each(responseJson, function (index, item) {
+                    latlng[index] = item;
                 });
-
+                //funzione che inizializza la mappa sulla città
                 initialize(latlng[0], latlng[1]);
-
                 //Deferred serve pr delegare l'esecuzione di funzioni javascript
                 var load_A = $.Deferred();
                 load_A.done(load_Annunci);
@@ -40,6 +38,8 @@ function annunci_search() {
             });
 }
 
+//Inizializzazione dellla mappa di google sulla città desiderata
+// necesità un div chiamato map
 function initialize(lat, lng) {
     geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(lat, lng);
@@ -50,23 +50,25 @@ function initialize(lat, lng) {
     map = new google.maps.Map(document.getElementById("map"), mapOptions);
 }
 
+//funzione per aggiungere un marker sulla mappa salvata nella var. globale map(quindi inizialize(lat,lng) prima)
 function addMarker(location, label) {
     var marker = new google.maps.Marker({
         position: location,
         title: label,
         map: map
                 //icon: icon
-    });  
+    });
     return marker;
 }
 
+//funzione frapper di addMarket che estrai i dati necessari alla creazione del marker da un json annuncio
 function addMarkerToJSON(annuncio, index) {
     var lat = annuncio.Lat;
     var lng = annuncio.Lng;
     var address = annuncio.Indirizzo;
-    var descrizione=annuncio.Descrizione;
+    var descrizione = annuncio.Descrizione;
     var label = "Annuncio " + (index + 1);
-    var marker=addMarker(new google.maps.LatLng(lat, lng), label);
+    var marker = addMarker(new google.maps.LatLng(lat, lng), label);
     var infowindow = new google.maps.InfoWindow({
         content: "<div id=\"" + index + "\"><p class=\"text-muted\">" + address + "</p><p class=\"text-muted\">" + descrizione + "</p>"
     });
@@ -77,15 +79,15 @@ function addMarkerToJSON(annuncio, index) {
 }
 
 // Sets the map on all markers in the array.
-function setMapOnAll(map,markers) {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-  }
+function setMapOnAll(map, markers) {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+    }
 }
 
 // Removes the markers from the map, but keeps them in the array.
 function clearMarkers(markers) {
-  setMapOnAll(null,markers);
+    setMapOnAll(null, markers);
 }
 
 function load_Annunci() {
@@ -101,7 +103,7 @@ function load_Annunci() {
                 $.each(responseJson, function (index, annuncio) {
                     n_annunci += 1;
                     annunci[index] = annuncio;
-                    var marker=addMarkerToJSON(annuncio, index);
+                    var marker = addMarkerToJSON(annuncio, index);
                     marker_annunci.push(marker);
                     //console.log(load_annuncio_image(annuncio));
                 });
@@ -115,8 +117,8 @@ function load_Annunci() {
 }
 
 function create_pageResult() {
-    console.log("CREATE");
-    console.log(12 / N_ANNUNCI_X_PAGE);
+    //console.log("CREATE");
+    //console.log(12 / N_ANNUNCI_X_PAGE);
     page_annunci = [];
     var result_div = '<div class = "search-result" >';
     var close_div = '</div>';
@@ -127,18 +129,11 @@ function create_pageResult() {
     }
     for (page = 0; page < n_page; page++) {
         page_html = '';
-        var names = new Array();
-        var index = 0;
         page_html += '<div class = "search-result row" id =' + (page + 1) + '_RESULT>';
         var foto_page_actual = new Array();
         for (var i = page * N_ANNUNCI_X_PAGE; (i < ((page + 1) * N_ANNUNCI_X_PAGE) && i < annunci.length); i++) {
             var html = getCodeCarousel(annunci[i], i);
             page_html += "<div class=\"col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">" + html + "</div>";
-            var lat = annunci[i].Lat;
-            var lng = annunci[i].Lng;
-            var name = i;
-            names[index] = name;
-            index += 1;
             foto_page_actual = savePath(foto_page_actual, annunci[i]);
         }
         page_html += close_div;
@@ -146,7 +141,6 @@ function create_pageResult() {
         foto_page[page] = foto_page_actual;
         foto_page_actual = new Array();
     }
-    //console.log(foto_page);
 }
 
 function getCodeCarousel(annuncio, k) {
@@ -169,9 +163,9 @@ function create_info_annuncio(annuncio) {
     if (annuncio.Atomico) {
         tipoAnnuncio = "Annuncio Appartamento";
     }
-    var indirizzo=annuncio.Indirizzo;
-    var indirizzo_arr=indirizzo.split(",");
-    indirizzo=indirizzo_arr[0]+","+indirizzo_arr[1];
+    var indirizzo = annuncio.Indirizzo;
+    var indirizzo_arr = indirizzo.split(",");
+    indirizzo = indirizzo_arr[0] + "," + indirizzo_arr[1];
     html += "<div class=\"center\">" +
             "<h1>" + tipoAnnuncio + "</h1>" +
             "<p>" + indirizzo + "</p>" +
@@ -197,7 +191,6 @@ function create_carousel(annuncio) {
         var superT = stanza.SuperTipo;
         if (superT == "StanzaInAffitto") {
             var archiviato = stanza.achiviato;
-
             if (!archiviato) {
                 html += slide_Affitto(stanza, index, annuncio.Atomico);
             }
@@ -220,19 +213,15 @@ function slide_Accessoria(stanza, index) {
             html += "<div class=\"item\">"; //5.b
         }
         var id_foto_arr = foto.split(split);
-        if(id_foto_arr.length==1){
-           var id_foto_arr = foto.split(split2); 
+        if (id_foto_arr.length == 1) {
+            var id_foto_arr = foto.split(split2);
         }
         var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
         var id_foto_ext_arr = id_foto_ext.split(".");
         var id_foto = id_foto_ext_arr[0];
-        var type = id_foto_ext_arr[1];
-        //console.log("div: "+stanza.OID+"-"+ id_foto + " ext: " + type);
-        //console.log(id_foto);
-        html += "<blockquote>" ;
-        html+= "<div id=\"" +stanza.OID+"-"+ id_foto + "\" class=\" carousel-item \"></div>";
-        //html += "<img class=\"img-responsive img-thumbnail\" src=\"\\" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">";
-        html +="<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
+        html += "<blockquote>";
+        html += "<div id=\"" + stanza.OID + "-" + id_foto + "\" class=\" carousel-item \"></div>";
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + "</p>" +
                 "</blockquote>" +
                 "</div>"; //5
     });
@@ -249,19 +238,16 @@ function slide_Affitto(stanza, index, atomico) {
             html += "<div class=\"item\">";
         }
         var id_foto_arr = foto.split(split);
-        if(id_foto_arr.length==1){
-           var id_foto_arr = foto.split(split2); 
+        if (id_foto_arr.length == 1) {
+            var id_foto_arr = foto.split(split2);
         }
         var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
         var id_foto_ext_arr = id_foto_ext.split(".");
         var id_foto = id_foto_ext_arr[0];
-        var type = id_foto_ext_arr[1];
-        //console.log("div: "+stanza.OID+"-"+ id_foto + " ext: " + type);
-        //(id_foto);
+
         html += "<blockquote>";
-        html+= "<div id=\"" +stanza.OID+"-"+ id_foto + "\" class=\" carousel-item \"></div>";
-                //"<img class=\"img-responsive img-thumbnail\" src=\"\\" + foto + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">" +
-        html+="<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + " ";
+        html += "<div id=\"" + stanza.OID + "-" + id_foto + "\" class=\" carousel-item \"></div>";
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Tipo Stanza: </span> " + stanza.Tipo + " ";
         if (!atomico) {
             html += "<span class=\"text-primary\"> Prezzo: </span> " + stanza.Prezzo + "&euro;";
         }
@@ -273,69 +259,57 @@ function slide_Affitto(stanza, index, atomico) {
 }
 
 function callFoto(foto_OID) {
-    var foto_arr=foto_OID.split("$");
-    var foto=foto_arr[1];
-    var OID=foto_arr[0];
+
+    var foto_arr = foto_OID.split("$");
+    var foto = foto_arr[1];
+    var OID = foto_arr[0];
     var id_foto_arr = foto.split(split);
-    if(id_foto_arr.length==1){
-           var id_foto_arr = foto.split(split2); 
-        }
+    if (id_foto_arr.length == 1) {
+        var id_foto_arr = foto.split(split2);
+    }
     var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
     var id_foto_ext_arr = id_foto_ext.split(".");
     var id_foto = id_foto_ext_arr[0];
     var type = id_foto_ext_arr[1];
-    //console.log("in load: " + id_foto + " ext: " + type);
-    //console.log("in load " + id_foto);
+
     $.ajax({
         url: "ServletController",
         type: 'get',
         dataType: 'text',
-        //contentType: "image/jpg",
         data: {action: "Ricerca-getImage", url: foto, type: type},
         success: function (base64Image) {
-            //console.log(foto + ": " + base64Image);
-            var f = "<img class=\"img-responsive img-thumbnail\" src=\"data:image/" + type + ";base64, " + base64Image + "\" style=\"width:" + dim_image_car/N_ANNUNCI_X_PAGE + "px;height:" + dim_image_car/N_ANNUNCI_X_PAGE + "px;\">";
-            $("#"+OID+"-" + id_foto + "").append(f);
+            var f = "<img class=\"img-responsive img-thumbnail\" src=\"data:image/" + type + ";base64, " + base64Image + "\" style=\"width:" + dim_image_car / N_ANNUNCI_X_PAGE + "px;height:" + dim_image_car / N_ANNUNCI_X_PAGE + "px;\">";
+            $("#" + OID + "-" + id_foto + "").append(f);
         }
     });
 }
 function loadAllfoto(page) {
-    //console.log(page);
+
     var fotoPage = foto_page[page];
-    //console.log("foto pagina: " + fotoPage);
     for (var i = 0; i < fotoPage.length; i++) {
         var foto = fotoPage[i];
         callFoto(foto);
     }
     activateCaroselli();
 }
+
+//crea in maniera comulativa una lista di OID$path_foto
 function savePath(list, annuncio) {
     var stanze = annuncio.Stanze[0];
     $.each(stanze, function (index, stanza) {
         var fotos = stanza.Foto;
         $.each(fotos, function (i, foto) {
-            list.push(stanza.OID+"$"+foto);
+            list.push(stanza.OID + "$" + foto);
         });
     });
     return list;
 }
 
-function selectpage_old(page) {
-    if (actual === 0) {
-        $("#list-result").append(page_annunci[page - 1]);
-        activateCaroselli();
-        actual = page;
-    } else if (actual !== (+page)) {
-        $("#" + (actual) + "_RESULT").after(page_annunci[page - 1]);
-        actual = +page;
-    }
-}
 
 function selectpage(page) {
     if (actual === 0) {
         $("#list-result").append(page_annunci[page - 1]);
         loadAllfoto(page - 1);
-        
         actual = page;
     } else if (actual !== (+page)) {
         $("#" + (actual) + "_RESULT").after(page_annunci[page - 1]);
@@ -402,15 +376,9 @@ function getfiltro() {
     $.post("ServletController",
             {action: "Ricerca-getFiltro"},
             function (filtro) {
-                //alert(JSON.stringify(responseJson));
-                //var html = '';
-                //$.each(responseJson, function (index, filtro) {
                 console.log(filtro);
                 var Quartieri = filtro.Quartieri;
-                //console.log(Quartieri);
-                //alert(Quartieri);
                 $.each(Quartieri, function (index, quart) {
-                    //$('#quartieri')._processSelectOption($('#' + quart));
                     $('#' + quart).prop('selected', true);
                 });
                 $('#quartieri').searchableOptionList({
@@ -418,10 +386,10 @@ function getfiltro() {
                 });
                 $('#pricefrom').val(filtro.Prezzo);
                 if (filtro.CompresoCondominio) {
-                    $('#compresoCondominio').prop('selected', true);
+                    $('#compCondominio').prop('checked', true);
                 }
                 if (filtro.CompresoRiscaldamento) {
-                    $('#compresoRiscaldamento').prop('selected', true);
+                    $('#compRiscaldamento').prop('checked', true);
                 }
                 var tipo = filtro.Tipo;
                 if (tipo == "Appartamento") {
@@ -447,21 +415,13 @@ function getfiltro() {
 
                 }
                 var id = filtro.Id;
-                //console.log("id filtro: " + id);
                 if (id == undefined) {
                     $("#saveButton").text("Salva");
                 } else {
                     $("#saveButton").text("Modifica");
                 }
             });
-    // });
 }
-
-$(window).scroll(function () {
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        nextpage();
-    }
-});
 
 /*$(window).scroll(function(){    
  $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
@@ -469,14 +429,10 @@ $(window).scroll(function () {
 
 function send_Annuncio(k) {
     var annuncio = annunci[k];
-    //console.log(annuncio);
-    var url = "/haiHome-war/ServletController";
-    var url2 = "/haiHome-war/dettagliAnnuncio.jsp";
+    var url = "/haiHome-war/dettagliAnnuncio.jsp";
     var json = JSON.stringify(annuncio);
-    //console.log(k);
-    //console.log(json);
     $.session.set('dettagli', json);
-    window.open(url2);
+    window.open(url);
 }
 
 // implement JSON.stringify serialization
@@ -508,7 +464,6 @@ function persistiFiltro() {
     $.post("ServletController",
             {action: "Ricerca-salvaFiltro"},
             function (item) {
-                //var html = '';
                 alert(item);
                 var getf = $.Deferred();
                 getf.done(getfiltro);
@@ -518,9 +473,8 @@ function persistiFiltro() {
 //Invio della form tramite PLUGIN
 $(document).ready(function () {
     $('#searchForm').ajaxForm(function () {
-        //annunci_search();
         clearMarkers(marker_annunci);
-        marker_annunci=new Array();
+        marker_annunci = new Array();
         load_Annunci();
         var getf = $.Deferred();
         getf.done(getfiltro);
@@ -528,16 +482,17 @@ $(document).ready(function () {
     });
 });
 
-
-
+//Caricamento dei risultati a fine pagina
+$(window).scroll(function () {
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+        nextpage();
+    }
+});
 
 function loggatoStudente() {
-    //console.log("verifica log Studente");
     $.post("ServletController",
             {action: "Ricerca-loggatoStudente"},
             function (item) {
-                //var html = '';
-                //alert(item);
                 console.log("Studente loggato?: " + item);
                 if (item == "true") {
                     $("#saveButton").show("fast");

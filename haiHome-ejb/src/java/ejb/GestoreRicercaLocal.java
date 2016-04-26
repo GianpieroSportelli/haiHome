@@ -55,4 +55,6 @@ public interface GestoreRicercaLocal {
 
     public JSONObject getQuartieri(String Città);
 
+    public JSONObject getTipoStanzaJSON();
+
 }

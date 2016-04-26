@@ -483,24 +483,43 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         try {
             String citta = obj.getString("City");
             System.out.println(citta);
-            boolean sel=this.selezionaCittà(citta);
-            if(sel){
-            JSONArray resultSearch = this.usaFiltroAttuale();
-            JSONObject ok = new JSONObject();
-            ok.accumulate("status", true);
-            result.accumulate("esito",ok);
-            result.accumulate("risultato",resultSearch);
-            }else{
+            boolean sel = this.selezionaCittà(citta);
+            ArrayList<String> listaQ = new ArrayList<>();
+            double prezzo = 0;
+            boolean cmpC = false;
+            boolean cmpR = false;
+            boolean gen = this.creaFiltroDiRicerca(prezzo, listaQ, cmpC, cmpR);
+            boolean spec = true;
+            if (obj.has("Tipo")) {
+                String tipo = obj.getString("Tipo");
+                if (tipo.equalsIgnoreCase("Appartamento")) {
+                    int nLoc = 0;
+                    int nB = 0;
+                    int nCamereL = 0;
+                    double met = 0;
+                    spec = this.aggiornaAFiltroAppartamento(nLoc, nB, nCamereL, met);
+                } else {
+                    String tipoS = obj.getString("TipoStanza");
+                    spec = this.aggiornaAFiltroStanza(tipoS);
+                }
+            }
+            if (sel & gen & spec) {
+                JSONArray resultSearch = this.usaFiltroAttuale();
+                JSONObject ok = new JSONObject();
+                ok.accumulate("status", true);
+                result.accumulate("esito", ok);
+                result.accumulate("risultato", resultSearch);
+            } else {
                 JSONObject err = new JSONObject();
                 err.accumulate("status", false);
-                result.accumulate("esito",err);
+                result.accumulate("esito", err);
             }
         } catch (JSONException ex) {
-             //Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
             JSONObject err = new JSONObject();
             try {
                 err.accumulate("status", false);
-                result.accumulate("esito",err);
+                result.accumulate("esito", err);
             } catch (JSONException ex1) {
                 Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex1);
             }
@@ -509,32 +528,52 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         System.out.println(result.toString());
         return result;
     }
-    
+
     @Override
-    public JSONObject getQuartieri(String Città){
-        JSONObject result=new JSONObject();
-        if(this.selezionaCittà(Città)){
+    public JSONObject getQuartieri(String Città) {
+        JSONObject result = new JSONObject();
+        if (this.selezionaCittà(Città)) {
             JSONObject ok = new JSONObject();
             try {
                 ok.accumulate("status", true);
-                result.accumulate("esito",ok);
-                ArrayList<String> quartieri=this.getQuartieriCittà();
-                JSONArray quart=new JSONArray();
-                for(String q:quartieri){
+                result.accumulate("esito", ok);
+                ArrayList<String> quartieri = this.getQuartieriCittà();
+                JSONArray quart = new JSONArray();
+                for (String q : quartieri) {
                     quart.put(q);
                 }
                 result.accumulate("risultato", quart);
             } catch (JSONException ex) {
                 Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
-            }           
-        }else{
+            }
+        } else {
             JSONObject err = new JSONObject();
             try {
                 err.accumulate("status", false);
-                result.accumulate("esito",err);
+                result.accumulate("esito", err);
             } catch (JSONException ex1) {
                 Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex1);
             }
+        }
+        return result;
+    }
+
+    @Override
+    public JSONObject getTipoStanzaJSON() {
+        JSONObject result = new JSONObject();
+        try {
+            result = new JSONObject();
+            JSONObject ok = new JSONObject();
+            ok.accumulate("status", true);
+            result.accumulate("esito", ok);
+            ArrayList<String> tipoStanze = this.getTipoStanza();
+            JSONArray quart = new JSONArray();
+            for (String q : tipoStanze) {
+                quart.put(q);
+            }
+            result.accumulate("risultato", quart);
+        } catch (JSONException ex) {
+            Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
