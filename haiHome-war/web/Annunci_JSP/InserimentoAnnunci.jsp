@@ -8,22 +8,38 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!--da modificare con riferimento interno -->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-
-
-
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <!--da modificare con riferimento interno 
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
         
-
+        <title>Nuovo Annuncio</title>
         
-
-        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
-        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone1.css">  
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <!-- FINE caricamento bootstrap mediante MaxCDN -->
+
+
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <!--Tema bootstrap -->
+        
+                <!--INIZIO - Form ajax plugin -->
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <!--FINE- Form ajax plugin -->
+ 
+        <!-- Datapicker JQuery-->
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        
+        <!-- dropzone -->
+        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone1.css"> 
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone1.js"></script>
+        
 
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -31,6 +47,10 @@
 
     </head>
     <body>
+        <%@include file="prova.jsp" %>
+        
+        <!-- modal -->
+        <%@include file="anteprimaAnnuncio.jsp" %>
 
         <div class="container">
 
@@ -58,8 +78,7 @@
 
             <!-- inizio pagine step -->
 
-            <!-- modal -->
-                <%@include file="prova.jsp" %>
+
             
             
                 <div class="row setup-content" id="step-1"> 
@@ -93,40 +112,15 @@
 
         </div> <!-- fine container -->
 
-
-        <script type="text/javascript">
-
-        </script>
-
-
-
-        <script type="text/javascript"
-                src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-        </script>
-
-        <script type="text/javascript"
-                src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
-        </script>
         
-                <!-- Datapicker JQuery-->
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        
-        
-        
-        <!--INIZIO - Form ajax plugin -->
-        <script src="http://malsup.github.com/jquery.form.js"></script> 
-        <!--FINE- Form ajax plugin -->
 
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dataPicker.js"></script>
 
+        <!-- script miei -->
+        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/stanzeUtily.js"></script>
-
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone1.js"></script>
-        
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
-        
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/anteprimaAnnuncio.js"></script>
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
+        <!-- fine script miei -->
 
 
     </body>

@@ -11,7 +11,10 @@
 
 
 $(document).ready(function () {
-
+    
+     $("#myModal").on('hide.bs.modal', function () {
+            $("#modalBody").empty();
+        });
 
 
 
@@ -160,7 +163,9 @@ $(document).ready(function () {
                     
                     //initialize(response);
                     //$("#dettagli-page").append("<img src=\"images/bg.jpg\" id=\"bg\" alt=\"\">");
+                    
                     $("#modalBody").append(create_Page(response));
+                    
                     loadAllfoto();
 
 
@@ -205,6 +210,8 @@ function sendInitialRequest() {
             alert("Chiamata fallita, si prega di riprovare...");
         }
     });
+    
+    leggi_quartieri();
 
 }
 
@@ -270,6 +277,43 @@ function validateForm(buttonForm) {
         nextStepWizard.removeAttr('disabled').trigger('click');
     }
     return isValid;
+
+}
+
+function rendiAnnuncioPersistente(){
+    
+        $.ajax({
+        type: "POST",
+        url: "../ServletAnnuncio",
+        data: "action=Annunci-newAnnuncio-persisti",
+        dataType: "text",
+        success: function (msg)
+        {
+            if(msg==="OK"){
+                alert("ANNUNCIO PERSISTITO!!!");
+            }else{
+                alert("ANNUNCIO NON PERSISTITO");
+            }
+        },
+        error: function ()
+        {
+            alert("ERRORE NELLA SERVLET");
+        }
+    });
+    
+}
+
+function leggi_quartieri() {
+    $.post("../ServletAnnuncio",
+            {action: "Annunci-newAnnuncio-getQuartieri"},
+            function (responseJson) {
+                var html = '';
+                $.each(responseJson, function (index, item) {
+                    html = '<option id=\"' + item + '\" value=\"' + item + '\">' + item + '</option>';
+                    $("#selQuartiere").append(html);
+                });
+    
+            });
 
 }
 

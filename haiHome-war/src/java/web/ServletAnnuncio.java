@@ -5,7 +5,9 @@
  */
 package web;
 
+import com.google.gson.Gson;
 import ejb.GestoreAnnuncioLocal;
+import ejb.GestoreRicercaLocal;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,6 +44,9 @@ public class ServletAnnuncio extends HttpServlet {
 
     @EJB
     private GestoreAnnuncioLocal gestoreAnnuncio;
+    
+    @EJB
+    private GestoreRicercaLocal gestoreRicerca;
 
     /*
     //Parametri richiesti
@@ -58,6 +63,7 @@ public class ServletAnnuncio extends HttpServlet {
     //ArrayList<FileOutputStream> photoTempPath;
     private HashMap<String, ArrayList<String>> photoTempPath;
     private HashMap<String, ArrayList<String>> stanzeInfo;
+    long idLocatore;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -101,7 +107,7 @@ public class ServletAnnuncio extends HttpServlet {
                 }
                 if((userType.equalsIgnoreCase("locatore")) /*(userType.equalsIgnoreCase("locatore"))*/){
                     JSONObject locatoreJSON = (JSONObject) session.getAttribute("user-data");
-                    long idLocatore = (long) locatoreJSON.get("id");
+                    idLocatore = (long) locatoreJSON.get("id");
                     System.out.println("Tipo utente: " + userType);
                     System.out.println("Id locatore : " + idLocatore );
                     boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
@@ -109,7 +115,7 @@ public class ServletAnnuncio extends HttpServlet {
                     //scrivo la risposa
                     out.write("OK");  
                 }else{
-                    long idLocatore = 1;
+                    idLocatore = 36;
                     boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
                     System.out.println("ID LOCATORE aggiunto manualmente: " + idLocatore);
                     System.out.println("Annuncio inizializzato : " + result);
@@ -216,6 +222,16 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-FotoUpload")) {
 
                 System.out.println("-----FOTO DELLE STANZE");
+                
+           //mi assicuro che non ci siano stane inserite
+            boolean listaStanzeVuota = photoTempPath.isEmpty();
+                    if(!listaStanzeVuota){
+                        photoTempPath = new HashMap<>();
+                        stanzeInfo = new HashMap<>();
+                        
+                        
+            }
+                    
 
                 Collection<Part> files = request.getParts();
 
@@ -228,7 +244,7 @@ public class ServletAnnuncio extends HttpServlet {
                     InputStream filecontent;
                     filecontent = filePart.getInputStream();
 
-                    String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, "", numStanza);
+                    String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, this.idLocatore + "", numStanza);
 
                     if (!photoTempPath.containsKey(numStanza)) {
                         ArrayList<String> temp = new ArrayList();
@@ -260,8 +276,11 @@ public class ServletAnnuncio extends HttpServlet {
                 
                 //Info sulle stanze
                 gestoreAnnuncio.inserisciInfoStanze(numeroStanze, tipoCosti.compareToIgnoreCase("1") == 0);
+                
 
-
+                 //controllo che non ci siano state gia fatti inserimenti di stanze
+                    boolean listaStanzeVuota = gestoreAnnuncio.svuotaStante();
+                    
                 //prezzo riferito all'appartamento (parametro atomico)
                 if (tipoCosti.compareToIgnoreCase("1") == 0) {
                     
@@ -274,7 +293,10 @@ public class ServletAnnuncio extends HttpServlet {
                     boolean CCA = request.getParameter("compresoCondominioA") != null;
                     String compRiscA = request.getParameter("compresoRiscaldamentoA");
                     boolean CRA = request.getParameter("compresoRiscaldamentoA") != null;
-
+                    
+                   
+                
+                    
                     //inserisco tutte le stanze
                     for (String s : listaChiavi) {
                         ArrayList<String> infoStanza = stanzeInfo.get(s);
@@ -342,9 +364,7 @@ public class ServletAnnuncio extends HttpServlet {
                 //inserisco info finali sull'annuncio
                 JSONObject annuncio = gestoreAnnuncio.toJSON();
                 //non qui da mettere l'anteprima e la conferma
-                boolean result = gestoreAnnuncio.rendiAnnuncioPersistente();
                 System.out.println(annuncio);
-                System.out.println("Annuncio persistito : " + result);
                 response.setContentType("application/json");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 out.write(annuncio.toString());
@@ -371,7 +391,35 @@ public class ServletAnnuncio extends HttpServlet {
                 }
                 //return imageString;
 
-            }  else {
+            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-persisti")) {
+
+                
+
+                boolean result = gestoreAnnuncio.rendiAnnuncioPersistente();
+                
+                //inserisco info finali sull'annuncio
+                JSONObject annuncio = gestoreAnnuncio.toJSON();
+                //non qui da mettere l'anteprima e la conferma
+                
+                System.out.println("ANNUNCIO PERSISTITO, ECCO IL RISULTATO: " + annuncio);
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
+                if(result){
+                    out.write("OK");
+                }else{
+                    out.write("NO");
+                }
+                
+
+            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getQuartieri")) {
+                //System.out.println("I'm in!!");
+                response.setContentType("application/json");
+                gestoreRicerca.selezionaCittà("Torino");
+                String json = new Gson().toJson(gestoreRicerca.getQuartieriCittà());
+                System.out.println(json);
+                out.write(json);
+
+            }else {
 
             }
             out.close();
