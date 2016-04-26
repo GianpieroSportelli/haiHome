@@ -15,7 +15,7 @@
         <title>haiHome!! - Search Page</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
         <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -30,12 +30,12 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
 
-         <!-- google+ login stuff -->
+        <!-- google+ login stuff -->
         <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
         <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
         <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
         <!-- end google+ login stuff -->
-        
+
         <link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
 
@@ -45,7 +45,7 @@
         <link rel="stylesheet" href="include/css/search/search-result.css">
         <link rel="stylesheet" href="include/css/search/search-page.css">
         <!-- FINE import SOL -->  
-        
+
         <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
@@ -55,7 +55,7 @@
         <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
         <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
         <!-- end google+ login stuff -->
-        
+
         <!-- Robe di login2.jsp -->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
@@ -67,24 +67,24 @@
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
-        
-         <!-- Import script Facebook -->
+
+        <!-- Import script Facebook -->
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
-        
+
         <!-- INFO BOX -->
         <script type="text/javascript" src="include/js/search/jquery.colorbox-min.js"></script>
         <link rel="stylesheet" href="include/css/search/colorbox.css">
         <!-- FINE INFO BOX-->
-        
+
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
-        
+
         <!-- INIZIO import ajax-fun searchPage-->
         <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
         <!-- FINE import ajax-fun searchPage-->
-        
+
     </head>
     <body>
         <%@include file="/header.jsp" %>
@@ -117,11 +117,11 @@
                                 <label class="sol-label" for="quartieri">
                                     <div class="row">
                                         <p id="selezionaQ">Seleziona quartieri
-                                        <a class="infobox btn" href="images/infobox.png" title="Mappa dei quartieri di Torino.">
-                                            <span id="info-quartieri" class="glyphicon glyphicon-info-sign" style="inline">
+                                            <a class="infobox btn" href="images/infobox.png" title="Mappa dei quartieri di Torino.">
+                                                <span id="info-quartieri" class="glyphicon glyphicon-info-sign" style="inline">
 
-                                            </span>
-                                        </a>
+                                                </span>
+                                            </a>
                                         </p>
                                     </div>
                                 </label>
@@ -206,21 +206,21 @@
                             <div class="form-group" id="detail-price" style="display:none">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="true" name="compCondomino">
+                                        <input type="checkbox" value="true" id="compCondominio">
                                         Compreso Condominio
                                     </label>
                                 </div>
 
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="true" name="compRiscaldamento">
+                                        <input type="checkbox" value="true" id="compRiscaldamento">
                                         Compreso Riscaldamento
                                     </label>
                                 </div>
                             </div>
                             <button id="searchButton"  type="submit" class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
                             <button id="saveButton"  type="button" class="btn btn-danger" onClick="persistiFiltro()" style="display:none"></button> <!--type="submit" glyphicon glyphicon-plus-->
-                        
+
                         </form>
 
                     </div>
@@ -348,7 +348,7 @@
                     $("#detail-NLocali-Button").addClass("glyphicon-plus");
                 }
             });
-
+            
         </script>
     </body>
 </html>
