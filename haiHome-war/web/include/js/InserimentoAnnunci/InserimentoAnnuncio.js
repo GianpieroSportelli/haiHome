@@ -260,19 +260,42 @@ function validateForm(buttonForm) {
     var curStep = buttonForm.closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
             nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-            curInputs = curStep.find("input[type='text'],input[type='url'],textarea"),
+            curInputs = curStep.find("input[type='text'],input[type='url'],input[type='number'],input[type='date'],textarea"),
+            myDropzone = curStep.find("div.dropzone"),
             isValid = true;
     console.log("Contenitore form " + curStep.attr("id"));
 
     $(".form-group").removeClass("has-error");
     for (var i = 0; i < curInputs.length; i++) {
-        if (!curInputs[i].validity.valid) {
+        console.log("Oggetto da controllare id: " + curInputs.attr("id"));
+        if (!curInputs[i].validity.valid || curInputs[i].validity.typeMismatch) {
             console.log("Dati non Validi");
             isValid = false;
             $(curInputs[i]).closest(".form-group").addClass("has-error");
         }
     }
-
+    
+    //aggiunta controllo dropzone
+    console.log("Numero di dropzone " + myDropzone.length);
+    for (var i = 0; i < myDropzone.length; i++) {
+        console.log("Dropzone da controllare id: " + $(myDropzone).attr("id"));
+        if(!$(myDropzone[i]).hasClass("dz-started")){
+            console.log("Dati non Validi");
+            isValid = false;
+            var message = $(myDropzone[i]).find("div.dz-message");
+            /*
+            $(myDropzone[i]).css({
+                "border-color": '#FF0000'
+            });*/
+            message.empty();
+            message.css({
+                "color": '#FF0000'
+            });
+            message.append("Inserire o trascinare almeno una foto");
+        }
+    }
+    //fine aggiunta controllo dropzone
+    
     if (isValid) {
         nextStepWizard.removeAttr('disabled').trigger('click');
     }

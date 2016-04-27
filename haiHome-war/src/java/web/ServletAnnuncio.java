@@ -155,7 +155,13 @@ public class ServletAnnuncio extends HttpServlet {
                 System.out.println("-----INFO ANNUNCIO:");
 
                 String descrizione = request.getParameter("Descrizione").trim();
-                double metraturaApp = Double.parseDouble(request.getParameter("Metratura").trim());
+                String m = request.getParameter("Metratura").trim();
+                System.out.println("M = " + m);
+                double metraturaApp = 0;
+                if(!m.equalsIgnoreCase("")){
+                    metraturaApp = Double.parseDouble(m);
+                }
+                
                 
                 
                 String[] data = request.getParameter("DataInizioAffitto").split("-");

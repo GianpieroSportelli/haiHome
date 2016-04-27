@@ -133,7 +133,10 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto) {
         this.annuncio.setDescrizione(descrizione);
-        this.annuncio.setMetratura(metratura);
+        if (metratura != 0) {
+            this.annuncio.setMetratura(metratura);
+        }
+        
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
         this.annuncio.setListaStanza(new ArrayList<>());
         return true;
