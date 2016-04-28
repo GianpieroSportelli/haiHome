@@ -228,18 +228,37 @@ public class ServletLocatore extends HttpServlet {
         String div_html = "";
         Long oid = a.getId();
 
+        
+   //     div_html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
+        /* 
+        div_html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
+        div_html += "<a href='#0'>Modifica Annuncio</a>"; */
         div_html += "<div id='ann-" + oid + "' class='annuncio'>";
-
+        div_html += "<div class='panel panel-default'>";
+        div_html += "<div class='panel-heading'>";
         div_html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
         div_html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
-        div_html += "<a href='#0'>Modifica Annuncio</a>";
-
+        div_html += "</div>";
+        div_html += "<div class='panel-body'>";
         div_html += "<div>Proprietario: " + a.getLocatore().getEmail() + "</div>";
         div_html += "<div>Indirizzo: " + a.getIndirizzo() + "</div>";
         div_html += "<div>Descrizione: " + a.getDescrizione() + "</div>";
-
-        // div_html += "<span class='dati-annuncio'><p>" + a.toJSON().toString() + "</p></span>";
         div_html += "</div>";
+        div_html += "</div>";
+
+        // var html = "<div id=\"annuncio-" + k + "\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">"; //1
+        /*
+        html += "<div class=\"panel panel-default div_snippet\">"; //2
+        html += "<div class='panel-heading'>"; //3
+        html += create_carousel(annuncio);
+        html += "</div>"; //chiusura testa del pannello
+        html += "<div class=\"panel-body snip\">";
+        html += create_info_annuncio(annuncio);
+        html += "</div>"; //3
+        html += "</div>"; //2
+        html += "</div>"; //1 */
+        // div_html += "<span class='dati-annuncio'><p>" + a.toJSON().toString() + "</p></span>";
+        
 
         return div_html;
     }

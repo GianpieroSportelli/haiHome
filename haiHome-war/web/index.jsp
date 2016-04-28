@@ -44,10 +44,10 @@
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
 
-        <!-- google+ login stuff -->
+        <!-- google+ login stuff --><!--
         <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
         <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
-        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>-->
         <!-- end google+ login stuff -->
 
         <!-- Robe di login2.jsp -->
@@ -75,6 +75,11 @@
         <link rel="stylesheet" href="include/css/home/home.css">
         <script type="text/javascript" src="include/js/home/home.js"></script>
         <!-- Fine home-->
+
+        <!--modal login -->
+        <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
+        <script src="include/js/login/ajax_req_and_stuff.js"></script>
+        <!-- fine modal login -->
 
 
 
