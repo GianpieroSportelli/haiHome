@@ -133,7 +133,10 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto) {
         this.annuncio.setDescrizione(descrizione);
-        this.annuncio.setMetratura(metratura);
+        if (metratura != 0) {
+            this.annuncio.setMetratura(metratura);
+        }
+        
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
         this.annuncio.setListaStanza(new ArrayList<>());
         return true;
@@ -616,6 +619,12 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         boolean result = this.annuncio.getListaStanza().isEmpty();
         this.annuncio.setListaStanza(new ArrayList<>());
         return result;
+    }
+
+    @Override
+    public Annuncio getAnnuncioByID(long oid) {
+        Annuncio ann = this.annuncioFacade.find(oid);
+        return ann;
     }
    
 

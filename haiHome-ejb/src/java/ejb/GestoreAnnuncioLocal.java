@@ -81,4 +81,6 @@ public interface GestoreAnnuncioLocal {
     
     //METODI DI SUPPORTO
     public boolean svuotaStante();
+    
+    public Annuncio getAnnuncioByID(long oid);
 }

@@ -47,7 +47,7 @@
 
     </head>
     <body>
-        <%@include file="prova.jsp" %>
+        
         
         <!-- modal -->
         <%@include file="anteprimaAnnuncio.jsp" %>

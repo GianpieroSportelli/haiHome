@@ -21,8 +21,7 @@
             <div class="form-group">
                 <label class="control-label">Quartiere</label>
                 <select class="form-control" id="selQuartiere" name='Quartiere'>
-                    <option>Aurora</option>
-                    <option>Altri Quartieri</option>                       
+                      
                 </select>
             </div>
             <div class="form-group">

@@ -17,12 +17,12 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Metratura</label>
-                <input id='inpMetratura' name='Metratura' maxlength="200" type="text" class="form-control" />
+                <input id='inpMetratura' name='Metratura' type="number" class="form-control" />
             </div>
 
             <div class="form-group">
                 <label class="control-label">Data inizio Affitto</label>
-                <input id='inpDataInizio' name='DataInizioAffitto' required="required" class="" />
+                <input id='inpDataInizio' name='DataInizioAffitto' type="date" required="required" class="" />
             </div>
             <button type="submit"  id="butt2" class="btn btn-primary nextBtn btn-lg pull-right"> Next</button>
 
