@@ -8,28 +8,21 @@ package web;
 import com.google.gson.Gson;
 import ejb.GestoreImmaginiLocal;
 import ejb.GestoreRicercaLocal;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-//import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -68,15 +61,19 @@ public class ServletRicerca extends HttpServlet {
                 System.out.println("Filtro: " + json);
                 out.write(json);
 
-            } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+            } else if (action.equalsIgnoreCase("Ricerca-setCity")) {
+                String city = request.getParameter("city");
+                boolean result=gestoreRicerca.selezionaCittà(city);
+                //invia quartieri
+                System.out.println("Filtro Creato:"+result);
+                System.out.println(gestoreRicerca.attualeToJSON());
+                out.write(""+result);
+
+            }else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
                 String id = request.getParameter("ID");
                 boolean esito = gestoreRicerca.loadFiltro(id);
                 out.write("" + esito);
 
-            } else if (action.equalsIgnoreCase("setCity_601")) {
-                String id = "" + 601;
-                gestoreRicerca.loadFiltro(id);
-                getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
             } else if (action.equalsIgnoreCase("setCity")) {
                 String city = request.getParameter("city");
                 gestoreRicerca.selezionaCittà(city);
