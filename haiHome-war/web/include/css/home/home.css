@@ -1,0 +1,26 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 28-apr-2016, 14.35.16
+    Author     : SPORT
+*/
+
+#div_studente {
+    height: 700px;
+    background:url(../../../images/studente_home.jpg);
+    background-repeat:no-repeat;
+    background-size: cover;  
+}
+#div_intermezzo{
+    height: 50px;
+    
+    
+}
+#div_locatore{
+    height: 700px;
+    background-color:green;
+}
+

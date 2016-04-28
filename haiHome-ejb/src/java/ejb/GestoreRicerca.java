@@ -481,11 +481,22 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         JSONObject result = new JSONObject();
         System.out.println(obj.toString());
         try {
+            System.out.println(obj.getString("Tipo"));
             String citta = obj.getString("City");
             System.out.println(citta);
             boolean sel = this.selezionaCittà(citta);
             ArrayList<String> listaQ = new ArrayList<>();
+            if(obj.has("Quartieri")){
+                JSONArray Jquartieri=obj.getJSONArray("Quartieri");
+                System.out.println(Jquartieri.toString());
+                for(int i=0;i<Jquartieri.length();i++){
+                    listaQ.add(Jquartieri.getString(i));
+                }
+            }
             double prezzo = 0;
+            if(obj.has("Prezzo")){
+                prezzo=Double.valueOf(""+obj.get("Prezzo"));
+            }
             boolean cmpC = false;
             boolean cmpR = false;
             boolean gen = this.creaFiltroDiRicerca(prezzo, listaQ, cmpC, cmpR);
@@ -493,13 +504,13 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             if (obj.has("Tipo")) {
                 String tipo = obj.getString("Tipo");
                 if (tipo.equalsIgnoreCase("Appartamento")) {
-                    int nLoc = 0;
-                    int nB = 0;
-                    int nCamereL = 0;
-                    double met = 0;
+                    int nLoc = Integer.valueOf(obj.getString("NumeroLocali"));
+                    int nCamereL = Integer.valueOf(obj.getString("NumeroCamereLetto"));
+                    int nB = Integer.valueOf(obj.getString("NumeroBagni"));
+                    int met = Integer.valueOf(obj.getString("Metratura"));
                     spec = this.aggiornaAFiltroAppartamento(nLoc, nB, nCamereL, met);
-                } else {
-                    String tipoS = obj.getString("TipoStanza");
+                } else if(!tipo.equalsIgnoreCase("TUTTI")) {
+                    String tipoS = obj.getString("Tipo");
                     spec = this.aggiornaAFiltroStanza(tipoS);
                 }
             }
