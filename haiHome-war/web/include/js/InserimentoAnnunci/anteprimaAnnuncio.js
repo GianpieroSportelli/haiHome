@@ -13,18 +13,17 @@ var bus = "images/transport.png";
 var dim_image_car = 500;
 var dim_image_prof = 100;
 var markers = [];
-var StrAnnuncio = $.session.get('dettagli');
-var annuncio = jQuery.parseJSON(StrAnnuncio);
-console.log(annuncio);
 
 var split = "\\";
-var split2="/";
+var split2="//";
 var foto_page = new Array();
 
 $('.qcar').carousel({
     pause: true,
     interval: 4000
 });
+
+
 
 function initialize(annuncio) {
     geocoder = new google.maps.Geocoder();
@@ -42,85 +41,6 @@ function initialize(annuncio) {
     });
     map.setZoom(16);
     
-    //forse da togliere
-    /*
-    addServices_superMarket(annuncio);
-    addServices_Bank(annuncio);
-    addServices_Bus(annuncio);
-    */
-}
-
-function addServices_superMarket(annuncio) {
-    $.ajax({
-        url: "ServletController",
-        type: 'post',
-        dataType: 'json',
-        data: {action: "Ricerca-addSuperMarket", annuncio: JSON.stringify(annuncio)},
-        success: function (responseJson) {
-            //console.log(responseJson);
-            $.each(responseJson, function (index, item) {
-                //console.log(item);
-                var lat = item.location.lat;
-                var lng = item.location.lng;
-                var label = item.name;
-                var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label, supermarket);
-            });
-        }
-    });
-}
-
-function addServices_Bus(annuncio) {
-    $.ajax({
-        url: "ServletController",
-        type: 'post',
-        dataType: 'json',
-        data: {action: "Ricerca-addBus", annuncio: JSON.stringify(annuncio)},
-        success: function (responseJson) {
-            //console.log(responseJson);
-            $.each(responseJson, function (index, item) {
-                //console.log(item);
-                var lat = item.location.lat;
-                var lng = item.location.lng;
-                var label = item.name;
-                var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label, bus);
-            });
-        }
-    });
-}
-
-function addServices_Bank(annuncio) {
-    $.ajax({
-        url: "ServletController",
-        type: 'post',
-        dataType: 'json',
-        data: {action: "Ricerca-addBank", annuncio: JSON.stringify(annuncio)},
-        success: function (responseJson) {
-            //console.log(responseJson);
-            $.each(responseJson, function (index, item) {
-                //console.log(item);
-                var lat = item.location.lat;
-                var lng = item.location.lng;
-                var label = item.name;
-                var location = new google.maps.LatLng(lat, lng);
-                addMarker(location, label, bank);
-            });
-        }
-    });
-}
-
-function addMarker(location, label, icon) {
-//alert(label);
-// Add the marker at the clicked location, and add the next-available label
-// from the array of alphabetical characters.
-    var marker = new google.maps.Marker({
-        position: location,
-        title: label,
-        map: map,
-        icon: icon
-    });
-    //markers.push(marker);
 }
 
 function create_Page(annuncio) {
@@ -128,14 +48,21 @@ function create_Page(annuncio) {
     var html = "";
     html += info_annuncio(annuncio);
 
+    //apre nav bar
     var open_ul = "<ul class=\"nav nav-tabs\">";
     html += open_ul;
     var stanze = annuncio.Stanze[0];
 
+
     $.each(stanze, function (index, stanza) {
         //console.log(stanza);
+
+    
         var active = "";
         stanza.OID = index;
+        
+
+    
         if (index == 0) {
             active = "class=\"active\"";
         }
@@ -151,9 +78,14 @@ function create_Page(annuncio) {
         }
     });
     var close_ul = "</ul>";
+    //chiude navbar
+    
     html += close_ul;
+    
+    //apre nav bar content
     var open_content = "<div class=\"tab-content\">";
     html += open_content;
+    
     $.each(stanze, function (index, stanza) {
         var corpo = "";
         if (stanza.SuperTipo == "StanzaInAffitto") {
@@ -166,10 +98,11 @@ function create_Page(annuncio) {
         }
         html += corpo;
     });
+    
     var close_content = "</div>";
     html += close_content;
     foto_page = savePath(foto_page, annuncio);
-    console.log("Path delle foto: " + foto_page.toString());
+    //console.log("Path delle foto: " + foto_page.toString());
     return html;
 }
 
@@ -232,9 +165,10 @@ function create_corpo_affitto(stanza, first, atomico) {
     return html;
 }
 
+
 function create_carousel_stanza(stanza) {
     var html = "";
-    html += "<div class=\"carousel slide qcar\" data-ride=\"carousel\" id=\"quote-carousel-" + stanza.OID + " \">";
+    html += "<div class=\"carousel slide qcar\" data-ride=\"carousel\" id=\"quote-carousel-" + stanza.OID + "\">";
     html += "<div class=\"carousel-inner\" align=\"center\">"; //5
     html += indicator(stanza);
     html += slide_Stanza(stanza);
@@ -247,14 +181,19 @@ function slide_Stanza(stanza) {
     var html = "";
     var fotos = stanza.Foto;
     $.each(fotos, function (i, foto) {
+        console.log("PER OGNI FOTO ------------------------");
         if (i == 0) {
             html += "<div class=\"item active\">"; //5.a
         } else {
             html += "<div class=\"item\">"; //5.b
         }
+        console.log("FOTO PRIMA SPLIT: " + foto);
         var id_foto_arr = foto.split(split);
+        console.log("FOTO DOPO SPLIT 1: " + id_foto_arr +" --- " + split);
+        
         if(id_foto_arr.length==1){
            var id_foto_arr = foto.split(split2); 
+           console.log("FOTO DOPO SPLIT 2: " + id_foto_arr +" --- " + split2);
         }
         var id_foto_ext = id_foto_arr[id_foto_arr.length - 1];
         var id_foto_ext_arr = id_foto_ext.split(".");
@@ -302,7 +241,7 @@ function info_annuncio(annuncio) {
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
-    html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
+    //html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
     html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
@@ -310,7 +249,7 @@ function info_annuncio(annuncio) {
 
 function init_info(annuncio) {
     var locatore = annuncio.Locatore;
-    console.log(locatore);
+    //console.log(locatore);
     return info_loc(locatore);
 }
 function info_loc(locatore) {
@@ -339,24 +278,12 @@ function loggatoStudente() {
             function (item) {
                 //var html = '';
                 //alert(item);
-                console.log("Studente loggato?: " + item);
+                //console.log("Studente loggato?: " + item);
                 if (item == "true") {
                     $("#saveButton").show("fast");
                     $("#segnalaBtn").show("fast");
                 }
             });
-}
-
-function salvaAnnuncioPreferiti() {
-    alert("Salvo l'annuncio nei Preferiti");
-}
-function segnalaAnnuncio() {
-    alert("annuncio Segnalato");
-}
-
-function getServices() {
-    addServices_superMarket(annuncio);
-    addServices_Bank(annuncio);
 }
 
 function callFoto(foto_OID) {
@@ -382,8 +309,12 @@ function callFoto(foto_OID) {
         success: function (base64Image) {
             //(foto + ": " + base64Image);
             var f = "<img class=\"img-responsive img-thumbnail\" src=\"data:image/" + type + ";base64, " + base64Image + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">";
-            var selector = $("#" + OID + "-" + id_foto);
-            console.log("id CONTENITORE --- " + selector.attr("id"));
+            
+            
+            var str = "#" + OID + "-" + id_foto;
+            //console.log(str);
+            var selector = $(str);
+            //console.log("id CONTENITORE --- " + selector.attr("id"));
             selector.append(f);
             
             //$("#" + OID + "-" + id_foto + "").append(f);
@@ -401,7 +332,12 @@ function loadAllfoto() {
     //activateCaroselli();
 }
 function savePath(list, annuncio) {
+    console.log("-----------------------------");
+    console.log("-----------------------------");
     console.log("Entro in SavePath");
+    console.log("-----------------------------");
+    console.log("-----------------------------");
+    
     var stanze = annuncio.Stanze[0];
      console.log(stanze.toString());
     $.each(stanze, function (index, stanza) {

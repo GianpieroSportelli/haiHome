@@ -16,7 +16,7 @@ var PrezzoStanzaHTML ="<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\
             </div>\n\
             <div class=\"col-md-6\">\n\
                 <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
-                <input name='PrezzoS' maxlength=\"100\" type=\"text\" required=\"required\" class=\"form-control prezzoStanza\" /><br />\n\
+                <input name='PrezzoS' maxlength=\"100\" type=\"number\" required=\"required\" class=\"form-control prezzoStanza\" /><br />\n\
             </div>\n\
         </div>";
 
@@ -85,6 +85,8 @@ function nuovaStanza1(){
             });
     });*/
 }
+
+
 
 
 // per ora va solo avanti
@@ -199,7 +201,7 @@ var StanzaCode =
     </div>\n\
     <div class=\"form-group col-md-6\">\n\
         <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('Stanza" + number + "')\">-</div><br />\n\
-        <label class=\"control-label\">Metratura</label> <input name='MetraturaS' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
+        <label class=\"control-label\">Metratura</label> <input name='MetraturaS' id=\"inpMetratura\" type=\"number\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
     </div>\n\
     <div class=\"form-group col-md-12\">\n\
         <label class=\"control-label\">Foto</label>\n\
@@ -238,7 +240,7 @@ var StanzaCode =
         </div>\n\
         <div class=\"form-group col-md-6\">\n\
             <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('" + number + "')\">-</div><br />\n\
-            <label class=\"control-label\">Metratura</label> <input name='MetraturaS' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
+            <label class=\"control-label\">Metratura</label> <input name='MetraturaS' type='number' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
         </div>\n\
     <div class=\"form-group col-md-12\">\n\
         <label class=\"control-label\">Foto</label>\n\
@@ -300,26 +302,16 @@ $(document).ready(function(){
 
 submitButton2.addEventListener("click", function() {
     var butt = $("button#buttStanze");
-    var datiValidi = true;
-    
+    var datiValidi = validateForm(butt);;
+    console.log("Dati validi: " + datiValidi)
     if (datiValidi){
         
-        /*
-        for (i = 1; i < dropzones.length; i++){
-            if (dropzones[i] != null){
-            dropzones[i].processQueue();
-            console.log("Carico dropzone " + i);
-
-            //stanzeForms[i].submit();
-            }   
-        }*/
-        //alert("Pronto ad inviare i dati");
         sendData();
         generateCostiForm();
-        validateFormStanze(butt);
+        
         
     } else{
-        //alert("Dati non Validi");
+        
     }
 });
 
