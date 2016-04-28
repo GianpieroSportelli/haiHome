@@ -10,6 +10,6 @@ package entity;
  * @author gianp_000
  */
 public enum TipoStanzaInAffitto {
-    Singola,Doppia,Tripla,Altro
+    Singola,Doppia,Tripla
     
 }

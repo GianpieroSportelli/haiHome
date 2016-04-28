@@ -342,6 +342,7 @@ function nextpage() {
 
 
 function init_filtro() {
+    $("#quartieri-div").hide();
     $.post("ServletController",
             {action: "Ricerca-getQuartieri"},
             function (responseJson) {
@@ -384,6 +385,9 @@ function getfiltro() {
                 $('#quartieri').searchableOptionList({
                     maxHeight: '250px'
                 });
+                
+                $("#quartieri-div").show();
+                
                 $('#pricefrom').val(filtro.Prezzo);
                 if (filtro.CompresoCondominio) {
                     $('#compCondominio').prop('checked', true);

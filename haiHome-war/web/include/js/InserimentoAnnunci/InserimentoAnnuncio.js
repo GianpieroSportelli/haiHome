@@ -12,9 +12,16 @@
 
 $(document).ready(function () {
     
+    /*
+    $('#myModal').modal({
+    
+    keyboard : 'true'
+    }); 
+    */
      $("#myModal").on('hide.bs.modal', function () {
             $("#modalBody").empty();
         });
+        
 
 
 
@@ -69,8 +76,9 @@ $(document).ready(function () {
         e.preventDefault();
         var $target = $($(this).attr('href')),
                 $item = $(this);
-        console.log("Id bottoncino di su" + $item.attr("id") + " " + !$item.hasClass('disabled'));
-        if (!$item.hasClass('disabled')) {
+        var itemState = $item.attr("disabled");
+        console.log("Id bottoncino di su" + $item.attr("id") + " " + itemState);
+        if (itemState !== 'disabled') {
             navListItems.removeClass('btn-primary').addClass('btn-default');
             $item.addClass('btn-primary');
             var idSelectedItem = $item.attr("id");
@@ -148,10 +156,11 @@ $(document).ready(function () {
 
         e.preventDefault();
 
-        var buttonForm = form4.find("button#butt3");
+        var buttonForm = form4.find("button#submitButtom");
 
         console.log(buttonForm.attr("id"));
         var isValid = validateForm(buttonForm);
+        console.log("Validazione form costi " + isValid );
 
         if (isValid) {
             console.log("Dati form validi");
@@ -159,12 +168,15 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (response) {
                     console.log(response);
-                    //creo anteprima
                     
-                    //initialize(response);
-                    //$("#dettagli-page").append("<img src=\"images/bg.jpg\" id=\"bg\" alt=\"\">");
+                    var myModal = $("#myModal");
+                    var myModalBody = $("#modalBody");
+                    myModalBody.append(create_Page(response));
                     
-                    $("#modalBody").append(create_Page(response));
+                    myModal.modal({keyboard: true});
+                    myModal.modal('show');
+                    
+                    
                     
                     loadAllfoto();
 
@@ -283,10 +295,7 @@ function validateForm(buttonForm) {
             console.log("Dati non Validi");
             isValid = false;
             var message = $(myDropzone[i]).find("div.dz-message");
-            /*
-            $(myDropzone[i]).css({
-                "border-color": '#FF0000'
-            });*/
+          
             message.empty();
             message.css({
                 "color": '#FF0000'
@@ -295,6 +304,8 @@ function validateForm(buttonForm) {
         }
     }
     //fine aggiunta controllo dropzone
+    
+    
     
     if (isValid) {
         nextStepWizard.removeAttr('disabled').trigger('click');
