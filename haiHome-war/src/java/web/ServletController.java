@@ -64,6 +64,9 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("setCity")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
+            } else if (action.equalsIgnoreCase("Ricerca-setCity")) {
+                request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
             } else if (action.equalsIgnoreCase("Ricerca-geoCity")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
@@ -125,9 +128,9 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletCitta").forward(request, response);
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
-            }
-            
-            else {
+            } else if (action.equalsIgnoreCase("studente-addAnnuncio")) {
+                request.getRequestDispatcher("/ServletStudente").forward(request, response);
+            } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }

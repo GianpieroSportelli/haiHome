@@ -112,8 +112,7 @@
                         <h1 align="center">Filtro di Ricerca</h1>
                         <form class="form-horizontal" id="searchForm" action="ServletController" method="post" >
                             <input type="hidden" name="action" value="search">
-                            <div>
-
+                            <div id="quartieri-div"style="display:none;">
                                 <label class="sol-label" for="quartieri">
                                     <div class="row">
                                         <p id="selezionaQ">Seleziona quartieri

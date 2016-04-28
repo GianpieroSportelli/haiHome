@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.Annuncio;
 import entity.FiltroDiRicerca;
 import entity.Studente;
 import java.util.List;
@@ -37,4 +38,8 @@ public interface GestoreStudenteLocal {
     public boolean addFiltroStudente(String id, FiltroDiRicerca filtro);
 
     public boolean removeFiltroStudente(String id, FiltroDiRicerca filtro);
+
+    public boolean addAnnuncio(String id);
+
+    public boolean removeAnnuncio(String id);
 }
