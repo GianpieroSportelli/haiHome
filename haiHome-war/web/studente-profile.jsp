@@ -62,14 +62,7 @@
 
         <!-- Import script Facebook -->
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
-        <!-- Fine Import script Facebook -->
-
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-        </style>        
+        <!-- Fine Import script Facebook -->       
 
     </head>
     <body>
@@ -148,7 +141,7 @@
                                 <li class="active"><a href="#home" data-toggle="tab">
                                         <i class="glyphicon glyphicon-user"></i>
                                         Home</a></li>
-                                <li><a href="#annunci" data-toggle="tab" onclick="checkAnnuncio()">
+                                <li><a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         Annunci preferiti</a></li>
                                 <li><a href="#filtriUtente" data-toggle="tab"  onclick="startTutorial()">
@@ -190,10 +183,10 @@
                 <div data-intro="Qui puoi visualizzare i tuoi filtri memorizzati." class="col-xs-9">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
-                        <div class="tab-pane active" id="home">
+                        <div class="tab-pane active in fade" id="home">
                             <div class="panel panel-default">
                                 <div class="panel-heading"> 
-                                    <p class="text-primary" style="text-align:center" >  <img src="include\\css\\Utente\\userImage-30.png"> <span class="text-primary">Informazioni Profilo</span> </p>
+                                    <p class="text-primary" style="text-align:center" >  <img src="include/css/Utente/userImage-30.png"> <span class="text-primary">Informazioni Profilo</span> </p>
                                 </div>
                                 <div class="panel-body">
                                     <p><span class="text-primary">Nome</span>:
@@ -219,8 +212,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="annunci">Annunci preferiti qui</div>
-                        <div class="tab-pane" id="filtriUtente"></div>
+                        <div class="tab-pane fade" id="annunci">Annunci preferiti qui</div>
+                        <div class="tab-pane fade" id="filtriUtente"></div>
                     </div>
                 </div>  
             </div>
@@ -252,7 +245,7 @@
             %>
                     //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
                     //Il problema nasce dal fatto che i tab sono dinamici
-                    var millisecondsToWait = 10;
+                    var millisecondsToWait = 400;
                     setTimeout(function () {
                         introJs().start();
                         activatedTutorial = true;
@@ -263,20 +256,16 @@
 
             $(document).ready(function () {
                 getListaFiltriPreferiti();
+                getAnnunciPreferiti();
             });
 
-            function checkAnnuncio() {
+
+            function getAnnunciPreferiti() {
                 $.post("ServletController",
-                        {action: "studente-addAnnuncio", id: "1030"},
-                function (data) {
-                    console.log("Hey " + data);
-                    if (data == "true") {
-                        alert('Tutto bene');
-                    } else {
-                        //Errore
-                        alert('Nope');
-                    }
-                });
+                        {action: "studente-getAnnunci"},
+                        function (data) {
+                            console.log(data);
+                        });
             }
 
 
@@ -297,37 +286,37 @@
             function getListaFiltriPreferiti() {
                 $.post("ServletController",
                         {action: "get-lista-preferiti-studente"},
-                function (responseJson) {
-                    filtri = [];
-                    n_page = 0;
-                    n_filtri = 0;
+                        function (responseJson) {
+                            filtri = [];
+                            n_page = 0;
+                            n_filtri = 0;
 
 
 
-                    $.each(responseJson, function (index, item) {
-                        n_filtri += 1;
-                        filtri[index] = item;
-                    });
-                    actual = 0;
-                    n_page = n_filtri / FIlTRI_X_PAGE;
+                            $.each(responseJson, function (index, item) {
+                                n_filtri += 1;
+                                filtri[index] = item;
+                            });
+                            actual = 0;
+                            n_page = n_filtri / FIlTRI_X_PAGE;
 
 
-                    if (filtri.length === 0) {
-                        var page_html = "<div>" +
-                                "<div class=\"panel panel-default\">" +
-                                "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include\\css\\Utente\\Error-30.png\"> Nessun Filtro Salvato </p>"
-                                + "</div> " +
-                                "</div>" +
-                                "</div>";
-                        page_filtri[0] = page_html;
-                        selectpage(1);
-                    } else {
-                        constructFiltriPage();
-                        selectpage(1);
-                        add_button();
-                    }
+                            if (filtri.length === 0) {
+                                var page_html = "<div>" +
+                                        "<div class=\"panel panel-default\">" +
+                                        "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\"> Nessun Filtro Salvato </p>"
+                                        + "</div> " +
+                                        "</div>" +
+                                        "</div>";
+                                page_filtri[0] = page_html;
+                                selectpage(1);
+                            } else {
+                                constructFiltriPage();
+                                selectpage(1);
+                                add_button();
+                            }
 
-                }
+                        }
                 );
             }
 
@@ -396,15 +385,15 @@
                         var glyphCondominio = '';
                         var glyphRiscaldamento = '';
                         if (compresoCondominio === true) {
-                            glyphCondominio = "include\\css\\Utente\\check-30.png";
+                            glyphCondominio = "include/css/Utente/check-30.png";
                         } else {
-                            glyphCondominio = "include\\css\\Utente\\notChecked-30.png";
+                            glyphCondominio = "include/css/Utente/notChecked-30.png";
                         }
 
                         if (compresoRiscaldamento === true) {
-                            glyphRiscaldamento = "include\\css\\Utente\\check-30.png";
+                            glyphRiscaldamento = "include/css/Utente/check-30.png";
                         } else {
-                            glyphRiscaldamento = "include\\css\\Utente\\notChecked-30.png";
+                            glyphRiscaldamento = "include/css/Utente/notChecked-30.png";
                         }
 
                         var htmlNumeroCamere = '';
@@ -435,7 +424,7 @@
 
                         var htmlprezzo = '';
                         if (prezzo != 0) {
-                            htmlprezzo = "<img src=\"include\\css\\Utente\\euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro";
+                            htmlprezzo = "<img src=\"include/css/Utente/euro-icon.png\"> <span class=\"text-primary\"> Prezzo massimo</span>: " + prezzo + " euro";
                         }
 
                         var htmltipoAnnuncio = '';
@@ -466,7 +455,7 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
                                         htmlprezzo +
                                         "<hr>" +
                                         quartieriHTML +
@@ -484,7 +473,7 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
                                         htmlprezzo +
                                         "<hr>" +
                                         quartieriHTML +
@@ -505,7 +494,7 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
                                         htmlprezzo +
                                         "<hr>" +
                                         quartieriHTML +
@@ -521,7 +510,7 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
                                         htmlprezzo +
                                         "<hr>" +
                                         quartieriHTML +
@@ -538,7 +527,7 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
                                         htmlprezzo +
                                         "<hr>" +
                                         quartieriHTML +
@@ -552,7 +541,7 @@
                                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
                                         htmltipoAnnuncio + "</div>" +
                                         "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                                        "<p> <img src=\"include\\css\\Utente\\Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
+                                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
                                         htmlprezzo +
                                         "<hr>" +
                                         quartieriHTML +
@@ -587,16 +576,16 @@
             function deleteFilter() {
                 $.post("ServletController",
                         {action: "Ricerca-deleteFiltro", filtroID: filtroToDelete},
-                function (data) {
-                    if (data == "OK") {
-                        //Resetto tutto
-                        $('#filtriUtente').empty();
-                        getListaFiltriPreferiti();
-                    } else {
-                        //Errore
-                        alert(data);
-                    }
-                });
+                        function (data) {
+                            if (data == "OK") {
+                                //Resetto tutto
+                                $('#filtriUtente').empty();
+                                getListaFiltriPreferiti();
+                            } else {
+                                //Errore
+                                alert(data);
+                            }
+                        });
             }
 
             //Richiama un filtro di ricerca
@@ -604,13 +593,13 @@
 
                 $.post("ServletController",
                         {action: "Ricerca-setFiltro", ID: idFiltro},
-                function (data) {
-                    if (data == "true") {
-                        var url = "/haiHome-war/search-page.jsp";
-                        window.open(url);
-                    } else
-                        alert('ERRORE');
-                });
+                        function (data) {
+                            if (data == "true") {
+                                var url = "/haiHome-war/search-page.jsp";
+                                window.open(url);
+                            } else
+                                alert('ERRORE');
+                        });
                 /*
                  var annuncio = annunci[k];
                  console.log(annuncio);
