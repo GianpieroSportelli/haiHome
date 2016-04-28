@@ -23,7 +23,7 @@
         <div>
             <div class="form-group" id="prezzoAppartamento" hidden>
             <label class="control-label">Prezzo Appartamento</label>
-            <input name = 'prezzoA' type="number" required="required" class="form-control" /><br />
+            <input id = 'prezzoA' name = 'prezzoA' type="number" required="required" class="form-control" /><br />
             <input name='compresoCondominioA' type="checkbox"  value="true">Compreso Condominio<br>
             <input name='compresoRiscaldamentoA' type="checkbox"  value="true">Compreso Riscaldamento<br>
             
@@ -37,7 +37,7 @@
 
 
 
-        <button id="submitButtom" class="btn btn-success btn-lg pull-right" data-toggle="modal" data-target="#myModal">Conferma</button>
+            <button id="submitButtom" class="btn btn-success btn-lg pull-right" > Conferma</button>
         </form>
     </div>
 </div>
