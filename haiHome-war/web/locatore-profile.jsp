@@ -70,8 +70,14 @@
     <body>
         <%@include file="/header.jsp" %>
 
-        <div id="user-access" style="display:none"><%= session.getAttribute("user-access")%></div>
-
+        <!-- l'html è bello! imparalo NOW -->
+        <div> <!--style="display:none"> -->
+            <div id="user-access"><%= session.getAttribute("user-access")%></div>
+            <div id="annunci-length"><%= session.getAttribute("num-annunci") %></div>
+            <div id="visibili-length"><%= session.getAttribute("num-visibili") %></div>
+            <div id="archiviati-length"><%= session.getAttribute("num-archiviati") %></div>
+            <div id='annunci_x_pagina'></div>
+        </div>
 
         <div class="container">
             <div class="row profile">
@@ -118,9 +124,9 @@
                                         I tuoi annunci
                                     </a>
                                 </li>
-                                <li><a href="#filtri" data-toggle="tab">
+                                <li><a href="#archivio" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
-                                        Boh
+                                        Archivio annunci
                                     </a>
                                 </li>
                             </ul>
@@ -196,10 +202,37 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="annunci">
-                            <!-- contenuto caricato tramite ajax -->
+                            <div style="display:block">
+                                <a href="Annunci_JSP/InserimentoAnnunci.jsp" class="btn btn-primary">
+                                    Inserisci nuovo annuncio
+                                </a>
+                            </div>
+                            <div id="annunci-content">
+                                <!-- contenuto caricato tramite ajax -->
+                            </div>
+                            <div>
+                                <a href='#0' id='prev_page' class="btn">
+                                    <span class='glyphicon glyphicon-menu-left'></span>
+                                </a>
+                                <span id="num_page">1</span>
+                                <a href='#0' id='next_page' class="btn">
+                                    <span class='glyphicon glyphicon-menu-right'></span>
+                                </a>
+                            </div>
                         </div>
-                        <div class="tab-pane fade" id="filtri">
-                            Tab random
+                        <div class="tab-pane fade" id="archivio">
+                            <div id="archivio-content">
+                                <!-- contenuto caricato tramite ajax -->
+                            </div>
+                            <div>
+                                <a href='#0' id='archivio_prev_page' class="btn">
+                                    <span class='glyphicon glyphicon-menu-left'></span>
+                                </a>
+                                <span id="archivio_num_page">1</span>
+                                <a href='#0' id='archivio_next_page' class="btn">
+                                    <span class='glyphicon glyphicon-menu-right'></span>
+                                </a>
+                            </div>
                         </div>
                     </div> 
                 </div>  

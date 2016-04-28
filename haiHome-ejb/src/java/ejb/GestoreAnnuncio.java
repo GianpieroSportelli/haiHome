@@ -60,11 +60,6 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     // "Insert Code > Add Business Method")
     private Annuncio annuncio;
 
-    private final String photoFolderPath = "//Users//giacomocavallo//NetBeansProjects//ProgettoSSCSWeb//haiHome//haiHome-war//web//Immagini//AppPhoto//";
-
-    private final String pathProva = "//Users//giacomocavallo//Desktop//foto//";
-    
-    private final String pathPtova2 = "//Users//giacomocavallo//NetBeansProjects//ProgettoSSCSWeb//haiHome//haiHome-war//ImmaginiApp//";
     //serve come passo inziale dell'inserimento dell'annuncio, inserisce solo
     //il Locatore
     @Override
@@ -104,6 +99,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         System.out.println(idLocatore.toString());
         Locatore l = locatoreFacade.find(idLocatore);
         this.annuncio.setLocatore(l);
+        checkPhotoFolder();
         return l != null;
     }
 
@@ -137,7 +133,10 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto) {
         this.annuncio.setDescrizione(descrizione);
-        this.annuncio.setMetratura(metratura);
+        if (metratura != 0) {
+            this.annuncio.setMetratura(metratura);
+        }
+        
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
         this.annuncio.setListaStanza(new ArrayList<>());
         return true;
@@ -248,9 +247,21 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
 
         for (int i = 0; i < this.annuncio.getListaStanza().size(); i++) {
 
-            if (((List<Stanza>) this.annuncio.getListaStanza()).get(i) instanceof StanzaInAffitto) {
+            Stanza s = ((List<Stanza>) this.annuncio.getListaStanza()).get(i);
+            Collection<String> foto = s.getFoto();
+            ArrayList<String> tempFoto = new ArrayList();
+            String newFotoPath = PathUtily.getPhotoPath() + annuncio.getLocatore().getId();
+           
+            for (String f : foto) {
+                
+                tempFoto.add(f.replace("_temp_",""));
+            }
+
+            s.setFoto(tempFoto);
+
+            if (s instanceof StanzaInAffitto) {
                 stanzaInAffittoFacade.create((StanzaInAffitto) ((List<Stanza>) this.annuncio.getListaStanza()).get(i));
-            } else if (((List<Stanza>) this.annuncio.getListaStanza()).get(i) instanceof StanzaAccessoria) {
+            } else if (s instanceof StanzaAccessoria) {
                 stanzaAccessoriaFacade.create((StanzaAccessoria) ((List<Stanza>) this.annuncio.getListaStanza()).get(i));
             } else {
                 return false;
@@ -264,6 +275,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             System.out.println("Id:" + s.getId());
 
         }
+        changeNameFolder();
 
         annuncioFacade.create(this.annuncio);
 
@@ -505,32 +517,42 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public String persistiFoto(InputStream fotoStream, String nomePhoto, String denominazioneLocatore, String denominazioneStanza) {
 
-        String pathStanza = PathUtily.getSavePhotoPath() /* + denominazioneStanza*/;
+        String pathFoto = PathUtily.getPhotoPath() + annuncio.getLocatore().getId();
 
-        
-        //creo cartella riferita alla stanza se non esiste
-        /*
-        File cartellaStanza = (new File(pathStanza));
+        String pathTempFoto = PathUtily.getPhotoPath() + denominazioneLocatore + "//_temp_";
+
+        File cartellaStanza = (new File(pathFoto));
         if (!cartellaStanza.exists()) {
             cartellaStanza.mkdir();
         }
-        */
-        String pathFoto = /*cartellaStanza.getAbsolutePath()*/ pathStanza + nomePhoto;
+
+        File cartellaTemp = (new File(pathTempFoto));
+        if (!cartellaTemp.exists()) {
+            cartellaTemp.mkdir();
+        } else {
+
+        }
+
+        Date d = new Date();
+
+        String est = nomePhoto.substring(nomePhoto.length() - 3);
+
+        String photoName = denominazioneLocatore + d.getTime() + "." + est;
+
+        pathFoto = pathTempFoto + "//" + photoName;
 
         try {
             try (FileOutputStream tempFile = new FileOutputStream(pathFoto)) {
                 int read;
-                
-                
+
                 final byte[] bytes = new byte[1024];
                 while ((read = fotoStream.read(bytes)) != -1) {
                     tempFile.write(bytes, 0, read);
                 }
-                
+
                 tempFile.close();
                 fotoStream.close();
             }
-            
 
         } catch (FileNotFoundException ex) {
 
@@ -539,8 +561,71 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             Logger.getLogger(GestoreAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
-        return PathUtily.getPhotoPath() + nomePhoto;
+        return pathFoto;
     }
+
+    private boolean changeNameFolder() {
+        boolean result = true;
+
+        //path temporaneo
+        String pathTempFoto = PathUtily.getPhotoPath() + annuncio.getLocatore().getId() + "//_temp_";
+        File cartellaTemp = (new File(pathTempFoto));
+
+        //path reale
+        String pathFoto = PathUtily.getPhotoPath() + annuncio.getLocatore().getId();
+        //File cartellaFoto = (new File(pathFoto));
+
+        if (cartellaTemp.exists()) {
+            String[] contenuto = cartellaTemp.list();
+            for (int i = 0; i < contenuto.length; i++) {
+                System.out.println("Nome file contenuto nella cartella " + contenuto[i]);
+                File oldFoto = (new File(pathTempFoto + "//" + contenuto[i]));
+                File newFoto = (new File(pathFoto + "//" + contenuto[i]));
+                try {
+                    PathUtily.spostaFoto(oldFoto, newFoto);
+
+                } catch (IOException ex) {
+                    System.out.println("Erroreeee");
+
+                    Logger.getLogger(GestoreAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
+
+            }
+
+        }
+
+        return result;
+    }
+
+    private void checkPhotoFolder() {
+
+        String pathTempFoto = PathUtily.getPhotoPath() + annuncio.getLocatore().getId() + "//_temp_";
+
+        File cartellaTemp = (new File(pathTempFoto));
+
+        if (cartellaTemp.exists()) {
+            String[] contenuto = cartellaTemp.list();
+            for (int i = 0; i < contenuto.length; i++) {
+                File f = new File(pathTempFoto + "//" + contenuto[i]);
+                f.delete();
+            }
+        }
+
+    }
+
+    @Override
+    public boolean svuotaStante() {
+        boolean result = this.annuncio.getListaStanza().isEmpty();
+        this.annuncio.setListaStanza(new ArrayList<>());
+        return result;
+    }
+
+    @Override
+    public Annuncio getAnnuncioByID(long oid) {
+        Annuncio ann = this.annuncioFacade.find(oid);
+        return ann;
+    }
+   
 
 }

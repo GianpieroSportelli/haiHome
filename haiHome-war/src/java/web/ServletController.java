@@ -125,9 +125,9 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletCitta").forward(request, response);
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
-            }
-            
-            else {
+            } else if (action.equalsIgnoreCase("studente-addAnnuncio")) {
+                request.getRequestDispatcher("/ServletStudente").forward(request, response);
+            } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }

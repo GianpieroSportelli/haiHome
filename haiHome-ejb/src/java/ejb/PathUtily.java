@@ -5,6 +5,14 @@
  */
 package ejb;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  *
  * @author giacomocavallo
@@ -18,6 +26,7 @@ public class PathUtily {
     private static final String GiacomoPath = "//Users//giacomocavallo//Desktop//foto//";
     private static final String GianpieroPath ="C:\\Users\\SPORT\\Pictures\\haiHome!!\\";
     private static final String EugenioPath = "C://Users//Eugenio Liso//Desktop//foto//";
+    private static final String NicolaPath = "C:\\Users\\nicol\\Documents\\imgHaiHome\\"; 
     private static final String GiacomoPath2 = "//Users//giacomocavallo//NetBeansProjects//ProgettoSSCSWeb//haiHome//haiHome-war//ImmaginiApp//";
     
     private static final String pathInternoS = "//Users//giacomocavallo//NetBeansProjects//ProgettoSSCSWeb//haiHome//haiHome-war//web//Immagini//AppPhoto//";
@@ -28,11 +37,41 @@ public class PathUtily {
             
             
     public static String getSavePhotoPath(){
-        return GiacomoPath2;
+        return NicolaPath;
     }
     
     public static String getPhotoPath(){
-        return GiacomoPath;
+        return NicolaPath;
     }
+    
+    public static boolean spostaFoto(File sorgente, File destinazione) throws FileNotFoundException, IOException{
+        
+        InputStream inStream = new FileInputStream(sorgente);
+	FileOutputStream outStream = new FileOutputStream(destinazione);
+        
+         byte[] buffer = new byte[1024];
+    		
+    	    int length;
+    	    //copy the file content in bytes 
+    	    while ((length = inStream.read(buffer)) > 0){
+    	  
+    	    	outStream.write(buffer, 0, length);
+    	 
+    	    }
+    	 
+    	    inStream.close();
+    	    outStream.close();
+    	    
+    	    //delete the original file
+    	    sorgente.delete();
+        
+        
+        
+        
+        
+        return true;
+    }
+
+
     
 }

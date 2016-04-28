@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.Annuncio;
 import entity.FiltroDiRicerca;
 import entity.Studente;
 import facade.StudenteFacadeLocal;
@@ -20,10 +21,13 @@ import org.json.JSONObject;
  */
 @Stateful
 public class GestoreStudente implements GestoreStudenteLocal {
-    
+
     @EJB
     private StudenteFacadeLocal studenteFacade;
-    
+
+    @EJB
+    private GestoreAnnuncioLocal gestoreAnnuncio;
+
     private Studente studente = null;
 
     // Add business logic below. (Right-click in editor and choose
@@ -54,12 +58,12 @@ public class GestoreStudente implements GestoreStudenteLocal {
             return true;//tutto ok
         }
     }
-    
+
     @Override
     public List<String> getStudenti() {
         List<Studente> listaStudenti = studenteFacade.findAll();
         List<String> result = new ArrayList<>();
-        
+
         for (Studente s : listaStudenti) {
             result.add(s.toString());
         }
@@ -70,7 +74,7 @@ public class GestoreStudente implements GestoreStudenteLocal {
     //Se è loggato, allora l'oggetto studente sarà avvalorato e quindi non ha 
     @Override
     public boolean removeStudente() {
-        
+
         if (studente == null) {
             return false;
         }
@@ -89,7 +93,7 @@ public class GestoreStudente implements GestoreStudenteLocal {
     @Override
     public boolean checkStudente(String email) {
         List<Studente> listaStudenti = studenteFacade.findAll();
-        
+
         for (Studente s : listaStudenti) {
             if (s.getEmail().compareToIgnoreCase(email) == 0) {
                 //ho trovato uno studente duplicato
@@ -100,12 +104,12 @@ public class GestoreStudente implements GestoreStudenteLocal {
         }
         return false;
     }
-    
+
     @Override
     public JSONObject toJSON() {
         return this.studente.toJSON();
     }
-    
+
     @Override
     public Studente getStudente() {
         return this.studente;
@@ -122,24 +126,24 @@ public class GestoreStudente implements GestoreStudenteLocal {
         Studente s = studenteFacade.find(Long.valueOf(id));
         return s;
     }
-    
+
     @Override
     public boolean reloadStudente() {
         Studente newStudente = studenteFacade.find(this.getStudente().getId());
-        
+
         if (newStudente == null) {
             return false; //Non ho trovato l'ID
         } else {
             this.studente = newStudente;
             return true;
         }
-        
+
     }
-    
+
     @Override
     public boolean addFiltroStudente(String id, FiltroDiRicerca filtro) {
         Studente stud = studenteFacade.find(Long.valueOf(id));
-        
+
         if (stud == null) {
             return false;
         }
@@ -147,16 +151,38 @@ public class GestoreStudente implements GestoreStudenteLocal {
         studenteFacade.edit(stud);
         return true;
     }
-    
+
     @Override
     public boolean removeFiltroStudente(String id, FiltroDiRicerca filtro) {
         Studente stud = studenteFacade.find(Long.valueOf(id));
-        
+
         if (stud == null) {
             return false;
         }
         stud.deleteFiltro(filtro);
         studenteFacade.edit(stud);
+        return true;
+    }
+
+    @Override
+    public boolean addAnnuncio(String id) {
+        Annuncio a = this.gestoreAnnuncio.getAnnuncioByID(Long.parseLong(id));
+
+        for (Annuncio aTemp : this.studente.getListaAnnunciPreferiti()) {
+            if (aTemp.getId().toString().equalsIgnoreCase(id)) {
+                return false;
+            }
+        }
+        this.studente.addAnnuncio(a);
+        studenteFacade.edit(this.studente);
+        return true;
+    }
+
+    @Override
+    public boolean removeAnnuncio(String id) {
+        Annuncio a = this.gestoreAnnuncio.getAnnuncioByID(Long.valueOf(id));
+        this.studente.deleteAnnuncio(a);
+        studenteFacade.edit(this.studente);
         return true;
     }
 }

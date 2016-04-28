@@ -11,7 +11,10 @@
 
 
 $(document).ready(function () {
-
+    
+     $("#myModal").on('hide.bs.modal', function () {
+            $("#modalBody").empty();
+        });
 
 
 
@@ -160,7 +163,9 @@ $(document).ready(function () {
                     
                     //initialize(response);
                     //$("#dettagli-page").append("<img src=\"images/bg.jpg\" id=\"bg\" alt=\"\">");
+                    
                     $("#modalBody").append(create_Page(response));
+                    
                     loadAllfoto();
 
 
@@ -205,6 +210,8 @@ function sendInitialRequest() {
             alert("Chiamata fallita, si prega di riprovare...");
         }
     });
+    
+    leggi_quartieri();
 
 }
 
@@ -253,23 +260,83 @@ function validateForm(buttonForm) {
     var curStep = buttonForm.closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
             nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-            curInputs = curStep.find("input[type='text'],input[type='url'],textarea"),
+            curInputs = curStep.find("input[type='text'],input[type='url'],input[type='number'],input[type='date'],textarea"),
+            myDropzone = curStep.find("div.dropzone"),
             isValid = true;
     console.log("Contenitore form " + curStep.attr("id"));
 
     $(".form-group").removeClass("has-error");
     for (var i = 0; i < curInputs.length; i++) {
-        if (!curInputs[i].validity.valid) {
+        console.log("Oggetto da controllare id: " + curInputs.attr("id"));
+        if (!curInputs[i].validity.valid || curInputs[i].validity.typeMismatch) {
             console.log("Dati non Validi");
             isValid = false;
             $(curInputs[i]).closest(".form-group").addClass("has-error");
         }
     }
-
+    
+    //aggiunta controllo dropzone
+    console.log("Numero di dropzone " + myDropzone.length);
+    for (var i = 0; i < myDropzone.length; i++) {
+        console.log("Dropzone da controllare id: " + $(myDropzone).attr("id"));
+        if(!$(myDropzone[i]).hasClass("dz-started")){
+            console.log("Dati non Validi");
+            isValid = false;
+            var message = $(myDropzone[i]).find("div.dz-message");
+            /*
+            $(myDropzone[i]).css({
+                "border-color": '#FF0000'
+            });*/
+            message.empty();
+            message.css({
+                "color": '#FF0000'
+            });
+            message.append("Inserire o trascinare almeno una foto");
+        }
+    }
+    //fine aggiunta controllo dropzone
+    
     if (isValid) {
         nextStepWizard.removeAttr('disabled').trigger('click');
     }
     return isValid;
+
+}
+
+function rendiAnnuncioPersistente(){
+    
+        $.ajax({
+        type: "POST",
+        url: "../ServletAnnuncio",
+        data: "action=Annunci-newAnnuncio-persisti",
+        dataType: "text",
+        success: function (msg)
+        {
+            if(msg==="OK"){
+                alert("ANNUNCIO PERSISTITO!!!");
+            }else{
+                alert("ANNUNCIO NON PERSISTITO");
+            }
+        },
+        error: function ()
+        {
+            alert("ERRORE NELLA SERVLET");
+        }
+    });
+    
+}
+
+function leggi_quartieri() {
+    $.post("../ServletAnnuncio",
+            {action: "Annunci-newAnnuncio-getQuartieri"},
+            function (responseJson) {
+                var html = '';
+                $.each(responseJson, function (index, item) {
+                    html = '<option id=\"' + item + '\" value=\"' + item + '\">' + item + '</option>';
+                    $("#selQuartiere").append(html);
+                });
+    
+            });
 
 }
 
