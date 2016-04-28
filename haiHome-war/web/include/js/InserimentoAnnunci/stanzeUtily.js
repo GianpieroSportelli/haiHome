@@ -8,7 +8,8 @@
 // variabili globali
 
 var numStanze = 0;
-var PrezzoStanzaHTML ="<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
+var contatoreStanze = 0;
+var PrezzoStanzaHTML = "<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
             <div class=\"col-md-6\">\n\
                 <input type=\"hidden\" name=\"idStanza\" value=\"$__$\" />\n\
                 <label class=\"control-label\">Tipo: </label> <label class=\"control-label\">&_tipo&</label><br />\n\
@@ -27,20 +28,20 @@ var dropzones = new Array();
 var dropzoneMaps = new Map();
 
 //aggiunge un elemento all'arrey delle dropzone
-function addDropzoneStanza(dz, i){
-        dropzones[i-1] = dz;
-        var key = "Stanza" + i;
-        dropzoneMaps.set(key,dz);
+function addDropzoneStanza(dz, i) {
+    dropzones[i - 1] = dz;
+    var key = "Stanza" + i;
+    dropzoneMaps.set(key, dz);
 }
 
 //aggiunge un elemento all'arrey delle form
 /*function addFormStanza(fs, i){
-stanzeForms[i] = fs;
-}*/
+ stanzeForms[i] = fs;
+ }*/
 
 //restituisce il temlate HTML del prezzo stanza
-function getPrezzoStanzaHTMLCode(){
-return PrezzoStanzaHTML;
+function getPrezzoStanzaHTMLCode() {
+    return PrezzoStanzaHTML;
 }
 
 
@@ -49,41 +50,29 @@ var submitButton2 = document.querySelector("button#buttStanze");
 var submitFormButton = document.querySelector("button#buttStanze2");
 
 
-        
 
 
 
-function nuovaStanza1(){
+
+function nuovaStanza1() {
     numStanze++;
     var stanzaCode = getStanzaHTMLCode(numStanze);
     $(stanzaCode).appendTo("#contenitoreStanze");
     var myDropzone = new Dropzone("div#mydropzone" + numStanze,
-        {
-        // Prevents Dropzone from uploading dropped files immediately
-        autoProcessQueue: false,
-        url: "../ServletAnnuncio",
-        parallelUploads: 100,
-        uploadMultiple: true,
-        paramName: "file[]",
-        addRemoveLinks: true});
+            {
+                // Prevents Dropzone from uploading dropped files immediately
+                autoProcessQueue: false,
+                url: "../ServletAnnuncio",
+                parallelUploads: 100,
+                uploadMultiple: true,
+                paramName: "file[]",
+                addRemoveLinks: true});
     addDropzoneStanza(myDropzone, numStanze);
-
     
-    /*
-    //submit delle form delle stanze   
-    myForm.on('submit', function (e) {
-        //alert("Entro nella submit della form id: " + myForm.attr("id"));
-        e.preventDefault();
-        myForm.ajaxSubmit({
-            dataType: "text",
-            
-            //data:"numStanza="+numStanze,
-            success: function (response) {
-                generateCostiForm();
-                console.log(response);
-                }
-            });
-    });*/
+    contatoreStanze++;
+
+
+
 }
 
 
@@ -95,7 +84,7 @@ function validateFormStanze(butt) {
     var curStep = butt.closest(".setup-content");
     var curStepBtn = curStep.attr("id");
     var nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-    isValid = true;
+            isValid = true;
     if (isValid) {
         nextStepWizard.removeAttr('disabled').trigger('click');
     }
@@ -107,76 +96,109 @@ function validateFormStanze(butt) {
 
 
 //elimina una stanza
-function eliminaStanza(num){
-$("div#Stanza" + num).remove();
-        dropzones[num - 1] = null;
-        var key = "Stanza" + num;
-        dropzoneMaps.delete(key);
+function eliminaStanza(num) {
+    $("div#Stanza" + num).remove();
+    dropzones[num - 1] = null;
+    var key = "Stanza" + num;
+    dropzoneMaps.delete(key);
+    contatoreStanze--;
 }
 
 
 //permette di cambiare specifiche sul prezzo (Prezzo intero Appartamento - Prezzo singole Stanze)
-function cambiaSpecifiche(){
-console.log("--------------------------------------");
-        console.log("Cambio Specifiche Prezzo");
-        $("option#nothing").remove();
-        var value = $("#costi option:selected").val();
-        console.log(value);
-        if (value == 1){
-console.log("Prezzo Appartamento");
-        $("div#prezzoStanze").hide();
-        $("div#prezzoAppartamento").show();
-} else{
-console.log("Prezzo Stanze");
-        $("div#prezzoAppartamento").hide();
-        $("div#prezzoStanze").show();
-}
+function cambiaSpecifiche() {
+    console.log("--------------------------------------");
+    console.log("Cambio Specifiche Prezzo");
+    $("option#nothing").remove();
+    var value = $("#costi option:selected").val();
+    var prezzoStanze = $("div#prezzoStanze");
+    var prezzoAppartamento = $("div#prezzoAppartamento");
+    
+    console.log(value);
+    if (value == 1) {
+        console.log("Prezzo Appartamento");
+        prezzoStanze.hide();
+        prezzoAppartamento.show();
+
+        $("input#prezzoA").attr("required", "required");
+        $("input#prezzoA").attr("type", "number");
+
+        
+        
+/*
+        $(".prezzoStanza").each(function (index) {
+            console.log(index + ": " + $(this).text());
+            
+        });*/
+
+        var numericInput = prezzoStanze.find("input.prezzoStanza");
+
+        for (var i = 0; i < numericInput.length; i++) {
+            console.log("Id input " + $(numericInput[i]).attr("id"));
+            $(numericInput[i]).removeAttr("required");
+            $(numericInput[i]).removeAttr("type");
+        }
+
+    } else {
+        console.log("Prezzo Stanze");
+        prezzoAppartamento.hide();
+        prezzoStanze.show();
+
+        $("input#prezzoA").removeAttr("required");
+        $("input#prezzoA").removeAttr("type");
+        var numericInput = prezzoStanze.find("input.prezzoStanza");
+
+        for (var i = 0; i < numericInput.length; i++) {
+            $(numericInput[i]).attr("required", "required");
+            $(numericInput[i]).attr("type", "number");
+        }
+    }
 }
 
 //permette di cambiare le specifiche relative alla stanza (Stanza Accessoria - Stanza da Letto)
-function cambiaSpecificheTipologiaStanza(id){
-console.log("--------------------------------------");
-        console.log("Cambio specifiche Tipologia Stanza");
-        console.log("ID Stanza " + id);
-        //prendo la stanza
-        var stanza = $("#" + id);
-        //leggo il contenuto della select Tipologia Stanza
-        var value = stanza.contents().find("#selStanza option:selected").val();
-        //se è una stanza da letto
-        if (value == 1){
-console.log("stanza da letto " + value);
+function cambiaSpecificheTipologiaStanza(id) {
+    console.log("--------------------------------------");
+    console.log("Cambio specifiche Tipologia Stanza");
+    console.log("ID Stanza " + id);
+    //prendo la stanza
+    var stanza = $("#" + id);
+    //leggo il contenuto della select Tipologia Stanza
+    var value = stanza.contents().find("#selStanza option:selected").val();
+    //se è una stanza da letto
+    if (value == 1) {
+        console.log("stanza da letto " + value);
         stanza.contents().find("select#seltipoLetto").show();
         stanza.contents().find("select#seltipoAcc").hide();
-}
+    }
 //se è una stanza accessoria
-else{
-console.log("stanza accessoria");
+    else {
+        console.log("stanza accessoria");
         stanza.contents().find("select#seltipoLetto").hide();
         stanza.contents().find("select#seltipoAcc").show();
-}
+    }
 
 }
 
 /* da permettere la modifica del tipo stanza in seguito alla selezione (vecchio) DA ELIMINARE*/
-function cambiaCameraSpecifiche(){
-console.log("random");
-        var value = $("#selStanza option:selected").val();
-        console.log(value);
-        if (value == 1){
-console.log("ciao");
+function cambiaCameraSpecifiche() {
+    console.log("random");
+    var value = $("#selStanza option:selected").val();
+    console.log(value);
+    if (value == 1) {
+        console.log("ciao");
         $("div#prezzoStanze").hide();
         $("div#prezzoAppartamento").show();
-} else{
-console.log("ciao");
+    } else {
+        console.log("ciao");
         $("div#prezzoAppartamento").hide();
         $("div#prezzoStanze").show();
-}
+    }
 }
 
 //restituisce il codice HTML della stanza
-function getStanzaHTMLCode(number){
-var StanzaCode =
-        "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
+function getStanzaHTMLCode(number) {
+    var StanzaCode =
+            "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
     <div class=\"form-group col-md-6\">\n\
         <div class=\"form-group\">\n\
             <label class=\"control-label\">Stanza</label>\n\
@@ -213,8 +235,8 @@ var StanzaCode =
     </div>\n\
 </div>";
     //    <form action=\"../ServletAnnuncio\" method=\"post\" id=\"formStanza" + number + "\">\n\ </form>
-        var StanzaCode2 =
-        "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
+    var StanzaCode2 =
+            "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
         <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
         <div class=\"form-group col-md-6\">\n\
             <div class=\"form-group\">\n\
@@ -251,80 +273,96 @@ var StanzaCode =
     </div>\n\
     </div>\n\
 </div>";
-        return StanzaCode2;
+    return StanzaCode2;
 }
 
 
-function sendData(){
+function sendData() {
     var myRequest = new XMLHttpRequest();
     var url = "../ServletAnnuncio";
-    var method ="post";
-    
-    myRequest.onreadystatechange = function() {
-    if (myRequest.readyState === XMLHttpRequest.DONE) {
-        console.log("tutto OK");
-        
-        $('form#formStanze').ajaxSubmit({
+    var method = "post";
+
+    myRequest.onreadystatechange = function () {
+        if (myRequest.readyState === XMLHttpRequest.DONE) {
+            console.log("tutto OK");
+
+            $('form#formStanze').ajaxSubmit({
                 dataType: "text",
                 success: function (response) {
                     console.log(response);
                 }
             });
-    }
-};
+        }
+    };
 
     myRequest.open(method, url, false);
-    
+
     var formData = new FormData();
 
-    
-    for(var key of dropzoneMaps.keys()){
-            
-           
-            var files = dropzoneMaps.get(key).getQueuedFiles();
-            console.log("Coda file numero "+ key + " " + files.toString());
-            
-            for(var j=0;j<files.length;j++){
-                formData.append(key, files[j]);
-                
-            }
-        
+
+    for (var key of dropzoneMaps.keys()){
+
+
+        var files = dropzoneMaps.get(key).getQueuedFiles();
+        console.log("Coda file numero " + key + " " + files.toString());
+
+        for (var j = 0; j < files.length; j++) {
+            formData.append(key, files[j]);
+
+        }
+
 
     }
-    myRequest.setRequestHeader("action","action");
-    
+    myRequest.setRequestHeader("action", "action");
+
     myRequest.send(formData);
+
+}
+
+function numeroDiStanzeValide(){
     
+    return contatoreStanze != 0;
 }
 
 
-$(document).ready(function(){
+$(document).ready(function () {
 
-submitButton2.addEventListener("click", function() {
-    var butt = $("button#buttStanze");
-    var datiValidi = validateForm(butt);;
-    console.log("Dati validi: " + datiValidi)
-    if (datiValidi){
+    submitButton2.addEventListener("click", function () {
+        var butt = $("button#buttStanze");
         
-        sendData();
-        generateCostiForm();
+        var stanzeValide = numeroDiStanzeValide();
         
+        console.log("Stanze valide : " + stanzeValide);
+        if(stanzeValide){
+            var datiValidi = validateForm(butt);
+            console.log("Dati validi: " + datiValidi);
+           if ((datiValidi && stanzeValide)) {
+
+            sendData();
+            generateCostiForm();
+
+
+        }
         
-    } else{
+        }else{
+            alert("INSERISCI ALMENO UNA STANZA");
+        }
         
-    }
-});
+ 
+    });
+    
+    
 
 //prova attuale
-/*)
-submitFormButton.addEventListener("click", function() {
-    $('form#formStanze').ajaxSubmit({
-                dataType: "text",
-                success: function (response) {
-                    console.log(response);
-                }
-            });
-});*/
+    /*)
+     submitFormButton.addEventListener("click", function() {
+     $('form#formStanze').ajaxSubmit({
+     dataType: "text",
+     success: function (response) {
+     console.log(response);
+     }
+     });
+     });*/
 
 
 
