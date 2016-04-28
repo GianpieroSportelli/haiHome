@@ -60,12 +60,9 @@
 
         <script type="text/javascript" src="include/js/locatore-profile.js"></script>
 
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-        </style>
+        <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
+        <script src="include/js/login/ajax_req_and_stuff.js"></script>
+
     </head>
     <body>
         <%@include file="/header.jsp" %>

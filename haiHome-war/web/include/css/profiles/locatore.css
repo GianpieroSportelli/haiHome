@@ -53,6 +53,11 @@ a:link:hover, a:visited:hover {
     display: block; 
 } 
 
+.link-annuncio {
+    float: right;
+    display: block;  
+}
+
 .trow {
     display: block; 
     clear: right;
