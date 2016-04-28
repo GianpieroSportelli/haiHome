@@ -71,12 +71,11 @@
         <%@include file="/header.jsp" %>
 
         <!-- l'html è bello! imparalo NOW -->
-        <div> <!--style="display:none"> -->
+        <div style="display:none"> 
             <div id="user-access"><%= session.getAttribute("user-access")%></div>
-            <div id="annunci-length"><%= session.getAttribute("num-annunci") %></div>
-            <div id="visibili-length"><%= session.getAttribute("num-visibili") %></div>
-            <div id="archiviati-length"><%= session.getAttribute("num-archiviati") %></div>
-            <div id='annunci_x_pagina'></div>
+            <div id="annunci-length"><%= session.getAttribute("num-annunci")%></div>
+            <div id="visibili-length"><%= session.getAttribute("num-visibili")%></div>
+            <div id="archiviati-length"><%= session.getAttribute("num-archiviati")%></div>
         </div>
 
         <div class="container">
@@ -108,8 +107,6 @@
                                 </span> --%>
                             </div>
                         </div>
-
-
 
                         <div class="profile-usermenu"> <!-- required for floating -->
                             <!-- Nav tabs -->
@@ -211,13 +208,20 @@
                                 <!-- contenuto caricato tramite ajax -->
                             </div>
                             <div>
-                                <a href='#0' id='prev_page' class="btn">
-                                    <span class='glyphicon glyphicon-menu-left'></span>
-                                </a>
-                                <span id="num_page">1</span>
-                                <a href='#0' id='next_page' class="btn">
-                                    <span class='glyphicon glyphicon-menu-right'></span>
-                                </a>
+                                <ul class="pager">
+                                    <li>
+                                        <a href='#0' id='prev_page'>
+                                            Prev<!--<span class='glyphicon glyphicon-menu-left'></span>-->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span id="num_page">1</span></li>
+                                    <li>
+                                        <a href='#0' id='next_page'>
+                                            Next<!--<span class='glyphicon glyphicon-menu-right'></span>-->
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="archivio">
@@ -225,13 +229,28 @@
                                 <!-- contenuto caricato tramite ajax -->
                             </div>
                             <div>
+                                <ul class="pager">
+                                    <li>
+                                        <a href='#0' id='archivio_prev_page'>
+                                            Prev
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span id="archivio_num_page">1</span>
+                                    <li>
+                                        <a href='#0' id='archivio_next_page'>
+                                            Next
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!--
                                 <a href='#0' id='archivio_prev_page' class="btn">
                                     <span class='glyphicon glyphicon-menu-left'></span>
                                 </a>
                                 <span id="archivio_num_page">1</span>
                                 <a href='#0' id='archivio_next_page' class="btn">
                                     <span class='glyphicon glyphicon-menu-right'></span>
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div> 
