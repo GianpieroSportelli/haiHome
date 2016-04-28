@@ -11,6 +11,7 @@ import facade.LocatoreFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.*;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import org.json.JSONObject;
@@ -143,11 +144,37 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
             rendiModifichePersistenti();
         }
     }
-    
-    
+
     @Override
     public Collection<Annuncio> getAnnunci() {
-        return this.locatore.getListaAnnunci(); 
+        return this.locatore.getListaAnnunci();
+    }
+
+    @Override
+    public List<Annuncio> getAnnunciVisibili() {
+        List<Annuncio> res = new ArrayList<Annuncio>(); 
+        
+        for (Annuncio a: this.locatore.getListaAnnunci()) {
+            if (!a.isArchiviato())
+                res.add(a); 
+        }
+        
+        return res;
+    }
+
+    @Override
+    public List<Annuncio> getAnnunciArchiviati() {
+        List<Annuncio> res = new ArrayList<Annuncio>(); 
+        
+        for (Annuncio a: this.locatore.getListaAnnunci()) {
+            if (a.isArchiviato())
+                res.add(a); 
+        }
+        
+        return res; 
+        /*
+        Stream<Annuncio> result = this.getAnnunci().stream().filter(p -> p.isArchiviato());
+        return result.collect(Collectors.toList()); */
     }
 
     @Override

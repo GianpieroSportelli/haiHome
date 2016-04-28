@@ -9,12 +9,17 @@ import ejb.GestoreLocatoreLocal;
 import entity.Annuncio;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONException;
 import org.json.JSONObject;
 import verifytoken.Verify;
 
@@ -116,9 +121,9 @@ public class ServletLocatore extends HttpServlet {
                     //            String email = verify[1];
                     String email = request.getParameter("email");
                     String url_img = request.getParameter("url-profile-img");// + "?sz=200";
-                    
-                    String img = request.getParameter("url-profile-img").split("sz=")[0] + "sz=200" ;
-                    
+
+                    String img = request.getParameter("url-profile-img").split("sz=")[0] + "sz=200";
+
                     System.out.println("Sono qui: " + img);
 
                     if (!gestoreLocatore.checkLocatore(email)) {
@@ -126,7 +131,7 @@ public class ServletLocatore extends HttpServlet {
                     } else {
                         gestoreLocatore.modificaAvatarByURL(img);
                     }
-                    
+
                     instantiate_session(session, "g+");
                     getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
@@ -147,37 +152,38 @@ public class ServletLocatore extends HttpServlet {
                 gestoreLocatore.modificaInfoProfilo(phone, descrizione);
                 //refresh sessione
                 session.setAttribute("user-data", this.gestoreLocatore.toJSON());
-                
+
                 if (gestoreLocatore.getAnnunci() != null) {
                     System.out.println("ZAN ZAN ZAN!!!");
                     System.out.println("Numero annunci: " + gestoreLocatore.getAnnunci().size());
-                    for (Annuncio a: gestoreLocatore.getAnnunci()) {
+                    for (Annuncio a : gestoreLocatore.getAnnunci()) {
                         System.out.println(a.toJSON().toString());
                     }
-                }
-                else {
-                    System.out.println("NULLLLLL"); 
+                } else {
+                    System.out.println("NULLLLLL");
                 }
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write(res ? "ok" : "no");
-            }
-            else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
-                String results = "";
-                int i = 1; 
-                
-                for (Annuncio a: gestoreLocatore.getAnnunci()) {
-                    JSONObject json = a.toJSON();
-                    
-                    results += "Annuncio " + i++ + "</br>";
-                    results += json.toString() + "</br>";
-                }
-               
-                
-                response.setContentType("text/plain");
+            } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
+                int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
+                int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
+
+                String html = this.getPage(gestoreLocatore.getAnnunciVisibili(), NUM_ANNUNCI_X_PAGE, requested_page);
+
+                response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(results); 
+                response.getWriter().write(html);
+            } else if (action.equalsIgnoreCase("locatore-getArchivioAnnunci")) {
+                int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
+                int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
+
+                String html = this.getPage(gestoreLocatore.getAnnunciArchiviati(), NUM_ANNUNCI_X_PAGE, requested_page);
+
+                response.setContentType("text/html");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(html);
             }
         }
     }
@@ -186,6 +192,42 @@ public class ServletLocatore extends HttpServlet {
         session.setAttribute("user-access", user_access);
         session.setAttribute("user-type", "locatore");
         session.setAttribute("user-data", this.gestoreLocatore.toJSON());
+        session.setAttribute("num-annunci", this.gestoreLocatore.getAnnunci().size());
+        session.setAttribute("num-visibili", this.gestoreLocatore.getAnnunciVisibili().size());
+        session.setAttribute("num-archiviati", this.gestoreLocatore.getAnnunciArchiviati().size());
+    }
+
+    private String getPage(List<Annuncio> l, int psize, int requested_page) {
+        int first = requested_page * psize;
+        int last = first + Math.min(psize, l.size());
+        int i = first;
+        String html = "";
+
+        //  last = last <= l.size() ? last : l.size();
+        System.out.println("GETPAGE - n_res = " + l.size() + ", first = " + first + ", last = " + last);
+
+        if (last == 0 || last < first) {
+            html = "No results...";
+        } else {
+            for (Annuncio a : l.subList(first, last)) {
+                html += getDivAnnuncio(a, i);
+                i++;
+            }
+        }
+
+        return html;
+    }
+
+    private String getDivAnnuncio(Annuncio a, int index) {
+        String div_html = "";
+        Long oid = a.getId();
+
+        div_html += "<div id='ann-" + oid + "'>";
+        div_html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
+        div_html += "<span class='dati-annuncio'><p>" + a.toJSON().toString() + "</p></span>";
+        div_html += "</div>";
+
+        return div_html;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
