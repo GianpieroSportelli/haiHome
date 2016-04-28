@@ -620,6 +620,12 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         this.annuncio.setListaStanza(new ArrayList<>());
         return result;
     }
+
+    @Override
+    public Annuncio getAnnuncioByID(long oid) {
+        Annuncio ann = this.annuncioFacade.find(oid);
+        return ann;
+    }
    
 
 }
