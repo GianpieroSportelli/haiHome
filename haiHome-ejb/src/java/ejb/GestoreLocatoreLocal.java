@@ -35,6 +35,10 @@ public interface GestoreLocatoreLocal {
     
     public Collection<Annuncio> getAnnunci();
     
+    public List<Annuncio> getAnnunciVisibili(); 
+    
+    public List<Annuncio> getAnnunciArchiviati();
+    
     /* Gestione profilo del locatore*/
     public void modificaInfoProfilo(String telefono, String descrizione); 
     

@@ -126,7 +126,10 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
             }
-            
+            else if (action.equalsIgnoreCase("locatore-getArchivioAnnunci")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+                
+            }
             else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
