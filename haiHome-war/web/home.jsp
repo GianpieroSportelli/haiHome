@@ -70,11 +70,12 @@
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
-        
-        <!-- Home.css -->
+
+        <!-- Home IMPORT -->
         <link rel="stylesheet" href="include/css/home/home.css">
-        <!-- Fine home.css-->
-        
+        <script type="text/javascript" src="include/js/home/home.js"></script>
+        <!-- Fine home-->
+
 
 
 
@@ -82,17 +83,20 @@
     <body>
         <%@include file="/header.jsp" %>
         <div class="container"> 
-            <div class="col-sm-12" id="div_studente">
-                
-
+            <div class="col-sm-12 outer-div non_opaco" id="div_studente">
+                <div class="inner-div non_opaco" id="search_div">
+                    <h1>Sei in cerca di casa a Torino <span id="search" class="glyphicon glyphicon-search fake_button"></span></h1>
+                </div>
             </div>
             <div class="col-sm-12" id="div_intermezzo">
 
             </div>
-            <div class="col-sm-12" id="div_locatore">
-
+            <div class="col-sm-12 outer-div non_opaco" id="div_locatore">
+                <div class="inner-div non_opaco" id="search_div">
+                    <h1>Vuoi affitare a Studenti a Torino <span id="in_locatore" class="glyphicon glyphicon-plus fake_button"></span></h1>
+                </div>
             </div>
-            
+
         </div>
 
         <%@include file="/footer.jsp" %>

@@ -138,6 +138,7 @@ public class ServletLocatore extends HttpServlet {
                 } else {
                     out.println("errore nell'autenticazione");
                 }
+
             } else if (action.equalsIgnoreCase("locatore-edit-profile")) {
                 String old_pwd = request.getParameter("old-pwd"),
                         new_pwd = request.getParameter("new-pwd"),
@@ -166,21 +167,25 @@ public class ServletLocatore extends HttpServlet {
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write(res ? "ok" : "no");
+
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
                 int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
                 int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
+                String bottone;
 
+                bottone = "";
                 System.out.println("#PAGINA=" + NUM_ANNUNCI_X_PAGE + "req=" + requested_page);
-                String html = this.getPage(gestoreLocatore.getAnnunciVisibili(), NUM_ANNUNCI_X_PAGE, requested_page);
+                String html = getPage(gestoreLocatore.getAnnunciVisibili(), NUM_ANNUNCI_X_PAGE, requested_page);
 
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(html);
+
             } else if (action.equalsIgnoreCase("locatore-getArchivioAnnunci")) {
                 int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
                 int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
 
-                String html = this.getPage(gestoreLocatore.getAnnunciArchiviati(), NUM_ANNUNCI_X_PAGE, requested_page);
+                String html = getPage(gestoreLocatore.getAnnunciArchiviati(), NUM_ANNUNCI_X_PAGE, requested_page);
 
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
@@ -198,52 +203,54 @@ public class ServletLocatore extends HttpServlet {
         session.setAttribute("num-archiviati", this.gestoreLocatore.getAnnunciArchiviati().size());
     }
 
-    /*
-    l.size() = 3
-    psize = 1 -- unitario,ok
-    psize = 2 --- ... 
-    psize = 3 --- ... psize==l.size,ok
-    psize = 4 --- ... ok
-    
-    
-     */
     private String getPage(List<Annuncio> l, int psize, int requested_page) {
         int first = requested_page * psize;
-        int offset = Math.min(psize, l.size());
-        int last = first + Math.min(psize, l.size());
-        int i = first;
+        int offset = Math.min(psize, l.size() - first);
         String html = "";
 
-        //  last = last <= l.size() ? last : l.size();
-    //    System.out.println("GETPAGE - n_res = " + l.size() + ", first = " + first + ", last = " + last);
-
-        if (last == 0 || last < first) {
-            html = "No results...";
-        } else {
+        if (offset > 0) {
             System.out.println("********************************");
-            System.out.println("sublist(" + first + ", " + last + ")..." + Math.min(psize, l.size()));
-            System.out.println("totale_dati="+l.size());
-            System.out.println("first="+first+", last="+last); 
+            System.out.println("l.size()=" + l.size() + ",first=" + first);
+            System.out.println("offset=" + offset);
+            System.out.println("sublist(" + first + ", " + (first + offset) + ")...");
+            System.out.println("totale_dati=" + l.size());
             System.out.println("...");
-            for (Annuncio a : l.subList(first, last)) {
-                html += getDivAnnuncio(a, i);
-                i++;
+
+            for (Annuncio a : l.subList(first, first + offset)) {
+                html += getDivAnnuncio(a);
             }
         }
 
         return html;
     }
 
-    private String getDivAnnuncio(Annuncio a, int index) {
+    private String getDivAnnuncio(Annuncio a) {
         String div_html = "";
         Long oid = a.getId();
 
-        div_html += "<div id='ann-" + oid + "'>";
+        div_html += "<div id='ann-" + oid + "' class='annuncio'>";
+
         div_html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
-        div_html += "<span class='dati-annuncio'><p>" + a.toJSON().toString() + "</p></span>";
+        div_html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
+
+        div_html += "<div>Proprietario: " + a.getLocatore().getEmail() + "</div>";
+        div_html += "<div>Indirizzo: " + a.getIndirizzo() + "</div>";
+        div_html += "<div>Descrizione: " + a.getDescrizione() + "</div>";
+
+        // div_html += "<span class='dati-annuncio'><p>" + a.toJSON().toString() + "</p></span>";
         div_html += "</div>";
 
         return div_html;
+    }
+
+    private String getHTMLButtonAnnuncio(Long oid, boolean archivia) {
+        return ("<a href='#0' class='link-annuncio' id='select-ann-" + oid + "'>")
+                + (archivia ? "Pubblica" : "Archivia")
+                + "</a>";
+        /*
+        return !archivia
+                ? ("<a href='#0' class='link-annuncio' id='select-ann-"+oid+"'>Archivia annuncio</a>")
+                : ("<a href='#0' class='link-annuncio' id='select-ann-"+oid+"'>Pubblica annuncio</a>");*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
