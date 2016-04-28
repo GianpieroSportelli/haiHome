@@ -108,7 +108,7 @@ public class ServletLocatore extends HttpServlet {
                 }
 
                 instantiate_session(session, "fb");
-                getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/locatore-profile.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("login-googleplus-locatore")) {
                 String[] verify = Verify.getUserCredentials(
@@ -133,7 +133,7 @@ public class ServletLocatore extends HttpServlet {
                     }
 
                     instantiate_session(session, "g+");
-                    getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+                    getServletContext().getRequestDispatcher("/locatore-profile.jsp").forward(request, response);
 
                 } else {
                     out.println("errore nell'autenticazione");
@@ -232,6 +232,7 @@ public class ServletLocatore extends HttpServlet {
 
         div_html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
         div_html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
+        div_html += "<a href='#0'>Modifica Annuncio</a>";
 
         div_html += "<div>Proprietario: " + a.getLocatore().getEmail() + "</div>";
         div_html += "<div>Indirizzo: " + a.getIndirizzo() + "</div>";

@@ -33,7 +33,7 @@ jQuery(document).ready(function ($) {
     }
 
 
-    function submit_login($form, $submit) {
+    function submit_login($form, $submit, destination) {
         $submit.on('click', function () {
             if ($submit.attr("disabled") === "disabled")
                 return false;
@@ -44,7 +44,7 @@ jQuery(document).ready(function ($) {
                     $form.serialize(), //data
                     function (response) {
                         if (response === "OK") {
-                            window.location.replace('index.jsp');
+                            window.location.replace(destination);
                         } else {
                             $submit.attr('data-content', response);
                             $submit.popover('show');
@@ -53,8 +53,8 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    submit_login($('#locatore-login'), $('#submit-login-loc'));
-    submit_login($('#studente-login'), $('#submit-login-stud'));
+    submit_login($('#locatore-login'), $('#submit-login-loc'), "locatore-profile.jsp");
+    submit_login($('#studente-login'), $('#submit-login-stud'), "index.jsp");
     submit_registration($('#locatore-reg'), $('#submit-reg-loc'));
     submit_registration($('#studente-reg'), $('#submit-reg-stud'));
 });

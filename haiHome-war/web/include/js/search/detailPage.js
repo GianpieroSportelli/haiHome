@@ -429,6 +429,16 @@ function loggatoStudente() {
 
 function salvaAnnuncioPreferiti() {
     alert("Salvo l'annuncio nei Preferiti");
+    $.post("ServletController",
+            {action: "studente-addAnnuncio",id:annuncio.OID},
+            function (item) {
+                //var html = '';
+                //alert(item);
+                console.log("Annuncio Salvato?: " + item);
+                if (item == "true") {
+                    $("#saveButton").hide();
+                }
+            });
 }
 
 function segnalaAnnuncio() {
