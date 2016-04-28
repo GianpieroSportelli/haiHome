@@ -170,6 +170,7 @@ public class ServletLocatore extends HttpServlet {
                 int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
                 int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
 
+                System.out.println("#PAGINA=" + NUM_ANNUNCI_X_PAGE + "req=" + requested_page);
                 String html = this.getPage(gestoreLocatore.getAnnunciVisibili(), NUM_ANNUNCI_X_PAGE, requested_page);
 
                 response.setContentType("text/html");
@@ -197,18 +198,33 @@ public class ServletLocatore extends HttpServlet {
         session.setAttribute("num-archiviati", this.gestoreLocatore.getAnnunciArchiviati().size());
     }
 
+    /*
+    l.size() = 3
+    psize = 1 -- unitario,ok
+    psize = 2 --- ... 
+    psize = 3 --- ... psize==l.size,ok
+    psize = 4 --- ... ok
+    
+    
+     */
     private String getPage(List<Annuncio> l, int psize, int requested_page) {
         int first = requested_page * psize;
+        int offset = Math.min(psize, l.size());
         int last = first + Math.min(psize, l.size());
         int i = first;
         String html = "";
 
         //  last = last <= l.size() ? last : l.size();
-        System.out.println("GETPAGE - n_res = " + l.size() + ", first = " + first + ", last = " + last);
+    //    System.out.println("GETPAGE - n_res = " + l.size() + ", first = " + first + ", last = " + last);
 
         if (last == 0 || last < first) {
             html = "No results...";
         } else {
+            System.out.println("********************************");
+            System.out.println("sublist(" + first + ", " + last + ")..." + Math.min(psize, l.size()));
+            System.out.println("totale_dati="+l.size());
+            System.out.println("first="+first+", last="+last); 
+            System.out.println("...");
             for (Annuncio a : l.subList(first, last)) {
                 html += getDivAnnuncio(a, i);
                 i++;
