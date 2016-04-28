@@ -141,7 +141,7 @@
                                 <li class="active"><a href="#home" data-toggle="tab">
                                         <i class="glyphicon glyphicon-user"></i>
                                         Home</a></li>
-                                <li><a href="#annunci" data-toggle="tab" onclick="checkAnnuncio()">
+                                <li><a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         Annunci preferiti</a></li>
                                 <li><a href="#filtriUtente" data-toggle="tab"  onclick="startTutorial()">
@@ -183,7 +183,7 @@
                 <div data-intro="Qui puoi visualizzare i tuoi filtri memorizzati." class="col-xs-9">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
-                        <div class="tab-pane active" id="home">
+                        <div class="tab-pane active in fade" id="home">
                             <div class="panel panel-default">
                                 <div class="panel-heading"> 
                                     <p class="text-primary" style="text-align:center" >  <img src="include/css/Utente/userImage-30.png"> <span class="text-primary">Informazioni Profilo</span> </p>
@@ -212,8 +212,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="annunci">Annunci preferiti qui</div>
-                        <div class="tab-pane" id="filtriUtente"></div>
+                        <div class="tab-pane fade" id="annunci">Annunci preferiti qui</div>
+                        <div class="tab-pane fade" id="filtriUtente"></div>
                     </div>
                 </div>  
             </div>
@@ -245,7 +245,7 @@
             %>
                     //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
                     //Il problema nasce dal fatto che i tab sono dinamici
-                    var millisecondsToWait = 10;
+                    var millisecondsToWait = 400;
                     setTimeout(function () {
                         introJs().start();
                         activatedTutorial = true;
@@ -265,19 +265,6 @@
                         {action: "studente-getAnnunci"},
                         function (data) {
                             console.log(data);
-                        });
-            }
-            function checkAnnuncio() {
-                $.post("ServletController",
-                        {action: "studente-addAnnuncio", id: "1030"},
-                        function (data) {
-                            console.log("Hey " + data);
-                            if (data == "true") {
-                                alert('Tutto bene');
-                            } else {
-                                //Errore
-                                alert('Nope');
-                            }
                         });
             }
 
