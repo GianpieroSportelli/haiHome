@@ -203,7 +203,9 @@
                         </div>
                         <div class="tab-pane fade" id="annunci">
                             <div style="display:block">
-                                <a href="#0">Inserisci nuovo annuncio</a>
+                                <a href="Annunci_JSP/InserimentoAnnunci.jsp" class="btn btn-primary">
+                                    Inserisci nuovo annuncio
+                                </a>
                             </div>
                             <div id="annunci-content">
                                 <!-- contenuto caricato tramite ajax -->
@@ -219,7 +221,6 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="archivio">
-                            <!-- contenuto caricato tramite ajax -->
                             <div id="archivio-content">
                                 <!-- contenuto caricato tramite ajax -->
                             </div>
