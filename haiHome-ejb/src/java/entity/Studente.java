@@ -47,6 +47,14 @@ public class Studente implements Serializable {
     @OneToMany//(mappedBy = "studente")
     private Collection<FiltroDiRicerca> listaFiltriPreferiti = new ArrayList<FiltroDiRicerca>();
 
+    public boolean addAnnuncio(Annuncio a) {
+        return this.getListaAnnunciPreferiti().add(a);
+    }
+
+    public boolean deleteAnnuncio(Annuncio a) {
+        return this.getListaAnnunciPreferiti().remove(a);
+    }
+
     /**
      * Get the value of listaFiltriPreferiti
      *

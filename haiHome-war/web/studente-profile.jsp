@@ -148,7 +148,7 @@
                                 <li class="active"><a href="#home" data-toggle="tab">
                                         <i class="glyphicon glyphicon-user"></i>
                                         Home</a></li>
-                                <li><a href="#annunci" data-toggle="tab">
+                                <li><a href="#annunci" data-toggle="tab" onclick="checkAnnuncio()">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         Annunci preferiti</a></li>
                                 <li><a href="#filtriUtente" data-toggle="tab"  onclick="startTutorial()">
@@ -264,6 +264,21 @@
             $(document).ready(function () {
                 getListaFiltriPreferiti();
             });
+
+            function checkAnnuncio() {
+                $.post("ServletController",
+                        {action: "studente-addAnnuncio", id: "1030"},
+                function (data) {
+                    console.log("Hey " + data);
+                    if (data == "true") {
+                        alert('Tutto bene');
+                    } else {
+                        //Errore
+                        alert('Nope');
+                    }
+                });
+            }
+
 
             function add_button() {
                 $("#filtriUtente").append("<div class=\"text-center \" id = \"button-div\">");
