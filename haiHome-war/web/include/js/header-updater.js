@@ -12,7 +12,7 @@ jQuery(document).ready(function ($) {
         
         
         
-        console.log("USER DATA: " + user_data.nome); 
+     //   console.log("USER DATA: " + user_data.nome); 
         console.log("Init header per utente " + (user_type === "null" ? "non" : "") + " loggato");
 
         if (user_type === "null") {
