@@ -18,8 +18,8 @@ $(document).ready(function () {
     keyboard : 'true'
     }); 
     */
-     $("#myModal").on('hide.bs.modal', function () {
-            $("#modalBody").empty();
+     $("#myPreviewModal").on('hide.bs.modal', function () {
+            $("#modalPreviewBody").empty();
         });
         
 
@@ -169,8 +169,8 @@ $(document).ready(function () {
                 success: function (response) {
                     console.log(response);
                     
-                    var myModal = $("#myModal");
-                    var myModalBody = $("#modalBody");
+                    var myModal = $("#myPreviewModal");
+                    var myModalBody = $("#modalPreviewBody");
                     myModalBody.append(create_Page(response));
                     
                     myModal.modal({keyboard: true});
