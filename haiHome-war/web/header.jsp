@@ -17,7 +17,7 @@
                 <li><a id="go-profile" href="#0">Profilo</a></li>
                 <li><a id="accesso" class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li>
                 <li><a id="logout" href="#0">Logout</a></li> 
-                <li><a href="#0">Aiuto</a></li> 
+                <li><a id="help" href="#0">Aiuto</a></li> 
             </ul>
         </div>
     </nav> 

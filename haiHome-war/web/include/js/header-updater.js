@@ -5,15 +5,18 @@
 jQuery(document).ready(function ($) {
     var user_type;
     var user_data; 
+    var current_url = $('#__current_url').text(); 
+    
+    console.log('current url: ' + current_url); 
+    
     /* INIT */
     $(function () {
         user_type = $('#__user_type').text();
-        user_data = jQuery.parseJSON($('#__user_data').text()); 
+        //JQuery.parseJSON("null") = null <3 
+        user_data = jQuery.parseJSON($('#__user_data').text());
         
-        
-        
-     //   console.log("USER DATA: " + user_data.nome); 
-        console.log("Init header per utente " + (user_type === "null" ? "non" : "") + " loggato");
+        console.log(user_data); 
+        console.log("Init header. Stato: " + (user_type === "null" ? "non" : "") + " loggato");
 
         if (user_type === "null") {
             $('#logged-as').parent().hide();
@@ -21,8 +24,7 @@ jQuery(document).ready(function ($) {
             $('#accesso').parent().show();
             $('#logout').parent().hide();
         } else {
-           // $('#go-profile').attr('href', user_type + "-profile.jsp");
-            $('#logged-as').text("Benvenuto, " + user_data.nome); 
+            $('#logged-as').html("Benvenuto,<b>&nbsp;&nbsp;" + user_data.nome + "</b>"); 
             $('#logged-as').parent().show();
             $('#go-profile').parent().show();
             $('#accesso').parent().hide();
@@ -31,7 +33,7 @@ jQuery(document).ready(function ($) {
     });
 
     /* Bottoni */
-    $(document).on('click', '#logout', function (event) {
+    $('#logout').on('click', function() {
         console.log("LOGOUT");
         $.post(
                 "ServletController",
@@ -39,14 +41,18 @@ jQuery(document).ready(function ($) {
                     'action': 'user-logout'
                 },
                 function (response) {
-                    location.replace("index.jsp");
+                    if (response === "ok")
+                        location.replace("index.jsp");
                 }
         );
     });
     
-    $(document).on('click', '#go-profile', function (event) {
-    //    var json = jQuery.parseJSON($('#__user_data').text());
-    //    console.log(json); 
+    $('#go-profile').on('click', function() { 
+        console.log("goto " + user_type + "-profile.jsp");
         location.replace(user_type + "-profile.jsp");
+    });
+    
+    $('#help').on('click', function() {
+        alert("nope"); 
     });
 }); 

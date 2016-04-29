@@ -23,26 +23,15 @@ public class LogoutServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*
-        response.setContentType("text/html;charset=UTF-8");
-        
-        try (PrintWriter out = response.getWriter()) {*/
         HttpSession session = request.getSession();
-        //        session.setAttribute("is-user-logged", false);
         // If the value passed in is null, this has the same effect as calling removeAttribute().
         session.setAttribute("user-type", null);
-        response.sendRedirect(request.getContextPath() + "/index.jsp");
-        /*
-            HttpSession session = request.getSession(false);
-            
-            if (session != null) {
-                session.setAttribute("is-user-logged", false);
-                // cancellare tutti gli attributi??
-            }
+        session.setAttribute("user-data", null);
+        response.setContentType("text/plain");  
+        response.setCharacterEncoding("UTF-8"); 
+        response.getWriter().write("ok");
 
-            response.sendRedirect(request.getContextPath() + "/index.jsp");*/
-
-//        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        //      response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 
     @Override
