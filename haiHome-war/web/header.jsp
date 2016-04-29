@@ -1,6 +1,27 @@
 <%@page import="org.json.JSONObject"%>
-
-<header role="banner">
+<!--
+<header role="banner"> -->
+    <nav class="navbar navbar-default">
+        <div style="display:none">
+            <div id="__user_type"><%= session.getAttribute("user-type") %></div>   
+            <div id="__user_data"><%= session.getAttribute("user-data") %></div>
+            <div id="__current_url"><%= request.getRequestURI().toString().replace(request.getContextPath().toString() + "/", "") %></div>
+        </div>
+        
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.jsp">HaiHome!!</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a id="logged-as"></a></li>
+                <li><a id="go-profile" href="#0">Profilo</a></li>
+                <li><a id="accesso" class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li>
+                <li><a id="logout" href="#0">Logout</a></li> 
+                <li><a href="#0">Aiuto</a></li> 
+            </ul>
+        </div>
+    </nav> 
+<%--
     <nav class="main-nav">
         <ul> 
             <%
@@ -30,8 +51,9 @@
                 }
             %>
         </ul>
-    </nav>
-</header>
+    </nav> --%>
+        <!-- 
+</header> -->
 
 <%@include file="/include/html/modal-accesso.html"%>
 
