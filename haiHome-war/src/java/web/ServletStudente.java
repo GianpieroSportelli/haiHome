@@ -213,6 +213,13 @@ public class ServletStudente extends HttpServlet {
                 } else {
                     out.write("false");
                 }
+            } else if (action.equalsIgnoreCase("studente-getAnnunci")) {
+                if (gestoreStudente.reloadStudente()) {
+                    String json = gestoreStudente.getStudente().getAnnunciJSON().toString();
+                    out.write(json);
+                } else {
+                    out.write("ERRORE");
+                }
             }
         }
     }

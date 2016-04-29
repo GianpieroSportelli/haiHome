@@ -9,6 +9,11 @@ html, body{
     padding-top: 4%;
 }
 
+.annuncio {
+    border:1px solid #999999;
+    word-wrap: break-word;
+}
+
 textarea {
     border:1px solid #999999;
     width:98%;
@@ -47,6 +52,11 @@ a:link:hover, a:visited:hover {
     float: right;
     display: block; 
 } 
+
+.link-annuncio {
+    float: right;
+    display: block;  
+}
 
 .trow {
     display: block; 

@@ -269,7 +269,7 @@ public class Studente implements Serializable {
         for (Annuncio a : this.getListaAnnunciPreferiti()) {
             JSONObject obj = new JSONObject();
             try {
-                obj.accumulate("Annuncio" + String.valueOf(contatore), a);
+                obj.accumulate("Annuncio" + String.valueOf(contatore), a.toJSON());
             } catch (JSONException ex) {
                 Logger.getLogger(Studente.class.getName()).log(Level.SEVERE, null, ex);
             }
