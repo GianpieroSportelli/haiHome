@@ -29,13 +29,22 @@
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
-
-        <!-- google+ login stuff -->
+        
+        <!-- Inizio import header --------------------->
+        <script src="include/js/header-updater.js"></script>
+        <!-- Script modal login -->
+        <script src="include/js/login/modal_validation_and_stuff.js"></script> 
+        <script src="include/js/login/ajax_req_and_stuff.js"></script>
+        <!-- Import script facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Import script google+ -->
         <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
         <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
         <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
         <!-- end google+ login stuff -->
-
+        <!----------------------- Fine import header -->
+        
+        <!-- footer -->
         <link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
 
@@ -50,9 +59,7 @@
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
 
-       
-
-        <!-- Robe di login2.jsp -->
+        <!-- Robe di login2.jsp ROBE IN DUBBIO DA DECIDERE-->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
         <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
@@ -64,10 +71,7 @@
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
 
-        <!-- Import script Facebook -->
-        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
-        <!-- Fine Import script Facebook -->
-
+        
         <!-- INFO BOX -->
         <script type="text/javascript" src="include/js/search/jquery.colorbox-min.js"></script>
         <link rel="stylesheet" href="include/css/search/colorbox.css">
@@ -81,10 +85,6 @@
         <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
         <!-- FINE import ajax-fun searchPage-->
         
-        <!--modal login -->
-        <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
-        <script src="include/js/login/ajax_req_and_stuff.js"></script>
-        <!-- fine modal login -->
 
     </head>
     <body>
@@ -132,7 +132,7 @@
 
                             </div>
                             <div class="form-group">
-                                <label for="tipo" class="control-label">Tipo Annuncio</label>
+                                <p class="my-label">Tipo Annuncio</p>
                                 <select class="form-control" name="tipo" id="tipo">
                                     <option id="tipo-all" value="all">-</option>
                                     <option id="tipo-Appartamento" value="Appartamento">Appartamento</option>
@@ -147,12 +147,10 @@
                             </div>
 
                             <div class="form-group" id="divNLocali" style="display:none">
-                                <label for="detail-NLocali-Button" class="control-label">
-                                    <!--<div class="row"> -->
+                                <p class="my-label">
                                     Numero Locali
-                                    <span id="detail-NLocali-Button" class="btn btn-sm glyphicon glyphicon-plus my-btn"></span>
-                                    <!--</div> -->
-                                </label>
+                                    <span id="detail-NLocali-Button" class="glyphicon glyphicon-plus my-btn"></span>                                 
+                                </p>
                                 <div class="input-group" id="NLocali-div" style="display:none">
                                     <div class="input-group-addon" id="NLocali" >#</div>
                                     <input type="text" class="form-control" id="numeroLocali" name="numeroLocali" aria-describedby="NLocali">
@@ -160,12 +158,10 @@
                             </div>
 
                             <div class="form-group" id="divNCamere" style="display:none">
-                                <label for="detail-numeroCamere-Button" class="control-label">
-                                    <!--<div class="row"> -->
+                                <p class="my-label">
                                     Numero Camere
-                                    <span id="detail-numeroCamere-Button" class="btn btn-sm glyphicon glyphicon-plus my-btn"></span>
-                                    <!--</div> -->
-                                </label>
+                                    <span id="detail-numeroCamere-Button" class="glyphicon glyphicon-plus my-btn"></span>
+                                </p>
                                 <div class="input-group" id="numeroCamere-div" style="display:none">
                                     <div class="input-group-addon" id="NCamere" >#</div>
                                     <input type="text" class="form-control" id="numeroCamere" name="numeroCamere" aria-describedby="NCamere">
@@ -173,12 +169,10 @@
                             </div>
                             
                             <div class="form-group" id="divNBagni" style="display:none">
-                                <label for="detail-NBagni-Button" class="control-label">
-                                    <!--<div class="row">-->
+                                <p class="my-label">
                                     Numero Bagni
-                                    <span id="detail-NBagni-Button" class="btn btn-sm glyphicon glyphicon-plus my-btn" float:right></span>
-                                    <!--</div> -->
-                                </label>
+                                    <span id="detail-NBagni-Button" class="glyphicon glyphicon-plus my-btn"></span>
+                                </p>
                                 <div class="input-group" id="NBagni-div" style="display:none">
                                     <div class="input-group-addon" id="NBagni">#</div>
                                     <input type="text" class="form-control" id="numeroBagni" name="numeroBagni" aria-describedby="NBagni">
@@ -187,9 +181,10 @@
                             </div>
                             
                             <div class="form-group" id="divMetratura" style="display:none">
-                                <label for="detail-metratura-Button" class="control-label">Metratura
-                                    <span id="detail-metratura-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></span>
-                                </label>
+                                <p class="my-label">
+                                    Metratura
+                                    <span id="detail-metratura-Button" class="glyphicon glyphicon-plus my-btn"></span>
+                                </p>
                                 <div class="input-group" id="metratura-div" style="display:none">
                                     <div class="input-group-addon" id="divmet" >#</div>
                                     <input type="text" class="form-control" id="metratura" name="metratura" aria-describedby="divmet">
@@ -197,12 +192,12 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="pricefrom" class="control-label">Prezzo massimo</label>
+                                <p class="my-label">Prezzo massimo</p>
                                 <div class="input-group">
                                     <div class="input-group-addon" id="basic-addon1">Euro</div>
                                     <input type="text" class="form-control number" id="pricefrom" name="pricefrom" aria-describedby="basic-addon1">
                                     <span class="input-group-btn">
-                                        <span id="detail-price-Button" class="btn btn-sm glyphicon glyphicon-plus my-btn"></span>
+                                        <span id="detail-price-Button" class="btn glyphicon glyphicon-plus"></span>
                                     </span>
                                 </div>
                             </div>

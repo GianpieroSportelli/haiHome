@@ -29,32 +29,30 @@
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
+        
+        <!-- Inizio import header --------------------->
+        <script src="include/js/header-updater.js"></script>
+        <!-- Script modal login -->
+        <script src="include/js/login/modal_validation_and_stuff.js"></script> 
+        <script src="include/js/login/ajax_req_and_stuff.js"></script>
+        <!-- Import script facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Import script google+ -->
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
+        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <!-- end google+ login stuff -->
+        <!----------------------- Fine import header -->
 
         <link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
-
-        <!-- INIZIO import SOL -SearchPage 
-        <script type="text/javascript" src="include/js/search/sol.js"></script>
-        <link rel="stylesheet" href="include/css/search/sol.css">-->
-        <!--<link rel="stylesheet" href="include/css/search/search-result.css">-->
-        <!--<link rel="stylesheet" href="include/css/search/search-page.css">-->
-        <!-- FINE import SOL --> 
 
         <!-- INIZIO import DetailPage css-->
         <link rel="stylesheet" href="include/css/search/detailPage.css">
         <!-- FINE import DetailPage css --> 
 
-        <!--INIZIO - Form ajax plugin -->
-        <script src="http://malsup.github.com/jquery.form.js"></script> 
-        <!--FINE- Form ajax plugin -->
-
-        <!-- google+ login stuff -->
-        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
-        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
-        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
-        <!-- end google+ login stuff -->
-
-        <!-- Robe di login2.jsp -->
+        
+        <!-- Robe di login2.jsp FORSE-->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
         <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
@@ -65,18 +63,14 @@
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
 
-        <!-- Import script Facebook -->
-        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
-        <!-- Fine Import script Facebook -->
-
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
 
-        <!-- INIZIO import ajax-fun searchPage-->
+        <!-- INIZIO import detailPage.js-->
         <!--<script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>-->
         <script type="text/javascript" src="include/js/search/detailPage.js"></script>
-        <!-- FINE import ajax-fun searchPage-->
+        <!-- FINE import-->
 
         <script>
             $("head").append("<title>haiHome!! - Dettagli annuncio-" + annuncio.Indirizzo + " </title>");

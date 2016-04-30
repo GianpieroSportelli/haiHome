@@ -80,7 +80,7 @@ public class TestServlet extends HttpServlet {
                 for (String cit : cities) {
                     out.println("<p>" + cit + "</p>");
                 }
-            }
+            }*/
             String[] Quartieri = {"Centro", "Crocetta", "Santa Rita", "Mirafiori Nord",
                 "Borgo San Paolo", "Cenisia", "Pozzo Strada", "Cit Turin", "Borgata Lesna",
                 "San Donato", "Campidoglio", "Parella",
@@ -97,7 +97,7 @@ public class TestServlet extends HttpServlet {
             ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
             for (String quartiere : quartieri) {
                 out.println("<p>" + quartiere + "</p>");
-            }*/
+            }
 
              /*
              gestoreTest.cancellaCittà(nome);
@@ -190,8 +190,8 @@ public class TestServlet extends HttpServlet {
                     System.out.println("errore");
                 }
             }*/
-            String address="Via XX Settembre, 65, Torino, TO, Italia";
-            gmb.getQuartiereByAddress(address);
+            /*String address="Via XX Settembre, 65, Torino, TO, Italia";
+            gmb.getQuartiereByAddress(address);*/
 
         }
     }
