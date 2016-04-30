@@ -236,12 +236,12 @@ public class Studente implements Serializable {
         JSONObject studenteJSON = new JSONObject();
 
         try {
-            studenteJSON.accumulate("ID", this.getId());
-            studenteJSON.accumulate("Nome", this.getNome());
-            studenteJSON.accumulate("Cognome", this.getCognome());
-            studenteJSON.accumulate("Email", this.getEmail());
-            studenteJSON.accumulate("Password", this.getPassword());
-            studenteJSON.accumulate("Foto", this.getFotoProfilo());
+            studenteJSON.accumulate("id", this.getId());
+            studenteJSON.accumulate("nome", this.getNome());
+            studenteJSON.accumulate("cognome", this.getCognome());
+            studenteJSON.accumulate("email", this.getEmail());
+            studenteJSON.accumulate("password", this.getPassword());
+            studenteJSON.accumulate("foto", this.getFotoProfilo());
 
             //aggiungo Lista filtri preferiti
             //JSONArray JSONFiltriPreferiti = new JSONArray();
@@ -269,7 +269,7 @@ public class Studente implements Serializable {
         for (Annuncio a : this.getListaAnnunciPreferiti()) {
             JSONObject obj = new JSONObject();
             try {
-                obj.accumulate("Annuncio" + String.valueOf(contatore), a.toJSON());
+                obj.accumulate("annuncio" + String.valueOf(contatore), a.toJSON());
             } catch (JSONException ex) {
                 Logger.getLogger(Studente.class.getName()).log(Level.SEVERE, null, ex);
             }
