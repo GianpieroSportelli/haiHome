@@ -8,14 +8,106 @@ jQuery(document).ready(function ($) {
 
     var login_by_credentials = $('#user-access').html().trim() === "";
     var backup_phone, backup_description;
-    
+    var backups = [];
+
     /* init*/
-    $(function() {
-      if (!login_by_credentials) {
-          $('#rigapwd').css('display', 'none');
-      }  
+    $(function () {
+        if (!login_by_credentials) {
+            $('#rigapwd').css('display', 'none');
+        }
+
+        backups["telefono"] = $('#telefono').val();
+        backups["descrizione"] = $('#descrizione').val();
+        backups["password"] = ""; //non serve a nulla (se non a evitare errori a runtime)
+
     });
-    
+
+
+    $('.start-edit').on('click', function () {
+        var target_name = $(this).parent().parent().parent().attr("id").replace("panel-", "");
+        var $input_target = $("#" + target_name);
+
+        console.log("start-edit on -> " + target_name);
+
+        backups[target_name] = $input_target.val();
+        $input_target.prop("disabled", false);
+
+        $(this).parent().children().each(function () {
+            $(this).toggle();
+        });
+        console.log("current value of " + target_name + "... " + $input_target.val());
+    });
+
+    $('.cancel-edit').on('click', function () {
+        var target_name = $(this).parent().parent().parent().attr("id").replace("panel-", "");
+        var $input_target = $("#" + target_name);
+
+        console.log("cancel-edit on -> " + target_name);
+
+        $(this).parent().children().each(function () {
+            $(this).toggle();
+        });
+
+        $input_target.val(backups[target_name]);
+        $input_target.prop("disabled", "disabled");
+    });
+
+    $('.save-edit').on('click', function () {
+        var $panel = $(this).parent().parent().parent(); 
+        var target_name = $panel.attr("id").replace("panel-", ""); 
+        
+//        var target_name = $(this).parent().parent().parent().attr("id").replace("panel-", "");
+        var $input_target = $("#" + target_name);
+        var new_content = $input_target.val();
+        
+        $panel.children(".panel-body").addClass("has-error");
+
+        console.log("save-edit on -> " + target_name + ", new value: " + new_content);
+
+        $.post(
+                "ServletController",
+                {
+                    'action': 'locatore-edit-info',
+                    'field-name': target_name,
+                    'field-value': new_content, /* credo */
+                    'new-pw': $('#new-password').val(),
+                    'new-pw-confirm': $('#new-password2').val()
+                },
+                function (response) {
+                    if (response === "ok") {
+                        $(this).parent().children().each(function () {
+                            $(this).toggle();
+                        });
+                        $input_target.prop("disabled", "disabled");
+                        $panel.children(".panel-body").removeClass("has-error");
+                        /* rimuovere eventuali classi has-error */ 
+                        console.log("done"); 
+                    } else {
+                        console.log("something's wrong"); 
+                        $panel.children(".panel-body").addClass("has-error");
+                        
+                        //nellammerda
+                    }
+                }
+        );
+
+
+
+        $(this).parent().children().each(function () {
+            $(this).toggle();
+        });
+
+        $input_target.prop("disabled", "disabled");
+
+        /* */
+
+
+
+    });
+
+
+
+
     /* fa comparire i bottoni per modificare le info */
     $('#edit').on('click', function () {
         $('#edit').toggle();
@@ -107,28 +199,28 @@ jQuery(document).ready(function ($) {
                 console.log("sei un coglione");
         }
     });
-    
+
     /* robe sugli annunci */
     $(document).on('click', 'a.edit-annuncio', function (event) {
         //var transaction_id = $(this).attr('id').replace('delete_', '');
         var oid = event.target.id.replace("edit-ann", "");
-        console.log("edit "+oid); 
+        console.log("edit " + oid);
         return false;
-    });    
-    
+    });
+
     $(document).on('click', 'a.something-annuncio', function (event) {
         var oid = event.target.id.replace("something-ann", "");
-        console.log("Something on"+oid); 
+        console.log("Something on" + oid);
         return false;
-    });    
-    
+    });
+
     $(document).on('click', 'a.delete-annuncio', function (event) {
         var oid = event.target.id.replace("delete-ann", "");
-        console.log("delete "+oid); 
+        console.log("delete " + oid);
         return false;
-    });    
-    
-    
-    
-    
+    });
+
+
+
+
 });

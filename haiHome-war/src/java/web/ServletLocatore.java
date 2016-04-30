@@ -168,6 +168,12 @@ public class ServletLocatore extends HttpServlet {
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write(res ? "ok" : "no");
 
+            } else if (action.equalsIgnoreCase("locatore-edit-password")) {
+
+            } else if (action.equalsIgnoreCase("locatore-edit-telefono")) {
+
+            } else if (action.equalsIgnoreCase("locatore-edit-descrizione")) {
+
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
                 int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
                 int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
@@ -191,6 +197,12 @@ public class ServletLocatore extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(html);
             }
+            else if (action.equalsIgnoreCase("locatore-edit-info")) {
+                
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("ok");
+            }
         }
     }
 
@@ -207,7 +219,7 @@ public class ServletLocatore extends HttpServlet {
         int first = requested_page * psize;
         int offset = Math.min(psize, l.size() - first);
         String html = "";
-
+        
         if (offset > 0) {
             System.out.println("********************************");
             System.out.println("l.size()=" + l.size() + ",first=" + first);
@@ -228,8 +240,7 @@ public class ServletLocatore extends HttpServlet {
         String html = "";
         Long oid = a.getId();
 
-        
-   //     html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
+        //     html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
         /* 
         html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
         html += "<a href='#0'>Modifica Annuncio</a>"; */
@@ -243,16 +254,15 @@ public class ServletLocatore extends HttpServlet {
         html += "<span class='glyphicon glyphicon-menu-down'></span>";
         html += "</a>";
         html += "<ul class='dropdown-menu'>";
-        html += "<li><a id='edit-ann"+oid+"' class='edit-annuncio' href='#0'>Modifica</a></li>";
-        html += "<li><a id='something-ann"+oid+"' class='something-annuncio' href='#0'>Archivia/anche no</a></li>";
-        html += "<li><a id='delete-ann"+oid+"' class='delete-annuncio' href='#0'>Elimina</a></li>";
-        
-        html += "</div>"; 
-        
+        html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'>Modifica</a></li>";
+        html += "<li><a id='something-ann" + oid + "' class='something-annuncio' href='#0'>Archivia/anche no</a></li>";
+        html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'>Elimina</a></li>";
+
+        html += "</div>";
+
         //div_html += "<div class='link-annuncio'><a id='select-ann-"+oid+"' href='#0'>";
         //div_html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
         //div_html += "</div>"; 
-        
         html += "</div>"; //panel-heading
         html += "<div class='panel-body'>";
         html += "<div>Proprietario: " + a.getLocatore().getEmail() + "</div>";
@@ -273,13 +283,11 @@ public class ServletLocatore extends HttpServlet {
         html += "</div>"; //2
         html += "</div>"; //1 */
         // div_html += "<span class='dati-annuncio'><p>" + a.toJSON().toString() + "</p></span>";
-        
-
         return html;
     }
 
     private String getHTMLButtonAnnuncio(Long oid, boolean archivia) {
-        return ("<a id='select-ann-"+oid+"' href='#0'>")
+        return ("<a id='select-ann-" + oid + "' href='#0'>")
                 + (archivia ? "Pubblica" : "Archivia")
                 + "</a>";
         /*
