@@ -33,7 +33,7 @@ function getAnnunciPreferiti() {
 
 function add_button() {
 
-    if (page_filtri.length !== 1) {
+    if (n_filtri > FIlTRI_X_PAGE) {
         //$("#filtriUtente").append("<div class=\"text-center \" id = \"button-div\">");
         var html = "<div>" +
                 "<ul class=\"pager\"> <li> <a onClick='prevpage()' id='prev_page'> <span class='glyphicon glyphicon-menu-left'></span> </a> </li>" +
@@ -59,6 +59,7 @@ function getListaFiltriPreferiti() {
     $.post("ServletController",
             {action: "get-lista-preferiti-studente"},
             function (responseJson) {
+                page_filtri = new Array();
                 filtri = [];
                 n_page = 0;
                 n_filtri = 0;
