@@ -72,7 +72,7 @@ public class TestServlet extends HttpServlet {
             add_test1 = add_test1.replace(" ", "+");
             add_test4 = add_test4.replace(" ", "+");*/
 
-            gestoreTest.addCittà(nome);
+            /*gestoreTest.addCittà(nome);
             ArrayList<String> cities = gestoreTest.getAllCittàNome();
             if (cities.isEmpty()) {
                 out.println("<p>Non sono Presenti città nel DB</p>");
@@ -97,7 +97,7 @@ public class TestServlet extends HttpServlet {
             ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
             for (String quartiere : quartieri) {
                 out.println("<p>" + quartiere + "</p>");
-            }
+            }*/
 
              /*
              gestoreTest.cancellaCittà(nome);
@@ -190,6 +190,8 @@ public class TestServlet extends HttpServlet {
                     System.out.println("errore");
                 }
             }*/
+            String address="Via XX Settembre, 65, Torino, TO, Italia";
+            gmb.getQuartiereByAddress(address);
 
         }
     }

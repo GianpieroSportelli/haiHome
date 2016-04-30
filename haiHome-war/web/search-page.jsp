@@ -171,6 +171,7 @@
                                     <input type="text" class="form-control" id="numeroCamere" name="numeroCamere" aria-describedby="NCamere">
                                 </div>
                             </div>
+                            
                             <div class="form-group" id="divNBagni" style="display:none">
                                 <label for="detail-NBagni-Button" class="control-label">
                                     <!--<div class="row">-->
@@ -184,6 +185,7 @@
                                 </div>
 
                             </div>
+                            
                             <div class="form-group" id="divMetratura" style="display:none">
                                 <label for="detail-metratura-Button" class="control-label">Metratura
                                     <span id="detail-metratura-Button" type="button" class="btn btn-sm glyphicon glyphicon-plus"></span>
@@ -193,6 +195,7 @@
                                     <input type="text" class="form-control" id="metratura" name="metratura" aria-describedby="divmet">
                                 </div>
                             </div>
+                            
                             <div class="form-group">
                                 <label for="pricefrom" class="control-label">Prezzo massimo</label>
                                 <div class="input-group">
@@ -203,21 +206,23 @@
                                     </span>
                                 </div>
                             </div>
+                            
                             <div class="form-group" id="detail-price" style="display:none">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="true" id="compCondominio">
+                                        <input type="checkbox" name="compCondominio" id="compCondominio">
                                         Compreso Condominio
                                     </label>
                                 </div>
 
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="true" id="compRiscaldamento">
+                                        <input type="checkbox" name="compRiscaldamento" id="compRiscaldamento">
                                         Compreso Riscaldamento
                                     </label>
                                 </div>
                             </div>
+                            
                             <button id="searchButton"  type="submit" class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
                             <button id="saveButton"  type="button" class="btn btn-danger" onClick="persistiFiltro()" style="display:none"></button> <!--type="submit" glyphicon glyphicon-plus-->
 
