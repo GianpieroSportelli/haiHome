@@ -28,6 +28,16 @@ public class Quartiere implements Serializable {
     private String nome;
 
     private String descrizione;
+    
+    private Collection<String> cap;
+    
+    public Collection<String> getCap() {
+        return cap;
+    }
+
+    public void setCap(Collection<String> cap) {
+        this.cap = cap;
+    }
 
     @OneToMany
     private Collection<FeedBack> listaFeedBack;

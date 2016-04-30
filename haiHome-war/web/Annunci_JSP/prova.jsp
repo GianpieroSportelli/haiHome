@@ -36,19 +36,14 @@
   
     </head>
     <body>
-<div class="container ">
-<div class="col-sm-8 text-left well">
-    <label >Cerchi casa a torino </label></br>
-    <button>Cerca</button>
-    
-</div>
+                        <input id='inpIndirizzoProva'maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo"  name='Indirizzo'/><br />
+                        
 
-<div class="col-sm-8 text-left">
-        <label>Affitti casa a torino</label></br>
-        <button>Inserisci</button>
-    
-</div>
-            
-            </div>
+                                <!-- script miei -->
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
+        
+                               <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&signed_in=true&libraries=places&callback=initAutocomplete" async defer></script>
+        <!-- fine script miei -->
+                        
     </body>
 </html>
