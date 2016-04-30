@@ -7,6 +7,7 @@ package web;
 
 import com.google.gson.Gson;
 import ejb.GestoreAnnuncioLocal;
+import ejb.GestoreCittaLocal;
 import ejb.GestoreRicercaLocal;
 import ejb.GoogleMapsBeanLocal;
 import java.awt.image.BufferedImage;
@@ -51,6 +52,9 @@ public class ServletAnnuncio extends HttpServlet {
     
     @EJB
     private GoogleMapsBeanLocal gestoreMaps;
+    
+        @EJB
+    private GestoreCittaLocal gestoreCitta;
 
     /*
     //Parametri richiesti
@@ -439,8 +443,29 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getQuartieri")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
+                
+                String fakeCap = "10155";
+                
                 gestoreRicerca.selezionaCittà("Torino");
-                String json = new Gson().toJson(gestoreRicerca.getQuartieriCittà());
+                
+                
+                HashMap<String,ArrayList<String>> capMap = gestoreCitta.getQuartieriCapMap();
+                for(String key : capMap.keySet()){
+                    System.out.println("Cap: " + key);
+                    System.out.println("Quartieri : ");
+                    for(String quart : capMap.get(key)){
+                        System.out.println("-       -  " + quart);
+                    }
+                    
+                }
+                
+                ArrayList<String> listaquartieri = capMap.get(fakeCap);
+                
+               
+                
+                String json = new Gson().toJson(gestoreCitta.getListaQuartieri("Torino"));
+                
+                //String json = new Gson().toJson(listaquartieri);
                 System.out.println(json);
                 out.write(json);
 

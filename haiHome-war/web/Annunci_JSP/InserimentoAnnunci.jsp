@@ -44,28 +44,21 @@
         <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
         <!-- end google+ login stuff -->
         
-<!--
-        <link href="../tutcss.css" rel="stylesheet">
-         footer css -->
+        <!-- Inizio import header --------------------->
+        <script src="include/js/header-updater.js"></script>
+        <!-- Script modal login -->
+        <script src="include/js/login/modal_validation_and_stuff.js"></script> 
+        <script src="include/js/login/ajax_req_and_stuff.js"></script>
 
-        <!-- Robe di login2.jsp -->
-        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-        <!-- <link rel="stylesheet" href="../include/css/login//reset.css"> CSS reset -->
-       <!-- <link rel="stylesheet" href="../include/css/login/style2.css"> gem style -->
-        <script src="../include/js/login/modernizr.js"></script> <!-- Modernizr -->
-        <!-- robe del login bello -->
-        <!--<link rel="stylesheet" href="../include/css/login/normalize.css"> -->
-        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'> 
-        <!-- <link rel="stylesheet" href="../include/css/login/style.css"> -->
-        <!-- Fine robe di login2.jsp -->
-
-        <!-- Import script Facebook -->
+         <!-- Import script Facebook -->
         <script type="text/javascript" src="../include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
+        
 
         
         <!-- fine roba utile al footer e al header -->
-        
+
+
         
         
         <!-- dropzone -->
@@ -79,14 +72,14 @@
 
     </head>
     <body>
-        
+                <%--header --%>
+        <%@include file="../header.jsp" %> 
         
         
         <!-- modal -->
         <%@include file="anteprimaAnnuncio.jsp" %>
         
-        <%--header 
-        <%@include file="../header.jsp" %> --%>
+
 
         <div class="container">
 
@@ -149,8 +142,8 @@
         </div> <!-- fine container -->
 
         
-        <%-- footer 
-        <%@include file="../footer.jsp" %> --%>
+   
+
         
 
 
