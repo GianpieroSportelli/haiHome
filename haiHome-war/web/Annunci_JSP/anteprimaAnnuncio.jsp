@@ -6,7 +6,7 @@
 
 
 <!-- Modal -->
-<div id="myModal" class="modal fade">
+<div id="myPreviewModal" class="modal fade">
   <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
@@ -17,7 +17,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Anteprima Annuncio</h4>
       </div>
-      <div class="modal-body" id="modalBody">
+      <div class="modal-body" id="modalPreviewBody">
           
       </div>
       <div class="modal-footer">

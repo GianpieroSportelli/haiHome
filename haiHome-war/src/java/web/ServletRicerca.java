@@ -186,7 +186,7 @@ public class ServletRicerca extends HttpServlet {
                     } else if (user_type.equalsIgnoreCase("STUDENTE")) {
                         JSONObject Jstudente = (JSONObject) session.getAttribute("user-data");
                         try {
-                            String id_studente = "" + Jstudente.get("ID");
+                            String id_studente = "" + Jstudente.get("id");
                             gestoreRicerca.persistiFiltroAttuale(id_studente);
                             out.write("ok");
                         } catch (JSONException ex) {
@@ -279,7 +279,7 @@ public class ServletRicerca extends HttpServlet {
                         out.write("ERRORE");
                     } else {
                         try {
-                            String id_studente = "" + Jstudente.get("ID");
+                            String id_studente = "" + Jstudente.get("id");
                             if (gestoreRicerca.removeFiltro(id_filtro, id_studente)) {
                                 out.write("OK");
                             } else {

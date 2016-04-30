@@ -6,7 +6,11 @@
 package ejb;
 
 import entity.Città;
+import entity.Quartiere;
 import facade.CittàFacadeLocal;
+import facade.QuartiereFacadeLocal;
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -19,6 +23,9 @@ public class GestoreCitta implements GestoreCittaLocal {
 
     @EJB
     private CittàFacadeLocal cittàFacade;
+    
+    @EJB
+    private QuartiereFacadeLocal quartiereFacade;
 
     @Override
     public boolean insertCitta(String nome) {
@@ -48,4 +55,57 @@ public class GestoreCitta implements GestoreCittaLocal {
         }
         return false;
     }
+
+    @Override
+    public boolean insertQuartiere(String nomeCittà, String nomeQuartiere, Collection<String> cap) {
+         Città find = null;
+        for (Città x : cittàFacade.findAll()) {
+            if (x.getNome().equalsIgnoreCase(nomeCittà)) {
+                find = x;
+            }
+        }
+        if (find != null) {
+            
+            Collection<Quartiere> quartieri = find.getListaQuartieri();
+            if (quartieri == null) {
+                quartieri = new ArrayList<>();
+            }
+            Quartiere nuovoQuartiere = new Quartiere();
+            
+            nuovoQuartiere.setNome(nomeQuartiere);
+            nuovoQuartiere.setCap(cap);
+            
+            quartiereFacade.create(nuovoQuartiere);
+            quartieri.add(nuovoQuartiere);
+            for (Quartiere quartiere : quartieri) {
+                System.out.println(quartiere.getNome());
+            }
+            find.setListaQuartieri(quartieri);
+            cittàFacade.edit(find);
+            return true;
+        }
+        return false;
+        
+    }
+
+    @Override
+    public ArrayList<String> getListaQuartieri(String nomeCittà) {
+        ArrayList<String> listaQuartieri = null;
+        Città find = null;
+        for (Città x : cittàFacade.findAll()) {
+            if (x.getNome().equalsIgnoreCase(nomeCittà)) {
+                find = x;
+            }
+        }
+        if (find != null) {
+            Collection<Quartiere> quartieri = find.getListaQuartieri();
+            listaQuartieri = new ArrayList<>();
+            for (Quartiere q : quartieri) {
+                listaQuartieri.add(q.getNome());
+            }
+        }
+        return listaQuartieri;
+    }
+    
+    
 }
