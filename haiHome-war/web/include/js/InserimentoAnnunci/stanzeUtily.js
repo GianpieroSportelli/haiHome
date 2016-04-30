@@ -17,7 +17,7 @@ var PrezzoStanzaHTML = "<div class=\"form-group col-md-12 prezzoStanzaCont\" id=
             </div>\n\
             <div class=\"col-md-6\">\n\
                 <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
-                <input name='PrezzoS' maxlength=\"100\" type=\"number\" required=\"required\" class=\"form-control prezzoStanza\" /><br />\n\
+                <input name='PrezzoS' maxlength=\"100\" class=\"form-control prezzoStanza\" /><br />\n\
             </div>\n\
         </div>";
 
