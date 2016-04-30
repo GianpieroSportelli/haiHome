@@ -7,6 +7,8 @@
     boolean session_exists = session.getAttribute("user-type") != null;
     JSONObject user_data = null;
 
+    /* da convertire in controllo lato client, questo è brutto come la merda */ 
+    
     if (session_exists) {
         user_data = (JSONObject) session.getAttribute("user-data");
     } else {
@@ -58,10 +60,15 @@
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
 
-        <script type="text/javascript" src="include/js/locatore-profile.js"></script>
+        <script type="text/javascript" src="include/js/locatore/visualizzazione-annunci.js"></script>
+        <script type="text/javascript" src="include/js/locatore/profilo-locatore.js"></script>
 
+        
+        
         <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
         <script src="include/js/login/ajax_req_and_stuff.js"></script>
+        
+        <script src='include/js/header-updater.js'></script>
 
     </head>
     <body>

@@ -225,26 +225,41 @@ public class ServletLocatore extends HttpServlet {
     }
 
     private String getDivAnnuncio(Annuncio a) {
-        String div_html = "";
+        String html = "";
         Long oid = a.getId();
 
         
-   //     div_html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
+   //     html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
         /* 
-        div_html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
-        div_html += "<a href='#0'>Modifica Annuncio</a>"; */
-        div_html += "<div id='ann-" + oid + "' class='annuncio'>";
-        div_html += "<div class='panel panel-default'>";
-        div_html += "<div class='panel-heading'>";
-        div_html += "<span class='nome-annuncio'><h1>Annuncio " + oid + "</h1></span>";
-        div_html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
-        div_html += "</div>";
-        div_html += "<div class='panel-body'>";
-        div_html += "<div>Proprietario: " + a.getLocatore().getEmail() + "</div>";
-        div_html += "<div>Indirizzo: " + a.getIndirizzo() + "</div>";
-        div_html += "<div>Descrizione: " + a.getDescrizione() + "</div>";
-        div_html += "</div>";
-        div_html += "</div>";
+        html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
+        html += "<a href='#0'>Modifica Annuncio</a>"; */
+        html += "<div id='ann-" + oid + "' class='annuncio'>";
+        html += "<div class='panel panel-default'>";
+        html += "<div class='panel-heading'>";
+        html += "<span class='nome-annuncio'>Annuncio " + oid + "</span>";//nome annuncio
+        //dropdown opzioni
+        html += "<div class='dropdown link-annuncio'>";
+        html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";
+        html += "<span class='glyphicon glyphicon-menu-down'></span>";
+        html += "</a>";
+        html += "<ul class='dropdown-menu'>";
+        html += "<li><a id='edit-ann"+oid+"' class='edit-annuncio' href='#0'>Modifica</a></li>";
+        html += "<li><a id='something-ann"+oid+"' class='something-annuncio' href='#0'>Archivia/anche no</a></li>";
+        html += "<li><a id='delete-ann"+oid+"' class='delete-annuncio' href='#0'>Elimina</a></li>";
+        
+        html += "</div>"; 
+        
+        //div_html += "<div class='link-annuncio'><a id='select-ann-"+oid+"' href='#0'>";
+        //div_html += getHTMLButtonAnnuncio(oid, a.isArchiviato());
+        //div_html += "</div>"; 
+        
+        html += "</div>"; //panel-heading
+        html += "<div class='panel-body'>";
+        html += "<div>Proprietario: " + a.getLocatore().getEmail() + "</div>";
+        html += "<div>Indirizzo: " + a.getIndirizzo() + "</div>";
+        html += "<div>Descrizione: " + a.getDescrizione() + "</div>";
+        html += "</div>";//panel
+        html += "</div>";
 
         // var html = "<div id=\"annuncio-" + k + "\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">"; //1
         /*
@@ -260,11 +275,11 @@ public class ServletLocatore extends HttpServlet {
         // div_html += "<span class='dati-annuncio'><p>" + a.toJSON().toString() + "</p></span>";
         
 
-        return div_html;
+        return html;
     }
 
     private String getHTMLButtonAnnuncio(Long oid, boolean archivia) {
-        return ("<a href='#0' class='link-annuncio' id='select-ann-" + oid + "'>")
+        return ("<a id='select-ann-"+oid+"' href='#0'>")
                 + (archivia ? "Pubblica" : "Archivia")
                 + "</a>";
         /*

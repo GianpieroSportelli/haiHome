@@ -16,6 +16,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
         <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -30,11 +31,7 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
 
-        <!-- google+ login stuff -->
-        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
-        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
-        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
-        <!-- end google+ login stuff -->
+
 
         <link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
@@ -53,17 +50,21 @@
         <!-- Robe di login2.jsp -->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
-        <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
-        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
+<!--        <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
+        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- se viene tolto: sfondo rosa Gem style -->
         <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
         <!-- robe del login bello -->
-        <link rel="stylesheet" href="include/css/login/normalize.css">
+
+<!--        <link rel="stylesheet" href="include/css/login/normalize.css"> <!-- -->
+        <link rel="stylesheet" href="include/css/login/style.css">  <!-- -->
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
-        <link rel="stylesheet" href="include/css/login/style.css">
+        <!--
+                <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+        
         <!-- Fine robe di login2.jsp -->
 
         <!-- Import script Facebook -->
-        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+
         <!-- Fine Import script Facebook -->
 
 
@@ -76,13 +77,20 @@
         <script type="text/javascript" src="include/js/home/home.js"></script>
         <!-- Fine home-->
 
-        <!--modal login -->
-        <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
+
+        <!-- Inizio import header --------------------->
+        <script src="include/js/header-updater.js"></script>
+        <!-- Script modal login -->
+        <script src="include/js/login/modal_validation_and_stuff.js"></script> 
         <script src="include/js/login/ajax_req_and_stuff.js"></script>
-        <!-- fine modal login -->
-
-
-
+        <!-- Import script facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Import script google+ -->
+        <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
+        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+        <!-- end google+ login stuff -->
+        <!----------------------- Fine import header -->
 
     </head>
     <body>
