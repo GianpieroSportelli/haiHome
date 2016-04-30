@@ -6,6 +6,7 @@
 package web;
 
 import ejb.GestoreAnnuncioLocal;
+import ejb.GestoreCittaLocal;
 import ejb.GestoreLocatoreLocal;
 import ejb.GestoreRicercaLocal;
 import ejb.GestoreTestLocal;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +33,9 @@ public class TestServlet extends HttpServlet {
 
     @EJB
     private GestoreTestLocal gestoreTest;
+    
+    @EJB
+    private GestoreCittaLocal gestoreCitta;
 
     @EJB
     private GestoreAnnuncioLocal gestoreAnnunci;
@@ -73,7 +78,9 @@ public class TestServlet extends HttpServlet {
             add_test4 = add_test4.replace(" ", "+");*/
 
             gestoreTest.addCittà(nome);
-            ArrayList<String> cities = gestoreTest.getAllCittàNome();
+            //ArrayList<String> cities = gestoreTest.getAllCittàNome();
+            
+            ArrayList<String> cities = gestoreCitta.getAllCittàNome();
             if (cities.isEmpty()) {
                 out.println("<p>Non sono Presenti città nel DB</p>");
             } else {
@@ -90,11 +97,232 @@ public class TestServlet extends HttpServlet {
                 "San Salvario", "Cavoretto", "Borgo Po",
                 "Nizza Millefonti", "Lingotto", "Filadelfia",
                 "Mirafiori Sud"};
+            
+            ArrayList<ArrayList<String>> CAP = new ArrayList();
+            
+            HashMap<String,ArrayList<String>> QuartieriCap = new HashMap();
+            String AAA = "";
+            ArrayList<String> cap = new ArrayList();
+            
+                       
+  
+            
+            //POPOLAMENTO QUARTIERI
+            // Centro 
+            cap = new ArrayList();
+            cap.add("10121");
+            cap.add("10122");
+            cap.add("10123");
+            cap.add("10124");
+            QuartieriCap.put(Quartieri[0], cap);
+
+            // Crocetta 
+            cap = new ArrayList();
+            cap.add("10128");
+            cap.add("10129");
+            cap.add("10130");
+            QuartieriCap.put(Quartieri[1], cap);
+            
+                        
+            // Santa Rita
+            cap = new ArrayList();
+            cap.add("10134");
+            cap.add("10136");
+            cap.add("10137");
+            QuartieriCap.put(Quartieri[2], cap);
+            
+            // Mirafiori Nord 
+            cap = new ArrayList();
+            cap.add("10137");
+            QuartieriCap.put(Quartieri[3], cap);
+            
+            // Borgo San Paolo
+            cap = new ArrayList();
+            cap.add("10141");
+            QuartieriCap.put(Quartieri[4], cap);
+            
+            // Cenisia 
+            cap = new ArrayList();
+            cap.add("10138");
+            cap.add("10139");
+            cap.add("10140");
+            QuartieriCap.put(Quartieri[5], cap);
+            
+                        // Pozzo Strada 
+                        cap = new ArrayList();
+            cap.add("10139");
+            cap.add("10140");
+            cap.add("10141");
+            QuartieriCap.put(Quartieri[6], cap);
+            
+                        // Cit Turin 
+                        cap = new ArrayList();
+            cap.add("10138");
+            QuartieriCap.put(Quartieri[7], cap);
+            
+                        // Borgata Lesna 
+                        cap = new ArrayList();
+            cap.add("10142");
+            QuartieriCap.put(Quartieri[8], cap);
+            
+                        // San Donato 
+                        cap = new ArrayList();
+            cap.add("10144");
+            QuartieriCap.put(Quartieri[9], cap);
+            
+                        // Campidoglio 
+                        cap = new ArrayList();
+            cap.add("10143");
+            QuartieriCap.put(Quartieri[10], cap);
+            
+                        // Parella 
+                        cap = new ArrayList();
+            cap.add("10145");
+            cap.add("10146");
+            QuartieriCap.put(Quartieri[11], cap);
+            
+                        // Borgo Vittoria 
+                        cap = new ArrayList();
+            cap.add("10147");
+            cap.add("10148");
+            QuartieriCap.put(Quartieri[12], cap);
+            
+                        // Madonna di Campagna 
+                        cap = new ArrayList();
+            cap.add("10149");
+            QuartieriCap.put(Quartieri[13], cap);
+            
+                        // Lucento 
+                        cap = new ArrayList();
+            cap.add("10150");
+            cap.add("10151");
+            QuartieriCap.put(Quartieri[14], cap);
+            
+                        // Vallette 
+                        cap = new ArrayList();
+            cap.add("10150");
+            cap.add("10151");
+            QuartieriCap.put(Quartieri[15], cap);
+            
+                        // Barriera di Milano 
+                        cap = new ArrayList();
+            cap.add("10154");
+            cap.add("10155");
+            QuartieriCap.put(Quartieri[16], cap);
+            
+                        // Regio Parco 
+                        cap = new ArrayList();
+            cap.add("10154");
+            cap.add("10155");
+            QuartieriCap.put(Quartieri[17], cap);
+            
+                        // Barca 
+                        cap = new ArrayList();
+            cap.add("10156");
+            QuartieriCap.put(Quartieri[18], cap);
+            
+                        // Bertolla ù
+                        cap = new ArrayList();
+            cap.add("");
+            QuartieriCap.put(Quartieri[19], cap);
+            
+                        // Falchera 
+                        cap = new ArrayList();
+            cap.add("10156");
+            QuartieriCap.put(Quartieri[20], cap);
+            
+                        // Rebaudengo 
+                        cap = new ArrayList();
+            cap.add("10155");
+            QuartieriCap.put(Quartieri[21], cap);
+            
+                        // Villaretto 
+                        cap = new ArrayList();
+            cap.add("10148");
+            QuartieriCap.put(Quartieri[22], cap);
+            
+                        // Aurora 
+                        cap = new ArrayList();
+            cap.add("10152");
+            QuartieriCap.put(Quartieri[23], cap);
+            
+                        // Vanchiglia 
+                        cap = new ArrayList();
+            cap.add("10124");
+            cap.add("10153");
+            QuartieriCap.put(Quartieri[24], cap);
+            
+                        // Sassi 
+                        cap = new ArrayList();
+            cap.add("");
+            QuartieriCap.put(Quartieri[25], cap);
+            
+                        // Madonna del Pilone 
+                        cap = new ArrayList();
+            cap.add("10132");
+            QuartieriCap.put(Quartieri[26], cap);
+            
+                        // San Salvario
+                        cap = new ArrayList();
+            cap.add("10125");
+            QuartieriCap.put(Quartieri[27], cap);
+            
+                        // Cavoretto 
+                        cap = new ArrayList();
+            cap.add("10133");
+            QuartieriCap.put(Quartieri[28], cap);
+            
+                        // Borgo Po 
+                        cap = new ArrayList();
+            cap.add("10131");
+            QuartieriCap.put(Quartieri[29], cap);
+            
+                                    // Nizza Millefonti
+                                    cap = new ArrayList();
+            cap.add("10126");
+            QuartieriCap.put(Quartieri[30], cap);
+            
+                                    // Lingotto
+                                    cap = new ArrayList();
+            cap.add("10126");
+            cap.add("10127");
+            cap.add("10134");
+            cap.add("10135");
+            QuartieriCap.put(Quartieri[31], cap);
+            
+                                    // Filadelfia
+                                    cap = new ArrayList();
+            cap.add("10127");
+            QuartieriCap.put(Quartieri[32], cap);
+            
+                                    // Mirafiori Sud
+                                    cap = new ArrayList();
+            cap.add("10135");
+            cap.add("10136");
+            QuartieriCap.put(Quartieri[33], cap);
+            
+            
+                    
+                    
+                    
+                    
+            
+
+            
+            
+            
+            
+            
             String circoscrizioni = "Di Bruce The Deus - Opera propria, <a href=\"http://creativecommons.org/licenses/by-sa/3.0/\" title=\"Creative Commons Attribuzione - Condividi allo stesso modo versioni 3.0\">CC BY-SA 3.0</a>, https://it.wikipedia.org/w/index.php?curid=4681908";
             for (String quartiere : Quartieri) {
-                gestoreTest.addQuartiere(nome, quartiere);
+                //gestoreTest.addQuartiere(nome, quartiere);
+                gestoreCitta.insertQuartiere(nome, quartiere, QuartieriCap.get(quartiere));
+                
             }
-            ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
+            //ArrayList<String> quartieri = gestoreTest.getListaQuartieriNome(nome);
+            
+            ArrayList<String> quartieri = gestoreCitta.getListaQuartieri(nome);
+            
             for (String quartiere : quartieri) {
                 out.println("<p>" + quartiere + "</p>");
             }
