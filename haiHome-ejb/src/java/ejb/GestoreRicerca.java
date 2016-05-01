@@ -237,16 +237,18 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         result.setQuartiere(x.getQuartiere());
 
         boolean accept = false;
-        if (!x.isArchiviato() || !x.isOscurato()) {
-            if (!quartieriFiltro.isEmpty()) {
-                for (String quart : quartieriFiltro) {
-                    if (x.getQuartiere().equalsIgnoreCase(quart)) {
-                        accept = true;
-                        break;
+        if (!x.getLocatore().isBloccato()) {
+            if (!x.isArchiviato() || !x.isOscurato()) {
+                if (!quartieriFiltro.isEmpty()) {
+                    for (String quart : quartieriFiltro) {
+                        if (x.getQuartiere().equalsIgnoreCase(quart)) {
+                            accept = true;
+                            break;
+                        }
                     }
+                } else {
+                    accept = true;
                 }
-            } else {
-                accept = true;
             }
         }
         if (accept) {
@@ -308,47 +310,44 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                     accept = false;
                 }
 
-            } else {
-
+            } else if (x.isAtomico()) {
                 boolean out_prezzo_atomico = filtroAttuale.getPrezzo() != 0 && x.isAtomico() && x.getPrezzo() > filtroAttuale.getPrezzo();
                 boolean cmpCon_atomico = filtroAttuale.isCompresoCondominio() && x.isAtomico() && !x.isCompresoCondominio();
                 boolean cmpRisc_atomico = filtroAttuale.isCompresoRiscaldamento() && x.isAtomico() && !x.isCompresoRiscaldamento();
                 accept = !out_prezzo_atomico && !cmpCon_atomico && !cmpRisc_atomico;
+            } else {
+                boolean ok;
+                ArrayList<Stanza> newStanze = new ArrayList<Stanza>();
+                for (Stanza s : x.getListaStanza()) {
+                    if (s instanceof StanzaInAffitto) {
+                        StanzaInAffitto sF = (StanzaInAffitto) s;
 
-                if (!x.isAtomico()) {
-                    boolean ok;
-                    ArrayList<Stanza> newStanze = new ArrayList<Stanza>();
-                    for (Stanza s : x.getListaStanza()) {
-                        if (s instanceof StanzaInAffitto) {
-                            StanzaInAffitto sF = (StanzaInAffitto) s;
+                        boolean archiviato = sF.isArchiviato();
+                        boolean out_prezzo = filtroAttuale.getPrezzo() != 0 && sF.getPrezzo() > filtroAttuale.getPrezzo();
+                        boolean cmpCond = filtroAttuale.isCompresoCondominio() && !sF.isCompresoCondominio();
+                        boolean cmpRisc = filtroAttuale.isCompresoRiscaldamento() && !sF.isCompresoRiscaldamento();
 
-                            boolean archiviato = sF.isArchiviato();
-                            boolean out_prezzo = filtroAttuale.getPrezzo() != 0 && sF.getPrezzo() > filtroAttuale.getPrezzo();
-                            boolean cmpCond = filtroAttuale.isCompresoCondominio() && !sF.isCompresoCondominio();
-                            boolean cmpRisc = filtroAttuale.isCompresoRiscaldamento() && !sF.isCompresoRiscaldamento();
-
-                            ok = !archiviato && !out_prezzo && !cmpCond && !cmpRisc;
-                            if (ok) {
-                                newStanze.add(sF);
-                                accept = ok;
-                            } else {
-                                StanzaInAffitto newS = new StanzaInAffitto();
-                                newS.setId(sF.getId());
-                                newS.setVisibile(false);
-                                newS.setCompresoCondominio(sF.isCompresoCondominio());
-                                newS.setCompresoRiscaldamento(sF.isCompresoRiscaldamento());
-                                newS.setFoto(sF.getFoto());
-                                newS.setMetratura(sF.getMetratura());
-                                newS.setPrezzo(sF.getPrezzo());
-                                newS.setTipo(sF.getTipo());
-                                newStanze.add(newS);
-                            }
+                        ok = !archiviato && !out_prezzo && !cmpCond && !cmpRisc;
+                        if (ok) {
+                            newStanze.add(sF);
+                            accept = ok;
                         } else {
-                            newStanze.add((StanzaAccessoria) s);
+                            StanzaInAffitto newS = new StanzaInAffitto();
+                            newS.setId(sF.getId());
+                            newS.setVisibile(false);
+                            newS.setCompresoCondominio(sF.isCompresoCondominio());
+                            newS.setCompresoRiscaldamento(sF.isCompresoRiscaldamento());
+                            newS.setFoto(sF.getFoto());
+                            newS.setMetratura(sF.getMetratura());
+                            newS.setPrezzo(sF.getPrezzo());
+                            newS.setTipo(sF.getTipo());
+                            newStanze.add(newS);
                         }
+                    } else {
+                        newStanze.add((StanzaAccessoria) s);
                     }
-                    result.setListaStanza(newStanze);
                 }
+                result.setListaStanza(newStanze);
             }
         }
         if (!accept) {
@@ -486,16 +485,16 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             System.out.println(citta);
             boolean sel = this.selezionaCittà(citta);
             ArrayList<String> listaQ = new ArrayList<>();
-            if(obj.has("Quartieri")){
-                JSONArray Jquartieri=obj.getJSONArray("Quartieri");
+            if (obj.has("Quartieri")) {
+                JSONArray Jquartieri = obj.getJSONArray("Quartieri");
                 System.out.println(Jquartieri.toString());
-                for(int i=0;i<Jquartieri.length();i++){
+                for (int i = 0; i < Jquartieri.length(); i++) {
                     listaQ.add(Jquartieri.getString(i));
                 }
             }
             double prezzo = 0;
-            if(obj.has("Prezzo")){
-                prezzo=Double.valueOf(""+obj.get("Prezzo"));
+            if (obj.has("Prezzo")) {
+                prezzo = Double.valueOf("" + obj.get("Prezzo"));
             }
             boolean cmpC = false;
             boolean cmpR = false;
@@ -509,7 +508,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                     int nB = Integer.valueOf(obj.getString("NumeroBagni"));
                     int met = Integer.valueOf(obj.getString("Metratura"));
                     spec = this.aggiornaAFiltroAppartamento(nLoc, nB, nCamereL, met);
-                } else if(!tipo.equalsIgnoreCase("TUTTI")) {
+                } else if (!tipo.equalsIgnoreCase("TUTTI")) {
                     String tipoS = obj.getString("Tipo");
                     spec = this.aggiornaAFiltroStanza(tipoS);
                 }

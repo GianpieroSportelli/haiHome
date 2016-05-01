@@ -4,6 +4,20 @@ html, body{
     background:	whitesmoke;
 }
 
+/*
+.panel-default > .panel-heading-custom {
+    border:1px solid #999999;
+    margin-top: 5px;
+}
+*/
+
+
+
+.test:hover {
+    background: #000; 
+}
+
+
 .tbody {
     border:1px solid #999999;
     padding-top: 4%;
@@ -13,13 +27,13 @@ html, body{
     border:1px solid #999999;
     word-wrap: break-word;
 }
-
+/*
 textarea {
     border:1px solid #999999;
     width:98%;
     margin:5px 0;
     padding:1%;
-}
+}*/
 
 .textwrapper {
     float: left;
@@ -29,7 +43,7 @@ textarea {
 }
 
 .pwd {
-    width: 20%;
+   /* width: 20%;*/
     float: left; 
     padding-left: 1px;
 }
@@ -42,15 +56,18 @@ a:link:hover, a:visited:hover {
 .modify-field {
     color: transparent; 
 }
-
-.edit {
+/*
+.editable {
     float: right; 
-} 
+} */
+/*
+.cancel-edit, .start-edit, .save-edit {
+    float: right; 
+} */
 
 .edit-buttons {
-    width: 100%;
     float: right;
-    display: block; 
+/*    display: block; */
 } 
 
 .link-annuncio {

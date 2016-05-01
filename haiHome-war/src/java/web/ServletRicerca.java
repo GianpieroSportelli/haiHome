@@ -83,11 +83,16 @@ public class ServletRicerca extends HttpServlet {
                 getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("search")) {
+                
                 String[] quartieri = request.getParameterValues("quartieri");
+                
                 String tipo = request.getParameter("tipo");
                 String pricefrom = request.getParameter("pricefrom");
-                String compCondomino = request.getParameter("compCondomino");
-                String compRiscaldamento = request.getParameter("compRiscaldamento");
+                
+                boolean compCondomino = request.getParameter("compCondominio")!=null;
+                boolean compRiscaldamento = request.getParameter("compRiscaldamento")!=null;
+                
+                System.out.println("cmpCond: "+compCondomino+" cmpRis: "+compRiscaldamento);
                 //System.out.println("Quartieri selezionti");
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();
@@ -110,26 +115,26 @@ public class ServletRicerca extends HttpServlet {
                 }
 
                 boolean result;
-                result = gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino != null, compRiscaldamento != null);
+                result = gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino , compRiscaldamento);
                 System.out.println(gestoreRicerca.attualeToJSON());
+                
                 if (tipo.equalsIgnoreCase("Appartamento")) {
                     String nL = request.getParameter("numeroLocali");
                     String nB = request.getParameter("numeroBagni");
                     String nC = request.getParameter("numeroCamere");
                     String met = request.getParameter("metratura");
                     result = gestoreRicerca.aggiornaAFiltroAppartamento(Integer.valueOf(nL), Integer.valueOf(nB), Integer.valueOf(nC), Double.valueOf(met));
-                    System.out.println(gestoreRicerca.attualeToJSON());
+                    System.out.println("Filtro Appartamento: "+gestoreRicerca.attualeToJSON());
+                
                 } else if (tipo.equalsIgnoreCase("Stanza")) {
                     String tS = request.getParameter("tipoStanza");
                     result = gestoreRicerca.aggiornaAFiltroStanza(tS);
-                    System.out.println(gestoreRicerca.attualeToJSON());
-                } else {
-                    System.out.println(gestoreRicerca.attualeToJSON());
+                    System.out.println("Filtro Stanza: "+gestoreRicerca.attualeToJSON());
                 }
+                
                 response.setContentType("application/json");
                 System.out.println(" Filtro Aggiornato: " + result);
                 String json = new Gson().toJson("" + result);
-                System.out.println(json);
                 out.write(json);
 
             } else if (action.equalsIgnoreCase("AjaxGetInfo")) {

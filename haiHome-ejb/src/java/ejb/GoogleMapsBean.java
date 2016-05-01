@@ -29,7 +29,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
 //Server key con api geolocalizzazione e google place
 
     private final String key = "key=" + "AIzaSyAriKS9JSx0EdrZcTq98fGldD6KzDPiPHM";
-    
+
     @Override
     //Buisness method per la geocodifica di un indirizzo secondo le coordinate di google maps
     // return double[2] or null double[0]=latitudine double[1]=longitudine
@@ -40,7 +40,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
             String url = "https://maps.googleapis.com/maps/api/geocode/json?" + input + "&" + key;
             //ottenimento JSON object risultato, campi presenti status e results
             JSONObject json = readJsonFromUrl(url);
-            
+
             String status = (String) json.get("status");
 
             //verifica esito richiesta status==OK
@@ -49,7 +49,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
                 //dei campi necessari (lat,lng)
                 JSONArray res = (JSONArray) json.get("results");
                 JSONObject dic = (JSONObject) res.get(0);
-                JSONObject geometry = (JSONObject) dic.get("geometry");                
+                JSONObject geometry = (JSONObject) dic.get("geometry");
                 JSONObject location = (JSONObject) geometry.get("location");
                 /*JSONArray addresscomponent = dic.getJSONArray("address_components");
                 for (int i = 0; i < addresscomponent.length(); i++) {
@@ -69,7 +69,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
         }
         return null;
     }
-    
+
     @Override
     public ArrayList<JSONObject> getSupermarketNearBy(double lat, double lng, double rad) {
         ArrayList<JSONObject> list = new ArrayList<>();
@@ -94,7 +94,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
             String parameters = location + "&" + radius + "&" + types + "&" + key;
             String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + parameters;
             JSONObject json = readJsonFromUrl(url);
-            
+
             String status = json.getString("status");
             if (status.equalsIgnoreCase("OK")) {
                 JSONArray results = json.getJSONArray("results");
@@ -145,7 +145,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
         }
         return list;
     }
-    
+
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -154,7 +154,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
         }
         return sb.toString();
     }
-    
+
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
@@ -172,25 +172,34 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
     @Override
     public String getQuartiereByAddress(String address) {
         try {
+            address = address.replace(" ", "+");
+            System.out.println(address);
             //costruzione url di richiesta
             String input = "address=" + address;
             String url = "https://maps.googleapis.com/maps/api/geocode/json?" + input + "&" + key;
             //ottenimento JSON object risultato, campi presenti status e results
             JSONObject json = readJsonFromUrl(url);
-            
+
             String status = (String) json.get("status");
 
             //verifica esito richiesta status==OK
             if (status.equalsIgnoreCase("OK")) {
                 JSONArray res = (JSONArray) json.get("results");
-                System.out.println("lunghezza result: "+res.length());
-                for(int i=0;i<res.length();i++){
-                    JSONObject actual=res.getJSONObject(i);
+                System.out.println(res.toString());
+                System.out.println("lunghezza result: " + res.length());
+                for (int i = 0; i < res.length(); i++) {
+                    JSONObject actual = res.getJSONObject(i);
                     System.out.println(actual);
                     System.out.println(actual.getString("formatted_address"));
+                    url = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + actual.getString("place_id") + "&" + key;
+                    json = readJsonFromUrl(url);
+                    System.out.println(json.toString());
+                    url="http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find?text="+address+"&f=pjson";
+                    json = readJsonFromUrl(url);
+                    System.out.println(json.toString());
                 }
-                
-            }else{
+
+            } else {
                 System.out.println(status);
             }
         } catch (IOException ex) {
@@ -225,7 +234,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
             String parameters = location + "&" + radius + "&" + types + "&" + key;
             String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + parameters;
             JSONObject json = readJsonFromUrl(url);
-            
+
             String status = json.getString("status");
             if (status.equalsIgnoreCase("OK")) {
                 JSONArray results = json.getJSONArray("results");
@@ -276,7 +285,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
         }
         return list;
     }
-    
+
     @Override
     public ArrayList<JSONObject> getBusNearBy(double lat, double lng, double rad) {
         ArrayList<JSONObject> list = new ArrayList<>();
@@ -301,7 +310,7 @@ public class GoogleMapsBean implements GoogleMapsBeanLocal {
             String parameters = location + "&" + radius + "&" + types + "&" + key;
             String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + parameters;
             JSONObject json = readJsonFromUrl(url);
-            
+
             String status = json.getString("status");
             if (status.equalsIgnoreCase("OK")) {
                 JSONArray results = json.getJSONArray("results");

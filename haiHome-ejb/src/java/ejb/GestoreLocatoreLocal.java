@@ -40,13 +40,12 @@ public interface GestoreLocatoreLocal {
     public List<Annuncio> getAnnunciArchiviati();
     
     /* Gestione profilo del locatore*/
-    public void modificaInfoProfilo(String telefono, String descrizione); 
-    
+    public void modificaTelefono(String telefono); 
+    public void modificaDescrizione(String descrizione);
     public void modificaAvatarByURL(String img); 
-    
     public boolean modificaPassword(String oldpassword, String newpassword);  
-    
     public void modificaPassword(String newpassword); 
+    public void modificaInfoProfilo(String telefono, String descrizione); 
     
     public JSONObject toJSON();
     

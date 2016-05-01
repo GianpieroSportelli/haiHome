@@ -7,6 +7,7 @@ package ejb;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import javax.ejb.Local;
 import org.json.JSONObject;
 
@@ -25,6 +26,8 @@ public interface GestoreCittaLocal {
     
     public ArrayList<String> getListaQuartieri(String nomeCittà);
     
-    public JSONObject getListaCitta();
+    public ArrayList<String> getAllCittàNome();
+    
+    public HashMap<String,ArrayList<String>> getQuartieriCapMap();
     
 }

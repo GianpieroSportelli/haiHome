@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
         //JQuery.parseJSON("null") = null <3 
         user_data = jQuery.parseJSON($('#__user_data').text());
         
-        console.log(user_data); 
+      //  console.log(user_data); 
         console.log("Init header. Stato: " + (user_type === "null" ? "non" : "") + " loggato");
 
         if (user_type === "null") {
@@ -24,7 +24,10 @@ jQuery(document).ready(function ($) {
             $('#accesso').parent().show();
             $('#logout').parent().hide();
         } else {
-            $('#logged-as').html("Benvenuto,<b>&nbsp;&nbsp;" + user_data.nome + "</b>"); 
+            // che brutta cosa...
+            var nome = user_type === "locatore" ? user_data.nome : user_data.Nome; 
+//            var nome = user_data.nome; 
+            $('#logged-as').html("Benvenuto,<b>&nbsp;&nbsp;" + nome + "</b>"); 
             $('#logged-as').parent().show();
             $('#go-profile').parent().show();
             $('#accesso').parent().hide();

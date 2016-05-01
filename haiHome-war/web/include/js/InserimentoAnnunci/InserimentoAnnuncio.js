@@ -12,6 +12,9 @@
 
 $(document).ready(function () {
     
+    
+   
+    
     /*
     $('#myModal').modal({
     
@@ -342,13 +345,34 @@ function leggi_quartieri() {
             {action: "Annunci-newAnnuncio-getQuartieri"},
             function (responseJson) {
                 var html = '';
+                $("#selQuartiere").empty();
                 $.each(responseJson, function (index, item) {
                     html = '<option id=\"' + item + '\" value=\"' + item + '\">' + item + '</option>';
+                    
                     $("#selQuartiere").append(html);
                 });
     
             });
 
 }
+
+function aggiornaListaQuartieri(inputCap){
+        $.post("../ServletAnnuncio",
+            {action: "Annunci-newAnnuncio-getQuartieri",
+             cap: inputCap},
+            function (responseJson) {
+                var html = '';
+                $("#selQuartiere").empty();
+                $.each(responseJson, function (index, item) {
+                    html = '<option id=\"' + item + '\" value=\"' + item + '\">' + item + '</option>';
+                    $("#selQuartiere").append(html);
+                });
+    
+            });
+}
+
+
+    
+    
 
 

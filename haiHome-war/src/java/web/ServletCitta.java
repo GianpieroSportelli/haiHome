@@ -57,12 +57,17 @@ public class ServletCitta extends HttpServlet {
                     out.write("ERRORE");
                 }
             } else if (action.equalsIgnoreCase("get-lista-citta")) {
-                JSONObject result = gestoreCitta.getListaCitta();
+                ArrayList<String> result = gestoreCitta.getAllCittàNome();
+                JSONArray citta = new JSONArray();
+                for (String c : result) {
+
+                    citta.put(c);
+
+                }
                 if (result != null) {
-                    System.out.println(result.toString());
-                    out.write(result.toString());
+                    out.write(citta.toString());
                 } else {
-                    System.out.println("Non è stato possibile ottenere la lista delle città.");
+                    out.write("false");
                 }
             } else if (action.equalsIgnoreCase("get-lista-quartieri-citta")) {
                 ArrayList<String> result = gestoreCitta.getListaQuartieri(request.getParameter("citta"));

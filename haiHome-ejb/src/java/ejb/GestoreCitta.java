@@ -11,6 +11,7 @@ import facade.CittàFacadeLocal;
 import facade.QuartiereFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,10 @@ public class GestoreCitta implements GestoreCittaLocal {
     @EJB
     private QuartiereFacadeLocal quartiereFacade;
 
+    private static int capStartRange = 10121;
+    
+    private static int capEndRange = 10156;
+    
     @Override
     public boolean insertCitta(String nome) {
 
@@ -92,6 +97,15 @@ public class GestoreCitta implements GestoreCittaLocal {
         return false;
 
     }
+    
+    @Override
+    public ArrayList<String> getAllCittàNome() {
+        ArrayList<String> lista = new ArrayList();
+        for (Città city : cittàFacade.findAll()) {
+            lista.add(city.getNome());
+        }
+        return lista;
+    }
 
     @Override
     public ArrayList<String> getListaQuartieri(String nomeCittà) {
@@ -113,19 +127,25 @@ public class GestoreCitta implements GestoreCittaLocal {
     }
 
     @Override
-    public JSONObject getListaCitta() {
-
-        JSONObject result = new JSONObject();
-        int contatore = 1;
-        for (Città c : cittàFacade.findAll()) {
-            try {
-                result.accumulate("citta" + contatore, c.getNome());
-            } catch (JSONException ex) {
-                Logger.getLogger(GestoreCitta.class.getName()).log(Level.SEVERE, null, ex);
+    public HashMap<String, ArrayList<String>> getQuartieriCapMap() {
+        HashMap<String, ArrayList<String>> capMap = new HashMap();
+            for (Quartiere quartiere : quartiereFacade.findAll()) {
+                ArrayList<String> caps = (ArrayList<String>) quartiere.getCap();
+                for(String cap : caps){
+                    if(capMap.containsKey(cap)){
+                        ArrayList<String> quartTemp = capMap.get(cap);
+                        capMap.remove(cap);
+                        quartTemp.add(quartiere.getNome());
+                        capMap.put(cap, quartTemp);
+                    }else{
+                        ArrayList<String> quartTemp = new ArrayList();
+                        quartTemp.add(quartiere.getNome());
+                        capMap.put(cap, quartTemp);
+                    }
+                }
             }
-        }
-
-        return result;
+        
+        return capMap;
     }
-
+    
 }

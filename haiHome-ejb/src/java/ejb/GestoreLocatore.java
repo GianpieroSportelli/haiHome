@@ -129,6 +129,19 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         rendiModifichePersistenti();
     }
 
+     
+    @Override
+    public void modificaTelefono(String telefono) {
+        this.locatore.setTelefono(telefono);
+        rendiModifichePersistenti();
+    }
+    
+    @Override
+    public void modificaDescrizione(String descrizione) {
+        this.locatore.setDescrizione(descrizione);
+        rendiModifichePersistenti();
+    }
+    
     @Override
     public void modificaInfoProfilo(String telefono, String descrizione) {
         /* necessario controllo input ?? */

@@ -7,6 +7,7 @@ package web;
 
 import com.google.gson.Gson;
 import ejb.GestoreAnnuncioLocal;
+import ejb.GestoreCittaLocal;
 import ejb.GestoreRicercaLocal;
 import ejb.GoogleMapsBeanLocal;
 import java.awt.image.BufferedImage;
@@ -51,6 +52,9 @@ public class ServletAnnuncio extends HttpServlet {
     
     @EJB
     private GoogleMapsBeanLocal gestoreMaps;
+    
+        @EJB
+    private GestoreCittaLocal gestoreCitta;
 
     /*
     //Parametri richiesti
@@ -68,6 +72,8 @@ public class ServletAnnuncio extends HttpServlet {
     private HashMap<String, ArrayList<String>> photoTempPath;
     private HashMap<String, ArrayList<String>> stanzeInfo;
     long idLocatore;
+    
+    private HashMap<String,ArrayList<String>> capMap;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -130,6 +136,18 @@ public class ServletAnnuncio extends HttpServlet {
                 //inizializzo arrayList stanze
                 photoTempPath = new HashMap();
                 stanzeInfo = new HashMap();
+                
+                //Carico i quartieri
+                
+                capMap = gestoreCitta.getQuartieriCapMap();
+                for(String key : capMap.keySet()){
+                    System.out.println("Cap: " + key);
+                    System.out.println("Quartieri : ");
+                    for(String quart : capMap.get(key)){
+                        System.out.println("-       -  " + quart);
+                    }
+                    
+                }
 
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
@@ -439,10 +457,30 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getQuartieri")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
-                gestoreRicerca.selezionaCittà("Torino");
-                String json = new Gson().toJson(gestoreRicerca.getQuartieriCittà());
+                
+                String cap = request.getParameter("cap");
+                
+                
+                if(cap!=null){
+                    
+
+                System.out.println("CAP " + cap);
+                ArrayList<String> listaquartieri = capMap.get(cap);
+                String json = new Gson().toJson(listaquartieri);
                 System.out.println(json);
                 out.write(json);
+                    
+                }else{
+
+                
+               
+                
+                String json = new Gson().toJson(gestoreCitta.getListaQuartieri("Torino"));
+                
+                //String json = new Gson().toJson(listaquartieri);
+                System.out.println(json);
+                out.write(json);
+                }
 
             }else {
 
