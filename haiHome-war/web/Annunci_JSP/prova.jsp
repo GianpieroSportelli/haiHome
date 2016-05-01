@@ -5,9 +5,11 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
+
 <html>
     <head>
-        <title>Home</title>
+        <title>Prova</title>
         
                 <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -33,22 +35,22 @@
             .buttonDiv {border-style: solid;}
   
         </style>
+        
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&signed_in=true&libraries=places&callback=initAutocomplete" async defer></script>
+
   
     </head>
     <body>
-<div class="container ">
-<div class="col-sm-8 text-left well">
-    <label >Cerchi casa a torino </label></br>
-    <button>Cerca</button>
-    
-</div>
+     
+        <input id='inpIndirizzoProva' type="text" class="form-control" onFocus="geolocate()" onkeypress="return event.keyCode != 13"/><br />
+                        
 
-<div class="col-sm-8 text-left">
-        <label>Affitti casa a torino</label></br>
-        <button>Inserisci</button>
-    
-</div>
-            
-            </div>
+                                <!-- script miei -->
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
+        
+        <!-- fine script miei -->
+        
+        
+                        
     </body>
 </html>

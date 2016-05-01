@@ -39,6 +39,7 @@ body {
 }
 
 .my-btn {
+    float:right;
     white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
      white-space: -pre-wrap;      /* Opera 4-6 */
      white-space: -o-pre-wrap;    /* Opera 7 */
@@ -46,13 +47,14 @@ body {
      word-wrap: break-word;       /* Internet Explorer 5.5+ */
      word-break: break-all;
      white-space: normal;
-     text-align: right;
+     font-size: 70%;
+}
+.my-label{
+    padding: 20px;
 }
 
 .center {
     margin: auto;
-    /*width: 60%;*/
-    /*border: 3px solid #73AD21;*/
     padding: 10px;
 }
 

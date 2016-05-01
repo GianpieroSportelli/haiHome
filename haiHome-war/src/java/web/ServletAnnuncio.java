@@ -7,7 +7,9 @@ package web;
 
 import com.google.gson.Gson;
 import ejb.GestoreAnnuncioLocal;
+import ejb.GestoreCittaLocal;
 import ejb.GestoreRicercaLocal;
+import ejb.GoogleMapsBeanLocal;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,6 +49,12 @@ public class ServletAnnuncio extends HttpServlet {
     
     @EJB
     private GestoreRicercaLocal gestoreRicerca;
+    
+    @EJB
+    private GoogleMapsBeanLocal gestoreMaps;
+    
+        @EJB
+    private GestoreCittaLocal gestoreCitta;
 
     /*
     //Parametri richiesti
@@ -64,6 +72,8 @@ public class ServletAnnuncio extends HttpServlet {
     private HashMap<String, ArrayList<String>> photoTempPath;
     private HashMap<String, ArrayList<String>> stanzeInfo;
     long idLocatore;
+    
+    private HashMap<String,ArrayList<String>> capMap;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -126,6 +136,18 @@ public class ServletAnnuncio extends HttpServlet {
                 //inizializzo arrayList stanze
                 photoTempPath = new HashMap();
                 stanzeInfo = new HashMap();
+                
+                //Carico i quartieri
+                
+                capMap = gestoreCitta.getQuartieriCapMap();
+                for(String key : capMap.keySet()){
+                    System.out.println("Cap: " + key);
+                    System.out.println("Quartieri : ");
+                    for(String quart : capMap.get(key)){
+                        System.out.println("-       -  " + quart);
+                    }
+                    
+                }
 
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
@@ -135,15 +157,24 @@ public class ServletAnnuncio extends HttpServlet {
                 String citta = request.getParameter("Città").trim();
                 String quartiere = request.getParameter("Quartiere").trim();
                 String indirizzo = request.getParameter("Indirizzo").trim() + ", " + request.getParameter("Civico").trim();
-
+                //Via Carlo Alberto, 41, Torino, TO, Italia
+                String indirizzoString =indirizzo + "," + citta + ", Italia";
+                indirizzoString = indirizzoString.replace(" ", "+");
+                        
                 //da gestire la latitudine longitutine latlng = {0.0,0.0};
-                double[] latlng = {0.0, 0.0};
+                //double[] latlng = {0.0, 0.0};
+                
+                double[] latlng = gestoreMaps.geocodingAddress(indirizzoString);
+                
+                
+                
                 //Inserisco informazioni
                 gestoreAnnuncio.inserisciInfoIndirizzo(citta, quartiere, indirizzo, latlng);
 
                 System.out.println("CITTA: " + citta);
                 System.out.println("QUARTIERE: " + quartiere);
                 System.out.println("INDIRIZZO: " + indirizzo);
+                System.out.println("COORDINATE INDIRIZZO: " + latlng[0] + ", " + latlng[1]);
                 System.out.println("\n");
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
@@ -198,6 +229,11 @@ public class ServletAnnuncio extends HttpServlet {
                     System.out.println("Tipologia stanza " + tipologiaStanze[i]);
 
                     infoStanza.add(tipologiaStanze[i]);
+                    
+                    
+                        if(metraturaS[i].equalsIgnoreCase("")){
+                            metraturaS[i] = "0";
+                        }
 
                     //stanza da letto
                     if (tipologiaStanze[i].equalsIgnoreCase("1")) {
@@ -262,7 +298,7 @@ public class ServletAnnuncio extends HttpServlet {
                         photoTempPath.put(numStanza, temp);
                     }
 
-                    System.out.println("NOME FOTO: " + fileName);
+                    System.out.println("NOME FOTO: " + fileName + " NUOVO PATH FOTO " + path);
 
                 }
 
@@ -307,6 +343,7 @@ public class ServletAnnuncio extends HttpServlet {
                     for (String s : listaChiavi) {
                         ArrayList<String> infoStanza = stanzeInfo.get(s);
                         String tipologiaStanza = infoStanza.get(0);
+                        
                         if (tipologiaStanza.equalsIgnoreCase("1")) {
                             //stanza da letto senza costi
                             gestoreAnnuncio.inserisciNuovaStanzaInAffitto(infoStanza.get(1), photoTempPath.get(s), Double.parseDouble(infoStanza.get(2)));
@@ -420,10 +457,30 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getQuartieri")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
-                gestoreRicerca.selezionaCittà("Torino");
-                String json = new Gson().toJson(gestoreRicerca.getQuartieriCittà());
+                
+                String cap = request.getParameter("cap");
+                
+                
+                if(cap!=null){
+                    
+
+                System.out.println("CAP " + cap);
+                ArrayList<String> listaquartieri = capMap.get(cap);
+                String json = new Gson().toJson(listaquartieri);
                 System.out.println(json);
                 out.write(json);
+                    
+                }else{
+
+                
+               
+                
+                String json = new Gson().toJson(gestoreCitta.getListaQuartieri("Torino"));
+                
+                //String json = new Gson().toJson(listaquartieri);
+                System.out.println(json);
+                out.write(json);
+                }
 
             }else {
 

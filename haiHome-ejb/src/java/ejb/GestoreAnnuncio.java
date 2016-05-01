@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -534,10 +535,13 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         }
 
         Date d = new Date();
+        
+        Random r = new Random();
+        
 
         String est = nomePhoto.substring(nomePhoto.length() - 3);
 
-        String photoName = denominazioneLocatore + d.getTime() + "." + est;
+        String photoName = denominazioneLocatore + r.nextInt(100) + d.getTime() + "." + est;
 
         pathFoto = pathTempFoto + "//" + photoName;
 
