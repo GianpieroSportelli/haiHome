@@ -7,8 +7,7 @@
     boolean session_exists = session.getAttribute("user-type") != null;
     JSONObject user_data = null;
 
-    /* da convertire in controllo lato client, questo è brutto come la merda */ 
-    
+    /* da convertire in controllo lato client, questo è brutto come la merda */
     if (session_exists) {
         user_data = (JSONObject) session.getAttribute("user-data");
     } else {
@@ -63,11 +62,11 @@
         <script type="text/javascript" src="include/js/locatore/visualizzazione-annunci.js"></script>
         <script type="text/javascript" src="include/js/locatore/profilo-locatore.js"></script>
 
-        
-        
+
+
         <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
         <script src="include/js/login/ajax_req_and_stuff.js"></script>
-        
+
         <script src='include/js/header-updater.js'></script>
 
     </head>
@@ -80,6 +79,8 @@
             <div id="annunci-length"><%= session.getAttribute("num-annunci")%></div>
             <div id="visibili-length"><%= session.getAttribute("num-visibili")%></div>
             <div id="archiviati-length"><%= session.getAttribute("num-archiviati")%></div>
+            <div id="oscurati-length"><%= session.getAttribute("num-archiviati")%></div>
+
         </div>
 
         <div class="container">
@@ -130,6 +131,16 @@
                                         Archivio annunci
                                     </a>
                                 </li>
+                                <li><a href="#oscurati" data-toggle="tab">
+                                        <i class="glyphicon glyphicon-list-alt"></i>
+                                        Annunci oscurati
+                                    </a>
+                                </li>
+                                <li><a href="Annunci_JSP/InserimentoAnnunci.jsp" class="btn btn-danger">
+                                        Inserisci nuovo annuncio
+                                    </a>
+                                </li>
+
                             </ul>
                         </div> 
                         <!-- END MENU -->
@@ -140,22 +151,162 @@
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
                         <div class="tab-pane fade in active panel panel-default" id="home">
-                            <div class="edit-buttons panel-heading">
-                                <a href="#0" id="edit" class="edit">
-                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                    Modifica informazioni
-                                </a>
-                                <a href="#0" id="cancel-edit" class="edit" style="display: none">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                    Annulla modifiche
-                                </a>
-                                <a href="#0" id="save-edit" class="edit" style="display: none">
-                                    <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
-                                    Salva modifiche 
-                                </a>
-
+                            <div class="panel-heading">
+                                Info
                             </div>
                             <div class="tbody panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class='panel-heading  panel-heading-custom'>
+                                                Nome
+                                            </div>
+                                            <div class="panel-body"><%=user_data.getString("nome")%></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class='panel-heading'>Cognome</div>
+                                            <div class="panel-body"><%=user_data.getString("cognome")%></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- EMAIL e TELEFONO --> 
+                                <div class="row">
+                                    <!-- campo email -->
+                                    <div class="col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class='panel-heading'>Email</div>
+                                            <div class="panel-body"><%=user_data.getString("email")%></div>
+                                        </div>
+                                    </div>
+                                    <!-- TELEFONO -->
+                                    <div class="col-md-6">
+                                        <div id="panel-telefono" class="panel panel-default editable">
+                                            <div class='panel-heading'>
+                                                Telefono
+                                                <%@include file="include/html/edit-buttons.html" %>
+                                            </div>
+                                            <div class="panel-body">
+                                                <input class="form-control" id="telefono" 
+                                                       name="phone" type="text" 
+                                                       value="<%=user_data.getString("telefono")%>" 
+                                                       disabled="disabled" placeholder="..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="rigapwd">
+                                    <!-- campo PASSWORD -->
+                                    <div class="col-md-12">
+                                        <div id="panel-password" class="panel panel-default editable">
+                                            <div class='panel-heading  panel-heading-custom'>
+                                                Password
+                                                <%@include file="include/html/edit-buttons.html" %>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="col-md-4">
+                                                    <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="*****************" disabled="disabled" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova password..." />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input id="new-password2" class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..." />
+                                                </div>
+
+                                                <!--
+                                                <input class="form-control pwd" name="old-pwd" type="password" placeholder="*****************" disabled="disabled"/>
+                                                <div id="modify-pwd-stuff" class="form-group">
+                                                    <input class="form-control pwd" name="pwd" type="password" placeholder="Nuova password...">
+                                                    <input class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..."/>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row"><%--
+                                    <div class="col-md-4">
+                                        <div class="panel panel-default">
+                                            <div class='panel-heading'>
+                                                Telefono
+                                                <a href="#0" class="edit">Edit</a>
+                                            </div>
+                                            <div class="panel-body">
+                                                <input class="form-control" id="telefono" 
+                                                       name="phone" type="text" 
+                                                       value="<%=user_data.getString("telefono")%>" 
+                                                       disabled="disabled" placeholder="..."/>
+                                            </div>
+                                        </div>
+                                    </div> --%>
+                                    <div class="col-md-12">
+                                        <!-- Campo DESCRIZIONE -->
+                                        <div id="panel-descrizione" class="panel panel-default editable">
+                                            <div class='panel-heading'>
+                                                Descrizione
+                                                <%@include file="include/html/edit-buttons.html" %>
+                                            </div>
+                                            <div class="panel-body">
+                                                <textarea class="form-control" id="descrizione" 
+                                                          name="description" rows="5" cols="50" 
+                                                          maxlength="255" disabled="disabled" 
+                                                          placeholder="Scrivi qualcosa su di te"><%=user_data.getString("descrizione")%></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <%-- base da integrare
+                                <div class='panel-group'>
+                                    <div class="panel panel-default">
+                                        <div class='panel-heading  panel-heading-custom'>
+                                            Nome
+                                        </div>
+                                        <div class="panel-body"><%=user_data.getString("nome")%></div>
+                                    </div>
+                                    <div class="panel panel-default" style='display: float'>
+                                        <div class='panel-heading'>Cognome</div>
+                                        <div class="panel-body"><%=user_data.getString("cognome")%></div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class='panel-heading'>Email</div>
+                                        <div class="panel-body"><%=user_data.getString("email")%></div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class='panel-heading'>Telefono</div>
+                                        <div class="panel-body">
+                                            <input class="form-control" id="telefono" 
+                                                   name="phone" type="text" 
+                                                   value="<%=user_data.getString("telefono")%>" 
+                                                   disabled="disabled" placeholder="..."/>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class='panel-heading'>Password</div>
+                                        <div class="panel-body">Panel Content</div>
+                                    </div>
+
+                                    <div class="panel panel-default">
+                                        <div class='panel-heading'>
+                                            Descrizione
+                                        </div>
+                                        <div class="panel-body">
+                                            <textarea class="form-control" id="descrizione" 
+                                                      name="description" rows="5" cols="50" 
+                                                      maxlength="255" disabled="disabled" 
+                                                      placeholder="Scrivi qualcosa su di te"><%=user_data.getString("descrizione")%></textarea>
+                                        </div>
+                                    </div>
+                                </div>  --%>
+
+
+
+                                <%-- funzionante 
                                 <div class="trow">
                                     <div class="field-name">
                                         Nome:
@@ -172,19 +323,24 @@
                                     <div class="field-name">Email: </div>
                                     <div class="field-value"><%=user_data.getString("email")%></div>
                                 </div>
-                                <div id="rigapwd" class="trow form-group has-error">
-                                    <div class="field-name">Password: </div>
+                                <div id="rigapwd" class="trow form-group test">
+                                    <div class="field-name">
+                                            Password:
+                                    </div>
                                     <div class="field-value"> 
                                         <input class="form-control pwd" name="old-pwd" type="password" placeholder="*****************" disabled="disabled"/>
-                                        <div id="modify-pwd-stuff" class="form-group has-error">
+                                        <div id="modify-pwd-stuff" class="form-group">
                                             <input class="form-control pwd" name="pwd" type="password" placeholder="Nuova password...">
                                             <input class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..."/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="trow form-group">
-                                    <div class="field-name">
-                                        <label for="telefono" class="control-label">Telefono</label>
+                                    <div class="field-name test" style='display:block'>
+                                        <a id="edit-phone" href="#0">
+                                            <label for="telefono" class="control-label">Telefono</label>
+                                            <span class="glyphicon glyphicon-edit edit"></span>
+                                        </a>
                                     </div>
                                     <div class="field-value"> 
                                         <input class="form-control" id="telefono" name="phone" type="text" value="<%=user_data.getString("telefono")%>" 
@@ -193,13 +349,16 @@
                                 </div>
                                 <div class="trow form-group ">
                                     <div class="field-name">
-                                        <label for="descrizione" class="control-label">Descrizione</label>
+                                        <a id="edit-descrizione" href="#0">
+                                            <label for="descrizione" class="control-label">Descrizione</label>
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </a>
                                     </div>
                                     <div class="field-value textwrapper">
                                         <textarea class="form-control" id="descrizione" name="description" rows="5" cols="50" maxlength="255" disabled="disabled" 
                                                   placeholder="Scrivi qualcosa su di te"><%=user_data.getString("descrizione")%></textarea>
                                     </div>
-                                </div>
+                                </div> --%>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="annunci">
@@ -256,6 +415,12 @@
                                     <span class='glyphicon glyphicon-menu-right'></span>
                                 </a> -->
                             </div>
+                        </div>
+                        <div class="tab-pane fade" id="oscurati">
+                            <div id="oscurati-content">
+                                <!-- contenuto caricato tramite ajax -->
+                            </div>
+
                         </div>
                     </div> 
                 </div>  

@@ -475,9 +475,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean eliminaAnnuncio(Annuncio annuncio) {
-        this.annuncio = annuncio;
-        List<Stanza> stanze = stanzaFacade.findAll();
+    public boolean eliminaAnnuncio(long oidAnnuncio) {
+        this.annuncio = annuncioFacade.find(oidAnnuncio);
 
         Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
         this.annuncio.setListaStanza(new ArrayList<>());
@@ -485,8 +484,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         for (Stanza s : listaStanze) {
             stanzaFacade.remove(s);
         }
-
-        //stanze=  stanzaFacade.findAll();
+        
         annuncioFacade.remove(annuncio);
         return true;
     }
@@ -630,6 +628,25 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         Annuncio ann = this.annuncioFacade.find(oid);
         return ann;
     }
+
+    @Override
+    public boolean archiviaAnnuncio(long oidAnnuncio, boolean archiviato) {
+        this.annuncio = this.annuncioFacade.find(oidAnnuncio);
+        
+        //XOR potentissimo!!!!!!!! se dà vero vuol dire che i due valori sono diversi
+        if(this.annuncio.isArchiviato() ^ archiviato){
+            this.annuncio.setArchiviato(archiviato);
+            this.annuncioFacade.edit(annuncio);
+            return true;
+            
+        }else{
+            return false;
+        }
+        
+        
+    }
+    
+    
    
 
 }

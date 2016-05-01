@@ -63,9 +63,12 @@ public interface GestoreAnnuncioLocal {
     
     //ELIMINA
     
-    public boolean eliminaAnnuncio(Annuncio annuncio);
+    public boolean eliminaAnnuncio(long oidAnnuncio);
     
     public boolean eliminaStanza(Stanza s);
+    
+    // ARCHIVIA
+    public boolean archiviaAnnuncio(long oidAnnuncio, boolean archiviato);
     
     
     //UTILY FOTO

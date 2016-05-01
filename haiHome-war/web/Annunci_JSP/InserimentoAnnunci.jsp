@@ -45,14 +45,18 @@
         <!-- end google+ login stuff -->
         
         <!-- Inizio import header --------------------->
-        <script src="include/js/header-updater.js"></script>
+        <script src="../include/js/header-updater.js"></script>
         <!-- Script modal login -->
-        <script src="include/js/login/modal_validation_and_stuff.js"></script> 
-        <script src="include/js/login/ajax_req_and_stuff.js"></script>
+        <script src="../include/js/login/modal_validation_and_stuff.js"></script> 
+        <script src="../include/js/login/ajax_req_and_stuff.js"></script>
+        <script src="../include/js/login/modernizr.js"></script> <!-- Modernizr -->
 
          <!-- Import script Facebook -->
         <script type="text/javascript" src="../include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
+        
+        <!-- google Place API -->
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&signed_in=true&libraries=places&callback=initAutocomplete" async defer></script>
         
 
         
@@ -152,7 +156,9 @@
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/stanzeUtily.js"></script>
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/anteprimaAnnuncio.js"></script>
         <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
+        <script type="text/javascript" src="../include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
         <!-- fine script miei -->
+        
 
 
     </body>

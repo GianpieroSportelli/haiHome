@@ -49,7 +49,7 @@ public class TestModificaAnnuncio extends HttpServlet {
             long[] oid = {210L} ;//, 119L,123L,128L,132L,137L,141L,146L,155L,160L,164L,169L,173L,178L,182L,187L,191L,196L};
             
             for(int j = 0; j<oid.length;j++)
-                gestoreAnnuncio.eliminaAnnuncio(gestoreAnnuncio.predniAnnuncio(oid[j]));
+                //gestoreAnnuncio.eliminaAnnuncio(gestoreAnnuncio.predniAnnuncio(oid[j]));
             
             out.println("<h1>Servlet TestModificaAnnuncio at " + request.getContextPath() + "</h1>");
             out.println("</body>");

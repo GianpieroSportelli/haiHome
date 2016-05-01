@@ -13,11 +13,11 @@
                 <a class="navbar-brand" href="index.jsp">HaiHome!!</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a id="logged-as"></a></li>
-                <li><a id="go-profile" href="#0">Profilo</a></li>
-                <li><a id="accesso" class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li>
-                <li><a id="logout" href="#0">Logout</a></li> 
-                <li><a id="help" href="#0">Aiuto</a></li> 
+                <li><a id="logged-as" class="link-navbar"></a></li>
+                <li><a id="go-profile" class="link-navbar" href="#0">Profilo</a></li>
+                <li><a id="accesso" class="link-navbar" class='cd-signup' href='#myModal' data-toggle='modal'>Accesso</a></li>
+                <li><a id="logout" class="link-navbar" href="#0">Logout</a></li> 
+                <li><a id="help" class="link-navbar" href="#0">Aiuto</a></li> 
             </ul>
         </div>
     </nav> 

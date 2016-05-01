@@ -72,6 +72,8 @@ public class ServletAnnuncio extends HttpServlet {
     private HashMap<String, ArrayList<String>> photoTempPath;
     private HashMap<String, ArrayList<String>> stanzeInfo;
     long idLocatore;
+    
+    private HashMap<String,ArrayList<String>> capMap;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -134,6 +136,18 @@ public class ServletAnnuncio extends HttpServlet {
                 //inizializzo arrayList stanze
                 photoTempPath = new HashMap();
                 stanzeInfo = new HashMap();
+                
+                //Carico i quartieri
+                
+                capMap = gestoreCitta.getQuartieriCapMap();
+                for(String key : capMap.keySet()){
+                    System.out.println("Cap: " + key);
+                    System.out.println("Quartieri : ");
+                    for(String quart : capMap.get(key)){
+                        System.out.println("-       -  " + quart);
+                    }
+                    
+                }
 
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
@@ -444,22 +458,20 @@ public class ServletAnnuncio extends HttpServlet {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
                 
-                String fakeCap = "10155";
-                
-                gestoreRicerca.selezionaCittà("Torino");
+                String cap = request.getParameter("cap");
                 
                 
-                HashMap<String,ArrayList<String>> capMap = gestoreCitta.getQuartieriCapMap();
-                for(String key : capMap.keySet()){
-                    System.out.println("Cap: " + key);
-                    System.out.println("Quartieri : ");
-                    for(String quart : capMap.get(key)){
-                        System.out.println("-       -  " + quart);
-                    }
+                if(cap!=null){
                     
-                }
-                
-                ArrayList<String> listaquartieri = capMap.get(fakeCap);
+
+                System.out.println("CAP " + cap);
+                ArrayList<String> listaquartieri = capMap.get(cap);
+                String json = new Gson().toJson(listaquartieri);
+                System.out.println(json);
+                out.write(json);
+                    
+                }else{
+
                 
                
                 
@@ -468,6 +480,7 @@ public class ServletAnnuncio extends HttpServlet {
                 //String json = new Gson().toJson(listaquartieri);
                 System.out.println(json);
                 out.write(json);
+                }
 
             }else {
 
