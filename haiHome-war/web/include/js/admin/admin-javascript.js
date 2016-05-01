@@ -72,42 +72,45 @@ function inserisciCAP() {
     var cittaInput = $('#cittaDB').val();
     var quartiereInput = $('#quartiereNome').val();
 
-    console.log(quartiereInput);
-
-    var correct = true;
-
-    var caps = capInput.split("-");
-    var trattiniNecessari = (capInput.split("-").length - 1);
-
-    if ((caps.length === 1 && trattiniNecessari !== 0) || (caps.length === 0)) {
-        correct = false;//1 cap e ci sono dei trattini oppure 0 cap
-    } else if (caps.length !== trattiniNecessari + 1) {
-        correct = false;//più trattini di quelli che servono
-    }
-
-    for (var i = 0; i < caps.length; i++) {
-        if (caps[i].length !== 5) {
-            correct = false;
-            break;
-        }
-    }
-
-    if (!correct) {
-        alert('Il formato dei CAP non è valido. Riprova.')
+    if (quartiereInput.length === 0) {
+        alert('Nome inserito per il quartiere non valido.');
     } else {
 
-        $.post("ServletController",
-                {action: "add-cap", citta: cittaInput, quartiere: quartiereInput, cap: caps.toString()},
-                function (responseJson) {
-                    if (responseJson == 'false') {
-                        alert('Non è stato possibile inserire il cap specificato.');
-                    } else {
-                        $("#capQuartiere").val('');
-                        alert('Città: ' + cittaInput + " - Quartiere: " + quartiereInput + " - CAP: " + caps.toString() + " Inserito con successo.")
-                    }
+        var correct = true;
 
-                }
-        );
+        var caps = capInput.split("-");
+        var trattiniNecessari = (capInput.split("-").length - 1);
+
+        if ((caps.length === 1 && trattiniNecessari !== 0) || (caps.length === 0)) {
+            correct = false;//1 cap e ci sono dei trattini oppure 0 cap
+        } else if (caps.length !== trattiniNecessari + 1) {
+            correct = false;//più trattini di quelli che servono
+        }
+
+        for (var i = 0; i < caps.length; i++) {
+            if (caps[i].length !== 5) {
+                correct = false;
+                break;
+            }
+        }
+
+        if (!correct) {
+            alert('Il formato dei CAP non è valido. Riprova.')
+        } else {
+
+            $.post("ServletController",
+                    {action: "add-cap", citta: cittaInput, quartiere: quartiereInput, cap: caps.toString()},
+                    function (responseJson) {
+                        if (responseJson == 'false') {
+                            alert('Non è stato possibile inserire il cap specificato.');
+                        } else {
+                            $("#capQuartiere").val('');
+                            alert('Città: ' + cittaInput + " - Quartiere: " + quartiereInput + " - CAP: " + caps.toString() + " Inserito con successo.")
+                        }
+
+                    }
+            );
+        }
     }
 }
 
