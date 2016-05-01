@@ -143,6 +143,10 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-edit-descrizione")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
+            } else if (action.equalsIgnoreCase("get-lista-citta")) {
+                request.getRequestDispatcher("/ServletCitta").forward(request, response);
+            } else if (action.equalsIgnoreCase("get-lista-quartieri-citta")) {
+                request.getRequestDispatcher("/ServletCitta").forward(request, response);
             } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 

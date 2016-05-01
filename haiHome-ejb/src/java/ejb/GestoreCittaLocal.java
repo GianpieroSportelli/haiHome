@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import javax.ejb.Local;
+import org.json.JSONObject;
 
 /**
  *
