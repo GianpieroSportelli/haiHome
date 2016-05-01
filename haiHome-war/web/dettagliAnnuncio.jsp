@@ -73,7 +73,7 @@
         <!-- FINE import-->
 
         <script>
-            $("head").append("<title>haiHome!! - Dettagli annuncio-" + annuncio.Indirizzo + " </title>");
+            $("head").append("<title>haiHome!! - Annuncio-" + annuncio.Indirizzo + " </title>");
         </script>
         <style>
 
