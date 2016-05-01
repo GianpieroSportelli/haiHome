@@ -8,18 +8,21 @@ package web;
 import ejb.GestoreCittaLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
  * @author Eugenio Liso
  */
 public class ServletCitta extends HttpServlet {
-    
+
     @EJB
     private GestoreCittaLocal gestoreCitta;
 
@@ -36,9 +39,9 @@ public class ServletCitta extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+
             String action = request.getParameter("action");
-            
+
             if (action.equalsIgnoreCase("inserisci-citta")) {
                 String nomeCitta = request.getParameter("NomeCitta");
                 if (gestoreCitta.insertCitta(nomeCitta)) {
@@ -52,6 +55,27 @@ public class ServletCitta extends HttpServlet {
                     out.write("OK");
                 } else {
                     out.write("ERRORE");
+                }
+            } else if (action.equalsIgnoreCase("get-lista-citta")) {
+                JSONObject result = gestoreCitta.getListaCitta();
+                if (result != null) {
+                    System.out.println(result.toString());
+                    out.write(result.toString());
+                } else {
+                    System.out.println("Non è stato possibile ottenere la lista delle città.");
+                }
+            } else if (action.equalsIgnoreCase("get-lista-quartieri-citta")) {
+                ArrayList<String> result = gestoreCitta.getListaQuartieri(request.getParameter("citta"));
+                JSONArray quartieri = new JSONArray();
+                for (String quartiere : result) {
+
+                    quartieri.put(quartiere);
+
+                }
+                if (result != null) {
+                    out.write(quartieri.toString());
+                } else {
+                    out.write("false");
                 }
             }
         }

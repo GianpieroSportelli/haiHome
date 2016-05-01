@@ -11,8 +11,13 @@ import facade.CittàFacadeLocal;
 import facade.QuartiereFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -23,7 +28,7 @@ public class GestoreCitta implements GestoreCittaLocal {
 
     @EJB
     private CittàFacadeLocal cittàFacade;
-    
+
     @EJB
     private QuartiereFacadeLocal quartiereFacade;
 
@@ -58,23 +63,23 @@ public class GestoreCitta implements GestoreCittaLocal {
 
     @Override
     public boolean insertQuartiere(String nomeCittà, String nomeQuartiere, Collection<String> cap) {
-         Città find = null;
+        Città find = null;
         for (Città x : cittàFacade.findAll()) {
             if (x.getNome().equalsIgnoreCase(nomeCittà)) {
                 find = x;
             }
         }
         if (find != null) {
-            
+
             Collection<Quartiere> quartieri = find.getListaQuartieri();
             if (quartieri == null) {
                 quartieri = new ArrayList<>();
             }
             Quartiere nuovoQuartiere = new Quartiere();
-            
+
             nuovoQuartiere.setNome(nomeQuartiere);
             nuovoQuartiere.setCap(cap);
-            
+
             quartiereFacade.create(nuovoQuartiere);
             quartieri.add(nuovoQuartiere);
             for (Quartiere quartiere : quartieri) {
@@ -85,7 +90,7 @@ public class GestoreCitta implements GestoreCittaLocal {
             return true;
         }
         return false;
-        
+
     }
 
     @Override
@@ -106,6 +111,21 @@ public class GestoreCitta implements GestoreCittaLocal {
         }
         return listaQuartieri;
     }
-    
-    
+
+    @Override
+    public JSONObject getListaCitta() {
+
+        JSONObject result = new JSONObject();
+        int contatore = 1;
+        for (Città c : cittàFacade.findAll()) {
+            try {
+                result.accumulate("citta" + contatore, c.getNome());
+            } catch (JSONException ex) {
+                Logger.getLogger(GestoreCitta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return result;
+    }
+
 }

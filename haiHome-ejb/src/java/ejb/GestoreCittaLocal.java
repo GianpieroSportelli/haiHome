@@ -8,6 +8,7 @@ package ejb;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.ejb.Local;
+import org.json.JSONObject;
 
 /**
  *
@@ -23,5 +24,7 @@ public interface GestoreCittaLocal {
     public boolean insertQuartiere(String nomeCittà, String nomeQuartiere, Collection<String> cap);
     
     public ArrayList<String> getListaQuartieri(String nomeCittà);
+    
+    public JSONObject getListaCitta();
     
 }
