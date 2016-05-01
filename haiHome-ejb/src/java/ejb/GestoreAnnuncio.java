@@ -475,9 +475,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean eliminaAnnuncio(Annuncio annuncio) {
-        this.annuncio = annuncio;
-        List<Stanza> stanze = stanzaFacade.findAll();
+    public boolean eliminaAnnuncio(long oidAnnuncio) {
+        this.annuncio = annuncioFacade.find(oidAnnuncio);
 
         Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
         this.annuncio.setListaStanza(new ArrayList<>());
@@ -485,8 +484,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         for (Stanza s : listaStanze) {
             stanzaFacade.remove(s);
         }
-
-        //stanze=  stanzaFacade.findAll();
+        
         annuncioFacade.remove(annuncio);
         return true;
     }
