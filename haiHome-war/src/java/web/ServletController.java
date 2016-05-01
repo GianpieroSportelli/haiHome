@@ -147,6 +147,8 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletCitta").forward(request, response);
             } else if (action.equalsIgnoreCase("get-lista-quartieri-citta")) {
                 request.getRequestDispatcher("/ServletCitta").forward(request, response);
+            } else if (action.equalsIgnoreCase("add-cap")) {
+                request.getRequestDispatcher("/ServletCitta").forward(request, response);
             } else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 

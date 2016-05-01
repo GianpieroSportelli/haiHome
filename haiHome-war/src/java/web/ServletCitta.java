@@ -9,6 +9,8 @@ import ejb.GestoreCittaLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -82,6 +84,25 @@ public class ServletCitta extends HttpServlet {
                 } else {
                     out.write("false");
                 }
+            } else if (action.equalsIgnoreCase("add-cap")) {
+                String citta = request.getParameter("citta");
+                String quartiere = request.getParameter("quartiere");
+                String[] caps = request.getParameter("cap").split(",");
+
+                ArrayList<String> capDaInserire = new ArrayList<>();
+                for (String c : caps) {
+
+                    capDaInserire.add(c);
+                }
+
+                if (gestoreCitta.insertQuartiere(citta, quartiere, capDaInserire)) {
+                    System.out.println("Cap inseriti: " + capDaInserire.toString());
+
+                    out.write("true");
+                } else {
+                    out.write("false");
+                }
+
             }
         }
     }
