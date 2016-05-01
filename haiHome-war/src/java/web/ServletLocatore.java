@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -153,7 +155,7 @@ public class ServletLocatore extends HttpServlet {
                 gestoreLocatore.modificaInfoProfilo(phone, descrizione);
                 //refresh sessione
                 session.setAttribute("user-data", this.gestoreLocatore.toJSON());
-
+                /*
                 if (gestoreLocatore.getAnnunci() != null) {
                     System.out.println("ZAN ZAN ZAN!!!");
                     System.out.println("Numero annunci: " + gestoreLocatore.getAnnunci().size());
@@ -162,17 +164,11 @@ public class ServletLocatore extends HttpServlet {
                     }
                 } else {
                     System.out.println("NULLLLLL");
-                }
+                }*/
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 response.getWriter().write(res ? "ok" : "no");
-
-            } else if (action.equalsIgnoreCase("locatore-edit-password")) {
-
-            } else if (action.equalsIgnoreCase("locatore-edit-telefono")) {
-
-            } else if (action.equalsIgnoreCase("locatore-edit-descrizione")) {
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
                 int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
@@ -196,12 +192,62 @@ public class ServletLocatore extends HttpServlet {
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(html);
-            }
-            else if (action.equalsIgnoreCase("locatore-edit-info")) {
-                
+
+            } else if (action.equalsIgnoreCase("locatore-getAnnunciOscurati")) {
+                /* ... */
+
+            } else if (action.equalsIgnoreCase("locatore-edit-info")) {
+                String field_name = request.getParameter("field-name"),
+                        field_value = request.getParameter("field-value");
+                JSONObject jsonresult = new JSONObject();
+                boolean res = true, utente_coglione = false;
+                /* easter egg */
+
+                //System.out.println("EDIT INFO: " + field_name + " WITH VALUE " + field_value); 
+                if (field_name.equalsIgnoreCase("password")) {
+                    if (gestoreLocatore.getLocatore().getPassword().equals(field_value)) {
+                        String new_password = request.getParameter("new-pw");
+
+                        if (new_password.length() >= 3
+                                && request.getParameter("new-pw-confirm").equals(new_password)) {
+                            gestoreLocatore.modificaPassword(new_password);
+                        } else {
+                            /* l'utente è un coglione - gestirlo lato client? */
+                            res = false;
+                            utente_coglione = true;
+                        }
+                    } else {
+                        /* old password sbagliata */
+                        res = false;
+                    }
+                } else if (field_name.equalsIgnoreCase("telefono")) {
+                    Pattern pattern = Pattern.compile("^\\+?[0-9]{3}-?[0-9]{6,12}$");
+                    Matcher matcher = pattern.matcher(field_value.replace(" ", ""));
+                    res = matcher.matches();
+
+                    if (res) {
+                        gestoreLocatore.modificaTelefono(field_value);
+                        System.out.println("YEAH");
+                    }
+                } else if (field_name.equalsIgnoreCase("descrizione")) {
+                    gestoreLocatore.modificaDescrizione(field_value);
+                }
+
+                try {
+                    jsonresult.accumulate("field-name", field_name);
+                    jsonresult.accumulate("exit-code", res ? "0" : "1");
+
+                    if (!res) {
+                        ;
+                    }
+
+                } catch (JSONException ex) {
+                    Logger.getLogger(ServletLocatore.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write("ok");
+                response.getWriter().write(res ? "ok" : "no");
             }
         }
     }
@@ -219,7 +265,7 @@ public class ServletLocatore extends HttpServlet {
         int first = requested_page * psize;
         int offset = Math.min(psize, l.size() - first);
         String html = "";
-        
+
         if (offset > 0) {
             System.out.println("********************************");
             System.out.println("l.size()=" + l.size() + ",first=" + first);
