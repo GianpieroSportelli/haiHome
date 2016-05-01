@@ -387,14 +387,10 @@ function getfiltro() {
                 });
                 
                 $("#quartieri-div").show();
-                
                 $('#pricefrom').val(filtro.Prezzo);
-                if (filtro.CompresoCondominio) {
-                    $('#compCondominio').prop('checked', true);
-                }
-                if (filtro.CompresoRiscaldamento) {
-                    $('#compRiscaldamento').prop('checked', true);
-                }
+                $('#compCondominio').prop('checked', filtro.CompresoCondominio);
+                $('#compRiscaldamento').prop('checked', filtro.CompresoRiscaldamento);
+                
                 var tipo = filtro.Tipo;
                 if (tipo == "Appartamento") {
                     $('#tipo-' + tipo).prop('selected', true);

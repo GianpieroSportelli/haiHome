@@ -19,7 +19,7 @@ var markers_bank=[];
 
 var StrAnnuncio = $.session.get('dettagli');
 var annuncio = jQuery.parseJSON(StrAnnuncio);
-console.log(annuncio);
+console.log("Annuncio corrente: "+JSON.stringify(annuncio));
 
 var split = "\\";
 var split2 = "/";
@@ -129,7 +129,7 @@ function addServices_Bus(annuncio) {
             var id=target.attr("id");
             var id_arr=id.split("-");
             id=id_arr[0];
-            console.log("fermata: "+id);
+            //console.log("fermata: "+id);
             google.maps.event.trigger(markers_bus[id], 'click');
             document.getElementById('map').scrollIntoView();
             //$("html, body").animate({ scrollTop: $("#map").offset().top }, "slow");
@@ -200,7 +200,7 @@ function create_Page(annuncio) {
             //console.log(stanza.archiviato);
             var archiviato = stanza.archiviato;
             var visibile = stanza.visibile;
-            console.log(visibile);
+            //console.log(visibile);
             //console.log(archiviato);
             if (archiviato) {
                 classe_tab += " archiviato\"";
@@ -373,7 +373,7 @@ function info_annuncio(annuncio) {
 
 function init_info(annuncio) {
     var locatore = annuncio.Locatore;
-    console.log(locatore);
+    console.log("Propretario annuncio: "+JSON.stringify(locatore));
     return info_loc(locatore);
 }
 
@@ -457,7 +457,7 @@ function callFoto(foto_OID) {
     var id_foto_ext_arr = id_foto_ext.split(".");
     var id_foto = id_foto_ext_arr[0];
     var type = id_foto_ext_arr[1];
-    console.log("in load: " + id_foto + " ext: " + type);
+    //console.log("in load: " + id_foto + " ext: " + type);
     //console.log("in load " + id_foto);
     $.ajax({
         url: "ServletController",
