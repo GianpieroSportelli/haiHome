@@ -9,8 +9,10 @@ function insertCitta() {
             function (data) {
                 if (data == "OK") {
                     alert('Città ' + citta + " inserita con successo.");
+
                 } else
                     alert('ERRORE INSERIMENTO');
+                $('#citta').val('');
             });
 }
 
@@ -21,12 +23,15 @@ function deleteCitta() {
             function (data) {
                 if (data == "OK") {
                     alert('Città ' + citta + " cancellata con successo.");
+
                 } else
                     alert('ERRORE CANCELLAZIONE');
+                $('#citta2').val('');
             });
 }
 
 function getListaCitta() {
+    $("#cittaDB").empty();
     $.post("ServletController",
             {action: "get-lista-citta"},
             function (responseJson) {

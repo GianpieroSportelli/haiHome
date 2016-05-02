@@ -38,7 +38,6 @@
 
 
         <!-- Robe di UserProfile-->
-        <script src="include/js/userProfile/intro.js"></script>
         <link rel="stylesheet" href="include/css/Utente/introjs.css">
         <link rel="stylesheet" href="include/css/Utente/Utente.css">
         <link rel="stylesheet" href="include/css/Utente/bootstrap.vertical-tabs.css">
@@ -156,7 +155,7 @@
                                 <li><a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         Annunci preferiti</a></li>
-                                <li><a href="#filtriUtente" data-toggle="tab"  onclick="startTutorial()">
+                                        <li><a href="#filtriUtente" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Filtri Preferiti</a></li>
                             </ul>
@@ -192,7 +191,7 @@
                     </div>
 
                 </div>
-                <div data-intro="Qui puoi visualizzare i tuoi filtri memorizzati." class="col-xs-9">
+                            <div class="col-xs-9" >
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
                         <div class="tab-pane active in fade" id="home">
@@ -232,6 +231,7 @@
         </div> 
 
         <script>
+            /*
             function startTutorial() {
 
                 if (filtri.length !== 0) {
@@ -250,7 +250,7 @@
             <% }%>
                     }
                 }
-            }
+            }*/
         </script>
 
         <%@include file="/footer.jsp" %>
