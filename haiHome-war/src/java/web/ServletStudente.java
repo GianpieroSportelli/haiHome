@@ -96,6 +96,8 @@ public class ServletStudente extends HttpServlet {
                             //   HttpSession session = request.getSession();
 
                             if (gestoreStudente.getStudente() != null) {
+                                //Parametro utile per capire se visualizzare la pass o meno
+                                session.setAttribute("user-access", " ");
                                 session.setAttribute("user-type", "studente");
                                 session.setAttribute("user-data", this.gestoreStudente.toJSON());
                             }
