@@ -120,6 +120,19 @@ public class Locatore implements Serializable {
         this.listaAnnunci = listaAnnunci;
     }
     
+    public boolean removeAnnuncio(Annuncio ann) {
+        return this.listaAnnunci.remove(ann); 
+    }
+    
+    public boolean checkAnnuncio(Annuncio ann) {
+        return this.listaAnnunci.contains(ann);
+    }
+    
+    public boolean addAnnuncio(Annuncio ann) {
+        return this.listaAnnunci.add(ann); 
+        
+    }
+    
 
     /**
      * Get the value of telefono

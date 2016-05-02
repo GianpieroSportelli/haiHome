@@ -77,7 +77,7 @@ public class TestServlet extends HttpServlet {
             add_test1 = add_test1.replace(" ", "+");
             add_test4 = add_test4.replace(" ", "+");*/
 
- /*gestoreTest.addCittà(nome);
+            gestoreTest.addCittà(nome);
             ArrayList<String> cities = gestoreTest.getAllCittàNome();
             if (cities.isEmpty()) {
                 out.println("<p>Non sono Presenti città nel DB</p>");
@@ -85,7 +85,7 @@ public class TestServlet extends HttpServlet {
                 for (String cit : cities) {
                     out.println("<p>" + cit + "</p>");
                 }
-            }*/
+            }
             String[] Quartieri = {"Centro", "Crocetta", "Santa Rita", "Mirafiori Nord",
                 "Borgo San Paolo", "Cenisia", "Pozzo Strada", "Cit Turin", "Borgata Lesna",
                 "San Donato", "Campidoglio", "Parella",

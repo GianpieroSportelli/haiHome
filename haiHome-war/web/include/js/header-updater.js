@@ -24,10 +24,7 @@ jQuery(document).ready(function ($) {
             $('#accesso').parent().show();
             $('#logout').parent().hide();
         } else {
-            // che brutta cosa...
-            var nome = user_type === "locatore" ? user_data.nome : user_data.Nome; 
-//            var nome = user_data.nome; 
-            $('#logged-as').html("Benvenuto,<b>&nbsp;&nbsp;" + nome + "</b>"); 
+            $('#logged-as').html("Benvenuto,<b>&nbsp;&nbsp;" + user_data.nome + "</b>"); 
             $('#logged-as').parent().show();
             $('#go-profile').parent().show();
             $('#accesso').parent().hide();

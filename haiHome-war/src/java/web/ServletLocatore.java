@@ -5,6 +5,7 @@
  */
 package web;
 
+import ejb.GestoreAnnuncioLocal;
 import ejb.GestoreLocatoreLocal;
 import entity.Annuncio;
 import java.io.IOException;
@@ -34,6 +35,9 @@ public class ServletLocatore extends HttpServlet {
     @EJB
     private GestoreLocatoreLocal gestoreLocatore;
 
+    @EJB
+    private GestoreAnnuncioLocal gestoreAnnuncio;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -50,6 +54,8 @@ public class ServletLocatore extends HttpServlet {
             String action = request.getParameter("action");
 
             HttpSession session = request.getSession();
+
+            System.out.println("--Servlet Locatore");
 
             if (action.equalsIgnoreCase("signup-locatore")) {
                 /* registrazione */
@@ -141,34 +147,26 @@ public class ServletLocatore extends HttpServlet {
                     out.println("errore nell'autenticazione");
                 }
 
-            } else if (action.equalsIgnoreCase("locatore-edit-profile")) {
-                String old_pwd = request.getParameter("old-pwd"),
-                        new_pwd = request.getParameter("new-pwd"),
-                        phone = request.getParameter("phone"),
-                        descrizione = request.getParameter("description");
-                boolean res = true;
+            } else if (action.equalsIgnoreCase("locatore-delete-annuncio")) {
+                long oid = Long.parseLong(request.getParameter("oid"));
+                boolean res = false;
 
-                if (!old_pwd.equalsIgnoreCase("")) {
-                    res = gestoreLocatore.modificaPassword(old_pwd, new_pwd);
+                System.out.println("Richiesta cancellazione annuncio " + oid);
+
+                Annuncio annuncio = gestoreAnnuncio.predniAnnuncio(oid); //dislessia by jack
+
+                if (gestoreLocatore.checkAnnuncio(annuncio)) {
+                    gestoreLocatore.removeAnnuncio(annuncio);
+                    res = gestoreAnnuncio.eliminaAnnuncio(oid);
+                    System.out.println("Annuncio " + oid + "eliminato?" + res);
+                } else {
+                    System.out.println("Questo non dovrebbe succedere ma non si sa mai");
                 }
 
-                gestoreLocatore.modificaInfoProfilo(phone, descrizione);
-                //refresh sessione
-                session.setAttribute("user-data", this.gestoreLocatore.toJSON());
-                /*
-                if (gestoreLocatore.getAnnunci() != null) {
-                    System.out.println("ZAN ZAN ZAN!!!");
-                    System.out.println("Numero annunci: " + gestoreLocatore.getAnnunci().size());
-                    for (Annuncio a : gestoreLocatore.getAnnunci()) {
-                        System.out.println(a.toJSON().toString());
-                    }
-                } else {
-                    System.out.println("NULLLLLL");
-                }*/
-
+                //    res = gestoreAnnuncio.eliminaAnnuncio(oid);
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                response.getWriter().write(res ? "ok" : "no");
+                response.getWriter().write(res ? "ok" : "fail");
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
                 int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
@@ -197,28 +195,26 @@ public class ServletLocatore extends HttpServlet {
                 /* ... */
 
             } else if (action.equalsIgnoreCase("locatore-edit-info")) {
-                String field_name = request.getParameter("field-name"),
-                        field_value = request.getParameter("field-value");
+                String field_name = request.getParameter("field-name");
+                String field_value = request.getParameter("field-value");
+                String error = "";
                 JSONObject jsonresult = new JSONObject();
-                boolean res = true, utente_coglione = false;
-                /* easter egg */
+                boolean res = true;
 
-                //System.out.println("EDIT INFO: " + field_name + " WITH VALUE " + field_value); 
                 if (field_name.equalsIgnoreCase("password")) {
                     if (gestoreLocatore.getLocatore().getPassword().equals(field_value)) {
                         String new_password = request.getParameter("new-pw");
+                        /* Regex complessità password?? */
 
-                        if (new_password.length() >= 3
-                                && request.getParameter("new-pw-confirm").equals(new_password)) {
+                        if (new_password.length() >= 3) {
                             gestoreLocatore.modificaPassword(new_password);
                         } else {
-                            /* l'utente è un coglione - gestirlo lato client? */
                             res = false;
-                            utente_coglione = true;
+                            error = "PASSWORD TOO SHORT";
                         }
                     } else {
-                        /* old password sbagliata */
                         res = false;
+                        error = "OLD PASSWORD INCORRECT";
                     }
                 } else if (field_name.equalsIgnoreCase("telefono")) {
                     Pattern pattern = Pattern.compile("^\\+?[0-9]{3}-?[0-9]{6,12}$");
@@ -228,26 +224,27 @@ public class ServletLocatore extends HttpServlet {
                     if (res) {
                         gestoreLocatore.modificaTelefono(field_value);
                         System.out.println("YEAH");
+                    } else {
+                        error = "REGEX MISMATCH";
                     }
                 } else if (field_name.equalsIgnoreCase("descrizione")) {
                     gestoreLocatore.modificaDescrizione(field_value);
                 }
+                //refresh sessione
+                session.setAttribute("user-data", this.gestoreLocatore.toJSON());
 
                 try {
-                    jsonresult.accumulate("field-name", field_name);
-                    jsonresult.accumulate("exit-code", res ? "0" : "1");
-
-                    if (!res) {
-                        ;
-                    }
+                    jsonresult.accumulate("id", field_name);
+                    jsonresult.accumulate("result", res);
+                    jsonresult.accumulate("error", error);
 
                 } catch (JSONException ex) {
                     Logger.getLogger(ServletLocatore.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                response.setContentType("text/plain");
+                response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(res ? "ok" : "no");
+                response.getWriter().write(jsonresult.toString());
             }
         }
     }
@@ -267,12 +264,13 @@ public class ServletLocatore extends HttpServlet {
         String html = "";
 
         if (offset > 0) {
+            /*
             System.out.println("********************************");
             System.out.println("l.size()=" + l.size() + ",first=" + first);
             System.out.println("offset=" + offset);
             System.out.println("sublist(" + first + ", " + (first + offset) + ")...");
             System.out.println("totale_dati=" + l.size());
-            System.out.println("...");
+            System.out.println("...");*/
 
             for (Annuncio a : l.subList(first, first + offset)) {
                 html += getDivAnnuncio(a);
@@ -301,7 +299,7 @@ public class ServletLocatore extends HttpServlet {
         html += "</a>";
         html += "<ul class='dropdown-menu'>";
         html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'>Modifica</a></li>";
-        html += "<li><a id='something-ann" + oid + "' class='something-annuncio' href='#0'>Archivia/anche no</a></li>";
+        html += "<li><a id='archivia-ann" + oid + "' class='archivia-annuncio' href='#0'>Archivia</a></li>";
         html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'>Elimina</a></li>";
 
         html += "</div>";

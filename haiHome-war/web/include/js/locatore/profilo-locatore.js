@@ -1,18 +1,18 @@
-jQuery(document).ready(function ($) {
-    var $div_modify_pwd = $('#modify-pwd-stuff');
-    var $old_pwd = $('input[name=old-pwd]'),
-            $new_pwd = $('input[name=pwd]'),
-            $new_pwd2 = $('input[name=pwd-confirm]'),
-            $phone = $('input[name=phone]'),
-            $description = $('textarea[name=description]');
+jQuery(document).ready(function ($) {/*
+ var $div_modify_pwd = $('#modify-pwd-stuff');
+ var $old_pwd = $('input[name=old-pwd]'),
+ $new_pwd = $('input[name=pwd]'),
+ $new_pwd2 = $('input[name=pwd-confirm]'),
+ $phone = $('input[name=phone]'),
+ $description = $('textarea[name=description]');*/
 
-    var login_by_credentials = $('#user-access').html().trim() === "";
-    var backup_phone, backup_description;
+//    var login_by_credentials = $('#user-access').html().trim() === "";
+    var login_type = $('#user-access').text();
     var backups = [];
 
     /* init*/
     $(function () {
-        if (!login_by_credentials) {
+        if (login_type === "g+" || login_type === "fb") {
             $('#rigapwd').css('display', 'none');
         }
 
@@ -60,38 +60,37 @@ jQuery(document).ready(function ($) {
         var target_name = $panel.attr("id").replace("panel-", "");
         var $input_target = $("#" + target_name);
         var new_content = $input_target.val();
-        
+
         console.log("save-edit on -> " + target_name + ", new value: " + new_content);
-        
+
         if (target_name === "password" &&
                 $('#new-password').val() !== $('#new-password2').val()) {
             $panel.children(".panel-body").addClass("has-error");
             console.log("password mismatch - client side")
             return false;
         }
-        
+
         $.post(
                 "ServletController",
                 {
                     'action': 'locatore-edit-info',
                     'field-name': target_name,
                     'field-value': new_content, /* credo */
-                    'new-pw': $('#new-password').val(),
-                    'new-pw-confirm': $('#new-password2').val()
+                    'new-pw': $('#new-password').val()/*,
+                     'new-pw-confirm': $('#new-password2').val()*/
                 },
-                function (response) {
-                    if (response === "ok") {
+                function (responseJson) {
+                    if (responseJson.result) {
                         $this2.parent().children().each(function () {
                             $(this).toggle();
                         });
                         $input_target.prop("disabled", "disabled");
                         $panel.children(".panel-body").removeClass("has-error");
-                        /* rimuovere eventuali classi has-error */
+                        //        $panel.children(".panel-body").addClass("has-success");
                         console.log("done");
                     } else {
-                        //nellammerda
-                        console.log("something's wrong");
                         $panel.children(".panel-body").addClass("has-error");
+                        console.log("error code: " + responseJson.error);
                     }
                 }
         );
@@ -105,8 +104,8 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    $(document).on('click', 'a.something-annuncio', function (event) {
-        var oid = event.target.id.replace("something-ann", "");
+    $(document).on('click', 'a.archivia-annuncio', function (event) {
+        var oid = event.target.id.replace("archivia-ann", "");
         console.log("Something on" + oid);
         return false;
     });
@@ -114,6 +113,21 @@ jQuery(document).ready(function ($) {
     $(document).on('click', 'a.delete-annuncio', function (event) {
         var oid = event.target.id.replace("delete-ann", "");
         console.log("delete " + oid);
+        
+        $.post(
+                "ServletController",
+                {
+                    'action': 'locatore-delete-annuncio',
+                    'oid': oid
+                },
+                function (response) {
+                    console.log("locatore-delete-annuncio -> response : " + response); 
+                    if (response === "ok") {
+                        $("#ann-" + oid).css('display', 'none');
+                    }
+                }
+        );
+
         return false;
     });
 

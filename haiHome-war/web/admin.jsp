@@ -75,7 +75,7 @@
 
         <div class="container">
             <div class="row profile">
-                <div class="col-md-4">
+                <div class="col-sm-4">
                     <div class="profile-sidebar">
 
                         <div class="profile-userpic">
@@ -105,9 +105,9 @@
                                 <li class="active"><a href="#1" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Citt&aacute;</a></li>
-                                <li><a href="#2" data-toggle="tab" onclick="getListaCitta()">
+                                <li><a href="#2" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
-                                        Quartieri</a></li>
+                                        Quartieri e CAP</a></li>
                                 <li><a href="#3" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Altre funzioni TO DO</a></li>
@@ -144,7 +144,7 @@
                     </div>
 
                 </div>
-                <div class="col-xs-8">
+                <div class="col-sm-8">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
                         <div class="tab-pane active in fade" id="1">
@@ -182,7 +182,7 @@
 
 
                         <div class="tab-pane fade" id="2">
-                            <div class="col-sm-4 sidebar-outer">
+                            <div class="col-sm-6 sidebar-outer">
                                 <div class="well sidebar">
                                     <div class="form-group" id="cittaDIV">
                                         <label for="cittaDB" class="control-label">Seleziona città</label>
@@ -191,15 +191,29 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 sidebar-outer">
-                                    <div class="well sidebar">
-                                        <div class="form-group" id="quartieriDIV">
-                                            <label for="quartieri" class="control-label">Seleziona quartiere</label>
-                                            <select class="form-control" name="quartieri" id="quartieri">
-
-                                            </select>
-                                        </div>
+                            </div>
+                            <div class="col-sm-6 sidebar-outer" id="quartieriDIV" style="display:none">
+                                <div class="well sidebar">
+                                    <div class="form-group">
+                                        <label for="quartiereInput" class="control-label">Inserisci quartiere</label>
+                                        <input type="text" class="form-control" id="quartiereNome" name="quartiereNome">
                                     </div>
+                                </div>
+                            </div>
+                            <div id="capDIV" class="col-sm-12 sidebar-outer" style="display:none">
+                                <div class="well sidebar">
+                                    <div class="form-group" >
+                                        <label for="capQuartiere" class="control-label">Digita i CAP da inserire separati da un trattino <strong> - </strong> </label>
+                                        <div class="input-group-addon" id="numCAP" >Lista CAP</div>
+                                        <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 45' class="form-control" id="capQuartiere" name="capQuartiere">
+                                    </div>
+
+                                    <div class="simform__actions"> 
+                                        <a onclick="inserisciCAP()" class="btn btn-lg btn-success" role="button"
+                                           data-toggle="popover" data-trigger="manual" data-content="" > 
+                                            Inserisci
+                                        </a>
+                                    </div> 
                                 </div>
                             </div>
                         </div>
@@ -210,11 +224,15 @@
         </div> 
 
         <script>
-            $("select").change(function () {
+            $("#cittaDB").change(function () {
                 if ($("#cittaDB").val() !== "-") {
-                    $("#quartieri-div").show("slow");
+                    var citta = $("#cittaDB").val();
+                    //getQuartieriCitta(citta);
+                    $("#quartieriDIV").show("slow");
+                    $("#capDIV").show("slow");
                 } else {
-                    $("#quartieri-div").hide();
+                    $("#quartieriDIV").hide();
+                    $("#capDIV").hide();
                 }
             });
         </script>
