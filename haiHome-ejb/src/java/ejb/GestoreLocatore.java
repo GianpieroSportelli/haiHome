@@ -129,23 +129,14 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         rendiModifichePersistenti();
     }
 
-     
     @Override
     public void modificaTelefono(String telefono) {
         this.locatore.setTelefono(telefono);
         rendiModifichePersistenti();
     }
-    
+
     @Override
     public void modificaDescrizione(String descrizione) {
-        this.locatore.setDescrizione(descrizione);
-        rendiModifichePersistenti();
-    }
-    
-    @Override
-    public void modificaInfoProfilo(String telefono, String descrizione) {
-        /* necessario controllo input ?? */
-        this.locatore.setTelefono(telefono);
         this.locatore.setDescrizione(descrizione);
         rendiModifichePersistenti();
     }
@@ -165,29 +156,48 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
 
     @Override
     public List<Annuncio> getAnnunciVisibili() {
-        List<Annuncio> res = new ArrayList<Annuncio>(); 
-        
-        for (Annuncio a: this.locatore.getListaAnnunci()) {
-            if (!a.isArchiviato())
-                res.add(a); 
+        List<Annuncio> res = new ArrayList<Annuncio>();
+
+        for (Annuncio a : this.locatore.getListaAnnunci()) {
+            if (!a.isArchiviato()) {
+                res.add(a);
+            }
         }
-        
+
         return res;
     }
 
     @Override
     public List<Annuncio> getAnnunciArchiviati() {
-        List<Annuncio> res = new ArrayList<Annuncio>(); 
-        
-        for (Annuncio a: this.locatore.getListaAnnunci()) {
-            if (a.isArchiviato())
-                res.add(a); 
+        List<Annuncio> res = new ArrayList<Annuncio>();
+
+        for (Annuncio a : this.locatore.getListaAnnunci()) {
+            if (a.isArchiviato()) {
+                res.add(a);
+            }
         }
-        
+
+        return res;
+    }
+
+    @Override
+    public boolean checkAnnuncio(Annuncio a) {
+        return this.locatore.checkAnnuncio(a);
+    }
+
+    @Override
+    public boolean removeAnnuncio(Annuncio a) {
+        boolean res = this.locatore.removeAnnuncio(a);
+        this.rendiModifichePersistenti();
+        return res;
+    }
+    
+    @Override
+    public boolean addAnnuncio(Annuncio a) {
+        boolean res = this.locatore.addAnnuncio(a);
+        this.rendiModifichePersistenti();
         return res; 
-        /*
-        Stream<Annuncio> result = this.getAnnunci().stream().filter(p -> p.isArchiviato());
-        return result.collect(Collectors.toList()); */
+                
     }
 
     @Override
