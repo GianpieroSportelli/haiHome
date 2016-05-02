@@ -84,6 +84,11 @@
 
         <%@include file="include/html/modalConfermaCancellazione.html"%>
         <!-- < %@include file="/header3Login.jsp" %>  -->
+        
+        <!-- Non voglio imparare HTML, notyplsbbbrb -->
+        <div style="display:none"> 
+            <div id="user-access"><%= session.getAttribute("user-access")%></div>
+        </div>
 
         <div class="container">
             <div class="row profile">
@@ -155,7 +160,7 @@
                                 <li><a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         Annunci preferiti</a></li>
-                                        <li><a href="#filtriUtente" data-toggle="tab">
+                                <li><a href="#filtriUtente" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Filtri Preferiti</a></li>
                             </ul>
@@ -191,35 +196,73 @@
                     </div>
 
                 </div>
-                            <div class="col-xs-9" >
+                <div class="col-xs-9" >
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
-                        <div class="tab-pane active in fade" id="home">
-                            <div class="panel panel-default">
-                                <div class="panel-heading"> 
-                                    <p class="text-primary" style="text-align:center" >  <img src="include/css/Utente/userImage-30.png"> <span class="text-primary">Informazioni Profilo</span> </p>
+                        <div class="tab-pane fade in active panel panel-default" id="home">
+                            <div class="panel-heading">
+                                Info
+                            </div>
+                            <div class="tbody panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class='panel-heading  panel-heading-custom'>
+                                                Nome
+                                            </div>
+                                            <div class="panel-body">
+                                                <input class="form-control" id="cognome"  type="text" 
+                                                       value="<%=user_data.getString("nome")%>" 
+                                                       disabled="disabled"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class='panel-heading'>Cognome</div>
+                                            <div class="panel-body">
+                                                <input class="form-control" id="cognome"  type="text" 
+                                                       value="<%=user_data.getString("cognome")%>" 
+                                                       disabled="disabled"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="panel-body">
-                                    <p><span class="text-primary">Nome</span>:
-                                        <% if (session_exists) {
-                                                out.println(user_data.getString("nome"));
-                                            }
-                                        %>
-                                    </p>
-                                    <hr>
-                                    <p> <span class="text-primary">Cognome</span>:
-                                        <% if (session_exists) {
-                                                out.println(user_data.getString("cognome"));
-                                            }
-                                        %>
-                                    </p>
-                                    <hr>
-                                    <p> <span class="text-primary">Email</span>:
-                                        <% if (session_exists) {
-                                                out.println(user_data.getString("email"));
-                                            }
-                                        %>
-                                    </p>
+                                <!--EMAIL--> 
+                                <div class="row">
+                                    <!-- campo email -->
+                                    <div class="col-md-6" id="rigaEmail">
+                                        <div class="panel panel-default">
+                                            <div class='panel-heading'>Email</div>
+                                            <div class="panel-body">
+                                                <input class="form-control" id="email"  type="text" 
+                                                       value="<%=user_data.getString("email")%>" 
+                                                       disabled="disabled"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="rigapwd">
+                                    <!-- campo PASSWORD -->
+                                    <div class="col-md-12">
+                                        <div id="panel-password" class="panel panel-default editable">
+                                            <div class='panel-heading  panel-heading-custom'>
+                                                Password
+                                                <%@include file="include/html/edit-buttons.html" %>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="col-md-4">
+                                                    <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="*****************" disabled="disabled" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova password..." />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input id="new-password2" class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..." />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -232,25 +275,25 @@
 
         <script>
             /*
-            function startTutorial() {
-
-                if (filtri.length !== 0) {
-                    //Ho messo due variabili perche' non aggiorna la sessione in real-time
-                    if (!activatedTutorial) {
-            <% if (session.getAttribute("tutorial") == null) {
+             function startTutorial() {
+             
+             if (filtri.length !== 0) {
+             //Ho messo due variabili perche' non aggiorna la sessione in real-time
+             if (!activatedTutorial) {
+             <%/* if (session.getAttribute("tutorial") == null) {
                     session.setAttribute("tutorial", true);
-            %>
-                        //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
-                        //Il problema nasce dal fatto che i tab sono dinamici
-                        var millisecondsToWait = 400;
-                        setTimeout(function () {
-                            introJs().start();
-                            activatedTutorial = true;
-                        }, millisecondsToWait);
-            <% }%>
-                    }
-                }
-            }*/
+                 */ %>
+             //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
+             //Il problema nasce dal fatto che i tab sono dinamici
+             var millisecondsToWait = 400;
+             setTimeout(function () {
+             introJs().start();
+             activatedTutorial = true;
+             }, millisecondsToWait);
+             <%// }%>
+             }
+             }
+             }*/
         </script>
 
         <%@include file="/footer.jsp" %>

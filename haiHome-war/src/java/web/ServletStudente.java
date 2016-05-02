@@ -154,6 +154,8 @@ public class ServletStudente extends HttpServlet {
                 session.setAttribute("user-type", "studente");
                 session.setAttribute("user-data", this.gestoreStudente.toJSON());
                 session.setAttribute("is-user-logged", this.gestoreStudente.getStudente() != null);
+                //Parametro utile per capire se visualizzare la pass o meno
+                session.setAttribute("user-access", "fb");
 
                 //Si salva tutti i dati, senza doverli mandarli nuovamente con una request
                 session.setAttribute("JSONList", this.gestoreStudente.toJSON());
@@ -191,6 +193,8 @@ public class ServletStudente extends HttpServlet {
                     //          HttpSession session = request.getSession();
                     session.setAttribute("user-type", "studente");
                     session.setAttribute("user-data", this.gestoreStudente.toJSON());
+                    //Parametro utile per capire se visualizzare la pass o meno
+                    session.setAttribute("user-access", "g+");
 
                     getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
