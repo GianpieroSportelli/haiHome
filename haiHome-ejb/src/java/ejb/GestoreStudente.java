@@ -129,6 +129,9 @@ public class GestoreStudente implements GestoreStudenteLocal {
 
     @Override
     public boolean reloadStudente() {
+        if (this.getStudente() == null) {
+            return false;
+        }
         Studente newStudente = studenteFacade.find(this.getStudente().getId());
 
         if (newStudente == null) {

@@ -628,6 +628,25 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         Annuncio ann = this.annuncioFacade.find(oid);
         return ann;
     }
+
+    @Override
+    public boolean archiviaAnnuncio(long oidAnnuncio, boolean archiviato) {
+        this.annuncio = this.annuncioFacade.find(oidAnnuncio);
+        
+        //XOR potentissimo!!!!!!!! se dà vero vuol dire che i due valori sono diversi
+        if(this.annuncio.isArchiviato() ^ archiviato){
+            this.annuncio.setArchiviato(archiviato);
+            this.annuncioFacade.edit(annuncio);
+            return true;
+            
+        }else{
+            return false;
+        }
+        
+        
+    }
+    
+    
    
 
 }
