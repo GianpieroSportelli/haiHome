@@ -188,4 +188,10 @@ public class GestoreStudente implements GestoreStudenteLocal {
         studenteFacade.edit(this.studente);
         return true;
     }
+
+    @Override
+    public void changePassword(String password) {
+        this.studente.setPassword(password);
+        this.studenteFacade.edit(this.studente);
+    }
 }

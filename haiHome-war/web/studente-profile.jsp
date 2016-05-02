@@ -252,13 +252,13 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="col-md-4">
-                                                    <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="*****************" disabled="disabled" />
+                                                    <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="Vecchia Password" disabled="disabled" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova password..." />
+                                                    <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova Password" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input id="new-password2" class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..." />
+                                                    <input id="new-password2" class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma Password" />
                                                 </div>
                                             </div>
                                         </div>

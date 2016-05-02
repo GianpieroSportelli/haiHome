@@ -8,12 +8,16 @@ package web;
 import ejb.GestoreStudenteLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import verifytoken.Verify;
 
@@ -226,6 +230,42 @@ public class ServletStudente extends HttpServlet {
                 } else {
                     out.write("ERRORE");
                 }
+            } else if (action.equalsIgnoreCase("studente-edit-info")) {
+                System.out.println("QUI SONO");
+                String field_value = request.getParameter("field-value");
+                String error = "";
+                JSONObject jsonresult = new JSONObject();
+                boolean res = true;
+
+                if (gestoreStudente.getStudente().getPassword().equals(field_value)) {
+                    String new_password = request.getParameter("new-pw");
+                    /* Regex complessità password?? */
+
+                    if (new_password.length() >= 3) {
+                        gestoreStudente.changePassword(new_password);
+                    } else {
+                        res = false;
+                        error = "PASSWORD TOO SHORT";
+                    }
+                } else {
+                    res = false;
+                    error = "OLD PASSWORD INCORRECT";
+                }
+
+                //refresh sessione
+                session.setAttribute("user-data", this.gestoreStudente.toJSON());
+
+                try {
+                    jsonresult.accumulate("result", res);
+                    jsonresult.accumulate("error", error);
+
+                } catch (JSONException ex) {
+                    Logger.getLogger(ServletLocatore.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(jsonresult.toString());
             }
         }
     }
