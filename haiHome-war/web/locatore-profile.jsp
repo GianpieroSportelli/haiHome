@@ -135,7 +135,7 @@
                                         Annunci oscurati
                                     </a>
                                 </li>
-                                <li><a href="Annunci_JSP/InserimentoAnnunci.jsp" class="btn btn-danger">
+                                <li><a href="IA0-InserimentoAnnunci.jsp" class="btn btn-danger">
                                         Inserisci nuovo annuncio
                                     </a>
                                 </li>
@@ -253,7 +253,7 @@
                         </div>
                         <div class="tab-pane fade" id="annunci">
                             <div style="display:block">
-                                <a href="Annunci_JSP/InserimentoAnnunci.jsp" class="btn btn-primary">
+                                <a href="IA0-InserimentoAnnunci.jsp" class="btn btn-primary">
                                     Inserisci nuovo annuncio
                                 </a>
                             </div>
