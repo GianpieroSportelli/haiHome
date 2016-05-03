@@ -105,7 +105,7 @@
                                 <li class="active"><a href="#1" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Citt&aacute;</a></li>
-                                <li><a href="#2" data-toggle="tab">
+                                <li><a href="#2" data-toggle="tab" onclick="getListaCitta()">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Quartieri e CAP</a></li>
                                 <li><a href="#3" data-toggle="tab">

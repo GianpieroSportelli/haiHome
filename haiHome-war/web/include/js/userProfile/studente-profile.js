@@ -17,9 +17,103 @@ var activatedTutorial = false;
 
 
 $(document).ready(function () {
+    checkStudenteType();
     getListaFiltriPreferiti();
     getAnnunciPreferiti();
+
+    var backups = "";
+
+    $('.start-edit').on('click', function () {
+        var target_name = $(this).parent().parent().parent().attr("id").replace("panel-", "");
+        var $input_target = $("#" + target_name);
+
+        console.log("start-edit on -> " + target_name);
+
+        backups = $input_target.val();
+        $input_target.prop("disabled", false);
+
+        $(this).parent().children().each(function () {
+            $(this).toggle();
+        });
+        console.log("current value of " + target_name + "... " + $input_target.val());
+    });
+
+    $('.cancel-edit').on('click', function () {
+        var $panel = $(this).parent().parent().parent();
+        var target_name = $panel.attr("id").replace("panel-", "");
+        var $input_target = $("#" + target_name);
+
+        console.log("cancel-edit on -> " + target_name);
+
+        $(this).parent().children().each(function () {
+            $(this).toggle();
+        });
+
+        $input_target.val(backups);
+        $panel.children(".panel-body").removeClass("has-error");
+        $input_target.prop("disabled", "disabled");
+    });
+
+    $('.save-edit').on('click', function () {
+        var $this2 = $(this);
+        var $panel = $(this).parent().parent().parent();
+        var target_name = $panel.attr("id").replace("panel-", "");
+        var $input_target = $("#" + target_name);
+        var new_content = $input_target.val();
+        console.log("save-edit on -> " + target_name + ", new value: " + new_content);
+
+        if (target_name === "password" &&
+                $('#new-password').val() !== $('#new-password2').val()) {
+            $panel.children(".panel-body").addClass("has-error");
+            console.log("password mismatch - client side")
+            return false;
+        }
+
+        $.post(
+                "ServletController",
+                {
+                    'action': 'studente-edit-info',
+                    'field-value': new_content, /* credo di sì invece */
+                    'new-pw': $('#new-password').val()
+                },
+                function (responseJson) {
+                    if (responseJson.result) {
+                        $this2.parent().children().each(function () {
+                            $(this).toggle();
+                        });
+                        $input_target.prop("disabled", "disabled");
+                        $panel.children(".panel-body").removeClass("has-error");
+
+                        //        $panel.children(".panel-body").addClass("has-success");
+                        console.log("done");
+                    } else {
+                        $panel.children(".panel-body").addClass("has-error");
+                        console.log("error code: " + responseJson.error);
+                    }
+                    $('#password').val('');
+                    $('#new-password').val('');
+                    $('#new-password2').val('');
+                }
+        );
+
+
+    });
 });
+
+jQuery(document).ready(function ($) {
+
+
+});
+
+function checkStudenteType() {
+    var login_type = $('#user-access').text();
+    console.log(login_type);
+    if (login_type === "g+" || login_type === "fb") {
+        $('#rigapwd').css('display', 'none');
+        $('#rigaEmail').attr("class", "col-md-6 col-md-offset-3");
+    }
+
+}
 
 
 function getAnnunciPreferiti() {
