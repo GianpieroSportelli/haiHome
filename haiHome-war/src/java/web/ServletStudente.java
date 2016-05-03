@@ -268,6 +268,16 @@ public class ServletStudente extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(jsonresult.toString());
+            }else if(action.equalsIgnoreCase("Ricerca-checkAnnuncio")){
+                String id = request.getParameter("id");
+                boolean result = gestoreStudente.getStudente().checkAnnuncio(id);
+                System.out.println(action + " " + result);
+                out.write(""+result);
+            }else if(action.equalsIgnoreCase("studente-removeAnnuncio")){
+                String id = request.getParameter("id");
+                boolean result = gestoreStudente.removeAnnuncio(id);
+                System.out.println(action + " " + result);
+                out.write(""+result);
             }
         }
     }

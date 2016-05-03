@@ -1,7 +1,7 @@
 var split = "\\";
 var split2 = "/";
 var foto_page = new Array();
-var dim_image_car = 500; //dimensione immagine del carosello
+var dim_image_car = 100; //dimensione immagine del carosello
 
 var geocoder;
 var map;
@@ -280,7 +280,7 @@ function send_Annuncio(k) {
     var url = "/haiHome-war/dettagliAnnuncio.jsp";
     var json = JSON.stringify(annuncio);
     $.session.set('dettagli', json);
-    window.open(url);
+    window.location = url;
 }
 
 // implement JSON.stringify serialization
