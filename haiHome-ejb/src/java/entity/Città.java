@@ -36,6 +36,10 @@ public class Città implements Serializable {
     @OneToMany(mappedBy = "citt\u00e0")
     private List<Annuncio> annunci;
     
+    public void addAnnuncio(Annuncio annuncio){
+        System.out.println("NUMERO ANNUNCI NELLA CITTA " + annunci.size());
+        this.annunci.add(annuncio);
+    }
     public List<Annuncio> getAnnunci() {
         return annunci;
     }
@@ -61,6 +65,7 @@ public class Città implements Serializable {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+    
 
     /**
      * Get the value of nome

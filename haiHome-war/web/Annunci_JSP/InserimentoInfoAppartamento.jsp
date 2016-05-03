@@ -18,25 +18,33 @@
                 </select>
 
             </div>
+
+            <label class="control-label">Indirizzo</label>
+            <div class="form-group row">
+                
+                
+      
+                <div class="col-md-10">
+                        <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo"  name='Indirizzo' onkeypress="return event.keyCode != 13"/><br />
+                </div>
+                <div class="col-md-2">
+                        <input id='inpCivico'maxlength="4" type="text" required="required" class="form-control" placeholder="n°" name='Civico' onkeypress="return event.keyCode != 13" onkeydown="civicoFunction()" />
+                </div>
+
+            </div>
+
             <div class="form-group">
                 <label class="control-label">Quartiere</label>
                 <select class="form-control" id="selQuartiere" name='Quartiere'>
-                      
+
                 </select>
-            </div>
-            <div class="form-group">
-
-                <label class="control-label">Indirizzo</label>
-                <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control" placeholder="Inserisci Indirizzo"  name='Indirizzo' onkeypress="return event.keyCode != 13"/><br />
-                <input id='inpCivico'maxlength="100" type="text" required="required" class="form-control" placeholder="Civico" name='Civico' />
-
             </div>
 
             <button id="butt1" type="submit" class="btn btn-primary nextBtn btn-lg pull-right"> Next</button>
-           
-        </form>
-        
 
-         
+        </form>
+
+
+
     </div>
 </div>

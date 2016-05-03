@@ -15,7 +15,7 @@
         postal_code: 'short_name'
       };
       
-              var componentString = {
+    var componentString = {
         street_number: 'short_name',
         route: 'long_name',
         postal_code: 'short_name'
@@ -27,7 +27,7 @@
         autocomplete = new google.maps.places.Autocomplete(
             /** @type {!HTMLInputElement} */(document.getElementById('inpIndirizzo')),
             {
-                types: ['geocode'],
+                types: ['address'],
                 componentRestrictions: {country: 'it'}
             });
 
@@ -56,6 +56,7 @@
         var civico = componentString['street_number'];
         var CAP = componentString['postal_code'];
 
+console.log("sono qui");
         document.getElementById('inpIndirizzo').value = indirizzo;  
         
         if(civico != "short_name"){
@@ -88,4 +89,17 @@
             autocomplete.setBounds(circle.getBounds());
           });
         }
+      }
+      
+      function civicoFunction(){
+          var indirizzo = $("#inpIndirizzo");
+          var civico = $("#inpCivico");
+          
+          var indirizzoStr = indirizzo.val() + " " + civico.val();
+          
+          indirizzo.val(indirizzoStr);
+          indirizzo.focus();
+          
+          
+          
       }
