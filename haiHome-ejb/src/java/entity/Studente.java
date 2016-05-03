@@ -263,21 +263,20 @@ public class Studente implements Serializable {
     }
 
     public JSONArray getAnnunciJSON() {
-        JSONArray array = new JSONArray();
-
-        int contatore = 1;
-        for (Annuncio a : this.getListaAnnunciPreferiti()) {
-            JSONObject obj = new JSONObject();
-            try {
-                obj.accumulate("annuncio" + String.valueOf(contatore), a.toJSON());
-            } catch (JSONException ex) {
-                Logger.getLogger(Studente.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            array.put(obj);
-
+        JSONArray result = new JSONArray();
+        for (Annuncio x : listaAnnunciPreferiti) {
+            result.put(x.toJSON());
         }
+        return result;
+    }
 
-        return array;
+    public boolean checkAnnuncio(String id_annuncio) {
+        for (Annuncio x : listaAnnunciPreferiti) {
+            if (x.getId().toString().equalsIgnoreCase(id_annuncio)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
