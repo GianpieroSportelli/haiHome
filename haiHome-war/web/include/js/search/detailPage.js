@@ -366,6 +366,7 @@ function info_annuncio(annuncio) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
     html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
+    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-success\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina</button>";
     html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
@@ -389,7 +390,7 @@ function info_loc(locatore) {
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">email: </span><span id=\"mail\">" + locatore.email + "</span></p>";
-    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Seganala</button>";
+    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala</button>";
     html += "</div>";
     return html;
 }
@@ -421,8 +422,24 @@ function loggatoStudente() {
                 //alert(item);
                 console.log("Studente loggato?: " + item);
                 if (item == "true") {
-                    $("#saveButton").show("fast");
+                    checkAnnuncio(""+annuncio.OID);
                     $("#segnalaBtn").show("fast");
+                }
+            });
+}
+function checkAnnuncio(id){
+    $.post("ServletController",
+            {action: "Ricerca-checkAnnuncio",id:id},
+            function (item) {
+                //var html = '';
+                //alert(item);
+                console.log("Annuncio Salvato?: " + item);
+                if (item == "true") {
+                    $("#deleteButton").show("fast");
+                    
+                }else{
+                   $("#saveButton").show("fast");
+                    
                 }
             });
 }
@@ -437,6 +454,22 @@ function salvaAnnuncioPreferiti() {
                 console.log("Annuncio Salvato?: " + item);
                 if (item == "true") {
                     $("#saveButton").hide();
+                    $("#deleteButton").show();
+                }
+            });
+}
+
+function cancellaAnnuncioPreferiti() {
+    alert("Salvo l'annuncio nei Preferiti");
+    $.post("ServletController",
+            {action: "studente-removeAnnuncio",id:annuncio.OID},
+            function (item) {
+                //var html = '';
+                //alert(item);
+                console.log("Annuncio eliminato?: " + item);
+                if (item == "true") {
+                    $("#deleteButton").hide();
+                    $("#saveButton").show();
                 }
             });
 }

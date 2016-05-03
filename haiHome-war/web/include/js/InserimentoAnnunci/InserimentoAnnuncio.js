@@ -42,7 +42,7 @@ $(document).ready(function () {
 
     dataInizio.datepicker({
         showOn: "button",
-        buttonImage: "../images/calendario.png",
+        buttonImage: "images/calendario.png",
         buttonImageOnly: true,
         minDate: 0,
         monthNames: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
@@ -111,7 +111,7 @@ $(document).ready(function () {
 
         var isValid = validateForm(buttonForm);
 
-        if (isValid) {
+        if (isValid && checkAddress()) {
             console.log("Dati form validi");
             form1.ajaxSubmit({
                 dataType: "text",
@@ -121,6 +121,7 @@ $(document).ready(function () {
             });
         } else {
             console.log("Dati form non validi");
+            alert("NOPE!!");
         }
 
 
@@ -209,7 +210,7 @@ function sendInitialRequest() {
 
     $.ajax({
         type: "POST",
-        url: "../ServletAnnuncio",
+        url: "ServletAnnuncio",
         data: "action=Annunci-newAnnuncio-initialRequest",
         dataType: "text",
         success: function (msg)
@@ -321,7 +322,7 @@ function rendiAnnuncioPersistente(){
     
         $.ajax({
         type: "POST",
-        url: "../ServletAnnuncio",
+        url: "ServletAnnuncio",
         data: "action=Annunci-newAnnuncio-persisti",
         dataType: "text",
         success: function (msg)
@@ -341,7 +342,7 @@ function rendiAnnuncioPersistente(){
 }
 
 function leggi_quartieri() {
-    $.post("../ServletAnnuncio",
+    $.post("ServletAnnuncio",
             {action: "Annunci-newAnnuncio-getQuartieri"},
             function (responseJson) {
                 var html = '';
@@ -357,7 +358,7 @@ function leggi_quartieri() {
 }
 
 function aggiornaListaQuartieri(inputCap){
-        $.post("../ServletAnnuncio",
+        $.post("ServletAnnuncio",
             {action: "Annunci-newAnnuncio-getQuartieri",
              cap: inputCap},
             function (responseJson) {

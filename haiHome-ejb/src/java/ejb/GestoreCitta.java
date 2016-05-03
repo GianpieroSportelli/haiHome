@@ -33,9 +33,7 @@ public class GestoreCitta implements GestoreCittaLocal {
     @EJB
     private QuartiereFacadeLocal quartiereFacade;
 
-    private static int capStartRange = 10121;
-    
-    private static int capEndRange = 10156;
+        
     
     @Override
     public boolean insertCitta(String nome) {

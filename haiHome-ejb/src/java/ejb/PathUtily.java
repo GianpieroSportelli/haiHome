@@ -24,7 +24,7 @@ public class PathUtily {
     */
     
     private static final String GiacomoPath = "//Users//giacomocavallo//Desktop//foto//";
-    private static final String GianpieroPath ="C:\\Users\\SPORT\\Pictures\\haiHome!!\\";
+    private static final String GianpieroPath ="C://Users//SPORT//Pictures/haiHome!!//";
     private static final String EugenioPath = "C://Users//Eugenio Liso//Desktop//foto//";
     private static final String NicolaPath = "C:\\Users\\nicol\\Documents\\imgHaiHome\\"; 
     
@@ -36,7 +36,7 @@ public class PathUtily {
     */
     
     public static String getPhotoPath(){
-        return NicolaPath;
+        return GiacomoPath;
     }
     
     public static boolean spostaFoto(File sorgente, File destinazione) throws FileNotFoundException, IOException{

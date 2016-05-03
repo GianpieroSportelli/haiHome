@@ -62,7 +62,7 @@ function nuovaStanza1() {
             {
                 // Prevents Dropzone from uploading dropped files immediately
                 autoProcessQueue: false,
-                url: "../ServletAnnuncio",
+                url: "ServletAnnuncio",
                 parallelUploads: 100,
                 uploadMultiple: true,
                 paramName: "file[]",
@@ -234,7 +234,7 @@ function getStanzaHTMLCode(number) {
         </div>\n\
     </div>\n\
 </div>";
-    //    <form action=\"../ServletAnnuncio\" method=\"post\" id=\"formStanza" + number + "\">\n\ </form>
+    //    <form action=\"..ServletAnnuncio\" method=\"post\" id=\"formStanza" + number + "\">\n\ </form>
     var StanzaCode2 =
             "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
         <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
@@ -279,7 +279,7 @@ function getStanzaHTMLCode(number) {
 
 function sendData() {
     var myRequest = new XMLHttpRequest();
-    var url = "../ServletAnnuncio";
+    var url = "ServletAnnuncio";
     var method = "post";
 
     myRequest.onreadystatechange = function () {

@@ -5,6 +5,7 @@
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
+      var autocompFlag = false;
       var placeSearch, autocomplete;
       var componentForm = {
         street_number: 'short_name',
@@ -15,7 +16,7 @@
         postal_code: 'short_name'
       };
       
-              var componentString = {
+    var componentString = {
         street_number: 'short_name',
         route: 'long_name',
         postal_code: 'short_name'
@@ -27,7 +28,7 @@
         autocomplete = new google.maps.places.Autocomplete(
             /** @type {!HTMLInputElement} */(document.getElementById('inpIndirizzo')),
             {
-                types: ['geocode'],
+                types: ['address'],
                 componentRestrictions: {country: 'it'}
             });
 
@@ -56,10 +57,13 @@
         var civico = componentString['street_number'];
         var CAP = componentString['postal_code'];
 
+        console.log("sono qui");
         document.getElementById('inpIndirizzo').value = indirizzo;  
-        
+        autocompFlag = false;
         if(civico != "short_name"){
             document.getElementById('inpCivico').value = civico;  
+            autocompFlag = true;
+            
         }
         
         aggiornaListaQuartieri(CAP);
@@ -89,3 +93,22 @@
           });
         }
       }
+      
+      function civicoFunction(){
+          var indirizzo = $("#inpIndirizzo");
+          var civico = $("#inpCivico");
+          
+          var indirizzoStr = indirizzo.val() + " " + civico.val();
+          
+          indirizzo.val(indirizzoStr);
+          indirizzo.focus();
+          
+          
+          
+      }
+      
+      function checkAddress(){
+          console.log("indirizzo corretto : " + autocompFlag);
+          return autocompFlag;
+      }
+          

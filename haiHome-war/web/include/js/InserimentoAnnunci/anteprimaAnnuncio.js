@@ -301,7 +301,7 @@ function callFoto(foto_OID) {
     console.log("in load: " + id_foto + " ext: " + type);
     //console.log("in load " + id_foto);
     $.ajax({
-        url: "../ServletAnnuncio",
+        url: "ServletAnnuncio",
         type: 'get',
         dataType: 'text',
         //contentType: "image/jpg",

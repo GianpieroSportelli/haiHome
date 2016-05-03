@@ -1,7 +1,7 @@
 var split = "\\";
 var split2 = "/";
 var foto_page = new Array();
-var dim_image_car = 500; //dimensione immagine del carosello
+var dim_image_car = 100; //dimensione immagine del carosello
 
 var geocoder;
 var map;
@@ -9,109 +9,38 @@ var geoAddress;
 var marker_annunci = new Array();
 
 var N_ANNUNCI_X_PAGE = 2;
-var n_page = 0;
+var n_page_1 = 0;
 var n_annunci = 0;
 var annunci = new Array();
 var page_annunci = new Array();
 var caroselli = new Array();
 
-var actual = 0;
-
-
-
-//Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
-function annunci_search() {
-    $.post("ServletController",
-            {action: "Ricerca-geoCity"},
-            function (responseJson) {
-                var latlng = [0, 0];
-                $.each(responseJson, function (index, item) {
-                    latlng[index] = item;
-                });
-                //funzione che inizializza la mappa sulla città
-                initialize(latlng[0], latlng[1]);
-                //Deferred serve pr delegare l'esecuzione di funzioni javascript
-                var load_A = $.Deferred();
-                load_A.done(load_Annunci);
-                load_A.resolve();
-
-            });
-}
-
-//Inizializzazione dellla mappa di google sulla città desiderata
-// necesità un div chiamato map
-function initialize(lat, lng) {
-    geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(lat, lng);
-    var mapOptions = {
-        zoom: 14,
-        center: latlng
-    };
-    map = new google.maps.Map(document.getElementById("map"), mapOptions);
-}
-
-//funzione per aggiungere un marker sulla mappa salvata nella var. globale map(quindi inizialize(lat,lng) prima)
-function addMarker(location, label) {
-    var marker = new google.maps.Marker({
-        position: location,
-        title: label,
-        map: map
-                //icon: icon
-    });
-    return marker;
-}
-
-//funzione frapper di addMarket che estrai i dati necessari alla creazione del marker da un json annuncio
-function addMarkerToJSON(annuncio, index) {
-    var lat = annuncio.Lat;
-    var lng = annuncio.Lng;
-    var address = annuncio.Indirizzo;
-    var descrizione = annuncio.Descrizione;
-    var label = "Annuncio " + (index + 1);
-    var marker = addMarker(new google.maps.LatLng(lat, lng), label);
-    var infowindow = new google.maps.InfoWindow({
-        content: "<div id=\"" + index + "\"><p class=\"text-muted\">" + address + "</p><p class=\"text-muted\">" + descrizione + "</p>"
-    });
-    marker.addListener('click', function () {
-        infowindow.open(map, marker);
-    });
-    return marker;
-}
-
-// Sets the map on all markers in the array.
-function setMapOnAll(map, markers) {
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-    }
-}
-
-// Removes the markers from the map, but keeps them in the array.
-function clearMarkers(markers) {
-    setMapOnAll(null, markers);
-}
+var actual_1 = 0;
 
 function load_Annunci() {
     $.post("ServletController",
-            {action: "Ricerca-getAnnunciFiltro"},
+            {action: "studente-getAnnunci"},
             function (responseJson) {
+                console.log(responseJson);
                 annunci = [];
-                n_page = 0;
+                n_page_1 = 0;
                 n_annunci = 0;
 
                 $("#list-result").empty();
 
+
                 $.each(responseJson, function (index, annuncio) {
                     n_annunci += 1;
                     annunci[index] = annuncio;
-                    var marker = addMarkerToJSON(annuncio, index);
-                    marker_annunci.push(marker);
                     //console.log(load_annuncio_image(annuncio));
                 });
-                actual = 0;
-                n_page = n_annunci / N_ANNUNCI_X_PAGE;
+                actual_1 = 0;
+                n_page_1 = n_annunci / N_ANNUNCI_X_PAGE;
                 create_pageResult();
-                if (n_page != 0) {
-                    selectpage(1);
+
+                console.log(n_page_1);
+                if (n_page_1 != 0) {
+                    selectpage_1(1);
                 }
             });
 }
@@ -124,22 +53,23 @@ function create_pageResult() {
     var close_div = '</div>';
     var no_res = '<p > Nessun Risultato!! </p>';
     var page_html = '';
-    if (n_page == 0) {
+    if (n_page_1 == 0) {
         $("#list-result").append(result_div + no_res + close_div);
     }
-    for (page = 0; page < n_page; page++) {
+    for (page = 0; page < n_page_1; page++) {
         page_html = '';
         page_html += '<div class = "search-result row" id =' + (page + 1) + '_RESULT>';
-        var foto_page_actual = new Array();
+        var foto_page_actual_1 = new Array();
         for (var i = page * N_ANNUNCI_X_PAGE; (i < ((page + 1) * N_ANNUNCI_X_PAGE) && i < annunci.length); i++) {
             var html = getCodeCarousel(annunci[i], i);
             page_html += "<div class=\"col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">" + html + "</div>";
-            foto_page_actual = savePath(foto_page_actual, annunci[i]);
+            foto_page_actual_1 = savePath(foto_page_actual_1, annunci[i]);
+            console.log(foto_page_actual_1);
         }
         page_html += close_div;
         page_annunci[page] = page_html;
-        foto_page[page] = foto_page_actual;
-        foto_page_actual = new Array();
+        foto_page[page] = foto_page_actual_1;
+        foto_page_actual_1 = new Array();
     }
 }
 
@@ -284,7 +214,7 @@ function callFoto(foto_OID) {
     });
 }
 function loadAllfoto(page) {
-
+    console.log(foto_page);
     var fotoPage = foto_page[page];
     for (var i = 0; i < fotoPage.length; i++) {
         var foto = fotoPage[i];
@@ -306,15 +236,15 @@ function savePath(list, annuncio) {
 }
 
 
-function selectpage(page) {
-    if (actual === 0) {
+function selectpage_1(page) {
+    if (actual_1 === 0) {
         $("#list-result").append(page_annunci[page - 1]);
         loadAllfoto(page - 1);
-        actual = page;
-    } else if (actual !== (+page)) {
-        $("#" + (actual) + "_RESULT").after(page_annunci[page - 1]);
+        actual_1 = page;
+    } else if (actual_1 !== (+page)) {
+        $("#" + (actual_1) + "_RESULT").after(page_annunci[page - 1]);
         loadAllfoto(page - 1);
-        actual = +page;
+        actual_1 = +page;
     }
 }
 
@@ -326,101 +256,19 @@ function activateCaroselli() {
 }
 
 function prevpage() {
-    if (actual > 1) {
-        var page = actual - 1;
-        selectpage(page);
+    if (actual_1 > 1) {
+        var page = actual_1 - 1;
+        selectpage_1(page);
     }
 }
 
 function nextpage() {
-    if (actual < n_page) {
-        var page = actual + 1;
-        selectpage(page);
+    if (n_page_1 != 0) {
+        if (actual_1 < n_page_1) {
+            var page = actual_1 + 1;
+            selectpage_1(page);
+        }
     }
-}
-
-
-
-function init_filtro() {
-    $("#quartieri-div").hide();
-    $.post("ServletController",
-            {action: "Ricerca-getQuartieri"},
-            function (responseJson) {
-                var html = '';
-                $.each(responseJson, function (index, item) {
-                    html = '<option id=\"' + item + '\" value=\"' + item + '\">' + item + '</option>';
-                    $("#quartieri").append(html);
-                });
-                var filtro_S = $.Deferred();
-                filtro_S.done(init_filtro_tipoStanze);
-                filtro_S.resolve();
-            });
-
-}
-
-function init_filtro_tipoStanze() {
-    $.post("ServletController",
-            {action: "Ricerca-getTipoStanza"},
-            function (responseJson) {
-                var html = '';
-                $.each(responseJson, function (index, item) {
-                    html = '<option id=\"tipoStanza-' + item + '\" value=\"' + item + '\">' + item + '</option>';
-                    $("#tipoStanza").append(html);
-                });
-                var getf = $.Deferred();
-                getf.done(getfiltro);
-                getf.resolve();
-            });
-}
-
-function getfiltro() {
-    $.post("ServletController",
-            {action: "Ricerca-getFiltro"},
-            function (filtro) {
-                console.log(filtro);
-                var Quartieri = filtro.Quartieri;
-                $.each(Quartieri, function (index, quart) {
-                    $('#' + quart).prop('selected', true);
-                });
-                $('#quartieri').searchableOptionList({
-                    maxHeight: '250px'
-                });
-
-                $("#quartieri-div").show();
-                $('#pricefrom').val(filtro.Prezzo);
-                $('#compCondominio').prop('checked', filtro.CompresoCondominio);
-                $('#compRiscaldamento').prop('checked', filtro.CompresoRiscaldamento);
-
-                var tipo = filtro.Tipo;
-                if (tipo == "Appartamento") {
-                    $('#tipo-' + tipo).prop('selected', true);
-                    $('#numeroLocali').val(filtro.NumeroLocali);
-                    $('#numeroCamere').val(filtro.NumeroCamereDaLetto);
-                    $('#numeroBagni').val(filtro.NumeroBagni);
-                    $('#metratura').val(filtro.Metratura);
-                    $("#divTipoStanza").hide();
-                    $("#divNLocali").show("slow");
-                    $("#divNCamere").show("slow");
-                    $("#divNBagni").show("slow");
-                    $("#divMetratura").show("slow");
-                } else if (tipo == "Stanza") {
-                    $('#tipo-' + tipo).prop('selected', true);
-                    var tipoStanza = filtro.TipoStanza;
-                    $('#tipoStanza-' + tipoStanza).prop('selected', true);
-                    $("#divTipoStanza").show("slow");
-                    $("#divNLocali").hide();
-                    $("#divNCamere").hide();
-                    $("#divNBagni").hide();
-                    $("#divMetratura").hide();
-
-                }
-                var id = filtro.Id;
-                if (id == undefined) {
-                    $("#saveButton").text("Salva");
-                } else {
-                    $("#saveButton").text("Modifica");
-                }
-            });
 }
 
 /*$(window).scroll(function(){    
@@ -432,7 +280,7 @@ function send_Annuncio(k) {
     var url = "/haiHome-war/dettagliAnnuncio.jsp";
     var json = JSON.stringify(annuncio);
     $.session.set('dettagli', json);
-    window.open(url);
+    window.location = url;
 }
 
 // implement JSON.stringify serialization
@@ -459,46 +307,11 @@ JSON.stringify = JSON.stringify || function (obj) {
     }
 };
 
-function persistiFiltro() {
-    console.log("salva filtro");
-    $.post("ServletController",
-            {action: "Ricerca-salvaFiltro"},
-            function (item) {
-                if (item == "ok")
-                    alert("Fitro Salvato!!");
-                var getf = $.Deferred();
-                getf.done(getfiltro);
-                getf.resolve();
-            });
-}
-//Invio della form tramite PLUGIN
-$(document).ready(function () {
-    $('#searchForm').ajaxForm(function () {
-        clearMarkers(marker_annunci);
-        marker_annunci = new Array();
-        load_Annunci();
-        var getf = $.Deferred();
-        getf.done(getfiltro);
-        getf.resolve();
-    });
-});
-
 //Caricamento dei risultati a fine pagina
 $(window).scroll(function () {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
         nextpage();
     }
 });
-
-function loggatoStudente() {
-    $.post("ServletController",
-            {action: "Ricerca-loggatoStudente"},
-            function (item) {
-                console.log("Studente loggato?: " + item);
-                if (item == "true") {
-                    $("#saveButton").show("fast");
-                }
-            });
-}
 
 

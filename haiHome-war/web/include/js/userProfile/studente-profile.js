@@ -19,7 +19,7 @@ var activatedTutorial = false;
 $(document).ready(function () {
     checkStudenteType();
     getListaFiltriPreferiti();
-    getAnnunciPreferiti();
+    load_Annunci();
 
     var backups = "";
 
@@ -89,6 +89,7 @@ $(document).ready(function () {
                     } else {
                         $panel.children(".panel-body").addClass("has-error");
                         console.log("error code: " + responseJson.error);
+                        alert(responseJson.error);
                     }
                     $('#password').val('');
                     $('#new-password').val('');
@@ -100,11 +101,6 @@ $(document).ready(function () {
     });
 });
 
-jQuery(document).ready(function ($) {
-
-
-});
-
 function checkStudenteType() {
     var login_type = $('#user-access').text();
     console.log(login_type);
@@ -113,15 +109,6 @@ function checkStudenteType() {
         $('#rigaEmail').attr("class", "col-md-6 col-md-offset-3");
     }
 
-}
-
-
-function getAnnunciPreferiti() {
-    $.post("ServletController",
-            {action: "studente-getAnnunci"},
-            function (data) {
-                console.log(data);
-            });
 }
 
 
@@ -153,6 +140,7 @@ function getListaFiltriPreferiti() {
     $.post("ServletController",
             {action: "get-lista-preferiti-studente"},
             function (responseJson) {
+                console.log(responseJson);
                 page_filtri = new Array();
                 filtri = [];
                 n_page = 0;
