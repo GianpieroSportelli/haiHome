@@ -42,7 +42,12 @@
         <link rel="stylesheet" href="include/css/Utente/Utente.css">
         <link rel="stylesheet" href="include/css/Utente/bootstrap.vertical-tabs.css">
         <script type="text/javascript" src="include/js/userProfile/studente-profile.js"></script>
+        <script type="text/javascript" src="include/js/userProfile/studente-profile-annunci.js"></script>
         <!-- Fine Robe di UserProfile-->
+        
+        <!-- SESSION -->
+        <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
+        <!-- FINE SESSION -->
 
 
         <link href="tutcss.css" rel="stylesheet">
@@ -84,7 +89,7 @@
 
         <%@include file="include/html/modalConfermaCancellazione.html"%>
         <!-- < %@include file="/header3Login.jsp" %>  -->
-        
+
         <!-- Non voglio imparare HTML, notyplsbbbrb -->
         <div style="display:none"> 
             <div id="user-access"><%= session.getAttribute("user-access")%></div>
@@ -266,7 +271,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="annunci">Annunci preferiti qui</div>
+                        <div class="tab-pane fade" id="annunci">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="ibox float-e-margins">
+
+                                        <div class="ibox-content" id="list-result">
+                                            <div class="hr-line-dashed"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="tab-pane fade" id="filtriUtente"></div>
                     </div>
                 </div>  
@@ -280,9 +296,9 @@
              if (filtri.length !== 0) {
              //Ho messo due variabili perche' non aggiorna la sessione in real-time
              if (!activatedTutorial) {
-             <%/* if (session.getAttribute("tutorial") == null) {
+            <%/* if (session.getAttribute("tutorial") == null) {
                     session.setAttribute("tutorial", true);
-                 */ %>
+                  */ %>
              //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
              //Il problema nasce dal fatto che i tab sono dinamici
              var millisecondsToWait = 400;
@@ -290,7 +306,7 @@
              introJs().start();
              activatedTutorial = true;
              }, millisecondsToWait);
-             <%// }%>
+            <%// }%>
              }
              }
              }*/

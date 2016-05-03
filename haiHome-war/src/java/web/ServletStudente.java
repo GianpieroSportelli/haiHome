@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -211,7 +212,7 @@ public class ServletStudente extends HttpServlet {
                 response.setContentType("application/json");
                 if (gestoreStudente.reloadStudente()) {
                     String json = gestoreStudente.getStudente().getListaFiltriPreferiti().toString();
-                    System.out.println(json);
+                    System.out.println("Filtri preferiti " + json);
                     out.write(json);
                 } else {
                     out.write("ERRORE");
@@ -224,14 +225,15 @@ public class ServletStudente extends HttpServlet {
                     out.write("false");
                 }
             } else if (action.equalsIgnoreCase("studente-getAnnunci")) {
+                response.setContentType("application/json");
                 if (gestoreStudente.reloadStudente()) {
                     String json = gestoreStudente.getStudente().getAnnunciJSON().toString();
+                    System.out.println(json);
                     out.write(json);
                 } else {
                     out.write("ERRORE");
                 }
             } else if (action.equalsIgnoreCase("studente-edit-info")) {
-                System.out.println("QUI SONO");
                 String field_value = request.getParameter("field-value");
                 String error = "";
                 JSONObject jsonresult = new JSONObject();
