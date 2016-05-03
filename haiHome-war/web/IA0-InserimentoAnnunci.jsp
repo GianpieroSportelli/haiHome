@@ -40,24 +40,23 @@
         
         <!-- google+ login stuff -->
         <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
-        <script type='text/javascript' src='../include/js/login/googleplus-script.js'></script>
+        <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
         <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
         <!-- end google+ login stuff -->
         
         <!-- Inizio import header --------------------->
-        <script src="../include/js/header-updater.js"></script>
+        <script src="include/js/header-updater.js"></script>
         <!-- Script modal login -->
-        <script src="../include/js/login/modal_validation_and_stuff.js"></script> 
-        <script src="../include/js/login/ajax_req_and_stuff.js"></script>
-        <script src="../include/js/login/modernizr.js"></script> <!-- Modernizr -->
+        <script src="include/js/login/modal_validation_and_stuff.js"></script> 
+        <script src="include/js/login/ajax_req_and_stuff.js"></script>
+        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
 
          <!-- Import script Facebook -->
-        <script type="text/javascript" src="../include/js/login/FacebookScript.js"></script>
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
         
-        <!-- google Place API -->
-                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&signed_in=true&libraries=places&callback=initAutocomplete" async defer></script>
-        
+         
+      
 
         
         <!-- fine roba utile al footer e al header -->
@@ -66,8 +65,8 @@
         
         
         <!-- dropzone -->
-        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/dropzone1.css"> 
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/dropzone1.js"></script>
+        <link rel="stylesheet" href="include/css/InserimentoAnnunci/dropzone1.css"> 
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/dropzone1.js"></script>
         
 
 
@@ -77,11 +76,11 @@
     </head>
     <body>
                 <%--header --%>
-        <%@include file="../header.jsp" %> 
+        <%@include file="/header.jsp" %> 
         
         
         <!-- modal -->
-        <%@include file="anteprimaAnnuncio.jsp" %>
+        <%@include file="IA5-anteprimaAnnuncio.jsp" %>
         
 
 
@@ -116,26 +115,31 @@
             
                 <div class="row setup-content" id="step-1"> 
 
-                    <%@include file="InserimentoInfoAppartamento.jsp" %>
+                    <%@include file="IA1-InfoIndirizzo.jsp" %>
+                    
+                     <!-- google Place API -->
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&signed_in=true&libraries=places&callback=initAutocomplete" async defer></script>
+        
+                    
                     
                     
                 </div>
 
                 <div class="row setup-content" id="step-2">
                     
-                    <%@include file="InserimentoInfoAnnuncio.jsp" %>
+                    <%@include file="IA2-InfoAppartamento.jsp" %>
                     
                 </div>
 
                 <div class="row setup-content" id="step-3">
 
-                    <%@include file="InserimentoStanze.jsp" %>
+                    <%@include file="IA3-InfoStanze.jsp" %>
                                                                         
                 </div>
    
                 <div class="row setup-content" id="step-4">
                     
-                   <%@include file="InserimentoCosti.jsp" %>
+                   <%@include file="IA4-InfoCosti.jsp" %>
                     
                 </div>
 
@@ -152,11 +156,11 @@
 
 
         <!-- script miei -->
-        <link rel="stylesheet" href="../include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/stanzeUtily.js"></script>
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/anteprimaAnnuncio.js"></script>
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
-        <script type="text/javascript" src="../include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
+        <link rel="stylesheet" href="include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/stanzeUtily.js"></script>
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/anteprimaAnnuncio.js"></script>
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
         <!-- fine script miei -->
         
 

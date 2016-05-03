@@ -6,7 +6,7 @@
 
 <div class="col-xs-6 col-md-offset-3">
     <div class="col-md-12">
-        <form action="../ServletAnnuncio" method="post" id="form-info-costi"> 
+        <form action="ServletAnnuncio" method="post" id="form-info-costi"> 
             <input type="hidden" name="action" value="Annunci-newAnnuncio-infoCosti" /> 
             
         <div class="form-group">
