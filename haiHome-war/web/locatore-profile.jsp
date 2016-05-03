@@ -74,13 +74,12 @@
         <%@include file="/header.jsp" %>
 
         <!-- l'html è bello! imparalo NOW -->
-        <div style="display:none"> 
+        <div id="__session" style="display:none"> 
             <div id="user-access"><%= session.getAttribute("user-access")%></div>
             <div id="annunci-length"><%= session.getAttribute("num-annunci")%></div>
             <div id="visibili-length"><%= session.getAttribute("num-visibili")%></div>
             <div id="archiviati-length"><%= session.getAttribute("num-archiviati")%></div>
             <div id="oscurati-length"><%= session.getAttribute("num-archiviati")%></div>
-
         </div>
 
         <div class="container">
