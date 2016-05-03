@@ -30,4 +30,6 @@ public interface GestoreCittaLocal {
     
     public HashMap<String,ArrayList<String>> getQuartieriCapMap();
     
+    
+    
 }

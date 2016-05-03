@@ -60,6 +60,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     private Annuncio annuncio;
+    
+    private Città citta;
 
     //serve come passo inziale dell'inserimento dell'annuncio, inserisce solo
     //il Locatore
@@ -123,8 +125,9 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
                 trovato = true;
             }
         }
-
-        this.annuncio.setCittà(città);
+        
+        this.citta = città;
+        this.annuncio.setCittà(this.citta);
         this.annuncio.setQuartiere(quartiere);
         this.annuncio.setIndirizzo(indirizzo);
         this.annuncio.setLatLng(latlng);
@@ -279,6 +282,13 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         changeNameFolder();
 
         annuncioFacade.create(this.annuncio);
+        
+        /*
+        citta.addAnnuncio(this.annuncio);
+        
+        cittàFacade.edit(citta);
+        
+        */
         
         
         

@@ -37,6 +37,7 @@ public class Città implements Serializable {
     private List<Annuncio> annunci;
     
     public void addAnnuncio(Annuncio annuncio){
+        System.out.println("NUMERO ANNUNCI NELLA CITTA " + annunci.size());
         this.annunci.add(annuncio);
     }
     public List<Annuncio> getAnnunci() {
