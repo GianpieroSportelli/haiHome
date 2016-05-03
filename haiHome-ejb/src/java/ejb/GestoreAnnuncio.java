@@ -62,6 +62,9 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     private Annuncio annuncio;
     
     private Città citta;
+    
+    private Locatore locatore;
+    
 
     //serve come passo inziale dell'inserimento dell'annuncio, inserisce solo
     //il Locatore
@@ -69,8 +72,10 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean CreaAnnuncio(Locatore locatore) {
 
         this.annuncio = new Annuncio();
+        
+        this.locatore = locatore;
 
-        annuncio.setLocatore(locatore);
+        annuncio.setLocatore(this.locatore);
 
         /*
         TODO
@@ -88,19 +93,14 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean CreaAnnuncio(Object idLocatore) {
 
         this.annuncio = new Annuncio();
-
-        /*
-        List<Locatore> locatori =locatoreFacade.findAll();
         
-        for(Locatore l: locatori){
-            if(l.getId() == idLocatore){
-                        annuncio.setLocatore(l);
-                        return true;
-            }
-        }
-         */
         System.out.println(idLocatore.toString());
         Locatore l = locatoreFacade.find(idLocatore);
+        
+        this.locatore = l;
+
+        annuncio.setLocatore(this.locatore);
+        
         this.annuncio.setLocatore(l);
         checkPhotoFolder();
         return l != null;
@@ -283,12 +283,15 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
 
         annuncioFacade.create(this.annuncio);
         
-        /*
+        
         citta.addAnnuncio(this.annuncio);
         
         cittàFacade.edit(citta);
         
-        */
+        
+        locatore.addAnnuncio(annuncio);
+        
+        locatoreFacade.edit(locatore);
         
         
         
