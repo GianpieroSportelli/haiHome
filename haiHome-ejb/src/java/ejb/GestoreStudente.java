@@ -129,6 +129,9 @@ public class GestoreStudente implements GestoreStudenteLocal {
 
     @Override
     public boolean reloadStudente() {
+        if (this.getStudente() == null) {
+            return false;
+        }
         Studente newStudente = studenteFacade.find(this.getStudente().getId());
 
         if (newStudente == null) {
@@ -184,5 +187,11 @@ public class GestoreStudente implements GestoreStudenteLocal {
         this.studente.deleteAnnuncio(a);
         studenteFacade.edit(this.studente);
         return true;
+    }
+
+    @Override
+    public void changePassword(String password) {
+        this.studente.setPassword(password);
+        this.studenteFacade.edit(this.studente);
     }
 }

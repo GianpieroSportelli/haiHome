@@ -34,7 +34,6 @@ public interface GestoreLocatoreLocal {
     public boolean removeLocatore();
     
     public Collection<Annuncio> getAnnunci();
-    
     public List<Annuncio> getAnnunciVisibili(); 
     
     public List<Annuncio> getAnnunciArchiviati();
@@ -45,7 +44,10 @@ public interface GestoreLocatoreLocal {
     public void modificaAvatarByURL(String img); 
     public boolean modificaPassword(String oldpassword, String newpassword);  
     public void modificaPassword(String newpassword); 
-    public void modificaInfoProfilo(String telefono, String descrizione); 
+    
+    public boolean checkAnnuncio(Annuncio a); 
+    public boolean removeAnnuncio(Annuncio a); 
+    public boolean addAnnuncio(Annuncio a); 
     
     public JSONObject toJSON();
     

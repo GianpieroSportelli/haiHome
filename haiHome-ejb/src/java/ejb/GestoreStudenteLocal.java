@@ -42,4 +42,6 @@ public interface GestoreStudenteLocal {
     public boolean addAnnuncio(String id);
 
     public boolean removeAnnuncio(String id);
+    
+    public void changePassword(String password);
 }

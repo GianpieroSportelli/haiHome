@@ -385,12 +385,12 @@ function getfiltro() {
                 $('#quartieri').searchableOptionList({
                     maxHeight: '250px'
                 });
-                
+
                 $("#quartieri-div").show();
                 $('#pricefrom').val(filtro.Prezzo);
                 $('#compCondominio').prop('checked', filtro.CompresoCondominio);
                 $('#compRiscaldamento').prop('checked', filtro.CompresoRiscaldamento);
-                
+
                 var tipo = filtro.Tipo;
                 if (tipo == "Appartamento") {
                     $('#tipo-' + tipo).prop('selected', true);
@@ -464,7 +464,8 @@ function persistiFiltro() {
     $.post("ServletController",
             {action: "Ricerca-salvaFiltro"},
             function (item) {
-                alert(item);
+                if (item == "ok")
+                    alert("Fitro Salvato!!");
                 var getf = $.Deferred();
                 getf.done(getfiltro);
                 getf.resolve();
