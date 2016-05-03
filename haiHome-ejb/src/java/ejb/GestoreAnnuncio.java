@@ -279,6 +279,9 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         changeNameFolder();
 
         annuncioFacade.create(this.annuncio);
+        
+        
+        
 
         System.out.println("ciao");
 
