@@ -26,7 +26,9 @@ var split2 = "/";
 var foto_page = new Array();
 
 var service_info = "#service_info";
- var bus_info = "bus_info";
+var bus_info = "bus_info";
+ 
+var id_studente="";
 
 $('.qcar').carousel({
     pause: true,
@@ -420,10 +422,13 @@ function loggatoStudente() {
             function (item) {
                 //var html = '';
                 //alert(item);
-                console.log("Studente loggato?: " + item);
-                if (item == "true") {
+                if (item != "") {
+                    console.log("Studente loggato? id: " + item);
+                    id_studente=item;
                     checkAnnuncio(""+annuncio.OID);
                     $("#segnalaBtn").show("fast");
+                }else{
+                   console.log("Studente loggato? id: NO"); 
                 }
             });
 }
@@ -460,7 +465,7 @@ function salvaAnnuncioPreferiti() {
 }
 
 function cancellaAnnuncioPreferiti() {
-    alert("Salvo l'annuncio nei Preferiti");
+    alert("Cancello l'annuncio dai Preferiti");
     $.post("ServletController",
             {action: "studente-removeAnnuncio",id:annuncio.OID},
             function (item) {
@@ -475,7 +480,17 @@ function cancellaAnnuncioPreferiti() {
 }
 
 function segnalaAnnuncio() {
-    alert("annuncio Segnalato");
+    //alert("annuncio Segnalato");
+    $.post("ServletController",
+            {action: "Segnalazione-addSegnalazione",id_annuncio:annuncio.OID,id_studente:id_studente,descrizione:"segnalazione di "+id_studente},
+            function (item) {
+                console.log("Annuncio segnalato?: " + item);
+                if (item == "true") {
+                    alert("Annuncio Segnalato!!!!!");
+                }else{
+                    alert("annuncio non segnalato, contatta l'admin!!!");
+                }
+            });
 }
 
 function callFoto(foto_OID) {

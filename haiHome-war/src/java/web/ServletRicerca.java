@@ -295,15 +295,23 @@ public class ServletRicerca extends HttpServlet {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
                 boolean result = false;
+                String id="";
                 if (session != null) {
                     String user_type = (String) session.getAttribute("user-type");
                     if (user_type != null) {
                         if (user_type.equalsIgnoreCase("STUDENTE")) {
-                            result = true;
+                            JSONObject Jstudente = (JSONObject) session.getAttribute("user-data");
+                            try {
+                                id=""+Jstudente.get("id");
+                                result = true;
+                            } catch (JSONException ex) {
+                                Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 }
-                out.write("" + result);
+                
+                out.write("" + id);
             } else if (action.equalsIgnoreCase("Ricerca-getImage")) {
                 String url = request.getParameter("url");
                 String type = request.getParameter("type");
