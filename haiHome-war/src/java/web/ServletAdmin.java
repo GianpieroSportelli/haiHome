@@ -37,6 +37,8 @@ public class ServletAdmin extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String action = request.getParameter("action");
+            /*gestoreAdmin.addAdmin("admin@haihome.it", "haihome");
+            out.write("Aggiunto");*/
             
             if (action.equalsIgnoreCase("login-admin")) {
                 
@@ -44,7 +46,7 @@ public class ServletAdmin extends HttpServlet {
                 String pass = request.getParameter("adminPW");
                 //System.out.println(email + " " + pass);
                 
-                //gestoreAdmin.addAdmin("admin@haihome.it", "haihome");
+                
                 if (gestoreAdmin.checkAdmin(email) == true) {
                     //E' presente un admin con quelle credenziali
                     out.write("OK");

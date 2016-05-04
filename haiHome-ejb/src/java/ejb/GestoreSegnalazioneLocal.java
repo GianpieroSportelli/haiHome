@@ -6,6 +6,7 @@
 package ejb;
 
 import javax.ejb.Local;
+import org.json.JSONArray;
 
 /**
  *
@@ -15,5 +16,9 @@ import javax.ejb.Local;
 public interface GestoreSegnalazioneLocal {
 
     boolean addSegnalazione(String id_studente, String id_annuncio, String descrizione);
+
+    public JSONArray getAllSegnalazioni();
+
+    JSONArray MapAnnunciSegnalati();
     
 }
