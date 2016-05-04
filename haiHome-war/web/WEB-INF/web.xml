@@ -52,6 +52,10 @@
         <servlet-name>ServletCitta</servlet-name>
         <servlet-class>web.ServletCitta</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletSegnalazione</servlet-name>
+        <servlet-class>web.ServletSegnalazione</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletController</servlet-name>
         <url-pattern>/ServletController</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>ServletCitta</servlet-name>
         <url-pattern>/ServletCitta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSegnalazione</servlet-name>
+        <url-pattern>/ServletSegnalazione</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
