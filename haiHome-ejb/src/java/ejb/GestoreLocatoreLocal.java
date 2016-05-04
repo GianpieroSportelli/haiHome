@@ -10,7 +10,7 @@ import entity.Locatore;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Local;
-import org.json.JSONObject;
+import org.json.JSONObject; 
 
 
 /**
