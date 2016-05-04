@@ -46,14 +46,14 @@ public class ServletAnnuncio extends HttpServlet {
 
     @EJB
     private GestoreAnnuncioLocal gestoreAnnuncio;
-    
+
     @EJB
     private GestoreRicercaLocal gestoreRicerca;
-    
+
     @EJB
     private GoogleMapsBeanLocal gestoreMaps;
-    
-        @EJB
+
+    @EJB
     private GestoreCittaLocal gestoreCitta;
 
     /*
@@ -72,8 +72,8 @@ public class ServletAnnuncio extends HttpServlet {
     private HashMap<String, ArrayList<String>> photoTempPath;
     private HashMap<String, ArrayList<String>> stanzeInfo;
     long idLocatore;
-    
-    private HashMap<String,ArrayList<String>> capMap;
+
+    private HashMap<String, ArrayList<String>> capMap;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -100,55 +100,68 @@ public class ServletAnnuncio extends HttpServlet {
 
             if (action.equalsIgnoreCase("Annunci-newAnnuncio-initialRequest")) {
 
-                 System.out.println("----- RICHIESTA INIZIALE:");
-                
+                System.out.println("----- RICHIESTA INIZIALE:");
+
                 //prendo la sessione
                 HttpSession session = request.getSession();
-                
+
                 //preparo la risposta
-                response.setContentType("text/plain");
+                response.setContentType("application/json");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8");
-                    
+
                 //controllo il tipo utente
                 String userType = (String) session.getAttribute("user-type");
-                
-                if(userType == null){
+
+                if (userType == null) {
                     userType = "random";
                 }
-                if((userType.equalsIgnoreCase("locatore")) /*(userType.equalsIgnoreCase("locatore"))*/){
+                if ((userType.equalsIgnoreCase("locatore")) /*(userType.equalsIgnoreCase("locatore"))*/) {
                     JSONObject locatoreJSON = (JSONObject) session.getAttribute("user-data");
                     idLocatore = (long) locatoreJSON.get("id");
                     System.out.println("Tipo utente: " + userType);
-                    System.out.println("Id locatore : " + idLocatore );
+                    System.out.println("Id locatore : " + idLocatore);
                     boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
                     System.out.println("Annuncio inizializzato : " + result);
                     //scrivo la risposa
-                    out.write("OK");  
-                }else{
+                    if (result) {
+                        ArrayList<String> tipoStanzeAffitto = gestoreAnnuncio.getTipologieStanzaAffitto();
+                        ArrayList<String> tipoStanzeAccessorio = gestoreAnnuncio.getTipologieStanzaAcc();
+                        JSONObject resp = new JSONObject();
+                        resp.accumulate("tipoAffitto", tipoStanzeAffitto);
+                        resp.accumulate("tipoAccessorio", tipoStanzeAccessorio);
+                        resp.accumulate("response", "OK");
+
+                        out.write(resp.toString());
+
+                    }
+
+                } else {
                     idLocatore = 36;
                     boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
                     System.out.println("ID LOCATORE aggiunto manualmente: " + idLocatore);
                     System.out.println("Annuncio inizializzato : " + result);
                     //scrivo la risposta
-                    out.write("NO");  
-                    
+                    //preparo la risposta
+                        JSONObject resp = new JSONObject();
+                        resp.accumulate("response", "NO");
+
+                        out.write(resp.toString());
+
                 }
                 //inizializzo arrayList stanze
                 photoTempPath = new HashMap();
                 stanzeInfo = new HashMap();
-                
+
                 //Carico i quartieri
-                
                 capMap = gestoreCitta.getQuartieriCapMap();
-                for(String key : capMap.keySet()){
+                for (String key : capMap.keySet()) {
                     System.out.println("Cap: " + key);
                     System.out.println("Quartieri : ");
-                    for(String quart : capMap.get(key)){
+                    for (String quart : capMap.get(key)) {
                         System.out.println("-       -  " + quart);
                     }
-                    
-                }
 
+                }
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
 
@@ -158,16 +171,13 @@ public class ServletAnnuncio extends HttpServlet {
                 String quartiere = request.getParameter("Quartiere").trim();
                 String indirizzo = request.getParameter("Indirizzo").trim() + ", " + request.getParameter("Civico").trim();
                 //Via Carlo Alberto, 41, Torino, TO, Italia
-                String indirizzoString =indirizzo + "," + citta + ", Italia";
+                String indirizzoString = indirizzo + "," + citta + ", Italia";
                 indirizzoString = indirizzoString.replace(" ", "+");
-                        
+
                 //da gestire la latitudine longitutine latlng = {0.0,0.0};
                 //double[] latlng = {0.0, 0.0};
-                
                 double[] latlng = gestoreMaps.geocodingAddress(indirizzoString);
-                
-                
-                
+
                 //Inserisco informazioni
                 gestoreAnnuncio.inserisciInfoIndirizzo(citta, quartiere, indirizzo, latlng);
 
@@ -189,15 +199,13 @@ public class ServletAnnuncio extends HttpServlet {
                 String m = request.getParameter("Metratura").trim();
                 System.out.println("M = " + m);
                 double metraturaApp = 0;
-                if(!m.equalsIgnoreCase("")){
+                if (!m.equalsIgnoreCase("")) {
                     metraturaApp = Double.parseDouble(m);
                 }
-                
-                
-                
+
                 String[] data = request.getParameter("DataInizioAffitto").split("-");
-                System.out.println(data[0]+ " - " + data[1] + " - " + data[2]);
-                GregorianCalendar gc = new GregorianCalendar(Integer.parseInt(data[2]),Integer.parseInt(data[1]) -1,Integer.parseInt(data[0]));
+                System.out.println(data[0] + " - " + data[1] + " - " + data[2]);
+                GregorianCalendar gc = new GregorianCalendar(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]));
                 //Da gestire la data inizio affitto Date dataInizioAffitto = new Date();
                 System.out.println(gc.getTime());
                 gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, gc.getTime());
@@ -229,11 +237,10 @@ public class ServletAnnuncio extends HttpServlet {
                     System.out.println("Tipologia stanza " + tipologiaStanze[i]);
 
                     infoStanza.add(tipologiaStanze[i]);
-                    
-                    
-                        if(metraturaS[i].equalsIgnoreCase("")){
-                            metraturaS[i] = "0";
-                        }
+
+                    if (metraturaS[i].equalsIgnoreCase("")) {
+                        metraturaS[i] = "0";
+                    }
 
                     //stanza da letto
                     if (tipologiaStanze[i].equalsIgnoreCase("1")) {
@@ -264,16 +271,14 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-FotoUpload")) {
 
                 System.out.println("-----FOTO DELLE STANZE");
-                
-           //mi assicuro che non ci siano stane inserite
-            boolean listaStanzeVuota = photoTempPath.isEmpty();
-                    if(!listaStanzeVuota){
-                        photoTempPath = new HashMap<>();
-                        stanzeInfo = new HashMap<>();
-                        
-                        
-            }
-                    
+
+                //mi assicuro che non ci siano stane inserite
+                boolean listaStanzeVuota = photoTempPath.isEmpty();
+                if (!listaStanzeVuota) {
+                    photoTempPath = new HashMap<>();
+                    stanzeInfo = new HashMap<>();
+
+                }
 
                 Collection<Part> files = request.getParts();
 
@@ -315,35 +320,29 @@ public class ServletAnnuncio extends HttpServlet {
 
                 String tipoCosti = request.getParameter("Tipo Costo").trim();
                 int numeroStanze = stanzeInfo.size();
-                
+
                 //Info sulle stanze
                 gestoreAnnuncio.inserisciInfoStanze(numeroStanze, tipoCosti.compareToIgnoreCase("1") == 0);
-                
 
-                 //controllo che non ci siano state gia fatti inserimenti di stanze
-                    boolean listaStanzeVuota = gestoreAnnuncio.svuotaStante();
-                    
+                //controllo che non ci siano state gia fatti inserimenti di stanze
+                boolean listaStanzeVuota = gestoreAnnuncio.svuotaStante();
+
                 //prezzo riferito all'appartamento (parametro atomico)
                 if (tipoCosti.compareToIgnoreCase("1") == 0) {
-                    
 
                     Set<String> listaChiavi = stanzeInfo.keySet();
-                
-                
+
                     String prezzoA = request.getParameter("prezzoA").trim();
                     String compCondA = request.getParameter("compresoCondominioA");
                     boolean CCA = request.getParameter("compresoCondominioA") != null;
                     String compRiscA = request.getParameter("compresoRiscaldamentoA");
                     boolean CRA = request.getParameter("compresoRiscaldamentoA") != null;
-                    
-                   
-                
-                    
+
                     //inserisco tutte le stanze
                     for (String s : listaChiavi) {
                         ArrayList<String> infoStanza = stanzeInfo.get(s);
                         String tipologiaStanza = infoStanza.get(0);
-                        
+
                         if (tipologiaStanza.equalsIgnoreCase("1")) {
                             //stanza da letto senza costi
                             gestoreAnnuncio.inserisciNuovaStanzaInAffitto(infoStanza.get(1), photoTempPath.get(s), Double.parseDouble(infoStanza.get(2)));
@@ -353,10 +352,9 @@ public class ServletAnnuncio extends HttpServlet {
                         }
 
                     }
-                    
+
                     //inserisco info costi appartamento
                     gestoreAnnuncio.inserisciInfoCostiAppartamento(Double.parseDouble(prezzoA), CCA, CRA);
-                    
 
                     //Stampa di controllo
                     System.out.println("TIPO COSTI: " + tipoCosti);
@@ -371,20 +369,20 @@ public class ServletAnnuncio extends HttpServlet {
 
                     boolean CRS = request.getParameter("compresoRiscaldamentoS") != null;
 
-                    for (int i=0;i< idStanze.length;i++) {
+                    for (int i = 0; i < idStanze.length; i++) {
                         String idStanze1 = idStanze[i];
                         ArrayList<String> infoStanza = stanzeInfo.get(idStanze1);
                         gestoreAnnuncio.inserisciNuovaStanzaInAffitto(infoStanza.get(1), photoTempPath.get(idStanze1), CCS, CRS, Double.parseDouble(infoStanza.get(2)), Double.parseDouble(prezzoS[i]));
                         stanzeInfo.remove(idStanze1);
                     }
-                    
+
                     Set<String> listaChiavi = stanzeInfo.keySet();
-                    
+
                     for (String s : listaChiavi) {
                         ArrayList<String> infoStanza = stanzeInfo.get(s);
                         String tipologiaStanza = infoStanza.get(0);
                         if (tipologiaStanza.equalsIgnoreCase("1")) {
-                           System.out.println("Ci sono problemi, qui non dovrebbe entrare");
+                            System.out.println("Ci sono problemi, qui non dovrebbe entrare");
                         } else {
                             //stanza accessoria
                             gestoreAnnuncio.inserisciNuovaStanzaAccessoria(infoStanza.get(1), photoTempPath.get(s), Double.parseDouble(infoStanza.get(2)));
@@ -393,7 +391,6 @@ public class ServletAnnuncio extends HttpServlet {
                     }
 
                     //non inserisco info sul prezzo
-                    
                     //Stampo dati per controllo
                     for (int i = 0; i < prezzoS.length; i++) {
                         System.out.println(idStanze[i]);
@@ -403,7 +400,7 @@ public class ServletAnnuncio extends HttpServlet {
                     System.out.println("COMPRESO CONDOMINIO STA: " + CCS);
                     System.out.println("COMPRESO RISCALDAMENTO STA: " + CRS);
                 }
-                
+
                 //inserisco info finali sull'annuncio
                 JSONObject annuncio = gestoreAnnuncio.toJSON();
                 //non qui da mettere l'anteprima e la conferma
@@ -415,11 +412,11 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getImage")) {
 
                 String url = request.getParameter("url");
-                String type=request.getParameter("type");
- 
+                String type = request.getParameter("type");
+
                 String imageString = null;
                 BufferedImage originalImage = ImageIO.read(new File(url));
-                
+
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 try {
                     ImageIO.write(originalImage, type, bos);
@@ -436,53 +433,45 @@ public class ServletAnnuncio extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-persisti")) {
 
-                
-
                 boolean result = gestoreAnnuncio.rendiAnnuncioPersistente();
-                
+
                 //inserisco info finali sull'annuncio
                 JSONObject annuncio = gestoreAnnuncio.toJSON();
                 //non qui da mettere l'anteprima e la conferma
-                
+
                 System.out.println("ANNUNCIO PERSISTITO, ECCO IL RISULTATO: " + annuncio);
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
-                if(result){
+                if (result) {
                     out.write("OK");
-                }else{
+                } else {
                     out.write("NO");
                 }
-                
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getQuartieri")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
-                
+
                 String cap = request.getParameter("cap");
-                
-                
-                if(cap!=null){
-                    
 
-                System.out.println("CAP " + cap);
-                ArrayList<String> listaquartieri = capMap.get(cap);
-                String json = new Gson().toJson(listaquartieri);
-                System.out.println(json);
-                out.write(json);
-                    
-                }else{
+                if (cap != null) {
 
-                
-               
-                
-                String json = new Gson().toJson(gestoreCitta.getListaQuartieri("Torino"));
-                
-                //String json = new Gson().toJson(listaquartieri);
-                System.out.println(json);
-                out.write(json);
+                    System.out.println("CAP " + cap);
+                    ArrayList<String> listaquartieri = capMap.get(cap);
+                    String json = new Gson().toJson(listaquartieri);
+                    System.out.println(json);
+                    out.write(json);
+
+                } else {
+
+                    String json = new Gson().toJson(gestoreCitta.getListaQuartieri("Torino"));
+
+                    //String json = new Gson().toJson(listaquartieri);
+                    System.out.println(json);
+                    out.write(json);
                 }
 
-            }else {
+            } else {
 
             }
             out.close();
