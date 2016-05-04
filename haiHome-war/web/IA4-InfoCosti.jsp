@@ -13,7 +13,7 @@
             <label class="control-label">Modello di Costi</label>
 
             <select id="costi" onchange="cambiaSpecifiche()" class="form-control" name="Tipo Costo">
-                <option id="nothing" selected="selected">-</option>
+                <option id="nothing" selected="selected" value="0">Selezione modello di costi</option>
                 <option  value="1">Prezzo intero Appartamento</option>
                 <option  value="2">Prezzo singole Stanze</option>
             </select>

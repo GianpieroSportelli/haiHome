@@ -247,7 +247,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         //GregorianCalendar gc = new GregorianCalendar();
         Date d = new Date();
         //TODO inserimento data, classe Date deprecata
-        this.annuncio.setDataPubblicazione(d);
+        this.annuncio.setDataPubblicazione((Date) d);
 
         for (int i = 0; i < this.annuncio.getListaStanza().size(); i++) {
 
@@ -309,9 +309,21 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean modificaAnnuncio(Annuncio annuncio) {
         this.annuncio = annuncio;
-
+        
         return true;
 
+    }
+    
+    @Override
+    public boolean modificaAnnuncio(long oidAnnuncio) {
+        this.annuncio = annuncioFacade.find(oidAnnuncio);
+        if(annuncio==null){
+            return false;
+        }
+        this.locatore = annuncio.getLocatore();
+        this.citta = annuncio.getCittà();
+
+        return true;
     }
 
     @Override
@@ -680,6 +692,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             res.add(i.toString());
         }
         return res;     }
+
+
     
     
    

@@ -47,6 +47,8 @@ public interface GestoreAnnuncioLocal {
     
     //MODIFICA ANNUNCIO
     public boolean modificaAnnuncio(Annuncio annuncio);
+    
+    public boolean modificaAnnuncio(long oidAnnuncio);
 
     public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng, int numeroStanze, boolean atomico);
 
