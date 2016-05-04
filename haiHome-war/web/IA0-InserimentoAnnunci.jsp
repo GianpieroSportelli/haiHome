@@ -68,6 +68,9 @@
         <link rel="stylesheet" href="include/css/InserimentoAnnunci/dropzone1.css"> 
         <script type="text/javascript" src="include/js/InserimentoAnnunci/dropzone1.js"></script>
         
+        <!--mio scriot autocomplite -->
+                <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
+        
 
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -183,7 +186,6 @@
         <script type="text/javascript" src="include/js/InserimentoAnnunci/stanzeUtily.js"></script>
         <script type="text/javascript" src="include/js/InserimentoAnnunci/anteprimaAnnuncio.js"></script>
         <script type="text/javascript" src="include/js/InserimentoAnnunci/InserimentoAnnuncio.js"></script>
-        <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
         <!-- fine script miei -->
         
 
