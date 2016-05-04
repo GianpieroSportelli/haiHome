@@ -110,8 +110,10 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("dettagliAnnuncio")) {
-                System.out.println("Dettagli annuncio");
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else  if (action.equalsIgnoreCase("Segnalazione-addSegnalazione")) {
+                request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {
                 request.getRequestDispatcher("/LogoutServlet").forward(request, response);
