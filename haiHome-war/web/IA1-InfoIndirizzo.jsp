@@ -29,7 +29,7 @@
                         
                 </div>
                 <div class="col-md-2">
-                        <input id='inpCivico'maxlength="4" type="text" required="required" class="form-control" placeholder="n°" name='Civico' onkeypress="return event.keyCode != 13" onkeydown="civicoFunction()" />
+                        <input id='inpCivico'maxlength="5" type="text" required="required" class="form-control" placeholder="n°" name='Civico' onkeypress="return event.keyCode != 13" onclick="civicoFunction()"  />
                 </div>
 
             </div>
