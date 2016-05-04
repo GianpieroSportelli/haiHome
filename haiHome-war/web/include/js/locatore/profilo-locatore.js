@@ -1,12 +1,11 @@
-jQuery(document).ready(function ($) {/*
- var $div_modify_pwd = $('#modify-pwd-stuff');
- var $old_pwd = $('input[name=old-pwd]'),
- $new_pwd = $('input[name=pwd]'),
- $new_pwd2 = $('input[name=pwd-confirm]'),
- $phone = $('input[name=phone]'),
- $description = $('textarea[name=description]');*/
+jQuery(document).ready(function ($) {
+    /*
+     * Nella tendina "modifica-archivia-elimina" di ogni annuncio, mettere due 
+     * icone invisibili (V e X) per visualizzare l'esito dell'operazione 
+     * (utile per archiviazione e eliminazione che sono istantanee)
+     * */
 
-//    var login_by_credentials = $('#user-access').html().trim() === "";
+
     var login_type = $('#user-access').text();
     var backups = [];
 
@@ -96,7 +95,11 @@ jQuery(document).ready(function ($) {/*
         );
     });
 
-    /* robe sugli annunci */
+    /* Link per le operazioni di gestione degli annunci da parte del locatore
+     * - html generato sulla server 
+     * */
+
+    /* Modifica annuncio */
     $(document).on('click', 'a.edit-annuncio', function (event) {
         //var transaction_id = $(this).attr('id').replace('delete_', '');
         var oid = event.target.id.replace("edit-ann", "");
@@ -104,16 +107,11 @@ jQuery(document).ready(function ($) {/*
         return false;
     });
 
-    $(document).on('click', 'a.archivia-annuncio', function (event) {
-        var oid = event.target.id.replace("archivia-ann", "");
-        console.log("Something on" + oid);
-        return false;
-    });
-
+    /* Eliminazione annuncio */
     $(document).on('click', 'a.delete-annuncio', function (event) {
         var oid = event.target.id.replace("delete-ann", "");
-        console.log("delete " + oid);
-        
+        console.log("> delete " + oid);
+
         $.post(
                 "ServletController",
                 {
@@ -121,110 +119,61 @@ jQuery(document).ready(function ($) {/*
                     'oid': oid
                 },
                 function (response) {
-                    console.log("locatore-delete-annuncio -> response : " + response); 
-                    if (response === "ok") {
-                        $("#ann-" + oid).css('display', 'none');
-                    }
+                    console.log("response - " + response); 
+                    
+                    if (response === "ok") 
+                       // $("#ann-" + oid).css('display', 'none');
+                           $("#ann-" + oid).remove();
                 }
         );
 
         return false;
     });
 
+    /* Archiviazione di un annuncio */
+    $(document).on('click', 'a.archivia-annuncio', function (event) {
+        var oid = event.target.id.replace("select-ann-", "");
+        console.log("> archivia " + oid);
 
+        $.post(
+                "ServletController",
+                {
+                    'action': 'locatore-archivia-annuncio',
+                    'oid': oid
+                },
+                function (response) {
+                    console.log("response - " + response); 
+                    console.log("oid: " + oid);
+                    
+                    if (response === "ok") 
+                       // $("#ann-" + oid).css('display', 'none');
+                           $("#ann-" + oid).remove();
+                }
+        );
 
-    /*
-     // fa comparire i bottoni per modificare le info
-     $('#edit').on('click', function () {
-     $('#edit').toggle();
-     $('#save-edit').toggle();
-     $('#cancel-edit').toggle();
-     
-     if (login_by_credentials)
-     $div_modify_pwd.css('display', 'inline');
-     
-     $phone.prop('disabled', false);
-     $old_pwd.prop('disabled', false);
-     $description.prop('disabled', false);
-     
-     backup_phone = $phone.val();
-     backup_description = $description.val();
-     });
-     
-     // annulla modifiche 
-     $('#cancel-edit').on('click', function () {
-     $('#edit').toggle();
-     $('#save-edit').toggle();
-     $('#cancel-edit').toggle();
-     
-     if (login_by_credentials)
-     $div_modify_pwd.toggle();
-     
-     $phone.val(backup_phone);
-     $description.val(backup_description);
-     
-     $phone.prop('disabled', 'disabled');
-     $phone.parent().removeClass("has-error");
-     
-     $old_pwd.prop('disabled', 'disabled');
-     $description.prop('disabled', 'disabled');
-     
-     });
-     
-     // persiste modifiche 
-     $('#save-edit').on('click', function () {
-     var phone_regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
-     phone_val = $phone.val().trim(), description_val = $description.val().trim();
-     var pwd = $new_pwd.val(), pwd_confirm = $new_pwd2.val();
-     
-     var check_phone = phone_val === "" || phone_regex.test(phone_val);
-     var check_pwd = $old_pwd.val() === "" || pwd === $new_pwd2.val();
-     
-     //if (phone_val === "" || phone_regex.test(phone_val)) {
-     if (check_phone && check_pwd) {
-     $.post(
-     "ServletController",
-     {
-     'action': 'locatore-edit-profile',
-     'old-pwd': $old_pwd.val(),
-     'new-pwd': pwd.trim(),
-     'phone': $phone.val().trim(),
-     'description': $description.val().trim()
-     },
-     function (response) {
-     console.log(response);
-     
-     if (response === "ok") {
-     backup_phone = $phone.val();
-     backup_description = $description.val();
-     
-     } else {
-     ;
-     }
-     }
-     );
-     
-     if (login_by_credentials) {
-     $div_modify_pwd.toggle();
-     $old_pwd.val("");
-     $new_pwd.val("");
-     $new_pwd2.val("");
-     }
-     $('#edit').toggle();
-     $('#save-edit').toggle();
-     $('#cancel-edit').toggle();
-     $phone.prop('disabled', 'disabled');
-     $description.prop('disabled', 'disabled');
-     $old_pwd.prop('disabled', 'disabled');
-     $phone.parent().removeClass("has-error");
-     
-     } else {
-     if (!check_phone)
-     $phone.parent().addClass("has-error");
-     if (!check_pwd)
-     console.log("sei un coglione");
-     }
-     });*/
+        return false;
+    });
 
+    /* Pubblicazione di un annuncio precedentemente archiviato */
+    $(document).on('click', 'a.pubblica-annuncio', function (event) {
+        var oid = event.target.id.replace("select-ann-", "");
+        console.log("> pubblica " + oid);
 
+        $.post(
+                "ServletController",
+                {
+                    'action': 'locatore-pubblica-annuncio',
+                    'oid': oid
+                },
+                function (response) {
+                    console.log("response - " + response); 
+                    
+                    if (response === "ok") 
+                       // $("#ann-" + oid).css('display', 'none');
+                           $("#ann-" + oid).remove();
+                }
+        );
+
+        return false;
+    });
 });
