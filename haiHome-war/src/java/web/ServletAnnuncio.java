@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -208,7 +209,7 @@ public class ServletAnnuncio extends HttpServlet {
                 GregorianCalendar gc = new GregorianCalendar(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]));
                 //Da gestire la data inizio affitto Date dataInizioAffitto = new Date();
                 System.out.println(gc.getTime());
-                gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, gc.getTime());
+                gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime());
 
                 System.out.println("DESCRIZIONE: " + descrizione);
                 System.out.println("METRATURA: " + metraturaApp);
@@ -448,7 +449,7 @@ public class ServletAnnuncio extends HttpServlet {
                     out.write("NO");
                 }
 
-            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getQuartieri")) {
+            }else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getQuartieri")) {
                 //System.out.println("I'm in!!");
                 response.setContentType("application/json");
 
@@ -470,6 +471,33 @@ public class ServletAnnuncio extends HttpServlet {
                     System.out.println(json);
                     out.write(json);
                 }
+
+            }else if (action.equalsIgnoreCase("Annunci-editAnnuncio-initialRequest")) {
+                
+                response.setContentType("application/json"); 
+                response.setCharacterEncoding("UTF-8");
+
+                System.out.println("-----MODIFICA  RICHIESTA INIZIALE:");
+
+                String oidAnnuncio = request.getParameter("idAnnuncio").trim();
+                
+                System.out.println("OID Annuncio: " + oidAnnuncio);
+                
+                boolean result = gestoreAnnuncio.modificaAnnuncio(Long.parseLong(oidAnnuncio));
+                
+                if(result){
+                    JSONObject annuncio = gestoreAnnuncio.toJSON();
+                        JSONObject resp = new JSONObject();
+                        resp.accumulate("response", "OK");
+                        resp.accumulate("data", annuncio);
+                        out.write(resp.toString());
+                    
+                } else{
+                        JSONObject resp = new JSONObject();
+                        resp.accumulate("response", "NO");
+                        out.write(resp.toString());
+                }
+            
 
             } else {
 
