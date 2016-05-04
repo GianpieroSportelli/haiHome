@@ -181,6 +181,20 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
     }
 
     @Override
+    public List<Annuncio> getAnnunciOscurati() {
+        List<Annuncio> res = new ArrayList<Annuncio>();
+
+        for (Annuncio a : this.locatore.getListaAnnunci()) {
+            if (false) {
+                res.add(a);
+            }
+        }
+
+        return res;
+    }
+    
+    
+    @Override
     public boolean checkAnnuncio(Annuncio a) {
         return this.locatore.checkAnnuncio(a);
     }
@@ -199,6 +213,19 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         return res; 
                 
     }
+    
+    @Override
+    public boolean updateAnnuncio(long oid, Annuncio a) {
+        boolean res = false; 
+        
+        if (a.getId() == oid && this.locatore.getListaAnnunci().contains(a)) {
+            this.locatore.removeAnnuncio(a);
+            this.locatore.addAnnuncio(a);
+        }
+        
+        return res; 
+    }
+    
 
     @Override
     public JSONObject toJSON() {

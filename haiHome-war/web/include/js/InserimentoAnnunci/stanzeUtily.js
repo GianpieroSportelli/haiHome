@@ -9,6 +9,9 @@
 
 var numStanze = 0;
 var contatoreStanze = 0;
+
+var tipologiaLetto;
+var tipologiaStanze;
 var PrezzoStanzaHTML = "<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
             <div class=\"col-md-6\">\n\
                 <input type=\"hidden\" name=\"idStanza\" value=\"$__$\" />\n\
@@ -44,6 +47,13 @@ function getPrezzoStanzaHTMLCode() {
     return PrezzoStanzaHTML;
 }
 
+function aggiornaTipoStanze(tl, ta){
+    tipologiaLetto = tl;
+    tipologiaStanze = ta;
+    console.log(tipologiaLetto.length);
+    console.log(tipologiaStanze.length);
+}
+
 
 var submitButton2 = document.querySelector("button#buttStanze");
 
@@ -56,19 +66,19 @@ var submitFormButton = document.querySelector("button#buttStanze2");
 
 function nuovaStanza1() {
     numStanze++;
-    var stanzaCode = getStanzaHTMLCode(numStanze);
+    var stanzaCode = getStanzaHTMLCode(numStanze, tipologiaLetto,tipologiaStanze);
     $(stanzaCode).appendTo("#contenitoreStanze");
     var myDropzone = new Dropzone("div#mydropzone" + numStanze,
             {
                 // Prevents Dropzone from uploading dropped files immediately
                 autoProcessQueue: false,
-                url: "../ServletAnnuncio",
+                url: "ServletAnnuncio",
                 parallelUploads: 100,
                 uploadMultiple: true,
                 paramName: "file[]",
                 addRemoveLinks: true});
     addDropzoneStanza(myDropzone, numStanze);
-    
+
     contatoreStanze++;
 
 
@@ -113,7 +123,7 @@ function cambiaSpecifiche() {
     var value = $("#costi option:selected").val();
     var prezzoStanze = $("div#prezzoStanze");
     var prezzoAppartamento = $("div#prezzoAppartamento");
-    
+
     console.log(value);
     if (value == 1) {
         console.log("Prezzo Appartamento");
@@ -123,13 +133,13 @@ function cambiaSpecifiche() {
         $("input#prezzoA").attr("required", "required");
         $("input#prezzoA").attr("type", "number");
 
-        
-        
-/*
-        $(".prezzoStanza").each(function (index) {
-            console.log(index + ": " + $(this).text());
-            
-        });*/
+
+
+        /*
+         $(".prezzoStanza").each(function (index) {
+         console.log(index + ": " + $(this).text());
+         
+         });*/
 
         var numericInput = prezzoStanze.find("input.prezzoStanza");
 
@@ -196,46 +206,8 @@ function cambiaCameraSpecifiche() {
 }
 
 //restituisce il codice HTML della stanza
-function getStanzaHTMLCode(number) {
-    var StanzaCode =
-            "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
-    <div class=\"form-group col-md-6\">\n\
-        <div class=\"form-group\">\n\
-            <label class=\"control-label\">Stanza</label>\n\
-            <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('Stanza" + number + "')\">\n\
-                <option value=\"1\">Stanza da Letto</option>\n\
-                <option value=\"2\">Stanza Accessoria</option>\n\
-            </select>\n\
-        </div>\n\
-        <div class=\"form-group\">\n\
-            <label class=\"control-label\">Tipo di Stanza</label>\n\
-            <select name='TipoL' class=\"form-control\" id=\"seltipoLetto\"  >\n\
-                <option value=\"Singola\">Singola</option>\n\
-                <option value=\"Doppia\">Doppia</option>\n\
-                <option value=\"Altro\">Altro</option>\n\
-            </select>\n\
-            <select name='TipoA' class=\"form-control\" id=\"seltipoAcc\" style=\"display:none\" >\n\
-                <option>Bagno</option><option>Cucina</option>\n\
-                <option>Soggiorno</option>\n\
-                <option>Altro</option>\n\
-            </select>\n\
-        </div>\n\
-    </div>\n\
-    <div class=\"form-group col-md-6\">\n\
-        <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('Stanza" + number + "')\">-</div><br />\n\
-        <label class=\"control-label\">Metratura</label> <input name='MetraturaS' id=\"inpMetratura\" type=\"number\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
-    </div>\n\
-    <div class=\"form-group col-md-12\">\n\
-        <label class=\"control-label\">Foto</label>\n\
-        <div>\n\
-            <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
-                <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\</div>\n\
-            </div>\n\
-        </div>\n\
-    </div>\n\
-</div>";
-    //    <form action=\"../ServletAnnuncio\" method=\"post\" id=\"formStanza" + number + "\">\n\ </form>
-    var StanzaCode2 =
+function getStanzaHTMLCode(number, tipoLetto, tipAcc) {
+     var StanzaCode2 =
             "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
         <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
         <div class=\"form-group col-md-6\">\n\
@@ -273,13 +245,59 @@ function getStanzaHTMLCode(number) {
     </div>\n\
     </div>\n\
 </div>";
-    return StanzaCode2;
+    
+         var StanzaCode =
+            "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
+        <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
+        <div class=\"form-group col-md-6\">\n\
+            <div class=\"form-group\">\n\
+                <label class=\"control-label\">Stanza</label>\n\
+                <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('Stanza" + number + "')\">\n\
+                    <option value=\"1\">Stanza da Letto</option>\n\
+                    <option value=\"2\">Stanza Accessoria</option>\n\
+                </select>\n\
+            </div>\n\
+            <div class=\"form-group\">\n\
+                <label class=\"control-label\">Tipo di Stanza</label>\n\ ";
+    
+    console.log(tipoLetto);
+    StanzaCode = StanzaCode + "<select name='TipoL' class=\"form-control\" id=\"seltipoLetto\"  >\n\ ";
+    for(var i =0;i<tipoLetto.length;i++){
+        StanzaCode = StanzaCode + "<option value=\"" +tipoLetto[i] + "\">" +tipoLetto[i] + "</option>\n\ ";
+    }  
+    StanzaCode = StanzaCode + "</select>\n\ ";
+    console.log(tipAcc);
+        StanzaCode = StanzaCode + "<select name='TipoA' class=\"form-control\" id=\"seltipoAcc\" style=\"display:none\" >\n\ ";
+    for(var i =0;i<tipAcc.length;i++){
+        StanzaCode = StanzaCode + "<option value=\"" +tipAcc[i] + "\">" +tipAcc[i] + "</option>\n\ ";
+    }
+        StanzaCode = StanzaCode + "</select>\n\ ";
+    
+
+ StanzaCode = StanzaCode + "</div>\n\
+        </div>\n\
+        <div class=\"form-group col-md-6\">\n\
+            <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('" + number + "')\">-</div><br />\n\
+            <label class=\"control-label\">Metratura</label> <input name='MetraturaS' type='number' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
+        </div>\n\
+    <div class=\"form-group col-md-12\">\n\
+        <label class=\"control-label\">Foto</label>\n\
+    <div>\n\
+    <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
+        <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\</div>\n\
+    </div>\n\
+    </div>\n\
+    </div>\n\
+</div>";
+    
+    
+    return StanzaCode;
 }
 
 
 function sendData() {
     var myRequest = new XMLHttpRequest();
-    var url = "../ServletAnnuncio";
+    var url = "ServletAnnuncio";
     var method = "post";
 
     myRequest.onreadystatechange = function () {
@@ -319,9 +337,19 @@ function sendData() {
 
 }
 
-function numeroDiStanzeValide(){
+function numeroDiStanzeValide() {
+
+var validato = false;
+    $(".Stanza").each(function (index) {
+        var tipo = $(this).find("#selStanza").val();
+        console.log("TIPO STANZE: " + tipo);
+        if(tipo==1){
+            
+            validato = true;
+        }
+    });
     
-    return contatoreStanze != 0;
+    return validato;
 }
 
 
@@ -329,29 +357,31 @@ $(document).ready(function () {
 
     submitButton2.addEventListener("click", function () {
         var butt = $("button#buttStanze");
-        
+
         var stanzeValide = numeroDiStanzeValide();
-        
+
         console.log("Stanze valide : " + stanzeValide);
-        if(stanzeValide){
+        if (stanzeValide) {
             var datiValidi = validateForm(butt);
             console.log("Dati validi: " + datiValidi);
-           if ((datiValidi && stanzeValide)) {
+            if ((datiValidi && stanzeValide)) {
 
-            sendData();
-            generateCostiForm();
+                sendData();
+                generateCostiForm();
 
 
+            }
+
+        } else {
+            openModalMessage("Errore nell'inserimento dati","Inserisci almeno una stanza da Letto");
+            //alert("INSERISCI ALMENO UNA STANZA DI CUI ALMENO UNA DA LETTO");
+            
         }
-        
-        }else{
-            alert("INSERISCI ALMENO UNA STANZA");
-        }
-        
- 
+
+
     });
-    
-    
+
+
 
 //prova attuale
     /*)

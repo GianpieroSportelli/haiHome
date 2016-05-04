@@ -661,6 +661,25 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         
         
     }
+
+    @Override
+    public ArrayList<String> getTipologieStanzaAffitto() {
+        ArrayList<String> res = new ArrayList();
+        TipoStanzaInAffitto[] array = TipoStanzaInAffitto.values();
+        for (TipoStanzaInAffitto i : array) {
+            res.add(i.toString());
+        }
+        return res;   
+    }
+
+    @Override
+    public ArrayList<String> getTipologieStanzaAcc() {
+       ArrayList<String> res = new ArrayList();
+        TipoStanzaAccessoria[] array = TipoStanzaAccessoria.values();
+        for (TipoStanzaAccessoria i : array) {
+            res.add(i.toString());
+        }
+        return res;     }
     
     
    

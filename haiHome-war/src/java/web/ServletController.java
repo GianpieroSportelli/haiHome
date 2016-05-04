@@ -140,10 +140,15 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-edit-info")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
-            } else if (action.equalsIgnoreCase("locatore-edit-telefono")) {
+            } else if (action.equalsIgnoreCase("locatore-archivia-annuncio")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
-            } else if (action.equalsIgnoreCase("locatore-edit-descrizione")) {
+            } 
+            else if (action.equalsIgnoreCase("locatore-pubblica-annuncio")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+
+            } 
+            else if (action.equalsIgnoreCase("locatore-edit-descrizione")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
             } else if (action.equalsIgnoreCase("locatore-delete-annuncio")) {
@@ -157,7 +162,9 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletCitta").forward(request, response);
             } else if (action.equalsIgnoreCase("studente-edit-info")) {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
-            } else {
+            } else if (action.equalsIgnoreCase("studente-removeAnnuncio")) {
+                request.getRequestDispatcher("/ServletStudente").forward(request, response);
+            }else {
                 // action random
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }
