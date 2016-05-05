@@ -75,11 +75,18 @@
 
         <!-- l'html è bello! imparalo NOW -->
         <div id="__session" style="display:none"> 
+            <%--
             <div id="user-access"><%= session.getAttribute("user-access")%></div>
             <div id="annunci-length"><%= session.getAttribute("num-annunci")%></div>
             <div id="visibili-length"><%= session.getAttribute("num-visibili")%></div>
             <div id="archiviati-length"><%= session.getAttribute("num-archiviati")%></div>
-            <div id="oscurati-length"><%= session.getAttribute("num-archiviati")%></div>
+            <div id="oscurati-length"><%= session.getAttribute("num-archiviati")%></div> --%>
+            <div id="user-access"></div>
+            <div id="annunci-length"></div>
+            <div id="visibili-length"></div>
+            <div id="archiviati-length"></div>
+            <div id="oscurati-length"></div> 
+
         </div>
 
         <div class="container">
@@ -88,13 +95,7 @@
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic"> 
-                            <% out.println(
-                                        "<img src='" + user_data.getString("fotoProfilo") + "'"
-                                        + "class='img-responsive' alt=''/>"
-                                );
-
-                            %>
-
+                            <img src="<%= user_data.getString("fotoProfilo")%>" class="img-responsive" alt=""/>
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
@@ -122,29 +123,33 @@
                                 </li>
                                 <li><a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
-                                        I tuoi annunci
+                                        I tuoi annunci 
+                                        <span id="num-annunci-visibili">
+                                        </span>
+
                                     </a>
                                 </li>
                                 <li><a href="#archivio" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Archivio annunci
+                                        <span id="num-annunci-archiviati">
+                                        </span>
                                     </a>
                                 </li>
                                 <li><a href="#oscurati" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Annunci oscurati
+                                        <span id="num-annunci-oscurati">
+                                        </span>
                                     </a>
                                 </li>
                                 <li><a href="IA0-InserimentoAnnunci.jsp" class="btn btn-danger">
                                         Inserisci nuovo annuncio
                                     </a>
                                 </li>
-
                             </ul>
                         </div> 
-                        <!-- END MENU -->
                     </div>
-
                 </div>
                 <div class="col-xs-9">
                     <!-- Tab panes -->
@@ -161,12 +166,9 @@
                                                 Nome
                                             </div>
                                             <div class="panel-body">
-                                                <input class="form-control" id="cognome"  type="text" 
-                                                       value="<%=user_data.getString("nome")%>" 
+                                                <input class="form-control" id="nome"  type="text" 
+                                                       value="" 
                                                        disabled="disabled"/>
-
-                                                
-
                                             </div>
                                         </div>
                                     </div>
@@ -175,7 +177,7 @@
                                             <div class='panel-heading'>Cognome</div>
                                             <div class="panel-body">
                                                 <input class="form-control" id="cognome"  type="text" 
-                                                       value="<%=user_data.getString("cognome")%>" 
+                                                       value="" 
                                                        disabled="disabled"/>
                                             </div>
                                         </div>
@@ -189,7 +191,7 @@
                                             <div class='panel-heading'>Email</div>
                                             <div class="panel-body">
                                                 <input class="form-control" id="email"  type="text" 
-                                                       value="<%=user_data.getString("email")%>" 
+                                                       value="" 
                                                        disabled="disabled"/>
                                             </div>
                                         </div>
@@ -204,7 +206,7 @@
                                             <div class="panel-body">
                                                 <input class="form-control" id="telefono" 
                                                        name="phone" type="text" 
-                                                       value="<%=user_data.getString("telefono")%>" 
+                                                       value="" 
                                                        disabled="disabled" placeholder="..."/>
                                             </div>
                                         </div>
@@ -244,7 +246,7 @@
                                                 <textarea class="form-control" id="descrizione" 
                                                           name="description" rows="5" cols="50" 
                                                           maxlength="255" disabled="disabled" 
-                                                          placeholder="Scrivi qualcosa su di te"><%=user_data.getString("descrizione")%></textarea>
+                                                          placeholder="Scrivi qualcosa su di te"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -252,11 +254,12 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="annunci">
+                            <!--
                             <div style="display:block">
                                 <a href="IA0-InserimentoAnnunci.jsp" class="btn btn-primary">
                                     Inserisci nuovo annuncio
                                 </a>
-                            </div>
+                            </div> -->
                             <div id="annunci-content">
                                 <!-- contenuto caricato tramite ajax -->
                             </div>

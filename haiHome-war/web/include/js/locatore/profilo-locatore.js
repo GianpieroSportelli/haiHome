@@ -4,23 +4,66 @@ jQuery(document).ready(function ($) {
      * icone invisibili (V e X) per visualizzare l'esito dell'operazione 
      * (utile per archiviazione e eliminazione che sono istantanee)
      * */
-
-
-    var login_type = $('#user-access').text();
+    var login_type;
+    var user_data;
+    var a_tot, a_num_vis, a_num_arch, a_num_osc;
     var backups = [];
 
-    /* init*/
+    /* init profilo e variabili globali */
     $(function () {
-        if (login_type === "g+" || login_type === "fb") {
-            $('#rigapwd').css('display', 'none');
-        }
+        console.log("INIT profile..."); 
+        
+        $.post(
+                "ServletController",
+                {'action': 'locatore-get-session'},
+                function (responseJSON) {
+                    console.log("INIT - responseJSON: " + responseJSON);
 
-        backups["telefono"] = $('#telefono').val();
-        backups["descrizione"] = $('#descrizione').val();
+                    login_type = responseJSON.user_access;
+                    user_data = responseJSON.user_data;
+                    a_tot = responseJSON.num_annunci;
+                    a_num_vis = responseJSON.num_visibili;
+                    a_num_arch = responseJSON.num_archiviati;
+                    a_num_osc = responseJSON.num_oscurati;
+
+                    if (login_type === "g+" || login_type === "fb") {
+                        $('#rigapwd').css('display', 'none');
+                    }
+
+                    $('#nome').val(user_data.nome);
+                    $('#cognome').val(user_data.cognome);
+                    $('#email').val(user_data.email);
+                    $('#telefono').val(user_data.telefono);
+                    $('#descrizione').val(user_data.descrizione);
+                    $('#num-annunci-visibili').text("(" + a_num_vis + ")");
+                    $('#num-annunci-archiviati').text("(" + a_num_arch + ")");
+                    $('#num-annunci-oscurati').text("(" + a_num_osc + ")");
+                }
+        );
+
+        backups["telefono"] = "";//$('#telefono').val();
+        backups["descrizione"] = "";//$('#descrizione').val();
         backups["password"] = ""; //non serve a nulla (se non a evitare errori a runtime)
-
     });
 
+    function updateAnnunci() {
+        $.post(
+                "ServletController",
+                {'action': 'locatore-get-session'},
+                function (responseJSON) {
+                    console.log("Update annuncio: " + responseJSON); 
+                    
+                    a_tot = responseJSON.num_annunci;
+                    a_num_vis = responseJSON.num_visibili;
+                    a_num_arch = responseJSON.num_archiviati;
+                    a_num_osc = responseJSON.num_oscurati;
+
+                    $('#num-annunci-visibili').text("(" + a_num_vis + ")");
+                    $('#num-annunci-archiviati').text("(" + a_num_arch + ")");
+                    $('#num-annunci-oscurati').text("(" + a_num_osc + ")");
+                }
+        );
+    }
 
     $('.start-edit').on('click', function () {
         var target_name = $(this).parent().parent().parent().attr("id").replace("panel-", "");
@@ -103,7 +146,7 @@ jQuery(document).ready(function ($) {
     $(document).on('click', 'a.edit-annuncio', function (event) {
         //var transaction_id = $(this).attr('id').replace('delete_', '');
         var oid = event.target.id.replace("edit-ann", "");
-        console.log("edit " + oid);
+        console.log("edit " + oid + "...work in progress");
         return false;
     });
 
@@ -119,15 +162,15 @@ jQuery(document).ready(function ($) {
                     'oid': oid
                 },
                 function (response) {
-                    console.log("response - " + response); 
-                    
-                    if (response === "ok") 
-                       // $("#ann-" + oid).css('display', 'none');
-                           $("#ann-" + oid).remove();
+                    console.log("response - " + response);
+
+                    if (response === "ok") {
+                        // $("#ann-" + oid).css('display', 'none');
+                        $("#ann-" + oid).remove();
+                        updateAnnunci();
+                    }
                 }
         );
-
-        return false;
     });
 
     /* Archiviazione di un annuncio */
@@ -142,16 +185,16 @@ jQuery(document).ready(function ($) {
                     'oid': oid
                 },
                 function (response) {
-                    console.log("response - " + response); 
+                    console.log("response - " + response);
                     console.log("oid: " + oid);
-                    
-                    if (response === "ok") 
-                       // $("#ann-" + oid).css('display', 'none');
-                           $("#ann-" + oid).remove();
+
+                    if (response === "ok") {
+                        // $("#ann-" + oid).css('display', 'none');
+                        $("#ann-" + oid).remove();
+                        updateAnnunci();
+                    }
                 }
         );
-
-        return false;
     });
 
     /* Pubblicazione di un annuncio precedentemente archiviato */
@@ -166,14 +209,14 @@ jQuery(document).ready(function ($) {
                     'oid': oid
                 },
                 function (response) {
-                    console.log("response - " + response); 
-                    
-                    if (response === "ok") 
-                       // $("#ann-" + oid).css('display', 'none');
-                           $("#ann-" + oid).remove();
+                    console.log("response - " + response);
+
+                    if (response === "ok") {
+                        // $("#ann-" + oid).css('display', 'none');
+                        $("#ann-" + oid).remove();
+                        updateAnnunci();
+                    }
                 }
         );
-
-        return false;
     });
 });
