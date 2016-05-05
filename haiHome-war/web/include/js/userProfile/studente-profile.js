@@ -19,7 +19,7 @@ var activatedTutorial = false;
 $(document).ready(function () {
     checkStudenteType();
     getListaFiltriPreferiti();
-    load_Annunci();
+    load_Annunci_Studente();
 
     var backups = "";
 
@@ -117,9 +117,9 @@ function add_button() {
     if (n_filtri > FIlTRI_X_PAGE) {
         //$("#filtriUtente").append("<div class=\"text-center \" id = \"button-div\">");
         var html = "<div>" +
-                "<ul class=\"pager\"> <li> <a onClick='prevpage()' id='prev_page'> <span class='glyphicon glyphicon-menu-left'></span> </a> </li>" +
+                "<ul class=\"pager\"> <li class=\"pagerCursore\"> <a onClick='prevpage()' id='prev_page'> <span class='glyphicon glyphicon-menu-left'></span> </a> </li>" +
                 "<li> <span id=\"num_page\"> 1 di " + page_filtri.length + "</span> </li>" +
-                "<li> <a onClick='nextpage()' id='next_page'> <span class='glyphicon glyphicon-menu-right'> </span> </a> </li>" +
+                "<li class=\"pagerCursore\"> <a onClick='nextpage()' id='next_page'> <span class='glyphicon glyphicon-menu-right'> </span> </a> </li>" +
                 "</ul> </div>";
         $("#filtriUtente").append(html);
         /*
@@ -235,48 +235,42 @@ function constructFiltriPage() {
             if (quartieriHTML !== '') {
                 //Tolgo l'ultimo -
                 quartieriHTML = quartieriHTML.substring(0, quartieriHTML.length - 2);
-                quartieriHTML = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML + "<hr>";
+                quartieriHTML = "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML;
 
             }
+            var htmlCheckBox = '';
 
-            var glyphCondominio = '';
-            var glyphRiscaldamento = '';
-            if (compresoCondominio === true) {
-                glyphCondominio = "include/css/Utente/check-30.png";
-            } else {
-                glyphCondominio = "include/css/Utente/notChecked-30.png";
+            var glyph = "include/css/Utente/check-30.png";
+            if (compresoCondominio === true && compresoRiscaldamento === true) {
+                htmlCheckBox = "<hr> <p style=\"text-align:center\"> <span class=\"text-primary\">Compreso Condominio</span>: <img src=\"" + glyph + "\"> &nbsp;&nbsp;&nbsp; <span class=\"text-primary\">Compreso Riscaldamento</span>: <img src=\"" + glyph + "\"> </p>"
+            } else if (compresoRiscaldamento === true) {
+                htmlCheckBox = "<hr> <p style=\"text-align:center\"> <span class=\"text-primary\">Compreso Riscaldamento</span>: <img src=\"" + glyph + "\"> </p>"
+            } else if (compresoCondominio === true) {
+                htmlCheckBox = "<hr> <p style=\"text-align:center\"> <span class=\"text-primary\">Compreso Condominio</span>: <img src=\"" + glyph + "\"> </p>"
             }
-
-            if (compresoRiscaldamento === true) {
-                glyphRiscaldamento = "include/css/Utente/check-30.png";
-            } else {
-                glyphRiscaldamento = "include/css/Utente/notChecked-30.png";
-            }
-
+            
             var htmlNumeroCamere = '';
 
             if (numeroCamere != 0) {
-                htmlNumeroCamere = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero camere da letto</span>: " + numeroCamere + "<hr>";
-
+                htmlNumeroCamere = "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero camere da letto</span>: " + numeroCamere;
             }
 
             var htmlNumeroLocali = '';
 
             if (numeroLocali != 0) {
-                htmlNumeroLocali = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero locali</span>: " + numeroLocali + "<hr>";
-
+                htmlNumeroLocali = "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero locali</span>: " + numeroLocali;
             }
 
             var htmlNumeroBagni = '';
 
             if (numeroBagni != 0) {
-                htmlNumeroBagni = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero bagni</span>: " + numeroBagni + "<hr>";
+                htmlNumeroBagni = "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Numero bagni</span>: " + numeroBagni;
             }
 
             var htmlmetratura = '';
 
             if (metratura != 0) {
-                htmlmetratura = "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\"> Metratura </span>: " + metratura + "<hr>";
+                htmlmetratura = "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\"> Metratura </span>: " + metratura;
             }
 
             var htmlprezzo = '';
@@ -285,14 +279,6 @@ function constructFiltriPage() {
             }
 
             var htmltipoAnnuncio = '';
-
-            /**PRIMA C'ERA K AL POSTO DI IDFILTRO!!!!!!!!!!!!!!!!!!!!!!!!*/
-            /**
-             * 
-             * 
-             * 
-             * 
-             */
             var tipoVisualizzazione;
             if (tipoAnnuncio === "Stanza") {
                 tipoVisualizzazione = 1;
@@ -306,108 +292,54 @@ function constructFiltriPage() {
             }
 
             var html = '';
+            
             //HTML per Appartamenti
             if (tipoVisualizzazione === 2) {
-                if (!tutorialAttivato) {
-                    html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            htmltipoAnnuncio + "</div>" +
-                            "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                            "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
-                            htmlprezzo +
-                            "<hr>" +
-                            quartieriHTML +
-                            htmlNumeroLocali +
-                            htmlNumeroCamere +
-                            htmlNumeroBagni +
-                            htmlmetratura +
-                            "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
-                            "</div>" +
-                            "</div>" +
-                            //"</div>" +
-                            "</div>";
-                    tutorialAttivato = true;
-                } else {
-                    html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            htmltipoAnnuncio + "</div>" +
-                            "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                            "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
-                            htmlprezzo +
-                            "<hr>" +
-                            quartieriHTML +
-                            htmlNumeroLocali +
-                            htmlNumeroCamere +
-                            htmlNumeroBagni +
-                            htmlmetratura +
-                            "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
-                            "</div>" +
-                            "</div>" +
-                            //"</div>" +
-                            "</div>";
-                }
+                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                        htmltipoAnnuncio + "</div>" +
+                        "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;&nbsp;&nbsp;&nbsp;" +
+                        htmlprezzo +
+                        quartieriHTML +
+                        htmlNumeroLocali +
+                        htmlNumeroCamere +
+                        htmlNumeroBagni +
+                        htmlmetratura +
+                        htmlCheckBox +
+                        "</div>" +
+                        "</div>" +
+                        //"</div>" +
+                        "</div>";
+
 
                 //HTML per stanza
             } else if (tipoVisualizzazione === 1) {
-                if (!tutorialAttivato) {
-                    html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            htmltipoAnnuncio + "</div>" +
-                            "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                            "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
-                            htmlprezzo +
-                            "<hr>" +
-                            quartieriHTML +
-                            "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Tipo stanza</span>: " + tipoStanza +
-                            "<hr>" +
-                            "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
-                            "</div>" +
-                            "</div>" +
-                            //"</div>" +
-                            "</div>";
-                    tutorialAttivato = true;
-                } else {
-                    html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            htmltipoAnnuncio + "</div>" +
-                            "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                            "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
-                            htmlprezzo +
-                            "<hr>" +
-                            quartieriHTML +
-                            "<p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Tipo stanza</span>: " + tipoStanza +
-                            "<hr>" +
-                            "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
-                            "</div>" +
-                            "</div>" +
-                            //"</div>" +
-                            "</div>";
-                }
+                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                        htmltipoAnnuncio + "</div>" +
+                        "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;&nbsp;&nbsp;&nbsp;" +
+                        htmlprezzo +
+                        quartieriHTML +
+                        "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Tipo stanza</span>: " + tipoStanza +
+                        htmlCheckBox +
+                        "</div>" +
+                        "</div>" +
+                        //"</div>" +
+                        "</div>";
+                //HTML Appartamento-Stanza
             } else if (tipoVisualizzazione === 3) {
-                if (!tutorialAttivato) {
-                    html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            htmltipoAnnuncio + "</div>" +
-                            "<div data-intro=\"Cliccando su un filtro, visualizzerai gli annunci che rispettano i suoi criteri.\" class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                            "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
-                            htmlprezzo +
-                            "<hr>" +
-                            quartieriHTML +
-                            "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
-                            "</div>" +
-                            "</div>" +
-                            //"</div>" +
-                            "</div>";
-                    tutorialAttivato = true;
-                } else {
-                    html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
-                            htmltipoAnnuncio + "</div>" +
-                            "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
-                            "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;" +
-                            htmlprezzo +
-                            "<hr>" +
-                            quartieriHTML +
-                            "<p style=\"text-align:center\"> <span class=\"text-primary\"> Compreso Condominio</span>: <img src=\"" + glyphCondominio + "\"> <span class=\"text-primary\"> Compreso Riscaldamento</span>: <img src=\"" + glyphRiscaldamento + "\"></i>" +
-                            "</div>" +
-                            "</div>" +
-                            //"</div>" +
-                            "</div>";
-                }
+                html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +
+                        htmltipoAnnuncio + "</div>" +
+                        "<div class=\"panel-body\" style=\"cursor:pointer\" id=\"filtro-" + idFiltro + "\" OnClick=send_filtro(" + idFiltro + ")>" +
+                        "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;&nbsp;&nbsp;&nbsp;" +
+                        htmlprezzo +
+                        quartieriHTML +
+                        htmlCheckBox +
+                        "</div>" +
+                        "</div>" +
+                        //"</div>" +
+                        "</div>";
+
             }
             page_html += html;
         }
@@ -453,18 +385,8 @@ function send_filtro(idFiltro) {
             function (data) {
                 if (data == "true") {
                     var url = "/haiHome-war/search-page.jsp";
-                    window.open(url);
+                    window.location = url;
                 } else
                     alert('ERRORE');
             });
-    /*
-     var annuncio = annunci[k];
-     console.log(annuncio);
-     var url = "/haiHome-war/ServletController";
-     var url2 = "/haiHome-war/dettagliAnnuncio.jsp";
-     var json = JSON.stringify(annuncio);
-     console.log(k);
-     console.log(json);
-     $.session.set('dettagli', json);
-     window.open(url2);*/
 }

@@ -52,7 +52,6 @@ public class ServletLocatore extends HttpServlet {
         //response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
-
             HttpSession session = request.getSession();
 
             System.out.println("--Servlet Locatore");
@@ -84,7 +83,7 @@ public class ServletLocatore extends HttpServlet {
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                response.getWriter().write(op_result);
+                out.write(op_result);
 
             } else if (action.equalsIgnoreCase("login-locatore")) {
                 String email = request.getParameter("user-email").trim(),
@@ -100,7 +99,7 @@ public class ServletLocatore extends HttpServlet {
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-                response.getWriter().write(op_result);
+                out.write(op_result);
 
             } else if (action.equalsIgnoreCase("loginFacebookLocatore")) {
                 String email = request.getParameter("mailUser");
@@ -156,7 +155,7 @@ public class ServletLocatore extends HttpServlet {
 
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(html);
+                out.write(html);
 
             } else if (action.equalsIgnoreCase("locatore-getArchivioAnnunci")) {
                 int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
@@ -166,7 +165,7 @@ public class ServletLocatore extends HttpServlet {
 
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(html);
+                out.write(html);
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunciOscurati")) {
                 int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
@@ -176,7 +175,7 @@ public class ServletLocatore extends HttpServlet {
 
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(html);
+                out.write(html);
 
             } else if (action.equalsIgnoreCase("locatore-edit-info")) {
                 String field_name = request.getParameter("field-name");
@@ -228,8 +227,7 @@ public class ServletLocatore extends HttpServlet {
                 }
 
                 response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(jsonresult.toString());
+                out.write(jsonresult.toString());
 
             } else if (action.equalsIgnoreCase("locatore-delete-annuncio")) {
                 long oid = Long.parseLong(request.getParameter("oid"));
@@ -251,33 +249,33 @@ public class ServletLocatore extends HttpServlet {
 
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(res ? "ok" : "fail");
+                out.write(res ? "ok" : "fail");
 
             } else if (action.equalsIgnoreCase("locatore-archivia-annuncio")) {
                 System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
                 long oid = Long.parseLong(request.getParameter("oid"));
                 System.out.println("ARCHIVIAZIONEEE annuncio " + oid);
-
+/*
                 System.out.println("annuncio prima dell'operazione...");
                 for (Annuncio a : gestoreLocatore.getAnnunci()) {
                     if (a.getId() == oid) {
                         System.out.println(a.toJSON().toString());
                     }
                 }
-
+*/
                 boolean res = gestoreAnnuncio.archiviaAnnuncio(oid, true);
 
                 if (res) {
                     Annuncio a = gestoreAnnuncio.getAnnuncioByID(oid);
                     gestoreLocatore.updateAnnuncio(oid, a);
                 }
-
+/*
                 System.out.println("annuncio dopo dell'operazione...");
                 for (Annuncio a : gestoreLocatore.getAnnunci()) {
                     if (a.getId() == oid) {
                         System.out.println(a.toJSON().toString());
                     }
-                }
+                }*/
 
                 System.out.println(res
                         ? "Archiviazione annuncio " + oid + " completata con successo"
@@ -287,20 +285,20 @@ public class ServletLocatore extends HttpServlet {
 
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(res ? "ok" : "errore");
+                out.write(res ? "ok" : "errore");
 
             } else if (action.equalsIgnoreCase("locatore-pubblica-annuncio")) {
                 System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
                 long oid = Long.parseLong(request.getParameter("oid"));
                 System.out.println("PUBBLICAZIONEEEE annuncio " + oid);
-
+/*
                 System.out.println("annuncio prima dell'operazione...");
                 for (Annuncio a : gestoreLocatore.getAnnunci()) {
                     if (a.getId() == oid) {
                         System.out.println(a.toJSON().toString());
                     }
                 }
-
+*/
                 boolean res = gestoreAnnuncio.archiviaAnnuncio(oid, false);
 
                 if (res) {
@@ -311,20 +309,39 @@ public class ServletLocatore extends HttpServlet {
                 System.out.println(res
                         ? "Pubblicazione annuncio " + oid + " completata con successo"
                         : "Pubblicazione annuncio " + oid + " fallita");
-
+/*
                 System.out.println("annuncio dopo dell'operazione...");
                 for (Annuncio a : gestoreLocatore.getAnnunci()) {
                     if (a.getId() == oid) {
                         System.out.println(a.toJSON().toString());
                     }
-                }
+                }*/
 
                 update_session(session);
 
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(res ? "ok" : "errore");
+                out.write(res ? "ok" : "errore");
 
+            } else if (action.equalsIgnoreCase("locatore-get-session")) {
+                JSONObject jsonsession = new JSONObject(); 
+                
+                try {
+//                    jsonsession.accumulate("user-access", "loc"); 
+                    jsonsession.accumulate("user_access", session.getAttribute("user-access")); 
+                    jsonsession.accumulate("user_type", session.getAttribute("user-type")); 
+                    jsonsession.accumulate("user_data", session.getAttribute("user-data")); 
+                    jsonsession.accumulate("num_annunci", session.getAttribute("num-annunci")); 
+                    jsonsession.accumulate("num_visibili", session.getAttribute("num-visibili")); 
+                    jsonsession.accumulate("num_archiviati", session.getAttribute("num-archiviati")); 
+                    jsonsession.accumulate("num_oscurati", session.getAttribute("num-oscurati")); 
+                } catch (JSONException ex) {
+                    Logger.getLogger(ServletLocatore.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                response.setContentType("application/json");
+                System.out.println("LOCATORE GET SESSION: " + jsonsession.toString());
+                out.write(jsonsession.toString());
             }
         }
     }
@@ -336,15 +353,15 @@ public class ServletLocatore extends HttpServlet {
         session.setAttribute("num-annunci", this.gestoreLocatore.getAnnunci().size());
         session.setAttribute("num-visibili", this.gestoreLocatore.getAnnunciVisibili().size());
         session.setAttribute("num-archiviati", this.gestoreLocatore.getAnnunciArchiviati().size());
+        session.setAttribute("num-oscurati", this.gestoreLocatore.getAnnunciOscurati().size());
     }
 
     private void update_session(HttpSession session) {
-        //    session.setAttribute("user-access", user_access);
-        //    session.setAttribute("user-type", "locatore");
         session.setAttribute("user-data", this.gestoreLocatore.toJSON());
         session.setAttribute("num-annunci", this.gestoreLocatore.getAnnunci().size());
         session.setAttribute("num-visibili", this.gestoreLocatore.getAnnunciVisibili().size());
         session.setAttribute("num-archiviati", this.gestoreLocatore.getAnnunciArchiviati().size());
+        session.setAttribute("num-oscurati", this.gestoreLocatore.getAnnunciOscurati().size());
     }
 
     private String getPage(List<Annuncio> l, int psize, int requested_page) {
@@ -372,7 +389,7 @@ public class ServletLocatore extends HttpServlet {
     private String getDivAnnuncio(Annuncio a) {
         String html = "";
         Long oid = a.getId();
-        
+
         html += "<div id='ann-" + oid + "' class='annuncio'>"; //CONTAINER 
         html += "<div class='panel panel-default'>"; // PANEL
         html += "<div class='panel-heading'>"; // PANEL HEADING
@@ -395,7 +412,6 @@ public class ServletLocatore extends HttpServlet {
         html += "</div>"; //FINE PANEL BODY
         html += "</div>"; //FINE PANEL
         html += "</div>"; //FINE CONTAINER ANNUNCIO
-        
 
         // var html = "<div id=\"annuncio-" + k + "\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">"; //1
         /*
@@ -417,13 +433,6 @@ public class ServletLocatore extends HttpServlet {
         String value = is_archiviato ? "Pubblica" : "Archivia";
         String css_class = " class='" + (is_archiviato ? "pubblica-annuncio" : "archivia-annuncio") + "' ";
         return "<a " + id + css_class + " href='#0'>" + value + "</a>";
-        /*
-        return ("<a id='select-ann-" + oid + "' href='#0'>")
-                + value  + "</a>";*/
- /*
-        return !archivia
-                ? ("<a href='#0' class='link-annuncio' id='select-ann-"+oid+"'>Archivia annuncio</a>")
-                : ("<a href='#0' class='link-annuncio' id='select-ann-"+oid+"'>Pubblica annuncio</a>");*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -153,7 +153,7 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
             } 
-            else if (action.equalsIgnoreCase("locatore-edit-descrizione")) {
+            else if (action.equalsIgnoreCase("locatore-get-session")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
             } else if (action.equalsIgnoreCase("locatore-delete-annuncio")) {

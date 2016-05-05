@@ -1,7 +1,7 @@
 var split = "\\";
 var split2 = "/";
 var foto_page = new Array();
-var dim_image_car = 100; //dimensione immagine del carosello
+var dim_image_car = 500; //dimensione immagine del carosello
 
 var geocoder;
 var map;
@@ -17,7 +17,7 @@ var caroselli = new Array();
 
 var actual_1 = 0;
 
-function load_Annunci() {
+function load_Annunci_Studente() {
     $.post("ServletController",
             {action: "studente-getAnnunci"},
             function (responseJson) {
@@ -36,7 +36,7 @@ function load_Annunci() {
                 });
                 actual_1 = 0;
                 n_page_1 = n_annunci / N_ANNUNCI_X_PAGE;
-                create_pageResult();
+                create_pageResult_studente();
 
                 console.log(n_page_1);
                 if (n_page_1 != 0) {
@@ -45,7 +45,7 @@ function load_Annunci() {
             });
 }
 
-function create_pageResult() {
+function create_pageResult_studente() {
     //console.log("CREATE");
     //console.log(12 / N_ANNUNCI_X_PAGE);
     page_annunci = [];
@@ -58,7 +58,7 @@ function create_pageResult() {
     }
     for (page = 0; page < n_page_1; page++) {
         page_html = '';
-        page_html += '<div class = "search-result row" id =' + (page + 1) + '_RESULT>';
+        page_html += '<div class = "search-result row" id =' + (page + 1) + '_RESULT1>';
         var foto_page_actual_1 = new Array();
         for (var i = page * N_ANNUNCI_X_PAGE; (i < ((page + 1) * N_ANNUNCI_X_PAGE) && i < annunci.length); i++) {
             var html = getCodeCarousel(annunci[i], i);
@@ -97,7 +97,7 @@ function create_info_annuncio(annuncio) {
     var indirizzo_arr = indirizzo.split(",");
     indirizzo = indirizzo_arr[0] + "," + indirizzo_arr[1];
     html += "<div class=\"center\">" +
-            "<h1>" + tipoAnnuncio + "</h1>" +
+            "<h1> <strong>" + tipoAnnuncio + "</strong> </h1>" +
             "<p>" + indirizzo + "</p>" +
             //"<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
             "<p><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + "</p>" +
@@ -242,7 +242,7 @@ function selectpage_1(page) {
         loadAllfoto(page - 1);
         actual_1 = page;
     } else if (actual_1 !== (+page)) {
-        $("#" + (actual_1) + "_RESULT").after(page_annunci[page - 1]);
+        $("#" + (actual_1) + "_RESULT1").after(page_annunci[page - 1]);
         loadAllfoto(page - 1);
         actual_1 = +page;
     }
@@ -255,14 +255,14 @@ function activateCaroselli() {
     });
 }
 
-function prevpage() {
+function prevpage_1() {
     if (actual_1 > 1) {
         var page = actual_1 - 1;
         selectpage_1(page);
     }
 }
 
-function nextpage() {
+function nextpage_1() {
     if (n_page_1 != 0) {
         if (actual_1 < n_page_1) {
             var page = actual_1 + 1;
@@ -310,7 +310,7 @@ JSON.stringify = JSON.stringify || function (obj) {
 //Caricamento dei risultati a fine pagina
 $(window).scroll(function () {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        nextpage();
+        nextpage_1();
     }
 });
 
