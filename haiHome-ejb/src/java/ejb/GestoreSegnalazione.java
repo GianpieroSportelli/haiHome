@@ -9,10 +9,16 @@ import entity.Annuncio;
 import entity.Segnalazione;
 import entity.Studente;
 import facade.SegnalazioneFacadeLocal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -46,15 +52,52 @@ public class GestoreSegnalazione implements GestoreSegnalazioneLocal {
         }
         return result;
     }
+
+    @Override
+    public JSONArray getAllSegnalazioni() {
+        JSONArray result = null;
+        result = new JSONArray();
+        Collection<Segnalazione> allSegn = segnalazioneFacade.findAll();
+        for (Segnalazione x : allSegn) {
+            result.put(x.toJSON());
+        }
+        return result;
+    }
+
+    @Override
+    public JSONArray MapAnnunciSegnalati() {
+        JSONArray result = null;
+        Collection<Segnalazione> allSegn = segnalazioneFacade.findAll();
+        result=MaptoJSON(createMap(allSegn));
+        return result;
+    }
     
-    public JSONArray getAllSegnalazioni(){
-     JSONArray result=null;
-     result=new JSONArray();
-     Collection<Segnalazione> allSegn=segnalazioneFacade.findAll();
-     for(Segnalazione x:allSegn){
-         result.put(x.toJSON());
-     }
-     return result;
+    private Collection<JSONSegn> createMap(Collection<Segnalazione> all){
+        HashMap<Annuncio,Collection<Studente>> result=new HashMap<>();
+        Collection<JSONSegn> out=new ArrayList<>();
+        for(Segnalazione x:all){
+            if(result.containsKey(x.getAnnuncio())){
+                result.get(x.getAnnuncio()).add(x.getStudente());
+            }else{
+               Collection<Studente> list=new ArrayList<Studente>();
+               list.add(x.getStudente());
+                result.put(x.getAnnuncio(), list);
+            }
+        }
+        for(Annuncio x:result.keySet()){
+            out.add(new JSONSegn(x, result.get(x)));
+        }
+        return out;
+    }
+    
+    private JSONArray MaptoJSON(Collection<JSONSegn> map){
+        JSONArray result = null;
+        result=new JSONArray();
+        Collections.sort((List<JSONSegn>) map);
+        for(JSONSegn x:map){
+            result.put(x.toJSON());
+        }
+        return result;
     }
 
 }

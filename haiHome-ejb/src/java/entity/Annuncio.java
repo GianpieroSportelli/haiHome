@@ -6,8 +6,10 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.Entity;
@@ -418,9 +420,18 @@ public class Annuncio implements Serializable {
         try {
             annuncioJSON.accumulate("OID", this.getId());
             annuncioJSON.accumulate("Città", this.città.getNome());
-            annuncioJSON.accumulate("DataInizioAffitto", ""+this.dataInizioAffitto.getDay()+"/"+this.dataInizioAffitto.getMonth()+"/"+this.dataInizioAffitto.getYear());
-            if(this.dataPubblicazione!=null)
-                annuncioJSON.accumulate("DataPubblicazione", ""+this.dataPubblicazione.getDay()+"/"+this.dataPubblicazione.getMonth()+"/"+this.dataPubblicazione.getYear());
+            
+            Calendar gc = new GregorianCalendar();
+            gc.setTime(this.dataInizioAffitto);
+            
+            System.out.println("Data GC: " + gc.get(Calendar.DAY_OF_MONTH) + " " + (int) (gc.get(Calendar.MONTH)+1) + " " + gc.get(Calendar.YEAR));
+            
+            annuncioJSON.accumulate("DataInizioAffitto", ""+gc.get(Calendar.DAY_OF_MONTH)+"/"+(int) (gc.get(Calendar.MONTH)+1)+"/"+gc.get(Calendar.YEAR));
+            if(this.dataPubblicazione!=null){
+                gc = new GregorianCalendar();
+                gc.setTime(this.dataPubblicazione);
+                annuncioJSON.accumulate("DataPubblicazione", ""+gc.get(Calendar.DAY_OF_MONTH)+"/"+(int) (gc.get(Calendar.MONTH)+1)+"/"+gc.get(Calendar.YEAR));
+            }
             annuncioJSON.accumulate("Prezzo", this.prezzo);
             annuncioJSON.accumulate("Quartiere", this.quartiere);
             annuncioJSON.accumulate("NumeroLocali", this.numeroStanze);

@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 
 /**
  *
@@ -47,6 +48,11 @@ public class ServletSegnalazione extends HttpServlet {
                 boolean result=gestoreSegnalazione.addSegnalazione(id_studente, id_annuncio, descrizione);
                 System.out.println("result: "+result);
                 out.write(""+result);
+            }else if(action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")){
+                JSONArray all=gestoreSegnalazione.MapAnnunciSegnalati();
+                String json=all.toString();
+                response.setContentType("application/json");
+                out.write(json);
             }
         }
     }

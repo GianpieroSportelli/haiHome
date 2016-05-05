@@ -170,8 +170,12 @@ $(document).ready(function () {
         console.log(buttonForm.attr("id"));
         var isValid = validateForm(buttonForm);
         console.log("Validazione form costi " + isValid);
+        
+        var modelloCosti = form4.find("select#costi");
+        
+        
 
-        if (isValid) {
+        if (isValid && modelloCosti.val()!= 0) {
             console.log("Dati form validi");
             form4.ajaxSubmit({
                 dataType: "json",

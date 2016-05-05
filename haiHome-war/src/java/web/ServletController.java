@@ -115,6 +115,9 @@ public class ServletController extends HttpServlet {
             } else  if (action.equalsIgnoreCase("Segnalazione-addSegnalazione")) {
                 request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
 
+            } else   if (action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")) {
+                request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
+
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {
                 request.getRequestDispatcher("/LogoutServlet").forward(request, response);
 
@@ -168,6 +171,7 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
             }else {
                 // action random
+                System.out.println(action);
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }
             /*
