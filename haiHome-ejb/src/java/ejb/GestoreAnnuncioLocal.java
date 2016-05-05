@@ -9,6 +9,7 @@ import entity.Annuncio;
 import entity.Locatore;
 import entity.Stanza;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.ejb.Local;
@@ -46,6 +47,8 @@ public interface GestoreAnnuncioLocal {
     
     //MODIFICA ANNUNCIO
     public boolean modificaAnnuncio(Annuncio annuncio);
+    
+    public boolean modificaAnnuncio(long oidAnnuncio);
 
     public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng, int numeroStanze, boolean atomico);
 
@@ -81,6 +84,10 @@ public interface GestoreAnnuncioLocal {
     public JSONObject toJSON();
     
     public Annuncio predniAnnuncio(long oid);
+    
+    public ArrayList<String> getTipologieStanzaAffitto();
+    
+    public ArrayList<String> getTipologieStanzaAcc();
     
     //METODI DI SUPPORTO
     public boolean svuotaStante();

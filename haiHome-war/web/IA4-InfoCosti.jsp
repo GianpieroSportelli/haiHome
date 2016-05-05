@@ -6,14 +6,14 @@
 
 <div class="col-xs-6 col-md-offset-3">
     <div class="col-md-12">
-        <form action="../ServletAnnuncio" method="post" id="form-info-costi"> 
+        <form action="ServletAnnuncio" method="post" id="form-info-costi"> 
             <input type="hidden" name="action" value="Annunci-newAnnuncio-infoCosti" /> 
             
         <div class="form-group">
             <label class="control-label">Modello di Costi</label>
 
             <select id="costi" onchange="cambiaSpecifiche()" class="form-control" name="Tipo Costo">
-                <option id="nothing" selected="selected">-</option>
+                <option id="nothing" selected="selected" value="0">Selezione modello di costi</option>
                 <option  value="1">Prezzo intero Appartamento</option>
                 <option  value="2">Prezzo singole Stanze</option>
             </select>

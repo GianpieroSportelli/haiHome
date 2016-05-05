@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    var NUM_ANNUNCI_X_PAGINA = 2;
+    var NUM_ANNUNCI_X_PAGINA = 5;
     var first_page = 1, current_page = 1,
             last_page = Math.ceil(Number($('#visibili-length').text()) / NUM_ANNUNCI_X_PAGINA);
     var arch_current_page = 1,

@@ -74,13 +74,12 @@
         <%@include file="/header.jsp" %>
 
         <!-- l'html è bello! imparalo NOW -->
-        <div style="display:none"> 
+        <div id="__session" style="display:none"> 
             <div id="user-access"><%= session.getAttribute("user-access")%></div>
             <div id="annunci-length"><%= session.getAttribute("num-annunci")%></div>
             <div id="visibili-length"><%= session.getAttribute("num-visibili")%></div>
             <div id="archiviati-length"><%= session.getAttribute("num-archiviati")%></div>
             <div id="oscurati-length"><%= session.getAttribute("num-archiviati")%></div>
-
         </div>
 
         <div class="container">
@@ -136,7 +135,7 @@
                                         Annunci oscurati
                                     </a>
                                 </li>
-                                <li><a href="Annunci_JSP/InserimentoAnnunci.jsp" class="btn btn-danger">
+                                <li><a href="IA0-InserimentoAnnunci.jsp" class="btn btn-danger">
                                         Inserisci nuovo annuncio
                                     </a>
                                 </li>
@@ -254,7 +253,7 @@
                         </div>
                         <div class="tab-pane fade" id="annunci">
                             <div style="display:block">
-                                <a href="Annunci_JSP/InserimentoAnnunci.jsp" class="btn btn-primary">
+                                <a href="IA0-InserimentoAnnunci.jsp" class="btn btn-primary">
                                     Inserisci nuovo annuncio
                                 </a>
                             </div>

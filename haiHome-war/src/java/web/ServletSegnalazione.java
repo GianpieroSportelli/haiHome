@@ -5,7 +5,7 @@
  */
 package web;
 
-import ejb.GestoreAdminLocal;
+import ejb.GestoreSegnalazioneLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -13,15 +13,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 
 /**
  *
- * @author gianp_000
+ * @author SPORT
  */
-public class ServletAdmin extends HttpServlet {
+public class ServletSegnalazione extends HttpServlet {
     
     @EJB
-    private GestoreAdminLocal gestoreAdmin;
+    private GestoreSegnalazioneLocal gestoreSegnalazione;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,25 +37,22 @@ public class ServletAdmin extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+             String action = request.getParameter("action");
+            System.out.println(action);
             
-            String action = request.getParameter("action");
-            /*gestoreAdmin.addAdmin("admin@haihome.it", "haihome");
-            out.write("Aggiunto");*/
-            
-            if (action.equalsIgnoreCase("login-admin")) {
-                
-                String email = request.getParameter("adminEmail");
-                String pass = request.getParameter("adminPW");
-                //System.out.println(email + " " + pass);
-                
-                
-                if (gestoreAdmin.checkAdmin(email) == true) {
-                    //E' presente un admin con quelle credenziali
-                    out.write("OK");
-                } else {
-                    out.write("Credenziali ADMIN errate.");
-                }
-                //getServletContext().getRequestDispatcher("/admin.jsp").forward(request, response);
+            if(action.equalsIgnoreCase("Segnalazione-addSegnalazione")){
+                String id_studente=request.getParameter("id_studente");
+                String id_annuncio=request.getParameter("id_annuncio");
+                String descrizione=request.getParameter("descrizione");
+                System.out.println("studente: "+id_studente+" annuncio: "+id_annuncio+" descrizione: "+descrizione);
+                boolean result=gestoreSegnalazione.addSegnalazione(id_studente, id_annuncio, descrizione);
+                System.out.println("result: "+result);
+                out.write(""+result);
+            }else if(action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")){
+                JSONArray all=gestoreSegnalazione.MapAnnunciSegnalati();
+                String json=all.toString();
+                response.setContentType("application/json");
+                out.write(json);
             }
         }
     }

@@ -17,7 +17,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Anteprima Annuncio</h4>
       </div>
-      <div class="modal-body" id="modalPreviewBody">
+      <div class="modal-body " id="modalPreviewBody">
           
       </div>
       <div class="modal-footer">

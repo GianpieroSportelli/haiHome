@@ -110,8 +110,13 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("dettagliAnnuncio")) {
-                System.out.println("Dettagli annuncio");
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
+
+            } else  if (action.equalsIgnoreCase("Segnalazione-addSegnalazione")) {
+                request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
+
+            } else   if (action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")) {
+                request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {
                 request.getRequestDispatcher("/LogoutServlet").forward(request, response);
@@ -140,10 +145,15 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-edit-info")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
-            } else if (action.equalsIgnoreCase("locatore-edit-telefono")) {
+            } else if (action.equalsIgnoreCase("locatore-archivia-annuncio")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
-            } else if (action.equalsIgnoreCase("locatore-edit-descrizione")) {
+            } 
+            else if (action.equalsIgnoreCase("locatore-pubblica-annuncio")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+
+            } 
+            else if (action.equalsIgnoreCase("locatore-edit-descrizione")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
             } else if (action.equalsIgnoreCase("locatore-delete-annuncio")) {
@@ -161,6 +171,7 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
             }else {
                 // action random
+                System.out.println(action);
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
             }
             /*

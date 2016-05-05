@@ -34,9 +34,12 @@ public interface GestoreLocatoreLocal {
     public boolean removeLocatore();
     
     public Collection<Annuncio> getAnnunci();
+    
     public List<Annuncio> getAnnunciVisibili(); 
     
     public List<Annuncio> getAnnunciArchiviati();
+    
+    public List<Annuncio> getAnnunciOscurati();
     
     /* Gestione profilo del locatore*/
     public void modificaTelefono(String telefono); 
@@ -48,8 +51,11 @@ public interface GestoreLocatoreLocal {
     public boolean checkAnnuncio(Annuncio a); 
     public boolean removeAnnuncio(Annuncio a); 
     public boolean addAnnuncio(Annuncio a); 
+    public boolean updateAnnuncio(long oid, Annuncio a); 
     
     public JSONObject toJSON();
     
     public Locatore getLocatore(); 
+
+    
 }

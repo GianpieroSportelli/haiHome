@@ -11,20 +11,24 @@
 
 
 $(document).ready(function () {
+
+
+
+
+    $("#myPreviewModal").on('hide.bs.modal', function () {
+        $("#modalPreviewBody").empty();
+    });
     
-    
-   
-    
-    /*
-    $('#myModal').modal({
-    
-    keyboard : 'true'
-    }); 
-    */
-     $("#myPreviewModal").on('hide.bs.modal', function () {
-            $("#modalPreviewBody").empty();
-        });
-        
+        $("#messageModal").on('hide.bs.modal', function () {
+            var messModal = $(this);
+            var modalHeader = messModal.find(".modal-header");
+            var modalbody = messModal.find(".modal-body");
+            var modalFooter = messModal.find(".modal-footer");
+            modalHeader.empty();
+            modalbody.empty();
+            modalFooter.empty();
+    });
+
 
 
 
@@ -42,7 +46,7 @@ $(document).ready(function () {
 
     dataInizio.datepicker({
         showOn: "button",
-        buttonImage: "../images/calendario.png",
+        buttonImage: "images/calendario.png",
         buttonImageOnly: true,
         minDate: 0,
         monthNames: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
@@ -88,12 +92,12 @@ $(document).ready(function () {
             navListItems.each(function () {
                 var $myitem = $(this);
                 var idmyitem = $myitem.attr("id");
-                if((idmyitem>idSelectedItem)){
-                   $myitem.attr('disabled', 'disabled');
+                if ((idmyitem > idSelectedItem)) {
+                    $myitem.attr('disabled', 'disabled');
                 }
-                
+
             });
-            
+
             allWells.hide();
             $target.show();
             $target.find('input:eq(0)').focus();
@@ -111,7 +115,7 @@ $(document).ready(function () {
 
         var isValid = validateForm(buttonForm);
 
-        if (isValid) {
+        if (isValid && checkAddress()) {
             console.log("Dati form validi");
             form1.ajaxSubmit({
                 dataType: "text",
@@ -121,6 +125,8 @@ $(document).ready(function () {
             });
         } else {
             console.log("Dati form non validi");
+            openModalMessage("Errore nell'Inserimento dati","Controlla che tutti i campi siano inseriti correttamente");
+            //alert("NOPE!!");
         }
 
 
@@ -146,7 +152,7 @@ $(document).ready(function () {
                 }
             });
         } else {
-            console.log("Dati form non validi");
+            openModalMessage("Errore nell'Inserimento dati","Controlla che tutti i campi siano inseriti correttamente");
         }
 
 
@@ -163,24 +169,28 @@ $(document).ready(function () {
 
         console.log(buttonForm.attr("id"));
         var isValid = validateForm(buttonForm);
-        console.log("Validazione form costi " + isValid );
+        console.log("Validazione form costi " + isValid);
+        
+        var modelloCosti = form4.find("select#costi");
+        
+        
 
-        if (isValid) {
+        if (isValid && modelloCosti.val()!= 0) {
             console.log("Dati form validi");
             form4.ajaxSubmit({
                 dataType: "json",
                 success: function (response) {
                     console.log(response);
-                    
+
                     var myModal = $("#myPreviewModal");
                     var myModalBody = $("#modalPreviewBody");
                     myModalBody.append(create_Page(response));
-                    
+
                     myModal.modal({keyboard: true});
                     myModal.modal('show');
-                    
-                    
-                    
+
+
+
                     loadAllfoto();
 
 
@@ -188,7 +198,7 @@ $(document).ready(function () {
                 }
             });
         } else {
-            console.log("Dati form non validi");
+            openModalMessage("Errore nell'Inserimento dati","Controlla che tutti i campi siano inseriti correttamente");
         }
 
 
@@ -198,34 +208,35 @@ $(document).ready(function () {
 
 });
 
-function generaAnteprima(annuncio) {
-    $('#modalBody').append("Ciao giampiero");
-}
-
 
 //Invia richiesta iniziale 
 function sendInitialRequest() {
-    
+
 
     $.ajax({
         type: "POST",
-        url: "../ServletAnnuncio",
+        url: "ServletAnnuncio",
         data: "action=Annunci-newAnnuncio-initialRequest",
-        dataType: "text",
+        dataType: "json",
         success: function (msg)
         {
-            if(msg==="OK"){
-                alert("Successo");
-            }else{
-                alert("Qualcosa è andato storto...");
+            if (msg.response === "OK") {
+                //alert("Successo");
+                console.log("RISPOSTA");
+                console.log(msg);
+                aggiornaTipoStanze(msg.tipoAffitto, msg.tipoAccessorio);
+                openModalMessage("Locatore loggato","Il locatore è loggato"); 
+            } else {
+                openModalMessage("Errore di Autemtificazione","Si è verificato un errore di autentificazione"); 
             }
         },
         error: function ()
         {
-            alert("Chiamata fallita, si prega di riprovare...");
+           openModalMessage("Errore di Autemtificazione","Si è verificato un con il Server"); 
+
         }
     });
-    
+
     leggi_quartieri();
 
 }
@@ -289,27 +300,31 @@ function validateForm(buttonForm) {
             $(curInputs[i]).closest(".form-group").addClass("has-error");
         }
     }
-    
+
     //aggiunta controllo dropzone
     console.log("Numero di dropzone " + myDropzone.length);
     for (var i = 0; i < myDropzone.length; i++) {
         console.log("Dropzone da controllare id: " + $(myDropzone).attr("id"));
-        if(!$(myDropzone[i]).hasClass("dz-started")){
+        if (!$(myDropzone[i]).hasClass("dz-started")) {
             console.log("Dati non Validi");
             isValid = false;
             var message = $(myDropzone[i]).find("div.dz-message");
-          
+
             message.empty();
             message.css({
                 "color": '#FF0000'
             });
             message.append("Inserire o trascinare almeno una foto");
+
+           openModalMessage("Errore nell'inserimento dati","Biogna caricare almeno una foto per Stanza"); 
+
+        
         }
     }
     //fine aggiunta controllo dropzone
-    
-    
-    
+
+
+
     if (isValid) {
         nextStepWizard.removeAttr('disabled').trigger('click');
     }
@@ -317,49 +332,54 @@ function validateForm(buttonForm) {
 
 }
 
-function rendiAnnuncioPersistente(){
-    
-        $.ajax({
+function rendiAnnuncioPersistente() {
+
+    $.ajax({
         type: "POST",
-        url: "../ServletAnnuncio",
+        url: "ServletAnnuncio",
         data: "action=Annunci-newAnnuncio-persisti",
         dataType: "text",
         success: function (msg)
         {
-            if(msg==="OK"){
-                alert("ANNUNCIO PERSISTITO!!!");
-            }else{
-                alert("ANNUNCIO NON PERSISTITO");
+            if (msg === "OK") {
+                //alert("ANNUNCIO PERSISTITO!!!");
+                openModalMessage("Annuncio Persistito","L'annuncio è stato salvato correttamente","<a href=\"index.jsp\" class=\"btn btn-default\" >Go Home</a>");
+                
+                //$(window.location).attr('href', 'index.jsp');
+            } else {
+                openModalMessage("Errore: Annuncio Non Persistito","Ci sono stati problemi nel salvataggio dell'annuncio");
+
             }
         },
         error: function ()
         {
-            alert("ERRORE NELLA SERVLET");
+                openModalMessage("Errore: Annuncio Non Persistito","Ci sono state problemi con il Server", "<a href=\"index.jsp\" class=\"btn btn-default\">Go Home</a>");
+
         }
     });
-    
+
 }
 
 function leggi_quartieri() {
-    $.post("../ServletAnnuncio",
+    $.post("ServletAnnuncio",
             {action: "Annunci-newAnnuncio-getQuartieri"},
             function (responseJson) {
                 var html = '';
                 $("#selQuartiere").empty();
                 $.each(responseJson, function (index, item) {
                     html = '<option id=\"' + item + '\" value=\"' + item + '\">' + item + '</option>';
-                    
+
                     $("#selQuartiere").append(html);
                 });
-    
+
             });
 
 }
 
-function aggiornaListaQuartieri(inputCap){
-        $.post("../ServletAnnuncio",
+function aggiornaListaQuartieri(inputCap) {
+    $.post("ServletAnnuncio",
             {action: "Annunci-newAnnuncio-getQuartieri",
-             cap: inputCap},
+                cap: inputCap},
             function (responseJson) {
                 var html = '';
                 $("#selQuartiere").empty();
@@ -367,12 +387,34 @@ function aggiornaListaQuartieri(inputCap){
                     html = '<option id=\"' + item + '\" value=\"' + item + '\">' + item + '</option>';
                     $("#selQuartiere").append(html);
                 });
-    
+
             });
 }
 
+function openModalMessage(title,body,footer) {
 
-    
-    
+    var messModal = $("#messageModal");
+    var modalHeader = messModal.find(".modal-header");
+    var modalbody = messModal.find(".modal-body");
+    var modalFooter = messModal.find(".modal-footer");
+
+    modalHeader.append("<h4 class=\"modal-title\">" + title + "</h4>");
+    modalbody.append("<div>" + body + "</div>");
+    if(footer== null){
+         modalFooter.append("<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>");
+
+    }else{
+            modalFooter.append(footer);
+    }
+
+
+    messModal.modal({keyboard: true});
+    messModal.modal('show');
+
+}
+
+
+
+
 
 

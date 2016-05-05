@@ -6,11 +6,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -82,7 +86,7 @@ public class Segnalazione implements Serializable {
      *
      * @param annuncio new value of annuncio
      */
-    public void setId_annuncio(Annuncio annuncio) {
+    public void setAnnuncio(Annuncio annuncio) {
         this.annuncio = annuncio;
     }
 
@@ -117,6 +121,19 @@ public class Segnalazione implements Serializable {
     @Override
     public String toString() {
         return "entity.Segnalazione[ id=" + id + " ]";
+    }
+    
+    public JSONObject toJSON(){
+        JSONObject result=null;
+        try {
+            result=new JSONObject();
+            result.put("Annuncio",this.annuncio.toJSON());
+            result.put("Studente", this.studente.toJSON());
+            result.put("Descrizione",this.descrizione);
+        } catch (JSONException ex) {
+            Logger.getLogger(Segnalazione.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 
 }
