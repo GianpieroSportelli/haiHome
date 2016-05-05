@@ -159,7 +159,7 @@ function getListaFiltriPreferiti() {
                 if (filtri.length === 0) {
                     var page_html = "<div>" +
                             "<div class=\"panel panel-default\">" +
-                            "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\"> Nessun Filtro Salvato </p>"
+                            "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\">Nessun filtro salvato.</p>"
                             + "</div> " +
                             "</div>" +
                             "</div>";
@@ -248,7 +248,7 @@ function constructFiltriPage() {
             } else if (compresoCondominio === true) {
                 htmlCheckBox = "<hr> <p style=\"text-align:center\"> <span class=\"text-primary\">Compreso Condominio</span>: <img src=\"" + glyph + "\"> </p>"
             }
-            
+
             var htmlNumeroCamere = '';
 
             if (numeroCamere != 0) {
@@ -292,7 +292,7 @@ function constructFiltriPage() {
             }
 
             var html = '';
-            
+
             //HTML per Appartamenti
             if (tipoVisualizzazione === 2) {
                 html = "<div><div class=\"panel panel-default\">" + "<div class='panel-heading'>" +

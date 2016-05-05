@@ -51,10 +51,15 @@ function create_pageResult_studente() {
     page_annunci = [];
     var result_div = '<div class = "search-result" >';
     var close_div = '</div>';
-    var no_res = '<p > Nessun Risultato!! </p>';
+    var no_res = "<div class=\"panel panel-default\">" +
+            "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\">Nessun annuncio salvato.</p>"
+            + "</div> " +
+            "</div>";
     var page_html = '';
     if (n_page_1 == 0) {
-        $("#list-result").append(result_div + no_res + close_div);
+        $("#annunci").empty();
+        $("#annunci").append(no_res);
+        //$("#list-result").append(result_div + no_res + close_div);
     }
     for (page = 0; page < n_page_1; page++) {
         page_html = '';
