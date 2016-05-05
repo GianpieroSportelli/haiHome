@@ -72,7 +72,12 @@
 
         <!-- segnalazioni_script---->
         <script type='text/javascript' src='include/js/admin/segnalazione_script.js'></script>
+        <link rel="stylesheet" href="include/css/administrator/segnalazioni.css">
         <!-- FINE --->
+        
+        <!-- SESSION -->
+        <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
+        <!-- FINE SESSION -->
 
 
     </head>
