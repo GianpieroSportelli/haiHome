@@ -35,36 +35,30 @@
 
         <!-- -->
 
-
+        <!-- FILE RANDOMICO CHE FA FUNZIONARE IL CAROUSEL. VUOI SAPERE IL PERCHE'?
+        AHHAHHAHAAHAHAHAHAHAHAHAHAHAHAHAH NO RIMANE RANDOM IL MOTIVO. 
+        COPIATO LE PARTI ESSENZIALI IN UTENTE.CSS
+        <link rel="stylesheet" href="include/css/login/reset.css"> <!-- CSS reset -->
 
         <!-- Robe di UserProfile-->
-        <link rel="stylesheet" href="include/css/Utente/introjs.css">
         <link rel="stylesheet" href="include/css/Utente/Utente.css">
         <link rel="stylesheet" href="include/css/Utente/bootstrap.vertical-tabs.css">
         <script type="text/javascript" src="include/js/userProfile/studente-profile.js"></script>
         <script type="text/javascript" src="include/js/userProfile/studente-profile-annunci.js"></script>
         <!-- Fine Robe di UserProfile-->
-        
+
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
 
 
-        <link href="tutcss.css" rel="stylesheet">
+
         <!-- footer css -->
+        <link href="tutcss.css" rel="stylesheet">
+
         <link rel="stylesheet" href="include/css/login/style.css">
-        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style 
- 
+        <link rel="stylesheet" href="include/css/login/style2.css">  
         <link rel="stylesheet" href="include/css/login/normalize.css">
-        
-        <!--<link rel="stylesheet" href="tutcss.css">-->
-        <!-- robe del login bello -->
-        <!--<link rel="stylesheet" href="include/css/login/style.css">
-        <!-- Fine robe di login2.jsp -->
-
-        <!-- Robe di login2.jsp -->
-
-        <!--<link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
         <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
 
 
@@ -296,7 +290,7 @@
              if (filtri.length !== 0) {
              //Ho messo due variabili perche' non aggiorna la sessione in real-time
              if (!activatedTutorial) {
-            <%/* if (session.getAttribute("tutorial") == null) {
+             <%/* if (session.getAttribute("tutorial") == null) {
                     session.setAttribute("tutorial", true);
                   */ %>
              //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
@@ -306,7 +300,7 @@
              introJs().start();
              activatedTutorial = true;
              }, millisecondsToWait);
-            <%// }%>
+             <%// }%>
              }
              }
              }*/
