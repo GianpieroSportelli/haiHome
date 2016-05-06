@@ -66,6 +66,11 @@ public class PathUtily {
         
         return true;
     }
+    
+    public static boolean eliminaFoto(String path){
+        
+        return true;
+    }
 
 
     

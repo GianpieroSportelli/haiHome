@@ -17,7 +17,7 @@ import org.json.JSONObject;
 @Local
 public interface GestoreRicercaLocal {
 
-    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri, boolean compresoCondominio, boolean compresoRiscaldamento);
+    boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri, boolean compresoCondominio, boolean compresoRiscaldamento,boolean arredato);
 
     boolean selezionaCittà(String città);
 

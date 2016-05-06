@@ -50,6 +50,10 @@
         <script src="include/js/login/modal_validation_and_stuff.js"></script> 
         <script src="include/js/login/ajax_req_and_stuff.js"></script>
         <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
+        
+        <!-- CSS log-in modal -->
+        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- se viene tolto: sfondo rosa Gem style -->
+        <link rel="stylesheet" href="include/css/login/style.css">  <!-- -->
 
          <!-- Import script Facebook -->
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>

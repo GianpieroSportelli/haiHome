@@ -135,7 +135,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto) {
+    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, boolean arredato) {
         this.annuncio.setDescrizione(descrizione);
         if (metratura != 0) {
             this.annuncio.setMetratura(metratura);
@@ -143,6 +143,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
         this.annuncio.setListaStanza(new ArrayList<>());
+        this.annuncio.setArredato(arredato);
         return true;
     }
 
@@ -327,7 +328,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng, int numeroStanze, boolean atomico) {
+    public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng) {
         if (this.annuncio == null) {
             return false;
         }
@@ -368,13 +369,12 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico) {
+    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, boolean arredato) {
 
         this.annuncio.setDescrizione(descrizione);
         this.annuncio.setMetratura(metratura);
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
-        this.annuncio.setNumeroStanze(numeroStanze);
-        this.annuncio.setAtomico(atomico);
+        this.annuncio.setArredato(arredato);
         return true;
 
     }
@@ -481,11 +481,12 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean rendiModifichePersistenti() {
 
         //per ora non modifico la data di inserimento
-        /*
-        GregorianCalendar gc = new GregorianCalendar();
+        
+        //GregorianCalendar gc = new GregorianCalendar();
         Date d = new Date();
         this.annuncio.setDataPubblicazione(d);   
-         */
+        
+        /*
         Collection<Stanza> lista = this.annuncio.getListaStanza();
 
         for (Stanza s : lista) {
@@ -496,7 +497,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             } else {
                 return false;
             }
-        }
+        }*/
         annuncioFacade.edit(this.annuncio);
 
         return true;
@@ -511,6 +512,11 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
 
         for (Stanza s : listaStanze) {
             stanzaFacade.remove(s);
+            ArrayList<String> foto = (ArrayList<String>) s.getFoto();
+            for(String f : foto){
+                PathUtily.eliminaFoto(f);
+                
+            }
         }
         
         annuncioFacade.remove(annuncio);
@@ -538,6 +544,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean inserisciInfoStanze(int numeroStanze, boolean atomico) {
         this.annuncio.setNumeroStanze(numeroStanze);
         this.annuncio.setAtomico(atomico);
+
         return true;
     }
 
@@ -692,6 +699,13 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             res.add(i.toString());
         }
         return res;     }
+
+    @Override
+    public boolean modificaInfoStanze(int numeroStanze, boolean atomico) {
+        this.annuncio.setNumeroStanze(numeroStanze);
+        this.annuncio.setAtomico(atomico);
+        return true;
+    }
 
 
     

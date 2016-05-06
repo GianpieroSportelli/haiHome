@@ -45,7 +45,7 @@ $(document).ready(function () {
 
 
     dataInizio.datepicker({
-        showOn: "button",
+        showOn: "both",
         buttonImage: "images/calendario.png",
         buttonImageOnly: true,
         minDate: 0,
@@ -121,6 +121,7 @@ $(document).ready(function () {
                 dataType: "text",
                 success: function (response) {
                     console.log(response);
+                    
                 }
             });
         } else {

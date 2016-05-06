@@ -73,6 +73,16 @@ public class Annuncio implements Serializable {
     private boolean compresoRiscaldamento;
 
     private boolean atomico;
+    
+    private boolean arredato;
+
+    public boolean isArredato() {
+        return arredato;
+    }
+
+    public void setArredato(boolean arredato) {
+        this.arredato = arredato;
+    }
 
     /**
      * Get the value of atomico
@@ -442,6 +452,7 @@ public class Annuncio implements Serializable {
             annuncioJSON.accumulate("Lng", this.latLng[1]);
             annuncioJSON.accumulate("Metratura", this.metratura);
             annuncioJSON.accumulate("Atomico", this.atomico);
+            annuncioJSON.accumulate("Arredato", this.arredato);
             
             //aggiungo le stanze
             JSONArray JSONstanze = new JSONArray();
