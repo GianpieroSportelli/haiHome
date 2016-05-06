@@ -10,16 +10,19 @@ var geoAddress;
 var supermarket = "images/basket.png";
 var bank = "images/bank.png";
 var bus = "images/transport.png";
+
 var dim_image_car = 500;
 var dim_image_prof = 100;
 
 var markers_bus = [];
-var markers_super=[];
-var markers_bank=[];
+var markers_super = [];
+var markers_bank = [];
 
 var StrAnnuncio = $.session.get('dettagli');
+var admin = $.session.get('admin');
+console.log("admin? : " + admin);
 var annuncio = jQuery.parseJSON(StrAnnuncio);
-console.log("Annuncio corrente: "+JSON.stringify(annuncio));
+console.log("Annuncio corrente: " + JSON.stringify(annuncio));
 
 var split = "\\";
 var split2 = "/";
@@ -27,12 +30,19 @@ var foto_page = new Array();
 
 var service_info = "#service_info";
 var bus_info = "bus_info";
- 
-var id_studente="";
+
+var id_studente = "";
 
 $('.qcar').carousel({
     pause: true,
     interval: 4000
+});
+
+$(document).ready(function () {
+    if (admin==true) {
+        $("#bloccaButton").show();
+        $("#oscuraButton").show();
+    }
 });
 
 function initialize(annuncio, opt) {
@@ -77,7 +87,7 @@ function addServices_superMarket(annuncio) {
                 var lng = item.location.lng;
                 var label = item.name;
                 var location = new google.maps.LatLng(lat, lng);
-                var marker=addMarker(location, label, supermarket, index + "-super");
+                var marker = addMarker(location, label, supermarket, index + "-super");
                 markers_super.push(marker);
             });
         }
@@ -113,9 +123,9 @@ function addServices_Bus(annuncio) {
                 for (var x = 1; x < label_arr.length; x++) {
                     label = html_tail(label, " " + label_arr[x]);
                 }
-                html = html_tail(html, "<p class=\"text-muted fermata\" id=\""+index+"-busM\"><span class=\"glyphicon glyphicon-map-marker\"></span> " + label + "</p>" + "\n");
+                html = html_tail(html, "<p class=\"text-muted fermata\" id=\"" + index + "-busM\"><span class=\"glyphicon glyphicon-map-marker\"></span> " + label + "</p>" + "\n");
                 var location = new google.maps.LatLng(lat, lng);
-                var marker=addMarker(location, label, bus, index + "-bus");
+                var marker = addMarker(location, label, bus, index + "-bus");
                 markers_bus.push(marker);
             });
             html = html_tail(html, "</div>" + "\n");
@@ -125,19 +135,19 @@ function addServices_Bus(annuncio) {
         }
     });
 }
- $(document).ready(function () {
-        $(document).on('click', '.fermata', function () {
-            var target = $( event.target );
-            var id=target.attr("id");
-            var id_arr=id.split("-");
-            id=id_arr[0];
-            //console.log("fermata: "+id);
-            google.maps.event.trigger(markers_bus[id], 'click');
-            document.getElementById('map').scrollIntoView();
-            //$("html, body").animate({ scrollTop: $("#map").offset().top }, "slow");
-            
-        });
+$(document).ready(function () {
+    $(document).on('click', '.fermata', function () {
+        var target = $(event.target);
+        var id = target.attr("id");
+        var id_arr = id.split("-");
+        id = id_arr[0];
+        //console.log("fermata: "+id);
+        google.maps.event.trigger(markers_bus[id], 'click');
+        document.getElementById('map').scrollIntoView();
+        //$("html, body").animate({ scrollTop: $("#map").offset().top }, "slow");
+
     });
+});
 
 function addServices_Bank(annuncio) {
     $.ajax({
@@ -153,7 +163,7 @@ function addServices_Bank(annuncio) {
                 var lng = item.location.lng;
                 var label = item.name;
                 var location = new google.maps.LatLng(lat, lng);
-                var marker=addMarker(location, label, bank, index + "-bank");
+                var marker = addMarker(location, label, bank, index + "-bank");
                 markers_bank.push(marker);
             });
         }
@@ -251,7 +261,7 @@ function create_corpo_accessoria(stanza, first) {
     html += create_carousel_stanza(stanza);
     //html += "<p>" + JSON.stringify(stanza) + "</p>";
     //html += "<div class=\"center\">";
-    html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + "</p>";
+    html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + " m<sup>2</sup></p>";
     //html += "</div>";//center close
     html += "</div>";
     return html;
@@ -274,7 +284,7 @@ function create_corpo_affitto(stanza, first, atomico) {
     html += create_carousel_stanza(stanza);
     //html += "<p>" + JSON.stringify(stanza) + "</p>" ;
     //html += "<div class=\"center\">";
-    html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + "</p>";
+    html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + " m<sup>2</sup></p>";
     if (!atomico) {
         var cmpCon = stanza.compresoCondominio;
         var cmpRisc = stanza.compresoRiscaldamento;
@@ -361,14 +371,17 @@ function info_annuncio(annuncio) {
     }
     html += "<p class=\"text-muted\">" + annuncio.Indirizzo + "</p>" +
             "<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
-            "<p class=\"text-muted\"><span class=\"text-primary\">Metratura Appartamento:</span> " + annuncio.Metratura + "</p>" +
+            "<p class=\"text-muted\"><span class=\"text-primary\">Metratura Appartamento:</span> " + annuncio.Metratura + " m<sup>2</sup></p>" +
             "<p class=\"text-muted\"><span class=\"text-primary\"> Data inizio: </span> " + annuncio.DataInizioAffitto + "</p>" +
+            "<p class=\"text-muted\"><span class=\"text-primary\"> Data pubblicazione: </span> " + annuncio.DataPubblicazione + "</p>" +
             "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
     html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
-    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-success\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina</button>";
+    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina</button>";
+    html += "<button id=\"oscuraButton\" type=\"button\" class=\"btn btn-danger\" onClick=\"oscuraAnnuncio()\" style=\"display:none\">Oscura</button>";
+    html += "<button id=\"visibileButton\" type=\"button\" class=\"btn btn-success\" onClick=\"visibileAnnuncio()\" style=\"display:none\">Visibile</button>";
     html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
@@ -376,7 +389,7 @@ function info_annuncio(annuncio) {
 
 function init_info(annuncio) {
     var locatore = annuncio.Locatore;
-    console.log("Propretario annuncio: "+JSON.stringify(locatore));
+    console.log("Propretario annuncio: " + JSON.stringify(locatore));
     return info_loc(locatore);
 }
 
@@ -392,7 +405,10 @@ function info_loc(locatore) {
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">email: </span><span id=\"mail\">" + locatore.email + "</span></p>";
-    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala</button>";
+    html += "<button id=\"segnalaButton\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala</button>";
+    html += "<button id=\"bloccaButton\" type=\"button\" class=\"btn btn-danger\" style=\"display:none\" onClick=\"bloccaLocatore()\">Blocca</button>";
+    html += "<button id=\"sbloccaButton\" type=\"button\" class=\"btn btn-success\" style=\"display:none\" onClick=\"sbloccaLocatore()\">Sblocca</button>";
+    
     html += "</div>";
     return html;
 }
@@ -424,27 +440,27 @@ function loggatoStudente() {
                 //alert(item);
                 if (item != "") {
                     console.log("Studente loggato? id: " + item);
-                    id_studente=item;
-                    checkAnnuncio(""+annuncio.OID);
-                    $("#segnalaBtn").show("fast");
-                }else{
-                   console.log("Studente loggato? id: NO"); 
+                    id_studente = item;
+                    checkAnnuncio("" + annuncio.OID);
+                    $("#segnalaButton").show("fast");
+                } else {
+                    console.log("Studente loggato? id: NO");
                 }
             });
 }
-function checkAnnuncio(id){
+function checkAnnuncio(id) {
     $.post("ServletController",
-            {action: "Ricerca-checkAnnuncio",id:id},
+            {action: "Ricerca-checkAnnuncio", id: id},
             function (item) {
                 //var html = '';
                 //alert(item);
                 console.log("Annuncio Salvato?: " + item);
                 if (item == "true") {
                     $("#deleteButton").show("fast");
-                    
-                }else{
-                   $("#saveButton").show("fast");
-                    
+
+                } else {
+                    $("#saveButton").show("fast");
+
                 }
             });
 }
@@ -452,7 +468,7 @@ function checkAnnuncio(id){
 function salvaAnnuncioPreferiti() {
     alert("Salvo l'annuncio nei Preferiti");
     $.post("ServletController",
-            {action: "studente-addAnnuncio",id:annuncio.OID},
+            {action: "studente-addAnnuncio", id: annuncio.OID},
             function (item) {
                 //var html = '';
                 //alert(item);
@@ -467,7 +483,7 @@ function salvaAnnuncioPreferiti() {
 function cancellaAnnuncioPreferiti() {
     alert("Cancello l'annuncio dai Preferiti");
     $.post("ServletController",
-            {action: "studente-removeAnnuncio",id:annuncio.OID},
+            {action: "studente-removeAnnuncio", id: annuncio.OID},
             function (item) {
                 //var html = '';
                 //alert(item);
@@ -478,16 +494,39 @@ function cancellaAnnuncioPreferiti() {
                 }
             });
 }
+function oscuraAnnuncio() {
+    alert("Annuncio Oscurato");
+    $("#oscuraButton").hide();
+    $("#visibileButton").show();
+}
+
+function visibileAnnuncio() {
+    alert("Annuncio Visibile");
+    $("#visibileButton").hide();
+    $("#oscuraButton").show();
+}
+
+function bloccaLocatore() {
+    alert("loacatore bloccato");
+    $("#bloccaButton").hide();
+    $("#sbloccaButton").show();
+}
+
+function sbloccaLocatore() {
+    alert("loacatore sbloccato");
+    $("#sbloccaButton").hide();
+    $("#bloccaButton").show();
+}
 
 function segnalaAnnuncio() {
     //alert("annuncio Segnalato");
     $.post("ServletController",
-            {action: "Segnalazione-addSegnalazione",id_annuncio:annuncio.OID,id_studente:id_studente,descrizione:"segnalazione di "+id_studente},
+            {action: "Segnalazione-addSegnalazione", id_annuncio: annuncio.OID, id_studente: id_studente, descrizione: "segnalazione di " + id_studente},
             function (item) {
                 console.log("Annuncio segnalato?: " + item);
                 if (item == "true") {
                     alert("Annuncio Segnalato!!!!!");
-                }else{
+                } else {
                     alert("annuncio non segnalato, contatta l'admin!!!");
                 }
             });
@@ -558,37 +597,37 @@ $(document).ready(function () {
 
         console.log("super: " + superM + " banche: " + banche + " bus: " + bus);
         var opt = [superM, banche, bus];
-        
-        if(superM){
-            setMapOnAll(map,markers_super);
-        }else{
-           setMapOnAll(null,markers_super); 
+
+        if (superM) {
+            setMapOnAll(map, markers_super);
+        } else {
+            setMapOnAll(null, markers_super);
         }
-        
-        if(bus){
-            setMapOnAll(map,markers_bus);
-            $("#"+bus_info).show();
-        }else{
-           setMapOnAll(null,markers_bus);
-            $("#"+bus_info).hide(); 
+
+        if (bus) {
+            setMapOnAll(map, markers_bus);
+            $("#" + bus_info).show();
+        } else {
+            setMapOnAll(null, markers_bus);
+            $("#" + bus_info).hide();
         }
-        
-        if(banche){
-            setMapOnAll(map,markers_bank);
-        }else{
-            setMapOnAll(null,markers_bank);
+
+        if (banche) {
+            setMapOnAll(map, markers_bank);
+        } else {
+            setMapOnAll(null, markers_bank);
         }
     });
 });
 
 // Sets the map on all markers in the array.
-function setMapOnAll(map,markers) {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-  }
+function setMapOnAll(map, markers) {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+    }
 }
 
 // Removes the markers from the map, but keeps them in the array.
 function clearMarkers(markers) {
-  setMapOnAll(null,markers);
+    setMapOnAll(null, markers);
 }

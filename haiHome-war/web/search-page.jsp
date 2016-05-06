@@ -139,6 +139,12 @@
                                     <option id="tipo-Stanza" value="Stanza">Stanza</option>
                                 </select>
                             </div>
+                            <div class="form-group" id="divArredato">
+                                <label for="arredato" class="control-label">
+                                    <input type="checkbox" name="arredato" id="arredato">
+                                    Arredato
+                                </label>
+                            </div>
                             <div class="form-group" id="divTipoStanza" style="display:none">
                                 <label for="tipo" class="control-label">Tipo Stanza</label>
                                 <select class="form-control" name="tipoStanza" id="tipoStanza">

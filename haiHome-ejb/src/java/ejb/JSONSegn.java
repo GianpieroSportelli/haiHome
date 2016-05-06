@@ -49,7 +49,7 @@ class JSONSegn implements Comparable<JSONSegn>{
 
     @Override
     public int compareTo(JSONSegn o) {
-       return Integer.valueOf(n_segn).compareTo(o.getNsegn());
+       return -Integer.valueOf(n_segn).compareTo(o.getNsegn());
     }
     
     public JSONObject toJSON(){

@@ -170,7 +170,7 @@ function create_info_annuncio(annuncio) {
             "<h1>" + tipoAnnuncio + "</h1>" +
             "<p>" + indirizzo + "</p>" +
             //"<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
-            "<p><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + "</p>" +
+            "<p><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + " m<sup>2</sup></p>" +
             "<p><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
             "<p> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
@@ -423,15 +423,12 @@ function getfiltro() {
             });
 }
 
-/*$(window).scroll(function(){    
- $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
- });*/
-
 function send_Annuncio(k) {
     var annuncio = annunci[k];
     var url = "/haiHome-war/dettagliAnnuncio.jsp";
     var json = JSON.stringify(annuncio);
     $.session.set('dettagli', json);
+    $.session.set('admin',false);
     window.open(url);
 }
 
@@ -474,6 +471,7 @@ function persistiFiltro() {
 //Invio della form tramite PLUGIN
 $(document).ready(function () {
     $('#searchForm').ajaxForm(function () {
+        $("#searchDiv").stop().animate({"marginTop": "0px"}, "slow");
         clearMarkers(marker_annunci);
         marker_annunci = new Array();
         load_Annunci();
@@ -485,17 +483,22 @@ $(document).ready(function () {
 
 //Caricamento dei risultati a fine pagina
 $(window).scroll(function () {
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+    if (($(window).scrollTop() + 200) >= $(document).height() - $(window).height()) {
         nextpage();
     }
+    /*per far camminare il div del filtro
+     * if (($(window).scrollTop()+700) <= $(document).height() - $(window).height() && ($(window).scrollTop()-700) <= $(document).height() - $(window).height()) {
+        $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft": ($(window).scrollLeft()) + "px"}, "slow");
+    }*/
 });
+
 
 function loggatoStudente() {
     $.post("ServletController",
             {action: "Ricerca-loggatoStudente"},
             function (item) {
                 console.log("Studente loggato?: " + item);
-                if (item == "true") {
+                if (item != "") {
                     $("#saveButton").show("fast");
                 }
             });

@@ -28,13 +28,13 @@
 
 
 
-        <!-- Robe di UserProfile-->
+        <!-- Robe di UserProfile
         <script src="include/js/userProfile/intro.js"></script>
-        <link rel="stylesheet" href="include/css/Utente/introjs.css">
+        <link rel="stylesheet" href="include/css/Utente/introjs.css">-->
         <link rel="stylesheet" href="include/css/Utente/Utente.css">
         <link rel="stylesheet" href="include/css/Utente/bootstrap.vertical-tabs.css">
-        <script type="text/javascript" src="include/js/userProfile/studente-profile.js"></script>
-        <!-- Fine Robe di UserProfile-->
+        <!-- <script type="text/javascript" src="include/js/userProfile/studente-profile.js"></script>
+        Fine Robe di UserProfile-->
 
 
         <link href="tutcss.css" rel="stylesheet">
@@ -72,7 +72,12 @@
 
         <!-- segnalazioni_script---->
         <script type='text/javascript' src='include/js/admin/segnalazione_script.js'></script>
+        <link rel="stylesheet" href="include/css/administrator/segnalazioni.css">
         <!-- FINE --->
+        
+        <!-- SESSION -->
+        <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
+        <!-- FINE SESSION -->
 
 
     </head>
