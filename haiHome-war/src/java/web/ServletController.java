@@ -112,10 +112,13 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("dettagliAnnuncio")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
-            } else  if (action.equalsIgnoreCase("Segnalazione-addSegnalazione")) {
+            } else if (action.equalsIgnoreCase("Segnalazione-addSegnalazione")) {
                 request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
 
-            } else   if (action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")) {
+            } else if (action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")) {
+                request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("Segnalazione-archivia")) {
                 request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {

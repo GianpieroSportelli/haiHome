@@ -31,6 +31,7 @@ function deleteCitta() {
 }
 
 function getListaCitta() {
+    no_segn();
     $("#cittaDB").empty();
     $.post("ServletController",
             {action: "get-lista-citta"},

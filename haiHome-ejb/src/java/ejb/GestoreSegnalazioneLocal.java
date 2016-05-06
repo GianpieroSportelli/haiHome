@@ -7,6 +7,7 @@ package ejb;
 
 import javax.ejb.Local;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -20,5 +21,7 @@ public interface GestoreSegnalazioneLocal {
     public JSONArray getAllSegnalazioni();
 
     JSONArray MapAnnunciSegnalati();
+
+    public boolean archiviaSegnalazioni(JSONObject json,boolean status);
     
 }
