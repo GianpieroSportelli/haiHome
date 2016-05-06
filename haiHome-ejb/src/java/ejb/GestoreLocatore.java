@@ -28,10 +28,6 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
 
     private Locatore locatore = null;
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-//    public boolean aggiungiLocatore(String email, String nome, String cognome,
-//        String foto, String password, String descrizione) {
     @Override
     public boolean aggiungiLocatore(String email, String password, String nome,
             String cognome, String telefono, String img_profilo) {
@@ -238,5 +234,22 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
 
     private void rendiModifichePersistenti() {
         this.locatoreFacade.edit(this.locatore);
+    }
+    
+    public void reloadLocatore() {
+        if (this.getLocatore() != null) {
+            this.locatore = this.locatoreFacade.find(this.locatore.getId());            
+        }
+    }
+    
+    public boolean bloccaLocatore(long oid, boolean bloccato) {
+        Locatore loc = this.locatoreFacade.find(oid); 
+        
+        if (loc != null && loc.isBloccato() != bloccato) {
+            loc.setBloccato(bloccato);
+            this.locatoreFacade.edit(loc);
+        }
+        
+        return true; 
     }
 }

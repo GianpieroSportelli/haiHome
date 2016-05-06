@@ -51,13 +51,15 @@ public class ServletLocatore extends HttpServlet {
             throws ServletException, IOException {
         //response.setContentType("text/html;charset=UTF-8");
 
+        gestoreLocatore.reloadLocatore();
+
         if (gestoreLocatore.getLocatore() != null) {
             System.out.println("ANNUNCI DEL LOCATORE:");
             for (Annuncio a : gestoreLocatore.getAnnunci()) {
                 System.out.println(a.toString());
             }
             System.out.println("FINE");
-        } 
+        }
 
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
@@ -337,7 +339,9 @@ public class ServletLocatore extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("locatore-get-session")) {
                 JSONObject jsonsession = new JSONObject();
-
+                
+                update_session(session);
+                        
                 try {
 //                    jsonsession.accumulate("user-access", "loc"); 
                     jsonsession.accumulate("user_access", session.getAttribute("user-access"));
@@ -354,6 +358,15 @@ public class ServletLocatore extends HttpServlet {
                 response.setContentType("application/json");
                 System.out.println("LOCATORE GET SESSION: " + jsonsession.toString());
                 out.write(jsonsession.toString());
+
+            } else if (action.equalsIgnoreCase("locatore-blocca-by-id")) {
+                long oid = Long.parseLong(request.getParameter("oid"));
+                boolean bloccato = Boolean.parseBoolean(request.getParameter("bloccato-flag"));
+
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
+                out.write(String.valueOf(gestoreLocatore.bloccaLocatore(oid, bloccato)));
+
             }
         }
     }
