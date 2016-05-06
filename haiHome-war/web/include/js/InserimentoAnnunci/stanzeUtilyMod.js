@@ -67,7 +67,7 @@ function aggiungiStanza(s,i){
     var contenitore = $("div#contenitoreStanze");
     
     var html = stanzaHTMLCode(s,i);
-    console.log(html);
+    //console.log(html);
     contenitore.append(html);
     
 }

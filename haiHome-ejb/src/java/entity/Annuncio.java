@@ -452,6 +452,7 @@ public class Annuncio implements Serializable {
             annuncioJSON.accumulate("Lng", this.latLng[1]);
             annuncioJSON.accumulate("Metratura", this.metratura);
             annuncioJSON.accumulate("Atomico", this.atomico);
+            annuncioJSON.accumulate("Arredato", this.arredato);
             
             //aggiungo le stanze
             JSONArray JSONstanze = new JSONArray();

@@ -185,7 +185,7 @@ function checkAddress() {
     
     var indirizzo = $("#inpIndirizzo");
     var civico = $("#inpCivico");
-    var isFill = indirizzo.val() != 0 && indirizzo.val() != "";
+    var isFill = indirizzo.val() != 0 && civico.val() != "";
     console.log("indirizzo corretto : " + acCivFlag);
     return acCivFlag && acIndFlag && isFill;
 }
