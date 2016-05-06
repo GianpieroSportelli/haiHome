@@ -84,7 +84,7 @@
     <body>
         <%@include file="/header.jsp" %> 
         <script>
-            console.log("carico");
+            //console.log("carico");
             loadSegnalazioni();
 
         </script>

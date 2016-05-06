@@ -21,10 +21,10 @@ import org.json.JSONObject;
 class JSONSegn implements Comparable<JSONSegn>{
     private JSONObject result=null;
     private Annuncio x;
-    private Collection<Studente> list;
+    private Collection<SegnStudente> list;
     private int n_segn;
     
-    public JSONSegn(Annuncio x,Collection<Studente> list){
+    public JSONSegn(Annuncio x,Collection<SegnStudente> list){
      this.x=x;
      this.list=list;
      n_segn=list.size();
@@ -32,7 +32,7 @@ class JSONSegn implements Comparable<JSONSegn>{
         try {
             result.put("Annuncio",x.toJSON());
             JSONArray stud=new JSONArray();
-            for(Studente s:list){
+            for(SegnStudente s:list){
                 stud.put(s.toJSON());
             }
             result.put("Studenti", stud);

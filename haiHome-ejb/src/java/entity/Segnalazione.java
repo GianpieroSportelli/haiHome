@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +37,27 @@ public class Segnalazione implements Serializable {
     private Studente studente;
 
     private String descrizione;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataSegnalazione;
+    
+    private boolean archiviato=false;
+    
+    public Date getDataSegnalazione() {
+        return dataSegnalazione;
+    }
+
+    public void setDataSegnalazione(Date dataSegnalazione) {
+        this.dataSegnalazione = dataSegnalazione;
+    }
+
+    public boolean isArchiviato() {
+        return archiviato;
+    }
+
+    public void setArchiviato(boolean archiviato) {
+        this.archiviato = archiviato;
+    }
 
     /**
      * Get the value of descrizione
@@ -130,6 +153,8 @@ public class Segnalazione implements Serializable {
             result.put("Annuncio",this.annuncio.toJSON());
             result.put("Studente", this.studente.toJSON());
             result.put("Descrizione",this.descrizione);
+            result.put("Data",this.dataSegnalazione);
+            result.put("Archiviato",this.archiviato);
         } catch (JSONException ex) {
             Logger.getLogger(Segnalazione.class.getName()).log(Level.SEVERE, null, ex);
         }

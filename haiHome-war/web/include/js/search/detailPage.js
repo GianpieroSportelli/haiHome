@@ -39,7 +39,8 @@ $('.qcar').carousel({
 });
 
 $(document).ready(function () {
-    if (admin==true) {
+    console.log(""+admin=="true");
+    if (""+admin=="true") {
         $("#bloccaButton").show();
         $("#oscuraButton").show();
     }
@@ -375,6 +376,11 @@ function info_annuncio(annuncio) {
             "<p class=\"text-muted\"><span class=\"text-primary\"> Data inizio: </span> " + annuncio.DataInizioAffitto + "</p>" +
             "<p class=\"text-muted\"><span class=\"text-primary\"> Data pubblicazione: </span> " + annuncio.DataPubblicazione + "</p>" +
             "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
+    if(annuncio.Arredato){
+        html+="<p class=\"text-muted\"> L'annuncio è comprensivo di <span class=\"text-primary\">arredamento </span></p>";
+    }else{
+        html+="<p class=\"text-muted\"> L'annuncio non è fornito con <span class=\"text-primary\">arredamento </span></p>";
+    }
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
