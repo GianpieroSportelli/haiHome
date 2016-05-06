@@ -116,7 +116,7 @@ public class ServletRicerca extends HttpServlet {
                 }
 
                 boolean result;
-                result = gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino , compRiscaldamento);
+                result = gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino , compRiscaldamento,arredato);
                 System.out.println(gestoreRicerca.attualeToJSON());
                 
                 if (tipo.equalsIgnoreCase("Appartamento")) {

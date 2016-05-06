@@ -41,14 +41,24 @@ public class FiltroDiRicerca implements Serializable {
     protected boolean compresoCondominio = false;
 
     protected boolean compresoRiscaldamento = false;
+    
+    protected boolean arredato =false;
 
-    /**
+     /**
      * Get the value of compresoRiscaldamento
      *
      * @return the value of compresoRiscaldamento
      */
     public boolean isCompresoRiscaldamento() {
         return compresoRiscaldamento;
+    }
+    
+     public boolean isArredato() {
+        return arredato;
+    }
+
+    public void setArredato(boolean arredato) {
+        this.arredato = arredato;
     }
     
     public JSONObject toJSON() throws JSONException{
@@ -59,6 +69,7 @@ public class FiltroDiRicerca implements Serializable {
         result.accumulate("Id", this.id);
         result.accumulate("CompresoCondominio", this.compresoCondominio);
         result.accumulate("CompresoRiscaldamento", this.compresoRiscaldamento);
+        result.accumulate("Arredato", this.arredato);
         
         //result.accumulate("Id_Studente", "Ricorda di cambiare in getID");//this.studente.getId();
         return result;
