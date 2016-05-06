@@ -49,7 +49,7 @@ $(document).ready(function () {
 
         
 
-        if (annuncio.Locatore.bloccato==true) {
+        if (annuncio.Locatore.bloccato=="true") {
             console.log(annuncio.Locatore.bloccato);
             $("#sbloccaButton").show();
         } else {
