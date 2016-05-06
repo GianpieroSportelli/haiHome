@@ -161,7 +161,6 @@
 
         <!-- script miei -->
         <link rel="stylesheet" href="include/css/InserimentoAnnunci/ModificaAnnunci.css">
-        <link rel="stylesheet" href="include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
         <script type="text/javascript" src="include/js/InserimentoAnnunci/ModificaAnnunci.js"></script>
         <script type="text/javascript" src="include/js/InserimentoAnnunci/stanzeUtilyMod.js"></script>
         
