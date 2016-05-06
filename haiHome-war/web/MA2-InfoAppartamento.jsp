@@ -24,7 +24,7 @@
                 <input id='inpDataInizio' name='DataInizioAffitto' type="text" required="required" disabled="disabled" />
             </div>
             <div class="form-group">
-                <input id="inpArredato" name='Arredato' type="checkbox"  value="true">Arredato<br>
+                <input id='inpArredato' name='Arredato' type="checkbox"  value="true" disabled="disabled" />Arredato<br>
             </div>
 
         </form>
