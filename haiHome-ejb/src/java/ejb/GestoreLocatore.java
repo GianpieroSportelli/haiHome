@@ -236,20 +236,24 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         this.locatoreFacade.edit(this.locatore);
     }
     
+    @Override
     public void reloadLocatore() {
         if (this.getLocatore() != null) {
             this.locatore = this.locatoreFacade.find(this.locatore.getId());            
         }
     }
     
+    @Override
     public boolean bloccaLocatore(long oid, boolean bloccato) {
         Locatore loc = this.locatoreFacade.find(oid); 
+        boolean result = false; 
         
         if (loc != null && loc.isBloccato() != bloccato) {
             loc.setBloccato(bloccato);
             this.locatoreFacade.edit(loc);
+            result = true; 
         }
         
-        return true; 
+        return result; 
     }
 }

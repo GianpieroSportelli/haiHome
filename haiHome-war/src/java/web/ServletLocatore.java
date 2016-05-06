@@ -361,7 +361,7 @@ public class ServletLocatore extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("locatore-blocca-by-id")) {
                 long oid = Long.parseLong(request.getParameter("oid"));
-                boolean bloccato = Boolean.parseBoolean(request.getParameter("bloccato-flag"));
+                boolean bloccato = Boolean.parseBoolean(request.getParameter("bloccato_flag"));
 
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
