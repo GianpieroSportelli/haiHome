@@ -285,6 +285,7 @@ function send_Annuncio(k) {
     var url = "/haiHome-war/dettagliAnnuncio.jsp";
     var json = JSON.stringify(annuncio);
     $.session.set('dettagli', json);
+    $.session.set('admin', false);
     window.location = url;
 }
 
