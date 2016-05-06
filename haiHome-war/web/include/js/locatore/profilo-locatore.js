@@ -102,6 +102,8 @@ jQuery(document).ready(function ($) {
     });
 
     function updateInfoAnnunci() {
+        console.log("Update sessione..."); 
+        
         $.post(
                 "ServletController",
                 {'action': 'locatore-get-session'},

@@ -50,6 +50,15 @@ public class ServletLocatore extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //response.setContentType("text/html;charset=UTF-8");
+
+        if (gestoreLocatore.getLocatore() != null) {
+            System.out.println("ANNUNCI DEL LOCATORE:");
+            for (Annuncio a : gestoreLocatore.getAnnunci()) {
+                System.out.println(a.toString());
+            }
+            System.out.println("FINE");
+        } 
+
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             HttpSession session = request.getSession();

@@ -192,8 +192,7 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
 
         return res;
     }
-    
-    
+
     @Override
     public boolean checkAnnuncio(Annuncio a) {
         return this.locatore.checkAnnuncio(a);
@@ -205,27 +204,27 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         this.rendiModifichePersistenti();
         return res;
     }
-    
+
     @Override
     public boolean addAnnuncio(Annuncio a) {
         boolean res = this.locatore.addAnnuncio(a);
         this.rendiModifichePersistenti();
-        return res; 
-                
+        return res;
+
     }
-    
+
     @Override
     public boolean updateAnnuncio(long oid, Annuncio a) {
-        boolean res = false; 
-        
+        boolean res = false;
+
         if (a.getId() == oid && this.locatore.getListaAnnunci().contains(a)) {
             this.locatore.removeAnnuncio(a);
             this.locatore.addAnnuncio(a);
+            this.rendiModifichePersistenti();
         }
-        
-        return res; 
+
+        return res;
     }
-    
 
     @Override
     public JSONObject toJSON() {
