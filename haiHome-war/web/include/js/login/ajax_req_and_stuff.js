@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
             iphone = 'input[name="user-phone"]'; //random 
 
 
-    function submit_registration($form, $submit) {
+    function submit_registration($form, $submit, action_login, destination) {
         $submit.on('click', function () {
             if ($submit.attr("disabled") === "disabled")
                 return false;
@@ -19,9 +19,20 @@ jQuery(document).ready(function ($) {
                 $.post($form.attr("action"), // target servlet
                         $form.serialize(), // data
                         function (response) {
-                            if (response === "OK")
-                                $submit.attr('data-content', 'registrazione avvenuta');
-                            else
+                            if (response === "OK") {
+                                console.log("registrazione avvenuta...");
+
+                                $.post("ServletController",
+                                        {
+                                            'action': action_login,
+                                            'user-email': $form.find(iemail).val(),
+                                            'user-pw': $form.find(ipwd).val()
+                                        },
+                                        function () {
+                                            window.location.replace(destination);
+                                        });
+
+                            } else
                                 $submit.attr('data-content', response);
                         });
             } else {
@@ -55,6 +66,6 @@ jQuery(document).ready(function ($) {
 
     submit_login($('#locatore-login'), $('#submit-login-loc'), "locatore-profile.jsp");
     submit_login($('#studente-login'), $('#submit-login-stud'), "index.jsp");
-    submit_registration($('#locatore-reg'), $('#submit-reg-loc'));
-    submit_registration($('#studente-reg'), $('#submit-reg-stud'));
+    submit_registration($('#locatore-reg'), $('#submit-reg-loc'), "login-locatore", "locatore-profile.jsp");
+    submit_registration($('#studente-reg'), $('#submit-reg-stud'), "login-studente", "index.jsp");
 });
