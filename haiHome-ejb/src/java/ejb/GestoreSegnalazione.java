@@ -15,9 +15,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -72,15 +76,17 @@ public class GestoreSegnalazione implements GestoreSegnalazioneLocal {
         return result;
     }
     
+    
     private Collection<JSONSegn> createMap(Collection<Segnalazione> all){
         HashMap<Annuncio,Collection<SegnStudente>> result=new HashMap<>();
         Collection<JSONSegn> out=new ArrayList<>();
         for(Segnalazione x:all){
+            System.out.println("Annuncio: "+x.getAnnuncio().getId()+" Studente: "+x.getStudente().getId()+" archiviata? "+x.isArchiviato());
             if(result.containsKey(x.getAnnuncio())){
-                result.get(x.getAnnuncio()).add(new SegnStudente(x.getStudente(),x.getDataSegnalazione(),x.getDescrizione()));
+                result.get(x.getAnnuncio()).add(new SegnStudente(x.getStudente(),x.getDataSegnalazione(),x.getDescrizione(),""+x.getId(),x.isArchiviato()));
             }else{
                Collection<SegnStudente> list=new ArrayList<>();
-               list.add(new SegnStudente(x.getStudente(),x.getDataSegnalazione(),x.getDescrizione()));
+               list.add(new SegnStudente(x.getStudente(),x.getDataSegnalazione(),x.getDescrizione(),""+x.getId(),x.isArchiviato()));
                 result.put(x.getAnnuncio(), list);
             }
         }
@@ -98,6 +104,30 @@ public class GestoreSegnalazione implements GestoreSegnalazioneLocal {
             result.put(x.toJSON());
         }
         return result;
+    }
+
+    @Override
+    public boolean archiviaSegnalazioni(JSONObject json,boolean status) {
+        System.out.println("Archivia?"+status);
+        try {
+            JSONArray studenti=json.getJSONArray("Studenti");
+            for(int i=0;i<studenti.length();i++){
+                JSONObject x=studenti.getJSONObject(i);
+                String oid=x.getString("ID");
+                boolean arch=x.getBoolean("Archiviato");
+                System.out.println("segnalazione: "+oid+" archiviata? "+arch);
+                if(arch!=status){
+                    Segnalazione actual=segnalazioneFacade.find(Long.valueOf(oid));
+                    actual.setArchiviato(status);
+                    segnalazioneFacade.edit(actual);
+                }
+            }
+            
+            return true;
+        } catch (JSONException ex) {
+            Logger.getLogger(GestoreSegnalazione.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

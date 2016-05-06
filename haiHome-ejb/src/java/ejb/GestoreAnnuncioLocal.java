@@ -72,6 +72,10 @@ public interface GestoreAnnuncioLocal {
     
     public boolean eliminaStanza(Stanza s);
     
+    //OSCURA
+    
+    public boolean oscusaAnnuncio(long oidAnnuncio, boolean val);
+    
     // ARCHIVIA
     public boolean archiviaAnnuncio(long oidAnnuncio, boolean archiviato);
     

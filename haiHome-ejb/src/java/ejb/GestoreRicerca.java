@@ -223,9 +223,9 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         boolean accept = false;
         //System.out.println("filtro arredato: " + filtroAttuale.isArredato() + " annuncio " + x.getId() + " : " + x.isArredato());
         boolean sentArr = filtroAttuale.isArredato() && !x.isArredato();
-        //System.out.println("sentinella: " + !sentArr);
+        System.out.println("locatore: " + x.getLocatore().isBloccato());
         if (!x.getLocatore().isBloccato()) {
-            if (!x.isArchiviato() || !x.isOscurato()) {
+            if (!x.isArchiviato() && !x.isOscurato()) {
                 if (!sentArr) {
                     if (!quartieriFiltro.isEmpty()) {
                         for (String quart : quartieriFiltro) {

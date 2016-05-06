@@ -14,7 +14,7 @@ $(document).ready(function () {
     
     
     $("#in_locatore").on('click', function() {
-        $('#myModal').modal('show');
+        $('#modalLogin').modal('show');
     }); 
 });
 

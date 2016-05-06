@@ -96,17 +96,23 @@ jQuery(document).ready(function ($) {
 //        $('#oscurati-content').load("ServletController?action=locatore-getAnnunciOscurati");
 
 
+        updateInfoAnnunci();
+
         backups["telefono"] = "";
         backups["descrizione"] = "";
         backups["password"] = ""; 
+        
     });
 
     function updateInfoAnnunci() {
+        console.log("Update sessione..."); 
+        
         $.post(
                 "ServletController",
                 {'action': 'locatore-get-session'},
                 function (responseJSON) {
-                    console.log("Update annuncio: " + responseJSON);
+                    console.log("Update annuncio:..."); 
+                    console.log(responseJSON);
 
                     a_tot = responseJSON.num_annunci;
                     a_num_vis = responseJSON.num_visibili;

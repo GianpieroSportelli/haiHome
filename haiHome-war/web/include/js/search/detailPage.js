@@ -39,10 +39,25 @@ $('.qcar').carousel({
 });
 
 $(document).ready(function () {
-    console.log(""+admin=="true");
-    if (""+admin=="true") {
-        $("#bloccaButton").show();
-        $("#oscuraButton").show();
+    if ("" + admin == "true") {
+
+        if (annuncio.Oscurato) {
+            $("#visibileButton").show();
+        } else {
+            $("#oscuraButton").show();
+        }
+
+        
+
+        if (annuncio.Locatore.bloccato=="true") {
+            console.log(annuncio.Locatore.bloccato);
+            $("#sbloccaButton").show();
+        } else {
+            console.log(annuncio.Locatore.bloccato);
+            $("#bloccaButton").show();
+        }
+
+
     }
 });
 
@@ -376,10 +391,10 @@ function info_annuncio(annuncio) {
             "<p class=\"text-muted\"><span class=\"text-primary\"> Data inizio: </span> " + annuncio.DataInizioAffitto + "</p>" +
             "<p class=\"text-muted\"><span class=\"text-primary\"> Data pubblicazione: </span> " + annuncio.DataPubblicazione + "</p>" +
             "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
-    if(annuncio.Arredato){
-        html+="<p class=\"text-muted\"> L'annuncio è comprensivo di <span class=\"text-primary\">arredamento </span></p>";
-    }else{
-        html+="<p class=\"text-muted\"> L'annuncio non è fornito con <span class=\"text-primary\">arredamento </span></p>";
+    if (annuncio.Arredato) {
+        html += "<p class=\"text-muted\"> L'annuncio è comprensivo di <span class=\"text-primary\">arredamento </span></p>";
+    } else {
+        html += "<p class=\"text-muted\"> L'annuncio non è fornito con <span class=\"text-primary\">arredamento </span></p>";
     }
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
@@ -414,7 +429,7 @@ function info_loc(locatore) {
     html += "<button id=\"segnalaButton\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala</button>";
     html += "<button id=\"bloccaButton\" type=\"button\" class=\"btn btn-danger\" style=\"display:none\" onClick=\"bloccaLocatore()\">Blocca</button>";
     html += "<button id=\"sbloccaButton\" type=\"button\" class=\"btn btn-success\" style=\"display:none\" onClick=\"sbloccaLocatore()\">Sblocca</button>";
-    
+
     html += "</div>";
     return html;
 }
@@ -501,27 +516,64 @@ function cancellaAnnuncioPreferiti() {
             });
 }
 function oscuraAnnuncio() {
-    alert("Annuncio Oscurato");
-    $("#oscuraButton").hide();
-    $("#visibileButton").show();
+    $.post("ServletController",
+            {action: "Annunci-oscuraAnnuncio", oidAnnuncio: annuncio.OID, oscuratoValue: true},
+            function (item) {
+                console.log("Annuncio oscurato?: " + item);
+                if (item.response == true) {
+                    alert("Annuncio Oscurato");
+                    $("#oscuraButton").hide();
+                    $("#visibileButton").show();
+                } else {
+                    alert("Errore nel oscurare l'annuncio!!");
+                }
+            });
+
 }
 
 function visibileAnnuncio() {
-    alert("Annuncio Visibile");
-    $("#visibileButton").hide();
-    $("#oscuraButton").show();
+    $.post("ServletController",
+            {action: "Annunci-oscuraAnnuncio", oidAnnuncio: annuncio.OID, oscuratoValue: "false"},
+            function (item) {
+                console.log(item);
+                if (item.response == true) {
+                    alert("Annuncio Visibile");
+                    $("#visibileButton").hide();
+                    $("#oscuraButton").show();
+                } else {
+                    alert("Errore nel rendere visibile l'annuncio!!");
+                }
+            });
 }
 
 function bloccaLocatore() {
-    alert("loacatore bloccato");
-    $("#bloccaButton").hide();
-    $("#sbloccaButton").show();
+    $.post("ServletController",
+            {action: "locatore-blocca-by-id", oid: annuncio.Locatore.id, bloccatoflag: true},
+            function (item) {
+                console.log("Locatore bloccato?: " + item);
+                if (item == "true") {
+                    alert("loacatore bloccato");
+                    $("#bloccaButton").hide();
+                    $("#sbloccaButton").show();
+                } else {
+                    alert("Errore nel bloccare il locatore!!");
+                }
+            });
 }
 
 function sbloccaLocatore() {
-    alert("loacatore sbloccato");
-    $("#sbloccaButton").hide();
-    $("#bloccaButton").show();
+    $.post("ServletController",
+            {action: "locatore-blocca-by-id", oid: annuncio.Locatore.id, bloccatoflag: false},
+            function (item) {
+                console.log("Locatore sbloccato?: " + item);
+                if (item == "true") {
+                    alert("loacatore sbloccato");
+                    $("#sbloccaButton").hide();
+                    $("#bloccaButton").show();
+                } else {
+                    alert("Errore nello sbloccare il locatore!!");
+                }
+            });
 }
 
 function segnalaAnnuncio() {

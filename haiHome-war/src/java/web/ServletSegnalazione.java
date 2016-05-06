@@ -8,12 +8,16 @@ package web;
 import ejb.GestoreSegnalazioneLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -48,11 +52,25 @@ public class ServletSegnalazione extends HttpServlet {
                 boolean result=gestoreSegnalazione.addSegnalazione(id_studente, id_annuncio, descrizione);
                 System.out.println("result: "+result);
                 out.write(""+result);
+                
             }else if(action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")){
                 JSONArray all=gestoreSegnalazione.MapAnnunciSegnalati();
                 String json=all.toString();
                 response.setContentType("application/json");
+                System.out.println("Result: "+json);
                 out.write(json);
+            }else if(action.equalsIgnoreCase("Segnalazione-archivia")){
+                String json=request.getParameter("segnalazione");
+                 String status=request.getParameter("status");
+                 try {
+                     JSONObject Segn=new JSONObject(json);
+                     System.out.println("Da archiviare: "+json);
+                     boolean result=gestoreSegnalazione.archiviaSegnalazioni(Segn,Boolean.valueOf(status));
+                     out.write(""+result);
+                 } catch (JSONException ex) {
+                     out.write("false");
+                     Logger.getLogger(ServletSegnalazione.class.getName()).log(Level.SEVERE, null, ex);
+                 }
             }
         }
     }

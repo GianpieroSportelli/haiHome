@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    var myModal = $('#myModal');
+    var myModal = $('#modalLogin');
 
     var email_regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     var phone_regex = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
