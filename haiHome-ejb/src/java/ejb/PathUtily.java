@@ -36,7 +36,7 @@ public class PathUtily {
     */
     
     public static String getPhotoPath(){
-        return GianpieroPath;
+        return GiacomoPath;
     }
     
     public static boolean spostaFoto(File sorgente, File destinazione) throws FileNotFoundException, IOException{
@@ -63,6 +63,11 @@ public class PathUtily {
         
         
         
+        
+        return true;
+    }
+    
+    public static boolean eliminaFoto(String path){
         
         return true;
     }
