@@ -91,8 +91,9 @@ public class ServletRicerca extends HttpServlet {
                 
                 boolean compCondomino = request.getParameter("compCondominio")!=null;
                 boolean compRiscaldamento = request.getParameter("compRiscaldamento")!=null;
+                boolean arredato= request.getParameter("arredato")!=null;
                 
-                System.out.println("cmpCond: "+compCondomino+" cmpRis: "+compRiscaldamento);
+                System.out.println("cmpCond: "+compCondomino+" cmpRis: "+compRiscaldamento+" arredato: "+arredato);
                 //System.out.println("Quartieri selezionti");
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();

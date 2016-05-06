@@ -69,9 +69,25 @@
         <!-- end google+ login stuff -->
         <!----------------------- Fine import header -->         
 
+
+        <!-- segnalazioni_script---->
+        <script type='text/javascript' src='include/js/admin/segnalazione_script.js'></script>
+        <link rel="stylesheet" href="include/css/administrator/segnalazioni.css">
+        <!-- FINE --->
+        
+        <!-- SESSION -->
+        <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
+        <!-- FINE SESSION -->
+
+
     </head>
     <body>
         <%@include file="/header.jsp" %> 
+        <script>
+            console.log("carico");
+            loadSegnalazioni();
+
+        </script>
 
         <div class="container">
             <div class="row profile">
@@ -110,7 +126,7 @@
                                         Quartieri e CAP</a></li>
                                 <li><a href="#3" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
-                                        Altre funzioni TO DO</a></li>
+                                        Segnalazioni</a></li>
                             </ul>
                         </div>
 
@@ -217,7 +233,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="3">Robe Qui</div>
+                        <div class="tab-pane fade" id="3">
+                            <div class="col-sm-12">
+
+                                <div id="segnalazioni"></div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>  
             </div>

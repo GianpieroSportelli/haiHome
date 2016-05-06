@@ -159,7 +159,7 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         List<Annuncio> res = new ArrayList<Annuncio>();
 
         for (Annuncio a : this.locatore.getListaAnnunci()) {
-            if (!a.isArchiviato()) {
+            if (!a.isArchiviato() && !a.isOscurato()) {
                 res.add(a);
             }
         }
@@ -172,7 +172,7 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         List<Annuncio> res = new ArrayList<Annuncio>();
 
         for (Annuncio a : this.locatore.getListaAnnunci()) {
-            if (a.isArchiviato()) {
+            if (a.isArchiviato() && !a.isOscurato()) {
                 res.add(a);
             }
         }
@@ -185,7 +185,7 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         List<Annuncio> res = new ArrayList<Annuncio>();
 
         for (Annuncio a : this.locatore.getListaAnnunci()) {
-            if (false) {
+            if (a.isOscurato()) {
                 res.add(a);
             }
         }
