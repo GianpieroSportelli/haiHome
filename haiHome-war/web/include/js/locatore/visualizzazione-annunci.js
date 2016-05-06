@@ -10,11 +10,11 @@ jQuery(document).ready(function ($) {
     
     /* Init */
     $(function () {
-        $('#annunci-content').load("ServletController?action=locatore-getAnnunci&" + axp_string + current_page);
-        $('#num_page').html(current_page + " of " + last_page);
+    //    $('#annunci-content').load("ServletController?action=locatore-getAnnunci&" + axp_string + current_page);
+    //    $('#num_page').html(current_page + " of " + last_page);
 
-        $('#archivio-content').load("ServletController?action=locatore-getArchivioAnnunci&" + axp_string + current_page);
-        $('#archivio_num_page').html(arch_current_page + " of " + arch_last_page);
+    //    $('#archivio-content').load("ServletController?action=locatore-getArchivioAnnunci&" + axp_string + current_page);
+    //    $('#archivio_num_page').html(arch_current_page + " of " + arch_last_page);
     });
 
     /* bottoni prev e next - caso annunci visibili */
@@ -27,13 +27,13 @@ jQuery(document).ready(function ($) {
         }
     });
     
-    /* event delegation */
+    /* event delegation *//*
     $(document).on('click', 'a.link-annuncio', function (event) {
         //var transaction_id = $(this).attr('id').replace('delete_', '');
         console.log("archivia annuncio -"+event.target.id); 
         return false;
     });    
-    
+    */
 
     $('#next_page').on('click', function () {
         if (current_page < last_page) {

@@ -77,6 +77,14 @@
         
     </head>
     <body>
+        <input type="hidden" id="OIDAnnuncio" value="<% 
+               String oid = request.getParameter("oid");
+               if(oid != null){
+                   out.write(oid);
+               }else{
+                   out.write("1005");
+               }
+               %>" />  
         
 
 
