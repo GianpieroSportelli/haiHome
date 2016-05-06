@@ -39,7 +39,7 @@ $('.qcar').carousel({
 });
 
 $(document).ready(function () {
-    if (admin) {
+    if (admin==true) {
         $("#bloccaButton").show();
         $("#oscuraButton").show();
     }

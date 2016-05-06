@@ -11,6 +11,11 @@ $(document).ready(function () {
     $("#search").click(function () {
         goToSearch();
     });
+    
+    
+    $("#in_locatore").on('click', function() {
+        $('#myModal').modal('show');
+    }); 
 });
 
 function goToSearch() {
@@ -29,6 +34,3 @@ function goToSearch() {
     }
     });
 }
-
-
-

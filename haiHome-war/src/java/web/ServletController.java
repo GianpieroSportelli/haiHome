@@ -125,7 +125,7 @@ public class ServletController extends HttpServlet {
                 request.getRequestDispatcher("/ServletStudente").forward(request, response);
             } else if (action.equalsIgnoreCase("Ricerca-deleteFiltro")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
-            } else if (action.equalsIgnoreCase("locatore-edit-profile")) {
+            } else if (action.equalsIgnoreCase("locatore-getAnnunciOscurati")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
             } else if (action.equalsIgnoreCase("login-admin")) {

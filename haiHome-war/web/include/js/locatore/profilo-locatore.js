@@ -9,10 +9,39 @@ jQuery(document).ready(function ($) {
     var a_tot, a_num_vis, a_num_arch, a_num_osc;
     var backups = [];
 
+    //   var NUM_ANNUNCI_X_PAGE = 5;
+    //  var current_pag_vis = 1, last_pag_vis;
+    //  var current_pag_arch = 1, last_pag_arch;
+    //  var current_pag_osc = 1, last_pag_osc;
+
+    //  var axp_string = "axp=" + NUM_ANNUNCI_X_PAGE + "&page=";
+
+    /*
+     function set_pager(id_element, pcurrent, plast) {
+     plast == 0 ?
+     $(id_element).css('display', 'none') :
+     $(id_element).text(pcurrent + " of " + plast);
+     } */
+
+    /* aggiorna le variabili last_pag* (ed eventualmente current_pag*) 
+     * dopo ogni operazione sugli annunci */ /*
+      function update_variables() {
+      last_pag_vis = Math.ceil(a_num_vis / NUM_ANNUNCI_X_PAGE);
+      last_pag_arch = Math.ceil(a_num_arch / NUM_ANNUNCI_X_PAGE);
+      last_pag_osc = Math.ceil(a_num_osc / NUM_ANNUNCI_X_PAGE);
+      
+      if (current_pag_vis > last_pag_vis)
+      current_pag_vis = last_pag_vis;
+      
+      if (current_pag_arch > last_pag_arch)
+      current_pag_arch = last_pag_arch;
+      
+      } */
+
     /* init profilo e variabili globali */
     $(function () {
-        console.log("INIT profile..."); 
-        
+        console.log("INIT profile...");
+
         $.post(
                 "ServletController",
                 {'action': 'locatore-get-session'},
@@ -26,33 +55,59 @@ jQuery(document).ready(function ($) {
                     a_num_arch = responseJSON.num_archiviati;
                     a_num_osc = responseJSON.num_oscurati;
 
+                    //        last_pag_vis = Math.ceil(a_num_vis / NUM_ANNUNCI_X_PAGE);
+                    //        last_pag_arch = Math.ceil(a_num_arch / NUM_ANNUNCI_X_PAGE);
+                    //        last_pag_osc = Math.ceil(a_num_osc / NUM_ANNUNCI_X_PAGE);
+
                     if (login_type === "g+" || login_type === "fb") {
                         $('#rigapwd').css('display', 'none');
                     }
-
+                    /* Info profilo */
                     $('#nome').val(user_data.nome);
                     $('#cognome').val(user_data.cognome);
                     $('#email').val(user_data.email);
                     $('#telefono').val(user_data.telefono);
                     $('#descrizione').val(user_data.descrizione);
+                    /* Info annuncio */
                     $('#num-annunci-visibili').text("(" + a_num_vis + ")");
                     $('#num-annunci-archiviati').text("(" + a_num_arch + ")");
                     $('#num-annunci-oscurati').text("(" + a_num_osc + ")");
+                    /* pagers */
+                    //     update_variables();
+                    //          set_pager('#num_page', 1, last_pag_vis);
+                    //          set_pager('#archivio_num_page', 1, last_pag_arch);
+
+                    // $('#num_page').text("1 of " + last_pag_vis);
+                    // $('#archivio_num_page').text("1 of " + last_pag_arch);
+                    /* ci sono da aggiornare i cosi delle pagine e ricaricare gli annunci forse ... */
+
+
                 }
         );
+        /*
+         $('#annunci-content').load("ServletController?action=locatore-getAnnunci&" + axp_string + current_pag_vis);
+         $('#archivio-content').load("ServletController?action=locatore-getArchivioAnnunci&" + axp_string + current_pag_arch);
+         */
+        loadAnnunci();
+        loadArchivioAnnunci();
+        loadAnnunciOscurati();
+//        $('#annunci-content').load("ServletController?action=locatore-getAnnunci");
+//        $('#archivio-content').load("ServletController?action=locatore-getArchivioAnnunci");
+//        $('#oscurati-content').load("ServletController?action=locatore-getAnnunciOscurati");
 
-        backups["telefono"] = "";//$('#telefono').val();
-        backups["descrizione"] = "";//$('#descrizione').val();
-        backups["password"] = ""; //non serve a nulla (se non a evitare errori a runtime)
+
+        backups["telefono"] = "";
+        backups["descrizione"] = "";
+        backups["password"] = ""; 
     });
 
-    function updateAnnunci() {
+    function updateInfoAnnunci() {
         $.post(
                 "ServletController",
                 {'action': 'locatore-get-session'},
                 function (responseJSON) {
-                    console.log("Update annuncio: " + responseJSON); 
-                    
+                    console.log("Update annuncio: " + responseJSON);
+
                     a_tot = responseJSON.num_annunci;
                     a_num_vis = responseJSON.num_visibili;
                     a_num_arch = responseJSON.num_archiviati;
@@ -61,10 +116,30 @@ jQuery(document).ready(function ($) {
                     $('#num-annunci-visibili').text("(" + a_num_vis + ")");
                     $('#num-annunci-archiviati').text("(" + a_num_arch + ")");
                     $('#num-annunci-oscurati').text("(" + a_num_osc + ")");
+
+                    //    $('#num_page').text("1 of " + last_pag_vis);
+                    //    $('#archivio_num_page').text("1 of " + last_pag_arch);
+
+                    //               $('#annunci-content').load("ServletController?action=locatore-getAnnunci");//&" + axp_string + current_pag_vis);
+                    //               $('#archivio-content').load("ServletController?action=locatore-getArchivioAnnunci");//&" + axp_string + current_pag_arch);
                 }
         );
     }
 
+    function loadAnnunci() {
+        $('#annunci-content').load("ServletController?action=locatore-getAnnunci");
+    }
+
+    function loadArchivioAnnunci() {
+        $('#archivio-content').load("ServletController?action=locatore-getArchivioAnnunci");
+    }
+    
+    function loadAnnunciOscurati() {
+        $('#oscurati-content').load("ServletController?action=locatore-getAnnunciOscurati");
+    }
+
+
+    /* Bottoni per la modifica delle info nel profilo */
     $('.start-edit').on('click', function () {
         var target_name = $(this).parent().parent().parent().attr("id").replace("panel-", "");
         var $input_target = $("#" + target_name);
@@ -146,7 +221,9 @@ jQuery(document).ready(function ($) {
     $(document).on('click', 'a.edit-annuncio', function (event) {
         //var transaction_id = $(this).attr('id').replace('delete_', '');
         var oid = event.target.id.replace("edit-ann", "");
-        console.log("edit " + oid + "...work in progress");
+        
+        window.location.replace("MA0-ModificaAnnunci.jsp?oid="+oid); 
+        
         return false;
     });
 
@@ -167,7 +244,7 @@ jQuery(document).ready(function ($) {
                     if (response === "ok") {
                         // $("#ann-" + oid).css('display', 'none');
                         $("#ann-" + oid).remove();
-                        updateAnnunci();
+                        updateInfoAnnunci();
                     }
                 }
         );
@@ -191,7 +268,9 @@ jQuery(document).ready(function ($) {
                     if (response === "ok") {
                         // $("#ann-" + oid).css('display', 'none');
                         $("#ann-" + oid).remove();
-                        updateAnnunci();
+                        updateInfoAnnunci();
+                        loadArchivioAnnunci(); 
+
                     }
                 }
         );
@@ -214,9 +293,19 @@ jQuery(document).ready(function ($) {
                     if (response === "ok") {
                         // $("#ann-" + oid).css('display', 'none');
                         $("#ann-" + oid).remove();
-                        updateAnnunci();
+                        
+                        if (a_num_arch == 1) {
+                            $('#archivio-content').html("No results"); 
+                        }
+                        
+                        updateInfoAnnunci();
+                        loadAnnunci();
                     }
                 }
         );
     });
+
+
+
+
 });

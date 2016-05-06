@@ -58,8 +58,8 @@
         <!-- Import script Facebook -->
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
-
-        <script type="text/javascript" src="include/js/locatore/visualizzazione-annunci.js"></script>
+        <!--
+                <script type="text/javascript" src="include/js/locatore/visualizzazione-annunci.js"></script> -->
         <script type="text/javascript" src="include/js/locatore/profilo-locatore.js"></script>
 
 
@@ -72,22 +72,6 @@
     </head>
     <body>
         <%@include file="/header.jsp" %>
-
-        <!-- l'html è bello! imparalo NOW -->
-        <div id="__session" style="display:none"> 
-            <%--
-            <div id="user-access"><%= session.getAttribute("user-access")%></div>
-            <div id="annunci-length"><%= session.getAttribute("num-annunci")%></div>
-            <div id="visibili-length"><%= session.getAttribute("num-visibili")%></div>
-            <div id="archiviati-length"><%= session.getAttribute("num-archiviati")%></div>
-            <div id="oscurati-length"><%= session.getAttribute("num-archiviati")%></div> --%>
-            <div id="user-access"></div>
-            <div id="annunci-length"></div>
-            <div id="visibili-length"></div>
-            <div id="archiviati-length"></div>
-            <div id="oscurati-length"></div> 
-
-        </div>
 
         <div class="container">
             <div class="row profile">
@@ -254,64 +238,71 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="annunci">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Annunci</div>
+                                <div id="annunci-content" class="panel-body">
+                                    <!-- contenuto caricato tramite ajax -->
+                                </div>
+                            </div>
                             <!--
                             <div style="display:block">
                                 <a href="IA0-InserimentoAnnunci.jsp" class="btn btn-primary">
                                     Inserisci nuovo annuncio
                                 </a>
-                            </div> -->
+                            </div> --><!--
                             <div id="annunci-content">
-                                <!-- contenuto caricato tramite ajax -->
-                            </div>
+                                
+                            </div> -->
+                            <!--
                             <div>
-                                <ul class="pager">
+                                <ul id='pager-visibili' class="pager">
                                     <li>
                                         <a href='#0' id='prev_page'>
-                                            Prev<!--<span class='glyphicon glyphicon-menu-left'></span>-->
+                                            Prev
                                         </a>
                                     </li>
                                     <li>
-                                        <span id="num_page">1</span></li>
+                                        <span id="num_page"></span></li>
                                     <li>
                                         <a href='#0' id='next_page'>
-                                            Next<!--<span class='glyphicon glyphicon-menu-right'></span>-->
+                                            Next
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="tab-pane fade" id="archivio">
-                            <div id="archivio-content">
-                                <!-- contenuto caricato tramite ajax -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Archivio annunci</div>
+                                <div id="archivio-content" class="panel-body">
+                                    <!-- contenuto caricato tramite ajax -->
+                                </div>
                             </div>
+
+                            <!--
                             <div>
-                                <ul class="pager">
+                                <ul id='pager-archivio' class="pager">
                                     <li>
                                         <a href='#0' id='archivio_prev_page'>
                                             Prev
                                         </a>
                                     </li>
                                     <li>
-                                        <span id="archivio_num_page">1</span>
+                                        <span id="archivio_num_page"></span>
                                     <li>
                                         <a href='#0' id='archivio_next_page'>
                                             Next
                                         </a>
                                     </li>
                                 </ul>
-                                <!--
-                                <a href='#0' id='archivio_prev_page' class="btn">
-                                    <span class='glyphicon glyphicon-menu-left'></span>
-                                </a>
-                                <span id="archivio_num_page">1</span>
-                                <a href='#0' id='archivio_next_page' class="btn">
-                                    <span class='glyphicon glyphicon-menu-right'></span>
-                                </a> -->
-                            </div>
+                            </div> -->
                         </div>
                         <div class="tab-pane fade" id="oscurati">
-                            <div id="oscurati-content">
-                                <!-- contenuto caricato tramite ajax -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Annunci oscurati</div>
+                                <div id="oscurati-content" class="panel-body">
+                                    <!-- contenuto caricato tramite ajax -->
+                                </div>
                             </div>
 
                         </div>

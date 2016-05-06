@@ -72,7 +72,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     //SE la lista è vuota per convenzione vuol dire tutti i quartieri di una determinata città
     @Override
-    public boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri, boolean compresoCondominio, boolean compresoRiscaldamento) {
+    public boolean creaFiltroDiRicerca(double prezzo, ArrayList<String> listaQuartieri, boolean compresoCondominio, boolean compresoRiscaldamento, boolean arredato) {
         if (filtroAttuale == null) {
             return false;
         } else {
@@ -84,6 +84,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             filtroAttuale.setPrezzo(prezzo);
             filtroAttuale.setCompresoCondominio(compresoCondominio);
             filtroAttuale.setCompresoRiscaldamento(compresoRiscaldamento);
+            filtroAttuale.setArredato(arredato);
             return true;
         }
     }
@@ -148,9 +149,10 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             try {
                 Collection<Annuncio> listResult = new ArrayList<>();
                 Collection<Annuncio> annunci = filtroAttuale.getCittà().getAnnunci();
-                /*for(Annuncio x:annunci){
-                 System.out.println(x.toJSON());
-                 }*/
+                int i = 1;
+                for (Annuncio x : annunci) {
+                    System.out.println(i++ + "-" + x.toJSON());
+                }
                 Collection<String> quartieriFiltro = filtroAttuale.getListaQuartieri();
 
                 for (Annuncio x : annunci) {
@@ -237,17 +239,22 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         result.setQuartiere(x.getQuartiere());
 
         boolean accept = false;
+        System.out.println("filtro arredato: " + filtroAttuale.isArredato() + " annuncio " + x.getId() + " : " + x.isArredato());
+        boolean sentArr = filtroAttuale.isArredato() && !x.isArredato();
+        System.out.println("sentinella: " + !sentArr);
         if (!x.getLocatore().isBloccato()) {
             if (!x.isArchiviato() || !x.isOscurato()) {
-                if (!quartieriFiltro.isEmpty()) {
-                    for (String quart : quartieriFiltro) {
-                        if (x.getQuartiere().equalsIgnoreCase(quart)) {
-                            accept = true;
-                            break;
+                if (!sentArr) {
+                    if (!quartieriFiltro.isEmpty()) {
+                        for (String quart : quartieriFiltro) {
+                            if (x.getQuartiere().equalsIgnoreCase(quart)) {
+                                accept = true;
+                                break;
+                            }
                         }
+                    } else {
+                        accept = true;
                     }
-                } else {
-                    accept = true;
                 }
             }
         }
@@ -267,6 +274,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                     boolean out_met = !out_locali && attuale.getMetratura() != 0 && attuale.getMetratura() > x.getMetratura();
                     boolean cmpCon = attuale.isCompresoCondominio() && !x.isCompresoCondominio();
                     boolean cmpRisc = attuale.isCompresoRiscaldamento() && !x.isCompresoRiscaldamento();
+
                     accept = !out_bagni && !out_camere_letto && !out_locali && !out_met && !out_prezzo && !cmpCon && !cmpRisc;
                 }
 
@@ -498,7 +506,8 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             }
             boolean cmpC = false;
             boolean cmpR = false;
-            boolean gen = this.creaFiltroDiRicerca(prezzo, listaQ, cmpC, cmpR);
+            boolean sentArr = false;
+            boolean gen = this.creaFiltroDiRicerca(prezzo, listaQ, cmpC, cmpR, sentArr);
             boolean spec = true;
             if (obj.has("Tipo")) {
                 String tipo = obj.getString("Tipo");

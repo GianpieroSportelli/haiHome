@@ -145,33 +145,36 @@ public class ServletLocatore extends HttpServlet {
                 }
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
-                int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
-                int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
-                String bottone;
+                //    int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
+                //    int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
+                //   String bottone;
 
-                bottone = "";
-                System.out.println("#PAGINA=" + NUM_ANNUNCI_X_PAGE + "req=" + requested_page);
-                String html = getPage(gestoreLocatore.getAnnunciVisibili(), NUM_ANNUNCI_X_PAGE, requested_page);
+                //     bottone = "";
+                //       System.out.println("#PAGINA=" + NUM_ANNUNCI_X_PAGE + "req=" + requested_page);
+                //     String html = getPage(gestoreLocatore.getAnnunciVisibili(), NUM_ANNUNCI_X_PAGE, requested_page);
+                String html = getPage(gestoreLocatore.getAnnunciVisibili());
 
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
                 out.write(html);
 
             } else if (action.equalsIgnoreCase("locatore-getArchivioAnnunci")) {
-                int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
-                int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
+                //     int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
+                //     int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
 
-                String html = getPage(gestoreLocatore.getAnnunciArchiviati(), NUM_ANNUNCI_X_PAGE, requested_page);
+                //         String html = getPage(gestoreLocatore.getAnnunciArchiviati(), NUM_ANNUNCI_X_PAGE, requested_page);
+                String html = getPage(gestoreLocatore.getAnnunciArchiviati());
 
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
                 out.write(html);
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunciOscurati")) {
-                int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
-                int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
+                //       int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
+                //       int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
 
-                String html = getPage(gestoreLocatore.getAnnunciOscurati(), NUM_ANNUNCI_X_PAGE, requested_page);
+                //      String html = getPage(gestoreLocatore.getAnnunciOscurati(), NUM_ANNUNCI_X_PAGE, requested_page);
+                String html = getPage(gestoreLocatore.getAnnunciOscurati());
 
                 response.setContentType("text/html");
                 response.setCharacterEncoding("UTF-8");
@@ -255,21 +258,21 @@ public class ServletLocatore extends HttpServlet {
                 System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
                 long oid = Long.parseLong(request.getParameter("oid"));
                 System.out.println("ARCHIVIAZIONEEE annuncio " + oid);
-/*
+                /*
                 System.out.println("annuncio prima dell'operazione...");
                 for (Annuncio a : gestoreLocatore.getAnnunci()) {
                     if (a.getId() == oid) {
                         System.out.println(a.toJSON().toString());
                     }
                 }
-*/
+                 */
                 boolean res = gestoreAnnuncio.archiviaAnnuncio(oid, true);
 
                 if (res) {
                     Annuncio a = gestoreAnnuncio.getAnnuncioByID(oid);
                     gestoreLocatore.updateAnnuncio(oid, a);
                 }
-/*
+                /*
                 System.out.println("annuncio dopo dell'operazione...");
                 for (Annuncio a : gestoreLocatore.getAnnunci()) {
                     if (a.getId() == oid) {
@@ -291,14 +294,14 @@ public class ServletLocatore extends HttpServlet {
                 System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
                 long oid = Long.parseLong(request.getParameter("oid"));
                 System.out.println("PUBBLICAZIONEEEE annuncio " + oid);
-/*
+                /*
                 System.out.println("annuncio prima dell'operazione...");
                 for (Annuncio a : gestoreLocatore.getAnnunci()) {
                     if (a.getId() == oid) {
                         System.out.println(a.toJSON().toString());
                     }
                 }
-*/
+                 */
                 boolean res = gestoreAnnuncio.archiviaAnnuncio(oid, false);
 
                 if (res) {
@@ -309,7 +312,7 @@ public class ServletLocatore extends HttpServlet {
                 System.out.println(res
                         ? "Pubblicazione annuncio " + oid + " completata con successo"
                         : "Pubblicazione annuncio " + oid + " fallita");
-/*
+                /*
                 System.out.println("annuncio dopo dell'operazione...");
                 for (Annuncio a : gestoreLocatore.getAnnunci()) {
                     if (a.getId() == oid) {
@@ -324,21 +327,21 @@ public class ServletLocatore extends HttpServlet {
                 out.write(res ? "ok" : "errore");
 
             } else if (action.equalsIgnoreCase("locatore-get-session")) {
-                JSONObject jsonsession = new JSONObject(); 
-                
+                JSONObject jsonsession = new JSONObject();
+
                 try {
 //                    jsonsession.accumulate("user-access", "loc"); 
-                    jsonsession.accumulate("user_access", session.getAttribute("user-access")); 
-                    jsonsession.accumulate("user_type", session.getAttribute("user-type")); 
-                    jsonsession.accumulate("user_data", session.getAttribute("user-data")); 
-                    jsonsession.accumulate("num_annunci", session.getAttribute("num-annunci")); 
-                    jsonsession.accumulate("num_visibili", session.getAttribute("num-visibili")); 
-                    jsonsession.accumulate("num_archiviati", session.getAttribute("num-archiviati")); 
-                    jsonsession.accumulate("num_oscurati", session.getAttribute("num-oscurati")); 
+                    jsonsession.accumulate("user_access", session.getAttribute("user-access"));
+                    jsonsession.accumulate("user_type", session.getAttribute("user-type"));
+                    jsonsession.accumulate("user_data", session.getAttribute("user-data"));
+                    jsonsession.accumulate("num_annunci", session.getAttribute("num-annunci"));
+                    jsonsession.accumulate("num_visibili", session.getAttribute("num-visibili"));
+                    jsonsession.accumulate("num_archiviati", session.getAttribute("num-archiviati"));
+                    jsonsession.accumulate("num_oscurati", session.getAttribute("num-oscurati"));
                 } catch (JSONException ex) {
                     Logger.getLogger(ServletLocatore.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 response.setContentType("application/json");
                 System.out.println("LOCATORE GET SESSION: " + jsonsession.toString());
                 out.write(jsonsession.toString());
@@ -362,6 +365,20 @@ public class ServletLocatore extends HttpServlet {
         session.setAttribute("num-visibili", this.gestoreLocatore.getAnnunciVisibili().size());
         session.setAttribute("num-archiviati", this.gestoreLocatore.getAnnunciArchiviati().size());
         session.setAttribute("num-oscurati", this.gestoreLocatore.getAnnunciOscurati().size());
+    }
+
+    private String getPage(List<Annuncio> l) {
+        String html = "";
+
+        if (l.size() > 0) {
+            for (Annuncio a : l) {
+                html += getDivAnnuncio(a);
+            }
+        } else {
+            html = "No results";
+        }
+
+        return html;
     }
 
     private String getPage(List<Annuncio> l, int psize, int requested_page) {
