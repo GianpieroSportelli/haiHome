@@ -330,7 +330,7 @@ public class ServletLocatore extends HttpServlet {
                 JSONObject jsonsession = new JSONObject();
 
                 try {
-//                    jsonsession.accumulate("user-access", "loc"); 
+                    //jsonsession.accumulate("user-access", "loc"); 
                     jsonsession.accumulate("user_access", session.getAttribute("user-access"));
                     jsonsession.accumulate("user_type", session.getAttribute("user-type"));
                     jsonsession.accumulate("user_data", session.getAttribute("user-data"));

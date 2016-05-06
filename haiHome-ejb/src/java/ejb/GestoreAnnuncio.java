@@ -56,7 +56,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     private CittàFacadeLocal cittàFacade;
     @EJB
     private AnnuncioFacadeLocal annuncioFacade;
-
+    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     private Annuncio annuncio;
@@ -289,7 +289,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         
         cittàFacade.edit(citta);
         
-        System.out.println(locatore.getEmail());
+        //gestoreLocatore.addAnnuncio(this.annuncio);
+        
         locatore.addAnnuncio(annuncio);
         
         locatoreFacade.edit(locatore);
@@ -297,14 +298,6 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         locatore = locatoreFacade.find(locatore.getId());
         
         Collection<Annuncio> listAnn =  locatore.getListaAnnunci();
-        System.out.println("LISTA ANNUNCI LOCATORE " + locatore.getId());
-        for(Annuncio a : listAnn){
-            System.out.println(a.getId() + " " + a.getIndirizzo());
-        }
-        
-        
-
-        System.out.println("ciao");
 
         return true;
     }
@@ -712,6 +705,21 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         this.annuncio.setNumeroStanze(numeroStanze);
         this.annuncio.setAtomico(atomico);
         return true;
+    }
+
+    @Override
+    public boolean oscusaAnnuncio(long oidAnnuncio, boolean val) {
+        this.annuncio = annuncioFacade.find(oidAnnuncio);
+        
+        //XOR potentissimo!!!!!!!! se dà vero vuol dire che i due valori sono diversi
+        if(this.annuncio.isOscurato() ^ val){
+            this.annuncio.setOscurato(val);
+            this.annuncioFacade.edit(annuncio);
+            return true;
+            
+        }else{
+            return false;
+        }
     }
 
 
