@@ -221,7 +221,9 @@ jQuery(document).ready(function ($) {
     $(document).on('click', 'a.edit-annuncio', function (event) {
         //var transaction_id = $(this).attr('id').replace('delete_', '');
         var oid = event.target.id.replace("edit-ann", "");
-        console.log("edit " + oid + "...work in progress");
+        
+        window.location.replace("MA0-ModificaAnnunci.jsp?oid="+oid); 
+        
         return false;
     });
 
