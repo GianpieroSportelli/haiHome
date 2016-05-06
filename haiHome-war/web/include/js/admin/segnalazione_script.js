@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var annunciSegn_html = new Array();
 var segn=new Array();
+var annunciSegn_html = new Array();
+var annunciSegnArch_html=new Array();
 
 function loadSegnalazioni() {
     console.log("load");
@@ -14,9 +15,13 @@ function loadSegnalazioni() {
                 console.log(responseJson);
                 $.each(responseJson, function (index, risp) {
                     var html = createSegnalazione(risp, index);
-                    $("#segnalazioni").append(html);
-                    annunciSegn_html.push(html);
                     segn.push(risp);
+                    if(risp.Archiviato){
+                        annunciSegnArch_html.push(html);
+                    }else{
+                       annunciSegn_html.push(html); 
+                    }
+                    $("#segnalazioni").append(html);
                 });
             });
 }
@@ -55,11 +60,13 @@ function createSegnalazione(segn, index) {
 function html_studenti(studenti){
     var html="";
     html+="<h3 class=\"text-muted\" id=\"labelStudenti\">Studenti segnalatori</h3>";
-    html+="<p>";
-    $.each(studenti,function(index,studente){
-       html+=studente.id+"/<span class=\"text-primary\">"+studente.email+" </span>"; 
+    
+    $.each(studenti,function(index,segn){
+        html+="<p>";
+       html+="ID studente: "+segn.Studente.id+"/<span class=\"text-primary\">"+segn.Studente.email+" </span> Data: "+segn.Data+" descrizione: "+segn.Descrizione; 
+        html+="</p>";
     });
-    html+="</p>";
+   
     return html;
 }
 

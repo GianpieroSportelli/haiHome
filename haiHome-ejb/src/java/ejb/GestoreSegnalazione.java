@@ -12,13 +12,12 @@ import facade.SegnalazioneFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -48,6 +47,7 @@ public class GestoreSegnalazione implements GestoreSegnalazioneLocal {
             nuova.setStudente(segnalatore);
             nuova.setAnnuncio(da_segnalare);
             nuova.setDescrizione(descrizione);
+            nuova.setDataSegnalazione(new Date());
             segnalazioneFacade.create(nuova);
         }
         return result;
@@ -73,14 +73,14 @@ public class GestoreSegnalazione implements GestoreSegnalazioneLocal {
     }
     
     private Collection<JSONSegn> createMap(Collection<Segnalazione> all){
-        HashMap<Annuncio,Collection<Studente>> result=new HashMap<>();
+        HashMap<Annuncio,Collection<SegnStudente>> result=new HashMap<>();
         Collection<JSONSegn> out=new ArrayList<>();
         for(Segnalazione x:all){
             if(result.containsKey(x.getAnnuncio())){
-                result.get(x.getAnnuncio()).add(x.getStudente());
+                result.get(x.getAnnuncio()).add(new SegnStudente(x.getStudente(),x.getDataSegnalazione(),x.getDescrizione()));
             }else{
-               Collection<Studente> list=new ArrayList<Studente>();
-               list.add(x.getStudente());
+               Collection<SegnStudente> list=new ArrayList<>();
+               list.add(new SegnStudente(x.getStudente(),x.getDataSegnalazione(),x.getDescrizione()));
                 result.put(x.getAnnuncio(), list);
             }
         }
