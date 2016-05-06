@@ -73,6 +73,16 @@ public class Annuncio implements Serializable {
     private boolean compresoRiscaldamento;
 
     private boolean atomico;
+    
+    private boolean arredato;
+
+    public boolean isArredato() {
+        return arredato;
+    }
+
+    public void setArredato(boolean arredato) {
+        this.arredato = arredato;
+    }
 
     /**
      * Get the value of atomico

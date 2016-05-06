@@ -30,7 +30,7 @@ public interface GestoreAnnuncioLocal {
     
     public boolean inserisciInfoIndirizzo(String citta, String quartiere,String indirizzo,double[] latlng);
     
-    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto);
+    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto,boolean arredato);
 
     public boolean inserisciNuovaStanzaInAffitto(String tipo,Collection<String> foto,boolean compresoCondominio,boolean compresoRiscaldamento,double metratura, double prezzo);
     
@@ -52,7 +52,7 @@ public interface GestoreAnnuncioLocal {
 
     public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng);
 
-    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto);
+    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto,boolean arredato);
     
     public boolean modificaInfoStanze(int numeroStanze, boolean atomico);
 

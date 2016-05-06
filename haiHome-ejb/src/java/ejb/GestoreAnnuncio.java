@@ -135,7 +135,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto) {
+    public boolean inserisciInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, boolean arredato) {
         this.annuncio.setDescrizione(descrizione);
         if (metratura != 0) {
             this.annuncio.setMetratura(metratura);
@@ -143,6 +143,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
         this.annuncio.setListaStanza(new ArrayList<>());
+        this.annuncio.setArredato(arredato);
         return true;
     }
 
@@ -368,11 +369,12 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto) {
+    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, boolean arredato) {
 
         this.annuncio.setDescrizione(descrizione);
         this.annuncio.setMetratura(metratura);
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
+        this.annuncio.setArredato(arredato);
         return true;
 
     }
@@ -542,6 +544,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean inserisciInfoStanze(int numeroStanze, boolean atomico) {
         this.annuncio.setNumeroStanze(numeroStanze);
         this.annuncio.setAtomico(atomico);
+
         return true;
     }
 

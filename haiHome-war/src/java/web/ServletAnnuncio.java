@@ -198,7 +198,9 @@ public class ServletAnnuncio extends HttpServlet {
 
                 String descrizione = request.getParameter("Descrizione").trim();
                 String m = request.getParameter("Metratura").trim();
+                boolean arredato = request.getParameter("Arredato") != null;
                 System.out.println("M = " + m);
+                
                 double metraturaApp = 0;
                 if (!m.equalsIgnoreCase("")) {
                     metraturaApp = Double.parseDouble(m);
@@ -209,10 +211,11 @@ public class ServletAnnuncio extends HttpServlet {
                 GregorianCalendar gc = new GregorianCalendar(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]));
                 //Da gestire la data inizio affitto Date dataInizioAffitto = new Date();
                 System.out.println(gc.getTime());
-                gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime());
+                gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime(),arredato);
 
                 System.out.println("DESCRIZIONE: " + descrizione);
                 System.out.println("METRATURA: " + metraturaApp);
+                System.out.println("ARREDATO: " + arredato);
                 System.out.println("\n");
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
@@ -221,7 +224,7 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoStanze")) {
 
                 System.out.println("-----INFO STANZE");
-
+                
                 String[] numeroStanza = request.getParameterValues("numStanza");
 
                 String[] tipologiaStanze = request.getParameterValues("TipologiaStanza");
@@ -562,6 +565,8 @@ public class ServletAnnuncio extends HttpServlet {
 
                 String descrizione = request.getParameter("Descrizione").trim();
                 String m = request.getParameter("Metratura").trim();
+                boolean arredato = request.getParameter("Arredato") != null;
+                
                 double metraturaApp = 0;
                 if (!m.equalsIgnoreCase("")) {
                     metraturaApp = Double.parseDouble(m);
@@ -571,13 +576,14 @@ public class ServletAnnuncio extends HttpServlet {
                 GregorianCalendar gc = new GregorianCalendar(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]));
                 //Da gestire la data inizio affitto Date dataInizioAffitto = new Date();
                 
-                gestoreAnnuncio.modificaInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime());
+                gestoreAnnuncio.modificaInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime(),arredato);
                 gestoreAnnuncio.rendiModifichePersistenti();
                 
                 JSONObject editAnnuncio = gestoreAnnuncio.toJSON();
                 
                 System.out.println("DESCRIZIONE: " + descrizione);
                 System.out.println("METRATURA: " + metraturaApp);
+                System.out.println("ARREDATO: " + arredato);
                 System.out.println("DATA: " + data[0] + " - " + data[1] + " - " + data[2]);
 
                 System.out.println("\n");

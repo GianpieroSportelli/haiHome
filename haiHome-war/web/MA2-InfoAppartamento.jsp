@@ -23,6 +23,9 @@
                 <label class="control-label">Data inizio Affitto</label>
                 <input id='inpDataInizio' name='DataInizioAffitto' type="text" required="required" disabled="disabled" />
             </div>
+            <div class="form-group">
+                <input name='Arredato' type="checkbox"  value="true">Compreso Condominio<br>
+            </div>
 
         </form>
 

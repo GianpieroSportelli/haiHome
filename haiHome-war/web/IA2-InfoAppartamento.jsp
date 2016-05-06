@@ -24,6 +24,9 @@
                 <label class="control-label">Data inizio Affitto</label>
                 <input id='inpDataInizio' name='DataInizioAffitto' type="text" required="required" class="" />
             </div>
+            <div class="form-group">
+                <input name='Arredato' type="checkbox"  value="true">Arredato<br>
+            </div>
             <button type="submit"  id="butt2" class="btn btn-primary nextBtn btn-lg pull-right"> Next</button>
 
         </form>
