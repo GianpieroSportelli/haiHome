@@ -21,12 +21,32 @@ public class SegnStudente {
     private Studente x;
     private Date data;
     private String descrizione;
+    private boolean arch;
+    private String oid;
 
-       
-    public SegnStudente(Studente st,Date dt,String des){
+           
+    public SegnStudente(Studente st,Date dt,String des,String oid,boolean archiviata){
         x=st;
         data=dt;
         descrizione=des;
+        this.oid=oid;
+        this.arch=archiviata;
+    }
+    
+    public boolean isArch() {
+        return arch;
+    }
+
+    public void setArch(boolean arch) {
+        this.arch = arch;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
     }
 
     public String getDescrizione() {
@@ -62,6 +82,8 @@ public class SegnStudente {
                 result.accumulate("Data", ""+gc.get(Calendar.DAY_OF_MONTH)+"/"+(int) (gc.get(Calendar.MONTH)+1)+"/"+gc.get(Calendar.YEAR));
             }
         result.accumulate("Descrizione", descrizione);
+        result.accumulate("ID", oid);
+        result.accumulate("Archiviato", arch);
         return result;
     }
     

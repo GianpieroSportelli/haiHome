@@ -23,10 +23,17 @@ class JSONSegn implements Comparable<JSONSegn>{
     private Annuncio x;
     private Collection<SegnStudente> list;
     private int n_segn;
+    private boolean archiviato=true;
     
     public JSONSegn(Annuncio x,Collection<SegnStudente> list){
      this.x=x;
      this.list=list;
+     for(SegnStudente s:list){
+         if(!s.isArch()){
+             archiviato=false;
+             break;
+         }
+     }
      n_segn=list.size();
      result=new JSONObject();
         try {
@@ -37,6 +44,7 @@ class JSONSegn implements Comparable<JSONSegn>{
             }
             result.put("Studenti", stud);
             result.put("NSegn",n_segn);
+            result.put("Archiviato",archiviato);
         } catch (JSONException ex) {
             Logger.getLogger(JSONSegn.class.getName()).log(Level.SEVERE, null, ex);
         }

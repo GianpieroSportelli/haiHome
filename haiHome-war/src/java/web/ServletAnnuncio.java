@@ -598,13 +598,13 @@ public class ServletAnnuncio extends HttpServlet {
                 
             }
             //metodi non di mia competenza 
-             else if(action.equalsIgnoreCase("Annunci-oscusaAnnuncio")){
+             else if(action.equalsIgnoreCase("Annunci-oscuraAnnuncio")){
                 
                 System.out.println("-----OSCURA ANNUNCIO:");
 
                 String oidAnnuncio = request.getParameter("oidAnnuncio");
-                String value = request.getParameter("oscusatoValue");
-                
+                String value = request.getParameter("oscuratoValue");
+ 
 
                 boolean res = gestoreAnnuncio.oscusaAnnuncio(Long.parseLong(oidAnnuncio), value.equalsIgnoreCase("true"));
                 

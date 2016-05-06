@@ -9,4 +9,9 @@ and open the template in the editor.
 */
 .n_segn{
     float: right;
+    display: block;
+}
+.link-archivia {
+    float: right;
+    display: block;  
 }
