@@ -28,10 +28,6 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
 
     private Locatore locatore = null;
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-//    public boolean aggiungiLocatore(String email, String nome, String cognome,
-//        String foto, String password, String descrizione) {
     @Override
     public boolean aggiungiLocatore(String email, String password, String nome,
             String cognome, String telefono, String img_profilo) {
@@ -192,8 +188,7 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
 
         return res;
     }
-    
-    
+
     @Override
     public boolean checkAnnuncio(Annuncio a) {
         return this.locatore.checkAnnuncio(a);
@@ -205,27 +200,27 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
         this.rendiModifichePersistenti();
         return res;
     }
-    
+
     @Override
     public boolean addAnnuncio(Annuncio a) {
         boolean res = this.locatore.addAnnuncio(a);
         this.rendiModifichePersistenti();
-        return res; 
-                
+        return res;
+
     }
-    
+
     @Override
     public boolean updateAnnuncio(long oid, Annuncio a) {
-        boolean res = false; 
-        
+        boolean res = false;
+
         if (a.getId() == oid && this.locatore.getListaAnnunci().contains(a)) {
             this.locatore.removeAnnuncio(a);
             this.locatore.addAnnuncio(a);
+            this.rendiModifichePersistenti();
         }
-        
-        return res; 
+
+        return res;
     }
-    
 
     @Override
     public JSONObject toJSON() {
@@ -239,5 +234,22 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
 
     private void rendiModifichePersistenti() {
         this.locatoreFacade.edit(this.locatore);
+    }
+    
+    public void reloadLocatore() {
+        if (this.getLocatore() != null) {
+            this.locatore = this.locatoreFacade.find(this.locatore.getId());            
+        }
+    }
+    
+    public boolean bloccaLocatore(long oid, boolean bloccato) {
+        Locatore loc = this.locatoreFacade.find(oid); 
+        
+        if (loc != null && loc.isBloccato() != bloccato) {
+            loc.setBloccato(bloccato);
+            this.locatoreFacade.edit(loc);
+        }
+        
+        return true; 
     }
 }

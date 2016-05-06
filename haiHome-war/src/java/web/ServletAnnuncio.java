@@ -596,7 +596,28 @@ public class ServletAnnuncio extends HttpServlet {
                 resp.accumulate("data", editAnnuncio);
                 out.write(resp.toString());
                 
-            }else {
+            }
+            //metodi non di mia competenza 
+             else if(action.equalsIgnoreCase("Annunci-oscuraAnnuncio")){
+                
+                System.out.println("-----OSCURA ANNUNCIO:");
+
+                String oidAnnuncio = request.getParameter("oidAnnuncio");
+                String value = request.getParameter("oscuratoValue");
+ 
+
+                boolean res = gestoreAnnuncio.oscusaAnnuncio(Long.parseLong(oidAnnuncio), value.equalsIgnoreCase("true"));
+                
+                
+                //ELABORO RISPOSTA
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                JSONObject resp = new JSONObject();
+                resp.accumulate("response", res);
+                out.write(resp.toString());
+                
+            }
+            else {
 
             }
             out.close();
