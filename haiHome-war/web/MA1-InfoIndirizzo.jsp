@@ -7,7 +7,7 @@
 <div class="col-xs-6 col-md-offset-3">
     <div class="col-md-12">
 
-        <form action="ServletAnnuncio" method="post" id="form-info-appartamento">
+        <form action="ServletAnnuncio" method="post" id="form-edit-indirizzo">
             <input type="hidden" name="action" value="Annunci-editAnnuncio-infoIndirizzo" /> 
 
             <label class="control-label">Indirizzo</label>
@@ -16,18 +16,18 @@
                 
       
                 <div class="col-md-10">
-                        <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control"  name='Indirizzo'/><br />
+                        <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control"  name='Indirizzo' disabled="disabled"/><br />
                         
                 </div>
                 <div class="col-md-2">
-                        <input id='inpCivico'maxlength="5" type="text" required="required" class="form-control" placeholder="n°" name='Civico'  />
+                        <input id='inpCivico'maxlength="5" type="text" required="required" class="form-control" placeholder="n°" name='Civico' disabled="disabled" onclick="civicoFunction()"/>
                 </div>
 
             </div>
 
             <div class="form-group">
                 <label class="control-label">Quartiere</label>
-                <select class="form-control" id="selQuartiere" name='Quartiere'>
+                <select class="form-control" id="selQuartiere" name='Quartiere' disabled="disabled">
 
                 </select>
             </div>

@@ -50,9 +50,11 @@ public interface GestoreAnnuncioLocal {
     
     public boolean modificaAnnuncio(long oidAnnuncio);
 
-    public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng, int numeroStanze, boolean atomico);
+    public boolean modificaInfoIndirizzo(String citta, String quartiere, String indirizzo, double[] latlng);
 
-    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto, int numeroStanze, boolean atomico);
+    public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto);
+    
+    public boolean modificaInfoStanze(int numeroStanze, boolean atomico);
 
     public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo);
 

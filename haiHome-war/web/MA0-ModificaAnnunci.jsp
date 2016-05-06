@@ -31,6 +31,14 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
         
+                <!--INIZIO - Form ajax plugin -->
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <!--FINE- Form ajax plugin -->
+        
+        <!-- Datapicker JQuery-->
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
         <!-- Inizio import header ---------------------
         <script src="include/js/header-updater.js"></script>
         <!-- Script modal login -->
@@ -48,7 +56,7 @@
         <link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
 
-        
+
         <!-- Robe di login2.jsp FORSE-->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
@@ -59,55 +67,75 @@
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <link rel="stylesheet" href="include/css/login/style.css">
         <!-- Fine robe di login2.jsp -->
-
+        
+                <!-- dropzone -->
+        <link rel="stylesheet" href="include/css/InserimentoAnnunci/dropzone1.css"> 
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/dropzone1.js"></script>
+        
+                <!--mio scriot autocomplite -->
+                <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocompleteMod.js"></script>
+        
     </head>
     <body>
+        
+
 
 
         <div class="container">
             <div class="panel-group">
-                
-                <div class="panel panel-default">
+
+                <div id="indirizzoPanel" class="panel panel-default">
+                    
                     <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#collapse1">Modifica Info Indirizzo</a>
-                        </h4>
-                    </div>
-                    <div id="collapse1" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            
-                            <%@include file="MA1-InfoIndirizzo.jsp" %>
-                            
+                        <div class="panel-title">
+                            <a class = "openlink" data-toggle="collapse" href="#collapse1" >Modifica Info Indirizzo</a>
+                            <a class="start-edit editButton"  hidden><span class="glyphicon glyphicon-edit"></span>Modifica</a>
                         </div>
-                        <div class="panel-footer">Panel Footer</div>
+
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse" >
+                        <div class="panel-body">
+                            <%@include file="MA1-InfoIndirizzo.jsp" %>
+                                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&signed_in=true&libraries=places&callback=initAutocomplete" async defer></script>
+
+                        </div>
+                        <div class="panel-footer"></div>
                     </div>
                 </div>
-                
-                <div class="panel panel-default">
+
+                <div id="infoPanel" class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#collapse2">Collapsible panel 2</a>
+                            <a class="openlink" data-toggle="collapse" href="#collapse2">Modifica Info Appartamento</a>
+                            <a class="start-edit editButton"  hidden><span class="glyphicon glyphicon-edit"></span>Modifica</a>
+
                         </h4>
                     </div>
                     <div id="collapse2" class="panel-collapse collapse">
-                        <div class="panel-body">Panel Body</div>
-                        <div class="panel-footer">Panel Footer</div>
+                        <div class="panel-body">
+                            <%@include file="MA2-InfoAppartamento.jsp" %>
+                        </div>
+                        <div class="panel-footer"></div>
                     </div>
                 </div>
-                
-                <div class="panel panel-default">
+
+                <div id="stanzePanel" class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#collapse3">Collapsible panel 3</a>
+                            <a class="openlink" data-toggle="collapse" href="#collapse3">Modifica Stanze</a>
+                            <a class="start-edit editButton"  hidden><span class="glyphicon glyphicon-edit"></span>Modifica</a>
+
                         </h4>
                     </div>
                     <div id="collapse3" class="panel-collapse collapse">
-                        <div class="panel-body">Panel Body</div>
-                        <div class="panel-footer">Panel Footer</div>
+                        <div class="panel-body">
+                            <%@include file="MA3-InfoStanze.jsp" %>
+                        </div>
+                        <div class="panel-footer"></div>
                     </div>
                 </div>
-                
-                <div class="panel panel-default">
+
+                <div id="costiPanel" class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" href="#collapse4">Collapsible panel 4</a>
@@ -118,13 +146,17 @@
                         <div class="panel-footer">Panel Footer</div>
                     </div>
                 </div>
-                
+
             </div>
         </div> <!-- fine container -->
 
 
         <!-- script miei -->
+        <link rel="stylesheet" href="include/css/InserimentoAnnunci/ModificaAnnunci.css">
+        <link rel="stylesheet" href="include/css/InserimentoAnnunci/InserimentoAnnuncio.css">
         <script type="text/javascript" src="include/js/InserimentoAnnunci/ModificaAnnunci.js"></script>
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/stanzeUtilyMod.js"></script>
+        
         <!-- fine script miei -->
 
 
