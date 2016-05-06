@@ -98,7 +98,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         Locatore l = locatoreFacade.find(idLocatore);
         
         this.locatore = l;
-
+        
         annuncio.setLocatore(this.locatore);
         
         this.annuncio.setLocatore(l);
@@ -289,11 +289,18 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         
         cittàFacade.edit(citta);
         
-        
+        System.out.println(locatore.getEmail());
         locatore.addAnnuncio(annuncio);
         
         locatoreFacade.edit(locatore);
         
+        locatore = locatoreFacade.find(locatore.getId());
+        
+        Collection<Annuncio> listAnn =  locatore.getListaAnnunci();
+        System.out.println("LISTA ANNUNCI LOCATORE " + locatore.getId());
+        for(Annuncio a : listAnn){
+            System.out.println(a.getId() + " " + a.getIndirizzo());
+        }
         
         
 

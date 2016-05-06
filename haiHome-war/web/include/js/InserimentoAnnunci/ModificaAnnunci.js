@@ -262,13 +262,10 @@ function aggiornaAptForm(ann) {
     var descrizioneTag = pannInfo.find("#textDescrizione");
     var metraturaTag = pannInfo.find("#inpMetratura");
     var dataInizio = pannInfo.find("input#inpDataInizio");
-        var arredTag = pannInfo.find("#inpArredato");
-    
-        alert(ann.Arredato);
-    if(ann.Arredato){
+    var arredTag = pannInfo.find("#inpArredato");
         
+    if(ann.Arredato){
         $(arredTag).attr('checked', true);
-        alert($(arredTag).attr("id"));
     }else{
         $(arredTag).attr('checked', false);
     }
