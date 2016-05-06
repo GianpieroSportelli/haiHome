@@ -106,7 +106,7 @@ function checkStudenteType() {
     console.log(login_type);
     if (login_type === "g+" || login_type === "fb") {
         $('#rigapwd').css('display', 'none');
-        $('#rigaEmail').attr("class", "col-md-6 col-md-offset-3");
+        //$('#rigaEmail').attr("class", "col-md-6 col-md-offset-3");
     }
 
 }

@@ -7,15 +7,15 @@ Licensed under MIT
 @import "http://fonts.googleapis.com/css?family=Roboto:300,400,500,700";
 
 .snip {
-     white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
-     white-space: -pre-wrap;      /* Opera 4-6 */
-     white-space: -o-pre-wrap;    /* Opera 7 */
-     white-space: pre-wrap;       /* css-3 */
-     word-wrap: break-word;       /* Internet Explorer 5.5+ */
-     word-break: break-all;
-     white-space: normal;
-     padding-top: 5px;
-     padding-right: 5px;
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    white-space: pre-wrap;       /* css-3 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    word-break: break-all;
+    white-space: normal;
+    padding-top: 5px;
+    padding-right: 5px;
     padding-bottom: 5px;
     padding-left: 5px;
     font-size: 80%;
@@ -111,32 +111,32 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
 }
 
 h4 { color: #2a3644; margin-top: 0; line-height: 1.15; }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
-	display: block;
+    display: block;
 }
 ol, ul {
-	list-style: none;
+    list-style: none;
 }
 blockquote, q {
-	quotes: none;
+    quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+    content: '';
+    content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 /*ROBE VERE DI USERPROFILE*/
@@ -267,3 +267,17 @@ table {
 }
 
 hr { margin: 14px; border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
+
+.filtri{
+    border-top: 1.5px dashed #E7EAEC;
+    border-bottom: 1.5px dashed #E7EAEC;
+    border-left: 1.5px dashed #E7EAEC;
+    border-right: 1.5px dashed #E7EAEC;
+}
+
+.ibox-content{
+    border-top: 1.5px dashed #E7EAEC;
+    border-bottom: 1.5px dashed #E7EAEC;
+    border-left: 1.5px dashed #E7EAEC;
+    border-right: 1.5px dashed #E7EAEC;
+}
