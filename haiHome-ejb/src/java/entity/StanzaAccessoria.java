@@ -99,4 +99,14 @@ public class StanzaAccessoria extends Stanza implements Serializable {
         return stanzaJSON;
     }
 
+    @Override
+    public Stanza clone() {
+        StanzaAccessoria newS = new StanzaAccessoria();
+        newS.setId(this.getId());
+        newS.setTipo(this.getTipo());
+        newS.setFoto(this.getFoto());
+        newS.setMetratura(this.getMetratura());
+        return newS;
+    }
+
 }

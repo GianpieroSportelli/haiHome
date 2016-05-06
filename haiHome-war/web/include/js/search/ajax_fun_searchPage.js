@@ -174,6 +174,11 @@ function create_info_annuncio(annuncio) {
             "<p><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
             "<p> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
+    if(annuncio.Arredato){
+        html+="<p> <span class=\"text-primary\">Arredato: </span> Si </p>";
+    }else{
+        html+="<p> <span class=\"text-primary\">Arredato: </span> No </p>";
+    }
     if (annuncio.Atomico) {
         html += "<p><span class=\"text-primary\">Numero locali: </span>" + annuncio.NumeroLocali + "</p>" +
                 "<p><span class=\"text-primary\"> Prezzo: </span>" + annuncio.Prezzo + " &euro;</p>";
@@ -390,6 +395,7 @@ function getfiltro() {
                 $('#pricefrom').val(filtro.Prezzo);
                 $('#compCondominio').prop('checked', filtro.CompresoCondominio);
                 $('#compRiscaldamento').prop('checked', filtro.CompresoRiscaldamento);
+                $('#arredato').prop('checked', filtro.Arredato);
 
                 var tipo = filtro.Tipo;
                 if (tipo == "Appartamento") {

@@ -218,30 +218,12 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     private Annuncio acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
         //Ricordati di aggiungere compreso riscaldamento e compreso condominio
-        Annuncio result = new Annuncio();
-        result.setId(x.getId());
-        result.setCittà(x.getCittà());
-        result.setArchiviato(x.isArchiviato());
-        result.setAtomico(x.isAtomico());
-        result.setCompresoCondominio(x.isCompresoCondominio());
-        result.setCompresoRiscaldamento(x.isCompresoRiscaldamento());
-        result.setDataInizioAffitto(x.getDataInizioAffitto());
-        result.setDataPubblicazione(x.getDataPubblicazione());
-        result.setDescrizione(x.getDescrizione());
-        result.setIndirizzo(x.getIndirizzo());
-        result.setLatLng(x.getLatLng());
-        result.setListaStanza(x.getListaStanza());
-        result.setLocatore(x.getLocatore());
-        result.setMetratura(x.getMetratura());
-        result.setNumeroStanze(x.getNumeroStanze());
-        result.setOscurato(x.isOscurato());
-        result.setPrezzo(x.getPrezzo());
-        result.setQuartiere(x.getQuartiere());
+        Annuncio result = x.clone();
 
         boolean accept = false;
-        System.out.println("filtro arredato: " + filtroAttuale.isArredato() + " annuncio " + x.getId() + " : " + x.isArredato());
+        //System.out.println("filtro arredato: " + filtroAttuale.isArredato() + " annuncio " + x.getId() + " : " + x.isArredato());
         boolean sentArr = filtroAttuale.isArredato() && !x.isArredato();
-        System.out.println("sentinella: " + !sentArr);
+        //System.out.println("sentinella: " + !sentArr);
         if (!x.getLocatore().isBloccato()) {
             if (!x.isArchiviato() || !x.isOscurato()) {
                 if (!sentArr) {
@@ -297,16 +279,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                                 newStanze.add(sF);
                                 accept = true;
                             } else {
-                                StanzaInAffitto newS = new StanzaInAffitto();
-                                newS.setId(sF.getId());
-                                newS.setVisibile(false);
-                                newS.setCompresoCondominio(sF.isCompresoCondominio());
-                                newS.setCompresoRiscaldamento(sF.isCompresoRiscaldamento());
-                                newS.setFoto(sF.getFoto());
-                                newS.setMetratura(sF.getMetratura());
-                                newS.setPrezzo(sF.getPrezzo());
-                                newS.setTipo(sF.getTipo());
-                                newStanze.add(newS);
+                                StanzaInAffitto newS = (StanzaInAffitto) sF.clone();
                             }
                         } else if (s instanceof StanzaAccessoria) {
                             StanzaAccessoria sA = (StanzaAccessoria) s;

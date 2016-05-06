@@ -103,4 +103,6 @@ public abstract class Stanza implements Serializable {
     
     public abstract JSONObject toJSON();
     
+    public abstract Stanza clone();
+    
 }

@@ -225,8 +225,12 @@ function constructFiltriPage() {
             var metratura = filtri[k].Metratura;
             var tipoAnnuncio = filtri[k].Tipo;
             var tipoStanza = filtri[k].TipoStanza;
+            var arredato = filtri[k].Arredato;
 
             var quartieriHTML = '';
+            var enableHR = false;
+            var htmlHR = '';
+            var htmlFineHR = '';
 
             for (var indice in quartieri) {
                 quartieriHTML += quartieri[indice] + " - ";
@@ -239,14 +243,28 @@ function constructFiltriPage() {
 
             }
             var htmlCheckBox = '';
+            var htmlCondominio = '';
+            var htmlRiscaldamento = '';
+            var htmlArredato = '';
 
             var glyph = "include/css/Utente/check-30.png";
-            if (compresoCondominio === true && compresoRiscaldamento === true) {
-                htmlCheckBox = "<hr> <p style=\"text-align:center\"> <span class=\"text-primary\">Compreso Condominio</span>: <img src=\"" + glyph + "\"> &nbsp;&nbsp;&nbsp; <span class=\"text-primary\">Compreso Riscaldamento</span>: <img src=\"" + glyph + "\"> </p>"
-            } else if (compresoRiscaldamento === true) {
-                htmlCheckBox = "<hr> <p style=\"text-align:center\"> <span class=\"text-primary\">Compreso Riscaldamento</span>: <img src=\"" + glyph + "\"> </p>"
-            } else if (compresoCondominio === true) {
-                htmlCheckBox = "<hr> <p style=\"text-align:center\"> <span class=\"text-primary\">Compreso Condominio</span>: <img src=\"" + glyph + "\"> </p>"
+            if (compresoRiscaldamento === true) {
+                enableHR = true;
+                htmlRiscaldamento = "<span class=\"text-primary\">Compreso Riscaldamento</span>: <img src=\"" + glyph + "\"> &nbsp;&nbsp;";
+            }
+            if (compresoCondominio === true) {
+                enableHR = true;
+                htmlCondominio = "<span class=\"text-primary\">Compreso Condominio</span>: <img src=\"" + glyph + "\"> &nbsp;&nbsp;";
+            }
+            if (arredato === true) {
+                enableHR = true;
+                htmlArredato = "<span class=\"text-primary\">Arredato</span>: <img src=\"" + glyph + "\"> &nbsp;&nbsp;";
+            }
+
+            if (enableHR) {
+                htmlHR = "<hr>" +
+                        "<p style=\"text-align:center\">";
+                htmlFineHR = "</p>";
             }
 
             var htmlNumeroCamere = '';
@@ -305,7 +323,11 @@ function constructFiltriPage() {
                         htmlNumeroCamere +
                         htmlNumeroBagni +
                         htmlmetratura +
-                        htmlCheckBox +
+                        htmlHR +
+                        htmlArredato +
+                        htmlCondominio +
+                        htmlRiscaldamento +
+                        htmlFineHR +
                         "</div>" +
                         "</div>" +
                         //"</div>" +
@@ -321,7 +343,11 @@ function constructFiltriPage() {
                         htmlprezzo +
                         quartieriHTML +
                         "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Tipo stanza</span>: " + tipoStanza +
-                        htmlCheckBox +
+                        htmlHR +
+                        htmlArredato +
+                        htmlCondominio +
+                        htmlRiscaldamento +
+                        htmlFineHR +
                         "</div>" +
                         "</div>" +
                         //"</div>" +
@@ -334,7 +360,11 @@ function constructFiltriPage() {
                         "<p> <img src=\"include/css/Utente/Home-30.png\"> <span class=\"text-primary\"> Città </span>: " + citta + "&nbsp;&nbsp;&nbsp;&nbsp;" +
                         htmlprezzo +
                         quartieriHTML +
-                        htmlCheckBox +
+                        htmlHR +
+                        htmlArredato +
+                        htmlCondominio +
+                        htmlRiscaldamento +
+                        htmlFineHR +
                         "</div>" +
                         "</div>" +
                         //"</div>" +

@@ -131,6 +131,7 @@
                                 </select>
 
                             </div>
+                            
                             <div class="form-group">
                                 <p class="my-label">Tipo Annuncio</p>
                                 <select class="form-control" name="tipo" id="tipo">
@@ -139,12 +140,7 @@
                                     <option id="tipo-Stanza" value="Stanza">Stanza</option>
                                 </select>
                             </div>
-                            <div class="form-group" id="divArredato">
-                                <label for="arredato" class="control-label">
-                                    <input type="checkbox" name="arredato" id="arredato">
-                                    Arredato
-                                </label>
-                            </div>
+                            
                             <div class="form-group" id="divTipoStanza" style="display:none">
                                 <label for="tipo" class="control-label">Tipo Stanza</label>
                                 <select class="form-control" name="tipoStanza" id="tipoStanza">
@@ -221,6 +217,14 @@
                                         <input type="checkbox" name="compRiscaldamento" id="compRiscaldamento">
                                         Compreso Riscaldamento
                                     </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divArredato">
+                                <div class="checkbox">
+                                <label for="arredato" class="control-label">
+                                    <input type="checkbox" name="arredato" id="arredato">
+                                    Arredato
+                                </label>
                                 </div>
                             </div>
                             

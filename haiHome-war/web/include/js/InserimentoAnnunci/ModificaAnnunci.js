@@ -208,8 +208,10 @@ $(document).ready(function () {
 
 function initalEditFunction() {
 
-
-    var oid = "1005";
+    var oidTag = $("input#OIDAnnuncio");
+    
+    console.log(oidTag.attr("value"));
+    var oid = oidTag.attr("value");
 
     console.log("INVIO RICHIEDA INIZIALE DI MODIFICA");
 
@@ -245,19 +247,12 @@ function aggiornaIndForm(ann) {
     var indirizzoTag = pannInd.find("#inpIndirizzo");
     var civicoTag = pannInd.find("#inpCivico");
     var quartTag = pannInd.find("#selQuartiere");
-    var arredTag = pannInd.find("#inpArredato");
+
     
 
     indirizzoTag.val(ann.Indirizzo.split(", ")[0]);
     civicoTag.val(ann.Indirizzo.split(", ")[1]);
-    alert(ann.Arredato);
-    if(ann.Arredato){
-        arredTag.prop("checked", true );
-        alert("SI");
-    }else{
-        alert("NO");
-        arredTag.prop( "checked", false );
-    }
+
     var quart = '<option id=\"' + ann.Quartiere + '\" value=\"' + ann.Quartiere + '\">' + ann.Quartiere + '</option>';
     quartTag.append(quart);
 
@@ -267,6 +262,16 @@ function aggiornaAptForm(ann) {
     var descrizioneTag = pannInfo.find("#textDescrizione");
     var metraturaTag = pannInfo.find("#inpMetratura");
     var dataInizio = pannInfo.find("input#inpDataInizio");
+        var arredTag = pannInfo.find("#inpArredato");
+    
+        alert(ann.Arredato);
+    if(ann.Arredato){
+        
+        $(arredTag).attr('checked', true);
+        alert($(arredTag).attr("id"));
+    }else{
+        $(arredTag).attr('checked', false);
+    }
 
     descrizioneTag.val(ann.Descrizione);
     metraturaTag.val(ann.Metratura);
