@@ -466,5 +466,31 @@ public class Annuncio implements Serializable {
         }
         return annuncioJSON;
     }
+    
+    public Annuncio clone(){
+        Annuncio result = new Annuncio();
+        result.setId(this.getId());
+        result.setCittà(this.getCittà());
+        result.setArredato(this.isArredato());
+        result.setArchiviato(this.isArchiviato());
+        result.setAtomico(this.isAtomico());
+        result.setCompresoCondominio(this.isCompresoCondominio());
+        result.setCompresoRiscaldamento(this.isCompresoRiscaldamento());
+        result.setDataInizioAffitto(this.getDataInizioAffitto());
+        result.setDataPubblicazione(this.getDataPubblicazione());
+        result.setDescrizione(this.getDescrizione());
+        result.setIndirizzo(this.getIndirizzo());
+        result.setLatLng(this.getLatLng());
+        result.setListaStanza(this.getListaStanza());
+        result.setLocatore(this.getLocatore());
+        result.setMetratura(this.getMetratura());
+        result.setNumeroStanze(this.getNumeroStanze());
+        result.setOscurato(this.isOscurato());
+        result.setPrezzo(this.getPrezzo());
+        result.setQuartiere(this.getQuartiere());
+        
+        
+        return result;
+    }
 
 }

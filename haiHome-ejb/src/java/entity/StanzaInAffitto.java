@@ -201,4 +201,18 @@ public class StanzaInAffitto extends Stanza implements Serializable {
         return stanzaJSON;
     }
 
+    @Override
+    public Stanza clone() {
+        StanzaInAffitto newS = new StanzaInAffitto();
+        newS.setId(this.getId());
+        newS.setVisibile(this.isVisibile());
+        newS.setCompresoCondominio(this.isCompresoCondominio());
+        newS.setCompresoRiscaldamento(this.isCompresoRiscaldamento());
+        newS.setFoto(this.getFoto());
+        newS.setMetratura(this.getMetratura());
+        newS.setPrezzo(this.getPrezzo());
+        newS.setTipo(this.getTipo());
+        return newS;
+    }
+
 }
