@@ -559,7 +559,7 @@ public class ServletAnnuncio extends HttpServlet {
                 out.write(resp.toString());
                 
                 
-            } else if(action.equalsIgnoreCase("Annunci-rditAnnuncio-infoAppartamento")){
+            } else if(action.equalsIgnoreCase("Annunci-editAnnuncio-infoAppartamento")){
                 
                 System.out.println("-----EDIT INFO APPARTAMENTO:");
 

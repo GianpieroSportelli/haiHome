@@ -209,7 +209,7 @@ $(document).ready(function () {
 function initalEditFunction() {
 
 
-    var oid = "905";
+    var oid = "1005";
 
     console.log("INVIO RICHIEDA INIZIALE DI MODIFICA");
 
@@ -245,10 +245,19 @@ function aggiornaIndForm(ann) {
     var indirizzoTag = pannInd.find("#inpIndirizzo");
     var civicoTag = pannInd.find("#inpCivico");
     var quartTag = pannInd.find("#selQuartiere");
+    var arredTag = pannInd.find("#inpArredato");
+    
 
     indirizzoTag.val(ann.Indirizzo.split(", ")[0]);
     civicoTag.val(ann.Indirizzo.split(", ")[1]);
-
+    alert(ann.Arredato);
+    if(ann.Arredato){
+        arredTag.prop("checked", true );
+        alert("SI");
+    }else{
+        alert("NO");
+        arredTag.prop( "checked", false );
+    }
     var quart = '<option id=\"' + ann.Quartiere + '\" value=\"' + ann.Quartiere + '\">' + ann.Quartiere + '</option>';
     quartTag.append(quart);
 
@@ -285,7 +294,7 @@ function aggiornaStanzeForm(ann){
 }
 
 function abilitaInsetimentoDati(pannello) {
-    var curInputs = pannello.find("input[type='text'],input[type='url'],input[type='number'],select,textarea");
+    var curInputs = pannello.find("input[type='text'],input[type='url'],input[type='number'],input[type='checkbox'],select,textarea");
     for (var i = 0; i < curInputs.length; i++) {
         console.log("input n " + i + " id: " + $(curInputs[i]).attr("id"));
         $(curInputs[i]).removeAttr("disabled");
@@ -294,7 +303,7 @@ function abilitaInsetimentoDati(pannello) {
 }
 
 function disabilitaInserimentoDati(pannello) {
-    var curInputs = pannello.find("input[type='text'],input[type='url'],input[type='number'],select,textarea");
+    var curInputs = pannello.find("input[type='text'],input[type='url'],input[type='number'],input[type='checkbox'],select,textarea");
     for (var i = 0; i < curInputs.length; i++) {
         console.log("input n " + i + " id: " + $(curInputs[i]).attr("id"));
         $(curInputs[i]).attr("disabled", "disabled");
