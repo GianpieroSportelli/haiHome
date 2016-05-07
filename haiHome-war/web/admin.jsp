@@ -37,7 +37,8 @@
         Fine Robe di UserProfile-->
 
 
-        <link href="tutcss.css" rel="stylesheet">
+        <!--<link href="tutcss.css" rel="stylesheet">-->
+        <link href="include/css/footer/footer.css" rel="stylesheet">
         <!-- footer css -->
         <link rel="stylesheet" href="include/css/login/style.css">
         <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style 

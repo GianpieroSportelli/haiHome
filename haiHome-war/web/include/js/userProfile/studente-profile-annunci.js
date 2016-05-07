@@ -104,10 +104,15 @@ function create_info_annuncio(annuncio) {
     var indirizzo = annuncio.Indirizzo;
     var indirizzo_arr = indirizzo.split(",");
     indirizzo = indirizzo_arr[0] + "," + indirizzo_arr[1];
-    if (annuncio.Oscurato) {
-        html += "<p><span font color=\"red\" class=\"text-primary center\">ANNUNCIO OSCURATO </span> </p>";
+    var htmlOscurato = '';
+    if (annuncio.Oscurato === true) {
+        htmlOscurato = "<p><span font color=\"red\" class=\"text-primary center\">ANNUNCIO OSCURATO</span> </p>";
+    }
+    if (annuncio.Archiviato === true) {
+        htmlOscurato = "<p><span font color=\"red\" class=\"text-primary center\">ANNUNCIO ARCHIVIATO</span> </p>";
     }
     html += "<div class=\"center\">" +
+            htmlOscurato +
             "<h1> <strong>" + tipoAnnuncio + "</strong> </h1>" +
             "<p>" + indirizzo + "</p>" +
             //"<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
