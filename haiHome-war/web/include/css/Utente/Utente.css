@@ -23,7 +23,8 @@ Licensed under MIT
 }
 
 .div_snippet{
-    height:600px; 
+    position:relative;
+    height:650px; 
 }
 
 .ibox-content {
@@ -85,7 +86,6 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 .search-result ul li i { padding-right: 5px; }
 .search-result .col-md-7 { position: relative; }
 .search-result h3 { font: 500 normal 1.375em "Roboto",Arial,Verdana,sans-serif; margin-top: 0 !important; margin-bottom: 10px !important; }
-.search-result h3 > a, .search-result i { color: #248dc1 !important; }
 .search-result p { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; } 
 .search-result span.plus { position: absolute; right: 0; top: 126px; }
 .search-result span.plus a { background-color: #248dc1; padding: 5px 5px 3px 5px; }
@@ -280,4 +280,16 @@ hr { margin: 14px; border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1
     border-bottom: 1.5px dashed #E7EAEC;
     border-left: 1.5px dashed #E7EAEC;
     border-right: 1.5px dashed #E7EAEC;
+}
+
+#footerAnnuncio{
+    height:100px; 
+}
+
+.deleteButtonAnnuncio{
+    font-size: 15px;
+    min-width: 0px;
+    position: absolute;
+    right:    10px;
+    bottom:   10px;
 }

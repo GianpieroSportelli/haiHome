@@ -16,6 +16,8 @@ var actual_1 = 0;
 //sei effettivamente sul tab
 var tabAnnunci = false;
 
+var annuncioToDelete = '';
+
 function activateScroll(activation) {
     tabAnnunci = activation;
 }
@@ -40,8 +42,6 @@ function load_Annunci_Studente() {
                 actual_1 = 0;
                 n_page_1 = n_annunci / N_ANNUNCI_X_PAGE;
                 create_pageResult_studente();
-
-                console.log(n_page_1);
                 if (n_page_1 != 0) {
                     selectpage_1(1);
                 }
@@ -82,20 +82,20 @@ function create_pageResult_studente() {
 }
 
 function getCodeCarousel(annuncio, k) {
-    var html = "<div id=\"annuncio-" + k + "\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">"; //1
+    var html = "<div id=\"annuncio-" + k + "\">"; //1
     html += "<div class=\"panel panel-default div_snippet\">"; //2
-    html += "<div class='panel-heading'>"; //3
+    html += "<div class='panel-heading' OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">"; //3
     html += create_carousel(annuncio);
     html += "</div>"; //chiusura testa del pannello
     html += "<div class=\"panel-body snip\">";
-    html += create_info_annuncio(annuncio);
+    html += create_info_annuncio(annuncio, k);
     html += "</div>"; //3
     html += "</div>"; //2
     html += "</div>"; //1
     return html;
 }
 
-function create_info_annuncio(annuncio) {
+function create_info_annuncio(annuncio, k) {
     var html = "";
     var tipoAnnuncio = "Annuncio Stanze";
     if (annuncio.Atomico) {
@@ -106,12 +106,12 @@ function create_info_annuncio(annuncio) {
     indirizzo = indirizzo_arr[0] + "," + indirizzo_arr[1];
     var htmlOscurato = '';
     if (annuncio.Oscurato === true) {
-        htmlOscurato = "<p style=\"color:red;\"><span  class=\"center\">ANNUNCIO OSCURATO</span> </p>";
+        htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO OSCURATO</span> </p>";
     }
-    if (annuncio.Archiviato === true) {
-        htmlOscurato = "<p style=\"color:red;\"><span style=\"color:red;\" class=\"center\">ANNUNCIO ARCHIVIATO</span> </p>";
+    if (annuncio.archiviato === true) {
+        htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO ARCHIVIATO</span> </p>";
     }
-    html += "<div class=\"center\">" +
+    html += "<div class=\"center\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">" +
             htmlOscurato +
             "<h1> <strong>" + tipoAnnuncio + "</strong> </h1>" +
             "<p>" + indirizzo + "</p>" +
@@ -130,6 +130,8 @@ function create_info_annuncio(annuncio) {
                 "<p><span class=\"text-primary\"> Prezzo: </span>" + annuncio.Prezzo + " &euro;</p>";
     }
     html += "</div>"; //chiusura center
+
+    html += "<div id=\"footerAnnuncio\"> <p> <a onclick=\"deleteAnnuncioModal(" + annuncio.OID + ")\" class=\" deleteButtonAnnuncio btn btn-danger\"><i class=\"fa fa-trash-o\" title=\"Delete\" aria-hidden=\"true\"></i> <span class=\"sr-only\">Delete</span>Elimina</a> </p> </div>";
     return html;
 }
 
@@ -298,11 +300,25 @@ function nextpage_1() {
 
 function send_Annuncio(k) {
     var annuncio = annunci[k];
-    var url = "/haiHome-war/dettagliAnnuncio.jsp";
-    var json = JSON.stringify(annuncio);
-    $.session.set('dettagli', json);
-    $.session.set('admin', false);
-    window.location = url;
+
+    if (annuncio.Oscurato) {
+        $('#annuncio-' + k).attr('data-content', "L'annuncio è stato oscurato e non può essere visualizzato.");
+        $('#annuncio-' + k).popover('show');
+    } else if (annuncio.Archiviato) {
+        $('#annuncio-' + k).attr('data-content', "L'annuncio è stato archiviato e non può essere visualizzato.");
+        $('#annuncio-' + k).popover('show');
+    } else {
+        var url = "/haiHome-war/dettagliAnnuncio.jsp";
+        var json = JSON.stringify(annuncio);
+        $.session.set('dettagli', json);
+        $.session.set('admin', false);
+        window.location = url;
+    }
+
+    var millisecondsToWait = 5000;
+    setTimeout(function () {
+        $('#annuncio-' + k).popover('hide');
+    }, millisecondsToWait);
 }
 
 // implement JSON.stringify serialization
@@ -337,5 +353,28 @@ $(window).scroll(function () {
         }
     }
 });
+
+function deleteAnnuncioModal(idAnnuncio) {
+    annuncioToDelete = idAnnuncio;
+
+    //IL MODAL VIENE CARICATO NELL'INCLUDE DELLA PAGINA
+    $('#modalCancellazioneAnnuncio').modal('show');
+}
+
+function deleteAnnuncio() {
+    $.post("ServletController",
+            {action: "studente-removeAnnuncio", id: annuncioToDelete},
+            function (item) {
+                //var html = '';
+                //alert(item);
+                console.log("Annuncio eliminato?: " + item);
+                if (item == "true") {
+                    load_Annunci_Studente();
+                } else {
+                    $('#annunci').attr('data-content', "Errore eliminazione annuncio: " + item);
+                    $('#annunci').popover('show');
+                }
+            });
+}
 
 
