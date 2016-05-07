@@ -108,7 +108,7 @@ function create_info_annuncio(annuncio, k) {
     if (annuncio.Oscurato === true) {
         htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO OSCURATO</span> </p>";
     }
-    if (annuncio.archiviato === true) {
+    if (annuncio.Archiviato === true) {
         htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO ARCHIVIATO</span> </p>";
     }
     html += "<div class=\"center\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">" +
