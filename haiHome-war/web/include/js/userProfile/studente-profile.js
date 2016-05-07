@@ -65,7 +65,9 @@ $(document).ready(function () {
         if (target_name === "password" &&
                 $('#new-password').val() !== $('#new-password2').val()) {
             $panel.children(".panel-body").addClass("has-error");
-            console.log("password mismatch - client side")
+            console.log("password mismatch - client side");
+            $('#new-password2').attr('data-content', 'Le password non coincidono.');
+            $('#new-password2').popover('show');
             return false;
         }
 
@@ -86,10 +88,24 @@ $(document).ready(function () {
 
                         //        $panel.children(".panel-body").addClass("has-success");
                         console.log("done");
+                        $('.start-edit').attr('data-content', 'Password modificata con successo');
+                        $('.start-edit').popover('show');
+
+                        var millisecondsToWait = 10000;
+                        setTimeout(function () {
+                            $('.start-edit').popover('hide');
+                        }, millisecondsToWait);
+
                     } else {
                         $panel.children(".panel-body").addClass("has-error");
                         console.log("error code: " + responseJson.error);
-                        alert(responseJson.error);
+                        $('.save-edit').attr('data-content', responseJson.error);
+                        $('.save-edit').popover('show');
+
+                        var millisecondsToWait = 10000;
+                        setTimeout(function () {
+                            $('.save-edit').popover('hide');
+                        }, millisecondsToWait);
                     }
                     $('#password').val('');
                     $('#new-password').val('');
