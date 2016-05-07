@@ -21,6 +21,8 @@ import facade.FiltroDiRicercaFacadeLocal;
 import facade.QuartiereFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -50,8 +52,10 @@ public class GestoreRicerca implements GestoreRicercaLocal {
     FiltroDiRicerca filtroAttuale = null;
 
     Città cittàAttuale = null;
+    
 
     // Add business logic below. (Right-click in editor and choose
+    
     // "Insert Code > Add Business Method")
     @Override
     public boolean selezionaCittà(String città) {
@@ -161,7 +165,9 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                         listResult.add(after);
                     }
                 }
-
+                Collections.sort((List<Annuncio>) listResult);
+                
+                
                 result = CollectionToJSONArray(listResult);
 
             } catch (JSONException ex) {
@@ -569,5 +575,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         }
         return result;
     }
+
+   
 
 }

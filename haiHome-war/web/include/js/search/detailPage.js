@@ -40,24 +40,18 @@ $('.qcar').carousel({
 
 $(document).ready(function () {
     if ("" + admin == "true") {
-
         if (annuncio.Oscurato) {
             $("#visibileButton").show();
         } else {
             $("#oscuraButton").show();
         }
-
-        
-
-        if (annuncio.Locatore.bloccato=="true") {
-            console.log(annuncio.Locatore.bloccato);
+        if (annuncio.Locatore.bloccato == "true") {
             $("#sbloccaButton").show();
         } else {
-            console.log(annuncio.Locatore.bloccato);
             $("#bloccaButton").show();
         }
-
-
+    }else{
+        loggatoStudente();
     }
 });
 
@@ -399,10 +393,10 @@ function info_annuncio(annuncio) {
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
-    html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
-    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina</button>";
-    html += "<button id=\"oscuraButton\" type=\"button\" class=\"btn btn-danger\" onClick=\"oscuraAnnuncio()\" style=\"display:none\">Oscura</button>";
-    html += "<button id=\"visibileButton\" type=\"button\" class=\"btn btn-success\" onClick=\"visibileAnnuncio()\" style=\"display:none\">Visibile</button>";
+    html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
+    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina</button>";
+    html += "<button id=\"oscuraButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"oscuraAnnuncio()\" style=\"display:none\">Oscura</button>";
+    html += "<button id=\"visibileButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"visibileAnnuncio()\" style=\"display:none\">Visibile</button>";
     html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
@@ -426,10 +420,9 @@ function info_loc(locatore) {
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">email: </span><span id=\"mail\">" + locatore.email + "</span></p>";
-    html += "<button id=\"segnalaButton\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala</button>";
-    html += "<button id=\"bloccaButton\" type=\"button\" class=\"btn btn-danger\" style=\"display:none\" onClick=\"bloccaLocatore()\">Blocca</button>";
-    html += "<button id=\"sbloccaButton\" type=\"button\" class=\"btn btn-success\" style=\"display:none\" onClick=\"sbloccaLocatore()\">Sblocca</button>";
-
+    html += "<button id=\"segnalaButton\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala</button>";
+    html += "<button id=\"bloccaButton\" type=\"button\" class=\"btn btn-danger detailButton\" style=\"display:none\" onClick=\"bloccaLocatore()\">Blocca</button>";
+    html += "<button id=\"sbloccaButton\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"sbloccaLocatore()\">Sblocca</button>";
     html += "</div>";
     return html;
 }
@@ -521,7 +514,7 @@ function oscuraAnnuncio() {
             function (item) {
                 console.log("Annuncio oscurato?: " + item);
                 if (item.response == true) {
-                    alert("Annuncio Oscurato");
+                    alert("Annuncio Oscurato!!");
                     $("#oscuraButton").hide();
                     $("#visibileButton").show();
                 } else {
@@ -537,7 +530,7 @@ function visibileAnnuncio() {
             function (item) {
                 console.log(item);
                 if (item.response == true) {
-                    alert("Annuncio Visibile");
+                    alert("Annuncio Visibile!!");
                     $("#visibileButton").hide();
                     $("#oscuraButton").show();
                 } else {
@@ -552,7 +545,7 @@ function bloccaLocatore() {
             function (item) {
                 console.log("Locatore bloccato?: " + item);
                 if (item == "true") {
-                    alert("loacatore bloccato");
+                    alert("Locatore bloccato!!");
                     $("#bloccaButton").hide();
                     $("#sbloccaButton").show();
                 } else {
@@ -567,7 +560,7 @@ function sbloccaLocatore() {
             function (item) {
                 console.log("Locatore sbloccato?: " + item);
                 if (item == "true") {
-                    alert("loacatore sbloccato");
+                    alert("Locatore sbloccato!!");
                     $("#sbloccaButton").hide();
                     $("#bloccaButton").show();
                 } else {
@@ -578,16 +571,21 @@ function sbloccaLocatore() {
 
 function segnalaAnnuncio() {
     //alert("annuncio Segnalato");
+    var descrizione = prompt("Inserisci testo segnalazione", "qui!!");
+    if (descrizione != null) {
     $.post("ServletController",
-            {action: "Segnalazione-addSegnalazione", id_annuncio: annuncio.OID, id_studente: id_studente, descrizione: "segnalazione di " + id_studente},
+            {action: "Segnalazione-addSegnalazione", id_annuncio: annuncio.OID, id_studente: id_studente, descrizione: descrizione},
             function (item) {
                 console.log("Annuncio segnalato?: " + item);
                 if (item == "true") {
-                    alert("Annuncio Segnalato!!!!!");
+                    alert("Annuncio Segnalato!!");
                 } else {
                     alert("annuncio non segnalato, contatta l'admin!!!");
                 }
             });
+        }else{
+            segnalaAnnuncio();
+        }
 }
 
 function callFoto(foto_OID) {

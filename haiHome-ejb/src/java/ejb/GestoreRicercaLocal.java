@@ -57,4 +57,5 @@ public interface GestoreRicercaLocal {
 
     public JSONObject getTipoStanzaJSON();
 
+
 }
