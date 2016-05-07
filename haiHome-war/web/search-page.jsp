@@ -229,7 +229,7 @@
                             </div>
                             
                             <button id="searchButton"  type="submit" class="btn btn-danger glyphicon glyphicon-search"></button> <!--type="submit"-->
-                            <button id="saveButton"  type="button" class="btn btn-danger" onClick="persistiFiltro()" style="display:none"></button> <!--type="submit" glyphicon glyphicon-plus-->
+                            <button id="saveButton"  type="button" class="btn btn-danger" onClick="persistiFiltro_init()" style="display:none"></button> <!--type="submit" glyphicon glyphicon-plus-->
 
                         </form>
 
