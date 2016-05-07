@@ -118,7 +118,7 @@
             //$("#dettagli-page").append("<img src=\"images/bg.jpg\" id=\"bg\" alt=\"\">");
             $("#result").append(create_Page(annuncio));
             $("#info").append(init_info(annuncio));
-            loggatoStudente();
+            
             loadAllfoto();
             $("#service").append(service());
         </script>

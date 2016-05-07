@@ -28,6 +28,7 @@ function annunci_search() {
                 $.each(responseJson, function (index, item) {
                     latlng[index] = item;
                 });
+                //disableSave();
                 //funzione che inizializza la mappa sulla città
                 initialize(latlng[0], latlng[1]);
                 //Deferred serve pr delegare l'esecuzione di funzioni javascript
@@ -174,10 +175,10 @@ function create_info_annuncio(annuncio) {
             "<p><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
             "<p> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
-    if(annuncio.Arredato){
-        html+="<p> <span class=\"text-primary\">Arredato: </span> Si </p>";
-    }else{
-        html+="<p> <span class=\"text-primary\">Arredato: </span> No </p>";
+    if (annuncio.Arredato) {
+        html += "<p> <span class=\"text-primary\">Arredato: </span> Si </p>";
+    } else {
+        html += "<p> <span class=\"text-primary\">Arredato: </span> No </p>";
     }
     if (annuncio.Atomico) {
         html += "<p><span class=\"text-primary\">Numero locali: </span>" + annuncio.NumeroLocali + "</p>" +
@@ -382,7 +383,7 @@ function getfiltro() {
     $.post("ServletController",
             {action: "Ricerca-getFiltro"},
             function (filtro) {
-                console.log(filtro);
+                //console.log(filtro);
                 var Quartieri = filtro.Quartieri;
                 $.each(Quartieri, function (index, quart) {
                     $('#' + quart).prop('selected', true);
@@ -434,7 +435,7 @@ function send_Annuncio(k) {
     var url = "/haiHome-war/dettagliAnnuncio.jsp";
     var json = JSON.stringify(annuncio);
     $.session.set('dettagli', json);
-    $.session.set('admin',false);
+    $.session.set('admin', false);
     window.open(url);
 }
 
@@ -474,10 +475,30 @@ function persistiFiltro() {
                 getf.resolve();
             });
 }
+
+function persistiFiltro_init() {
+    console.log($('#searchForm').serialize());
+    $.ajax({
+        type: 'post',
+        url: 'ServletController',
+        data: $('#searchForm').serialize(),
+        success: function () {
+            console.log("send search ok!!");
+            clearMarkers(marker_annunci);
+            marker_annunci = new Array();
+            load_Annunci();
+            var getf = $.Deferred();
+            getf.done(getfiltro);
+            getf.resolve();
+            persistiFiltro();
+            
+        }
+    });
+}
 //Invio della form tramite PLUGIN
 $(document).ready(function () {
     $('#searchForm').ajaxForm(function () {
-        $("#searchDiv").stop().animate({"marginTop": "0px"}, "slow");
+        //$("#searchDiv").stop().animate({"marginTop": "0px"}, "slow");
         clearMarkers(marker_annunci);
         marker_annunci = new Array();
         load_Annunci();
@@ -494,8 +515,8 @@ $(window).scroll(function () {
     }
     /*per far camminare il div del filtro
      * if (($(window).scrollTop()+700) <= $(document).height() - $(window).height() && ($(window).scrollTop()-700) <= $(document).height() - $(window).height()) {
-        $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft": ($(window).scrollLeft()) + "px"}, "slow");
-    }*/
+     $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft": ($(window).scrollLeft()) + "px"}, "slow");
+     }*/
 });
 
 

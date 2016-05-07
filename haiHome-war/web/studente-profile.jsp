@@ -54,7 +54,7 @@
 
 
         <!-- footer css -->
-        <link href="tutcss.css" rel="stylesheet">
+        <link href="include/css/footer/footer.css" rel="stylesheet">
 
         <link rel="stylesheet" href="include/css/login/style.css">
         <link rel="stylesheet" href="include/css/login/style2.css">  
@@ -153,13 +153,13 @@
                         <div class="profile-usermenu"> <!-- required for floating -->
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs tabs-left">
-                                <li class="active"><a href="#home" data-toggle="tab">
+                                <li class="active"><a href="#home" data-toggle="tab" onclick="activateScroll(false)">
                                         <i class="glyphicon glyphicon-user"></i>
                                         Home</a></li>
-                                <li><a href="#annunci" data-toggle="tab">
+                                <li><a href="#annunci" data-toggle="tab" onclick="activateScroll(true)">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         Annunci preferiti</a></li>
-                                <li><a href="#filtriUtente" data-toggle="tab">
+                                <li><a href="#filtriUtente" data-toggle="tab" onclick="activateScroll(false)">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Filtri Preferiti</a></li>
                             </ul>
@@ -290,7 +290,7 @@
              if (filtri.length !== 0) {
              //Ho messo due variabili perche' non aggiorna la sessione in real-time
              if (!activatedTutorial) {
-             <%/* if (session.getAttribute("tutorial") == null) {
+            <%/* if (session.getAttribute("tutorial") == null) {
                     session.setAttribute("tutorial", true);
                   */ %>
              //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
@@ -300,13 +300,13 @@
              introJs().start();
              activatedTutorial = true;
              }, millisecondsToWait);
-             <%// }%>
+            <%// }%>
              }
              }
              }*/
         </script>
 
-        <%@include file="/footer.jsp" %>
+        <%@include file="/footer2.jsp" %>
 
     </body>
 </html>

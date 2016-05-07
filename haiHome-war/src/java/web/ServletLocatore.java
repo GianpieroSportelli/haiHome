@@ -249,8 +249,8 @@ public class ServletLocatore extends HttpServlet {
 
                 System.out.println("Richiesta cancellazione annuncio " + oid);
 
-                Annuncio annuncio = gestoreAnnuncio.predniAnnuncio(oid); //dislessia by jack
-
+                Annuncio annuncio = gestoreAnnuncio.getAnnuncioByID(oid); 
+                
                 if (gestoreLocatore.checkAnnuncio(annuncio)) {
                     gestoreLocatore.removeAnnuncio(annuncio);
                     res = gestoreAnnuncio.eliminaAnnuncio(oid);
@@ -440,7 +440,7 @@ public class ServletLocatore extends HttpServlet {
         html += "<div class='panel panel-default'>"; // PANEL
         html += "<div class='panel-heading'>"; // PANEL HEADING
         html += "<span class='nome-annuncio'>"; 
-        html += "<a href='#0'>Annuncio " + oid + " in " + a.getIndirizzo() + "</a>";
+        html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio " + oid + " in " + a.getIndirizzo() + "</a>";
         html += "</span>";
         html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
         html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";

@@ -166,7 +166,7 @@ jQuery(document).ready(function ($) {
 
     /* Bottoni per la modifica delle info nel profilo */
     $('.start-edit').on('click', function () {
-        var target_name = $(this).parents(".panel-default").attr("id").replace("panel-", ""); 
+        var target_name = $(this).parents(".panel-default").attr("id").replace("panel-", "");
 //        var target_name = $(this).parent().parent().parent().attr("id").replace("panel-", "");
         var $input_target = $("#" + target_name);
 
@@ -218,7 +218,7 @@ jQuery(document).ready(function ($) {
                 {
                     'action': 'locatore-edit-info',
                     'field-name': target_name,
-                    'field-value': new_content, 
+                    'field-value': new_content,
                     'new-pw': $('#new-password').val()
                 },
                 function (responseJson) {
@@ -328,6 +328,22 @@ jQuery(document).ready(function ($) {
                     }
                 }
         );
+    });
+
+    $(document).on('click', 'a.annuncio-view-details', function (event) {
+//        var oid = event.target.parents(".annuncio").attr("id"); 
+        var oid = event.target.id.replace("open-", "");
+        console.log("> view " + oid);
+
+        $.post(
+                "ServletController",
+                {
+                    'action': 'asd',
+                    'oid': oid
+                }, function (responseJSON) {
+                    console.log("response"); 
+
+        });
     });
 
 

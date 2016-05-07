@@ -3,11 +3,6 @@ var split2 = "/";
 var foto_page = new Array();
 var dim_image_car = 500; //dimensione immagine del carosello
 
-var geocoder;
-var map;
-var geoAddress;
-var marker_annunci = new Array();
-
 var N_ANNUNCI_X_PAGE = 2;
 var n_page_1 = 0;
 var n_annunci = 0;
@@ -16,6 +11,14 @@ var page_annunci = new Array();
 var caroselli = new Array();
 
 var actual_1 = 0;
+
+//Variabile utile per usare lo scroll per caricare gli annunci solo quando
+//sei effettivamente sul tab
+var tabAnnunci = false;
+
+function activateScroll(activation) {
+    tabAnnunci = activation;
+}
 
 function load_Annunci_Studente() {
     $.post("ServletController",
@@ -109,10 +112,10 @@ function create_info_annuncio(annuncio) {
             "<p><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
             "<p> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
-    if(annuncio.Arredato){
-        html+="<p> <span class=\"text-primary\">Arredato: </span> Si </p>";
-    }else{
-        html+="<p> <span class=\"text-primary\">Arredato: </span> No </p>";
+    if (annuncio.Arredato) {
+        html += "<p> <span class=\"text-primary\">Arredato: </span> Si </p>";
+    } else {
+        html += "<p> <span class=\"text-primary\">Arredato: </span> No </p>";
     }
     if (annuncio.Atomico) {
         html += "<p><span class=\"text-primary\">Numero locali: </span>" + annuncio.NumeroLocali + "</p>" +
@@ -320,8 +323,10 @@ JSON.stringify = JSON.stringify || function (obj) {
 
 //Caricamento dei risultati a fine pagina
 $(window).scroll(function () {
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        nextpage_1();
+    if (tabAnnunci) {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            nextpage_1();
+        }
     }
 });
 

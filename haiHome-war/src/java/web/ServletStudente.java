@@ -75,7 +75,7 @@ public class ServletStudente extends HttpServlet {
                 if (gestoreStudente.checkStudente(email) == false) {
                     /* creo studente con avatar di default */
                     gestoreStudente.aggiungiStudente(email, name, surname,
-                            "http://openmag.it/wp-content/uploads/2015/12/gianni_morandi.jpg",
+                            "https://accrualnet.cancer.gov/sites/accrualnet.cancer.gov/themes/accrualnet/accrualnet-internals/images/avatars/male/Blue.png",
                             pwd);
                     op_result = "OK";
 
@@ -247,11 +247,11 @@ public class ServletStudente extends HttpServlet {
                         gestoreStudente.changePassword(new_password);
                     } else {
                         res = false;
-                        error = "PASSWORD TOO SHORT";
+                        error = "La nuova password deve contenere almeno 3 caratteri.";
                     }
                 } else {
                     res = false;
-                    error = "OLD PASSWORD INCORRECT";
+                    error = "La vecchia password è errata.";
                 }
 
                 //refresh sessione
@@ -268,16 +268,16 @@ public class ServletStudente extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(jsonresult.toString());
-            }else if(action.equalsIgnoreCase("Ricerca-checkAnnuncio")){
+            } else if (action.equalsIgnoreCase("Ricerca-checkAnnuncio")) {
                 String id = request.getParameter("id");
                 boolean result = gestoreStudente.getStudente().checkAnnuncio(id);
                 System.out.println(action + " " + result);
-                out.write(""+result);
-            }else if(action.equalsIgnoreCase("studente-removeAnnuncio")){
+                out.write("" + result);
+            } else if (action.equalsIgnoreCase("studente-removeAnnuncio")) {
                 String id = request.getParameter("id");
                 boolean result = gestoreStudente.removeAnnuncio(id);
                 System.out.println(action + " " + result);
-                out.write(""+result);
+                out.write("" + result);
             }
         }
     }
