@@ -89,6 +89,8 @@ public interface GestoreAnnuncioLocal {
     //METODI DI RITORNO    
     public JSONObject toJSON();
     
+    public JSONObject toJSON(long oid);
+    
     public Annuncio predniAnnuncio(long oid);
     
     public ArrayList<String> getTipologieStanzaAffitto();

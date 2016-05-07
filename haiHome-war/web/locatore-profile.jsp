@@ -60,9 +60,12 @@
         <!-- Fine Import script Facebook -->
         <!--
                 <script type="text/javascript" src="include/js/locatore/visualizzazione-annunci.js"></script> -->
+        
+        <!-- SESSION -->
+        <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
+        <!-- FINE SESSION -->
+                
         <script type="text/javascript" src="include/js/locatore/profilo-locatore.js"></script>
-
-
 
         <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
         <script src="include/js/login/ajax_req_and_stuff.js"></script>

@@ -306,6 +306,16 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public JSONObject toJSON() {
         return this.annuncio.toJSON();
     }
+    
+    @Override
+    public JSONObject toJSON(long oid) {
+        Annuncio ann = annuncioFacade.find(oid);
+        if(ann!=null){
+            return ann.toJSON();
+        }else{
+            return null;
+        }
+    }
 
     @Override
     public boolean modificaAnnuncio(Annuncio annuncio) {
@@ -721,6 +731,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             return false;
         }
     }
+
+
 
 
     

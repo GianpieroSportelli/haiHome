@@ -331,17 +331,26 @@ jQuery(document).ready(function ($) {
     });
 
     $(document).on('click', 'a.annuncio-view-details', function (event) {
-//        var oid = event.target.parents(".annuncio").attr("id"); 
         var oid = event.target.id.replace("open-", "");
         console.log("> view " + oid);
 
         $.post(
                 "ServletController",
                 {
-                    'action': 'asd',
+                    'action': 'Annuncio-getJSONByOid',
                     'oid': oid
                 }, function (responseJSON) {
-                    console.log("response"); 
+            if (responseJSON.response === "OK") {
+                console.log(responseJSON.data);
+                /* code by gianp */
+                var url = "/haiHome-war/dettagliAnnuncio.jsp";
+                $.session.set('dettagli', JSON.stringify(responseJSON.data));
+                $.session.set('admin', false);
+                window.open(url);
+            } else {
+                //   console.log("Che cazzo e' successo?"); 
+                console.log("Si e' verificato un errore inatteso");
+            }
 
         });
     });
