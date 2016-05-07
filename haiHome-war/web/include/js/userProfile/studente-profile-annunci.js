@@ -106,10 +106,10 @@ function create_info_annuncio(annuncio) {
     indirizzo = indirizzo_arr[0] + "," + indirizzo_arr[1];
     var htmlOscurato = '';
     if (annuncio.Oscurato === true) {
-        htmlOscurato = "<p><span font color=\"red\" class=\"text-primary center\">ANNUNCIO OSCURATO</span> </p>";
+        htmlOscurato = "<p style=\"color:red;\"><span  class=\"center\">ANNUNCIO OSCURATO</span> </p>";
     }
     if (annuncio.Archiviato === true) {
-        htmlOscurato = "<p><span font color=\"red\" class=\"text-primary center\">ANNUNCIO ARCHIVIATO</span> </p>";
+        htmlOscurato = "<p style=\"color:red;\"><span style=\"color:red;\" class=\"center\">ANNUNCIO ARCHIVIATO</span> </p>";
     }
     html += "<div class=\"center\">" +
             htmlOscurato +
