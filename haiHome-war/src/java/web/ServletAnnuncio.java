@@ -635,7 +635,7 @@ public class ServletAnnuncio extends HttpServlet {
                 resp.accumulate("response", res);
                 out.write(resp.toString());
 
-            } else if (action.equalsIgnoreCase("AnnuncioscuraAnnuncio")) {
+            } else if (action.equalsIgnoreCase("Annuncio-getJSONByOid")) {
 
                 System.out.println("-----RECUPERA ANNUNCIO BY OID:");
 
