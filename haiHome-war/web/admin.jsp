@@ -85,8 +85,9 @@
         <%@include file="/header.jsp" %> 
         <script>
             //console.log("carico");
-            loadSegnalazioni();
-
+            $(document).ready(function () {
+                loadSegnalazioni();
+            });
         </script>
 
         <div class="container">
@@ -134,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-sm-8">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
@@ -212,7 +213,7 @@
                             </div>
 
                         </div>
-                        
+
                         <div class="tab-pane fade" id="4">
                             <div class="col-sm-12">
 
@@ -239,6 +240,6 @@
             });
         </script>
 
-        <%@include file="/footer.jsp" %>
+        <%@include file="/footer2.jsp" %>
     </body>
 </html>
