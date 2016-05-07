@@ -223,12 +223,13 @@ function initalEditFunction() {
                 if (esito == "OK") {
                     var annuncio = msg.data;
                     console.log(annuncio);
-                    //riempio la form indirizzo
+                    //leggo la risposta
                     myAnnuncio = annuncio;
                     tipoLetto = msg.tipoAffitto;
                     tipoAcc = msg.tipoAccessorio;
                     setTipoCamere(tipoLetto,tipoAcc);
-
+                    
+                    //riempio i campi
                     aggiornaIndForm(myAnnuncio);
                     aggiornaAptForm(myAnnuncio);
                     aggiornaStanzeForm(myAnnuncio);
