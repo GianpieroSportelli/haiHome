@@ -8,6 +8,7 @@ package web;
 import com.google.gson.Gson;
 import ejb.GestoreAnnuncioLocal;
 import ejb.GestoreCittaLocal;
+import ejb.GestoreImmaginiLocal;
 import ejb.GestoreRicercaLocal;
 import ejb.GoogleMapsBeanLocal;
 import java.awt.image.BufferedImage;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import sun.misc.BASE64Encoder;
@@ -56,6 +58,9 @@ public class ServletAnnuncio extends HttpServlet {
 
     @EJB
     private GestoreCittaLocal gestoreCitta;
+    
+        @EJB
+    private GestoreImmaginiLocal gestoreImmagini;
 
     /*
     //Parametri richiesti
@@ -507,6 +512,29 @@ public class ServletAnnuncio extends HttpServlet {
                     
 
                     JSONObject annuncio = gestoreAnnuncio.toJSON();
+                    
+                    JSONArray stanze =  annuncio.getJSONArray("Stanze").getJSONArray(0);
+                    
+                    for(int i =0;i<stanze.length();i++){
+
+                        JSONObject s = stanze.getJSONObject(i);
+                        ArrayList<String> fotos = (ArrayList<String>) s.get("Foto");
+                        ArrayList<String> fotos64 = new ArrayList();
+                        ArrayList<String> estensioniFoto64 = new ArrayList();
+                        for(String f : fotos){
+                            System.out.print(f);
+                            String est = f.substring(f.length() - 3);
+                            System.out.println("Immagine: " + f + " estensione: " + est);
+                            String foto64 = gestoreImmagini.getImage(f,est);
+                            fotos64.add(foto64);
+                            estensioniFoto64.add(est);
+                        }
+                        
+                        s.accumulate("Foto64", fotos64);
+                        s.accumulate("Est64", estensioniFoto64);
+                        
+                    }
+                    
                     JSONObject resp = new JSONObject();
                     resp.accumulate("response", "OK");
                     resp.accumulate("tipoAffitto", tipoStanzeAffitto);
@@ -614,6 +642,25 @@ public class ServletAnnuncio extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 JSONObject resp = new JSONObject();
                 resp.accumulate("response", res);
+                out.write(resp.toString());
+                
+            }
+              else if(action.equalsIgnoreCase("AnnuncioscuraAnnuncio")){
+                
+                System.out.println("-----RECUPERA ANNUNCIO BY OID:");
+
+                String oidAnnuncio = request.getParameter("oid");
+
+ 
+
+                //boolean res = gestoreAnnuncio.oscusaAnnuncio(Long.parseLong(oidAnnuncio), value.equalsIgnoreCase("true"));
+                
+                
+                //ELABORO RISPOSTA
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                JSONObject resp = new JSONObject();
+                //resp.accumulate("response", res);
                 out.write(resp.toString());
                 
             }

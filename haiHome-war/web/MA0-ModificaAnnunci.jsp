@@ -16,11 +16,10 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-        <!-- INIZIO caricamento bootstrap mediante MaxCDN -->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
+        
+        
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
@@ -28,55 +27,64 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <!-- FINE caricamento bootstrap mediante MaxCDN -->
 
+
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <!--Tema bootstrap -->
         
-                <!--INIZIO - Form ajax plugin -->
+        <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <!--FINE- Form ajax plugin -->
-        
+ 
         <!-- Datapicker JQuery-->
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
-        <!-- Inizio import header ---------------------
-        <script src="include/js/header-updater.js"></script>
-        <!-- Script modal login -->
-        <script src="include/js/login/modal_validation_and_stuff.js"></script> 
-        <script src="include/js/login/ajax_req_and_stuff.js"></script>
-        <!-- Import script facebook -->
-        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
-        <!-- Import script google+ -->
+        <!-- roba utile al footer e al header -->
+        
+        <!-- google+ login stuff -->
         <meta name="google-signin-client_id" content="495487496441-r9l7mppbotcf6i3rt3cl7fag77hl0v62.apps.googleusercontent.com"></meta>
         <script type='text/javascript' src='include/js/login/googleplus-script.js'></script>
         <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
         <!-- end google+ login stuff -->
-        <!----------------------- Fine import header -->
-
-        <link href="tutcss.css" rel="stylesheet">
-        <!-- footer css -->
-
-
-        <!-- Robe di login2.jsp FORSE-->
-        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
-        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
-        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
-        <!-- robe del login bello -->
-        <link rel="stylesheet" href="include/css/login/normalize.css">
-        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
-        <link rel="stylesheet" href="include/css/login/style.css">
-        <!-- Fine robe di login2.jsp -->
         
-                <!-- dropzone -->
+        <!-- Inizio import header --------------------->
+        <script src="include/js/header-updater.js"></script>
+        <!-- Script modal login -->
+        <script src="include/js/login/modal_validation_and_stuff.js"></script> 
+        <script src="include/js/login/ajax_req_and_stuff.js"></script>
+        <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
+        
+        <!-- CSS log-in modal -->
+        <link rel="stylesheet" href="include/css/login/style2.css"> <!-- se viene tolto: sfondo rosa Gem style -->
+        <link rel="stylesheet" href="include/css/login/style.css">  <!-- -->
+
+         <!-- Import script Facebook -->
+        <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
+        <!-- Fine Import script Facebook -->
+        
+         
+      
+
+        
+        <!-- fine roba utile al footer e al header -->
+
+
+        
+        
+        <!-- dropzone -->
         <link rel="stylesheet" href="include/css/InserimentoAnnunci/dropzone1.css"> 
         <script type="text/javascript" src="include/js/InserimentoAnnunci/dropzone1.js"></script>
         
-                <!--mio scriot autocomplite -->
-                <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocompleteMod.js"></script>
+        <!--mio scriot autocomplite -->
+                <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
         
     </head>
     <body>
+        
+                        <%--header --%>
+        <%@include file="/header.jsp" %> 
+        
+        
         <input type="hidden" id="OIDAnnuncio" value="<% 
                String oid = request.getParameter("oid");
                if(oid != null){

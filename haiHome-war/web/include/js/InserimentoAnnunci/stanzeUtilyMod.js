@@ -20,7 +20,42 @@ function aggiungiStanza(s,i){
     //console.log(html);
     contenitore.append(html);
     
+    var myDropzone = new Dropzone("div#mydropzone" + (i++),
+            {
+                // Prevents Dropzone from uploading dropped files immediately
+                autoProcessQueue: false,
+                url: "ServletAnnuncio",
+                parallelUploads: 100,
+                uploadMultiple: true,
+                paramName: "file[]",
+                addRemoveLinks: false,
+                previewTemplate : "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img data-dz-thumbnail /></div>\n</div>",
+                
+    });
+                
+
+
+var foto = s.Foto64;
+var est = s.Est64;
+
+var cr = $("#contenitoreRadom");
+
+for(var i = 0;i<foto.length;i++){
+    
+    var mockFile = { name: "", size: 50000 };
+    myDropzone.emit("addedfile", mockFile);
+    var prefix = "data:image/" + est[i] + ";base64, "; 
+    
+    myDropzone.emit("thumbnail", mockFile, prefix+foto[i]);
+    
+    myDropzone.emit("complete", mockFile);
+
+
 }
+
+
+    
+    }
 
 function stanzaHTMLCode(stanza ,number){
         var StanzaCode =
