@@ -125,10 +125,10 @@
                                 <li><a href="#2" data-toggle="tab" onclick="getListaCitta()">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Quartieri e CAP</a></li>
-                                <li><a href="#3" data-toggle="tab" onclick="segnalazioni()">
+                                <li><a href="#3" data-toggle="tab" onclick="segnal()">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Segnalazioni</a></li>
-                                <li><a href="#4" data-toggle="tab" onclick="segnalazioni_arch()">
+                                <li><a href="#4" data-toggle="tab" onclick="segnal_arch()">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Segnalazioni Archiviate</a></li>
                             </ul>
