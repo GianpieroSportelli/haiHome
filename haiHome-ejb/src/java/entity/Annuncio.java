@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * @author gianp_000
  */
 @Entity
-public class Annuncio implements Serializable {
+public class Annuncio implements Serializable,Comparable<Annuncio> {
 
     @ManyToOne
     private Locatore locatore;
@@ -492,6 +492,12 @@ public class Annuncio implements Serializable {
         
         
         return result;
+    }
+
+   
+    @Override
+    public int compareTo(Annuncio o) {
+        return -this.dataPubblicazione.compareTo(o.getDataPubblicazione()); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

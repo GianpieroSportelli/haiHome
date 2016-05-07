@@ -6,7 +6,6 @@
 package ejb;
 
 import entity.Annuncio;
-import entity.Studente;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;

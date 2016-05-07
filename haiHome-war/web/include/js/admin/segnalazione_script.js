@@ -138,6 +138,9 @@ function nextpage_arch() {
 
 function top() {
     //console.log("TOP");
+    if(annunciSegn_html.length==0){
+        $("#segnalazioni").append("<p>Non ci sono segnalazioni in sospeso!!!</p>");
+    }
     for (var i = 0; i < STEP && i < annunciSegn_html.length; i++) {
         $("#segnalazioni").append(annunciSegn_html[i]);
         actual = i;
@@ -146,6 +149,9 @@ function top() {
 
 function top_archiviate() {
     //console.log("TOP");
+    if(annunciSegnArch_html.length==0){
+        $("#segnalazioni-archiviate").append("<p>Non ci sono segnalazioni Archiviate!!!</p>");
+    }
     for (var i = 0; i < STEP && i < annunciSegnArch_html.length; i++) {
         $("#segnalazioni-archiviate").append(annunciSegnArch_html[i]);
         actual_arch = i;
