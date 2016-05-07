@@ -60,9 +60,12 @@
         <!-- Fine Import script Facebook -->
         <!--
                 <script type="text/javascript" src="include/js/locatore/visualizzazione-annunci.js"></script> -->
+        
+        <!-- SESSION -->
+        <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
+        <!-- FINE SESSION -->
+                
         <script type="text/javascript" src="include/js/locatore/profilo-locatore.js"></script>
-
-
 
         <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
         <script src="include/js/login/ajax_req_and_stuff.js"></script>
@@ -84,50 +87,54 @@
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
                         <div class="profile-usertitle">
-                            Info su di me: 
-                            <div class="profile-usertitle-name">
-                                <%=user_data.getString("nome") + " " + user_data.getString("cognome")%>
+                            <div id='nomeLocatore' class='profile-usertitle-name'></div>
+                            <div class="profile-usertitle-job">
+                                Stato locatore: 
+                                <span id="status-locatore"> <!-- class="profile-usertitle-name" -->
 
-                            </div>
-                            <div class="profile-usertitle-job"><%--
-                                <span>
-                                    <span class="glyphicon glyphicon-envelope"></span>
-                                    <%=user_data.getString("email")%>
-                                </span> --%>
+                                    <%--                                <%=user_data.getString("nome") + " " + user_data.getString("cognome")%> --%>
+
+                                </span>
+                                <span class="glyphicon glyphicon-info-sign" style="font-size: 0.8em;"></span>
+                                <%--
+                            <span>
+                                <span class="glyphicon glyphicon-envelope"></span>
+                                <%=user_data.getString("email")%>
+                            </span> --%>
                             </div>
                         </div>
 
                         <div class="profile-usermenu"> <!-- required for floating -->
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs tabs-left">
-                                <li class="active"><a href="#home" data-toggle="tab">
+                                <li class="active">
+                                    <a href="#home" data-toggle="tab">
                                         <i class="glyphicon glyphicon-user"></i>
                                         Profilo
                                     </a>
                                 </li>
-                                <li><a href="#annunci" data-toggle="tab">
+                                <li>
+                                    <a href="#annunci" data-toggle="tab">
                                         <i class="glyphicon glyphicon-th-list"></i>
                                         I tuoi annunci 
-                                        <span id="num-annunci-visibili">
-                                        </span>
-
+                                        <span id="num-annunci-visibili"></span>
                                     </a>
                                 </li>
                                 <li><a href="#archivio" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Archivio annunci
-                                        <span id="num-annunci-archiviati">
-                                        </span>
+                                        <span id="num-annunci-archiviati"></span>
                                     </a>
                                 </li>
-                                <li><a href="#oscurati" data-toggle="tab">
+                                <li>
+                                    <a href="#oscurati" data-toggle="tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                         Annunci oscurati
-                                        <span id="num-annunci-oscurati">
-                                        </span>
+                                        <span id="num-annunci-oscurati"></span>
                                     </a>
                                 </li>
-                                <li><a href="IA0-InserimentoAnnunci.jsp" class="btn btn-danger">
+                                <li>
+                                    <a href="IA0-InserimentoAnnunci.jsp" class="btn btn-danger">
                                         Inserisci nuovo annuncio
                                     </a>
                                 </li>
@@ -135,6 +142,7 @@
                         </div> 
                     </div>
                 </div>
+
                 <div class="col-xs-9">
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
@@ -187,7 +195,7 @@
                                                 Telefono
                                                 <%@include file="include/html/edit-buttons.html" %>
                                             </div>
-                                            <div class="panel-body">
+                                            <div class="panel-body has-feedback">
                                                 <input class="form-control" id="telefono" 
                                                        name="phone" type="text" 
                                                        value="" 
@@ -196,9 +204,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row" id="rigapwd">
+                                <div class="row" id="rigapwd"> 
                                     <!-- campo PASSWORD -->
                                     <div class="col-md-12">
+                                        <!--
+                                        <div id="panel-password" class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    Password
+                                                    <a data-toggle="collapse" href="#password-collapse">
+                                                        LOL
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="password-collapse" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <div class="col-md-4">
+                                                        <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="Vecchia password" disabled="disabled" />
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova password" />
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input id="new-password2" class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..." />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
                                         <div id="panel-password" class="panel panel-default editable">
                                             <div class='panel-heading  panel-heading-custom'>
                                                 Password
@@ -206,7 +239,7 @@
                                             </div>
                                             <div class="panel-body">
                                                 <div class="col-md-4">
-                                                    <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="*****************" disabled="disabled" />
+                                                    <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="Vecchia password" disabled="disabled" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova password..." />

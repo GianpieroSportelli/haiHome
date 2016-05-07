@@ -176,7 +176,12 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-blocca-by-id")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
-            } else {
+            } else if (action.equalsIgnoreCase("Annuncio-getJSONByOid")) {
+                request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
+                
+            }
+            
+            else {
                 // action random
                 System.out.println(action);
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
