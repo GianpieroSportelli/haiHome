@@ -34,8 +34,8 @@ function loadSegnalazioni() {
                         annunciSegn_html.push(html);
                     }
                 });
-                top();
-                top_archiviate();
+                topSegn();
+                topSegn_archiviate();
                 //console.log(segn);
             });
 }
@@ -130,14 +130,14 @@ function nextpage_arch() {
     if (actual < annunciSegnArch_html.lenght) {
         var alt = actual_arch + STEP;
         for (var i = actual_arch; i < alt && i < annunciSegnArch_html.length; i++) {
-            $("#segnalazioni").append(annunciSegnArch_html[i]);
+            $("#segnalazioni-archiviate").append(annunciSegnArch_html[i]);
             actual_arch = i;
         }
     }
 }
 
-function top() {
-    //console.log("TOP");
+function topSegn() {
+    console.log("TOP");
     if(annunciSegn_html.length==0){
         $("#segnalazioni").append("<p>Non ci sono segnalazioni in sospeso!!!</p>");
     }
@@ -147,8 +147,8 @@ function top() {
     }
 }
 
-function top_archiviate() {
-    //console.log("TOP");
+function topSegn_archiviate() {
+    console.log("TOP arch");
     if(annunciSegnArch_html.length==0){
         $("#segnalazioni-archiviate").append("<p>Non ci sono segnalazioni Archiviate!!!</p>");
     }
@@ -164,13 +164,13 @@ function no_segn() {
     f_segn_arch = false;
 }
 
-function segnalazioni() {
+function segnal() {
     //console.log("segn");
     f_segn = true;
     f_segn_arch = false;
 }
 
-function segnalazioni_arch() {
+function segnal_arch() {
     //console.log("segn_arch");
     f_segn = false;
     f_segn_arch = true;
