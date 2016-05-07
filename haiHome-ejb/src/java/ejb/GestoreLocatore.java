@@ -238,7 +238,7 @@ public class GestoreLocatore implements GestoreLocatoreLocal {
     
     @Override
     public void reloadLocatore() {
-        if (this.getLocatore() != null) {
+        if (this.locatore != null) {
             this.locatore = this.locatoreFacade.find(this.locatore.getId());            
         }
     }
