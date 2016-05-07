@@ -33,9 +33,10 @@
 
 
 
-        <link href="tutcss.css" rel="stylesheet">
+        <!--<link href="tutcss.css" rel="stylesheet">
         <!-- footer css -->
-
+                <!-- footer css -->
+        <link href="include/css/footer/footer.css" rel="stylesheet">
 
         <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 
@@ -114,6 +115,6 @@
 
         </div>
 
-        <%@include file="/footer.jsp" %>
+        <%@include file="/footer2.jsp" %>
     </body>
 </html>
