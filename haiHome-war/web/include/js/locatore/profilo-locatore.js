@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
      * */
     var login_type;
     var user_data;
-    var stato_locatore; //bloccato / anche no
+    var is_bloccato;
     var a_tot, a_num_vis, a_num_arch, a_num_osc;
     var backups = [];
 
@@ -73,16 +73,15 @@ jQuery(document).ready(function ($) {
                     $('#telefono').val(user_data.telefono);
                     $('#descrizione').val(user_data.descrizione);
 
-                    stato_locatore = user_data.bloccato;
-
+                    is_bloccato = user_data.bloccato === "true";
                     var $stato_locatore = $('#status-locatore');
 
-                    if (user_data.bloccato === "false") {
-                        $stato_locatore.text("ok");
-                        $stato_locatore.css('color', 'green');
-                    } else {
+                    if (is_bloccato) {
                         $stato_locatore.text("bloccato");
                         $stato_locatore.css('color', 'red');
+                    } else {
+                        $stato_locatore.text("ok");
+                        $stato_locatore.css('color', 'green');
                     }
 
 //                    $('#status-locatore').val(stato_locatore == true)
@@ -245,6 +244,8 @@ jQuery(document).ready(function ($) {
     /* Modifica annuncio */
     $(document).on('click', 'a.edit-annuncio', function (event) {
         //var transaction_id = $(this).attr('id').replace('delete_', '');
+
+
         var oid = event.target.id.replace("edit-ann", "");
 
         window.location.replace("MA0-ModificaAnnunci.jsp?oid=" + oid);
@@ -339,20 +340,19 @@ jQuery(document).ready(function ($) {
                 {
                     'action': 'Annuncio-getJSONByOid',
                     'oid': oid
-                }, function (responseJSON) {
-            if (responseJSON.response === "OK") {
-                console.log(responseJSON.data);
-                /* code by gianp */
-                var url = "/haiHome-war/dettagliAnnuncio.jsp";
-                $.session.set('dettagli', JSON.stringify(responseJSON.data));
-                $.session.set('admin', false);
-                window.open(url);
-            } else {
-                //   console.log("Che cazzo e' successo?"); 
-                console.log("Si e' verificato un errore inatteso");
-            }
-
-        });
+                },
+                function (responseJSON) {
+                    if (responseJSON.response === "OK") {
+                        console.log(responseJSON.data);
+                        /* code by gianp */
+                        var url = "/haiHome-war/dettagliAnnuncio.jsp";
+                        $.session.set('dettagli', JSON.stringify(responseJSON.data));
+                        $.session.set('admin', false);
+                        window.open(url);
+                    } else {
+                        console.log("Si e' verificato un errore inatteso");
+                    }
+                });
     });
 
 
