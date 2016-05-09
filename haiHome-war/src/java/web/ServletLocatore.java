@@ -431,10 +431,10 @@ public class ServletLocatore extends HttpServlet {
         return html;
     }
 
-    private String getDivAnnuncio(Annuncio a, boolean modifiable) {
+    private String getDivAnnuncio(Annuncio a, boolean locatore_bloccato) {
         String html = "";
         Long oid = a.getId();
-        String disabled = modifiable ? "" : " disabled='disabled' "; 
+        String disabled = "";// modifiable ? "" : " disabled='disabled' "; 
 
         html += "<div id='ann-" + oid + "' class='annuncio'>"; //CONTAINER 
         html += "<div class='panel panel-default'>"; // PANEL
@@ -444,12 +444,12 @@ public class ServletLocatore extends HttpServlet {
         html += "</span>";
         html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
         html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";
-        html += "<span class='glyphicon glyphicon-menu-down'></span>";
+        html += "Gestisci annuncio <span class='glyphicon glyphicon-menu-down'></span>";
         html += "</a>";
         html += "<ul class='dropdown-menu'>"; //INIZIO DROPZONE - OPZIONI
-        html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'" + disabled + ">Modifica</a></li>";
-        html += "<li>" + getHTMLButtonAnnuncio(oid, a.isArchiviato(), disabled) + "</li>"; // pubblica / archivia
-        html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'" + disabled + ">Elimina</a></li>";
+        html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'>Modifica</a></li>";
+        html += "<li>" + getHTMLButtonAnnuncio(oid, a.isArchiviato(), locatore_bloccato) + "</li>"; // pubblica / archivia
+        html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'>Elimina</a></li>";
         html += "</ul>";
         html += "</div>"; //FINE DROPZONE
         html += "</div>"; //panel-heading
@@ -477,11 +477,11 @@ public class ServletLocatore extends HttpServlet {
         return html;
     }
 
-    private String getHTMLButtonAnnuncio(Long oid, boolean is_archiviato, String disabled) {
+    private String getHTMLButtonAnnuncio(Long oid, boolean is_archiviato, boolean locatore_bloccato) {
         String id = "id='select-ann-" + oid + "'";
         String value = is_archiviato ? "Pubblica" : "Archivia";
         String css_class = " class='" + (is_archiviato ? "pubblica-annuncio" : "archivia-annuncio") + "' ";
-        return "<a " + id + css_class + " href='#0'" + disabled + ">" + value + "</a>";
+        return "<a " + id + css_class + " href='#0'>" + value + "</a>";
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
