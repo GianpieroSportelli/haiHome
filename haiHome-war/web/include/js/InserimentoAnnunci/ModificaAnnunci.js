@@ -194,11 +194,8 @@ $(document).ready(function () {
 
         var navContent = pannStanze.find(".tab-content");
         var stanzaContent = navContent.find("div.active");
+        
         modificaStanza(stanzaContent);
-
-
-
-
 
         //disabilito l'inserimento
         disabilitaInserimentoDati(stanzaContent);
@@ -222,31 +219,26 @@ $(document).ready(function () {
         editStanza.parent("div").show();
 
     });
+    
+    
+    
+    
+    
 
     //bottone annulla stanza
     annullaStanza.on("click", function () {
-
-
         var navContent = pannStanze.find(".tab-content");
         var stanzaContent = navContent.find("div.active");
-
         var idStanza = stanzaContent.attr("id").slice(6);
 
         var stanze = myAnnuncio.Stanze[0];
         var s = stanze[idStanza];
 
-
         resetStanza(s, idStanza);
-
-
-
-
 
         //disabilito l'inserimento
         disabilitaInserimentoDati(stanzaContent);
         disabilitaDropzone(stanzaContent);
-
-
 
         //attivo tutti i tab
         var tabStanze = pannStanze.find(".nav-tabs");
@@ -258,14 +250,33 @@ $(document).ready(function () {
             }
 
         });
-
         //nascondo bottoni 2
         confermaStanza.parent("div").hide();
-
         //mostro bottoni 1 
         editStanza.parent("div").show();
-
     });
+    
+    
+    deleteStanza.on("click",function(){
+        //ricavo informazioni sulla stanza
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+        var idStanza = stanzaContent.attr("id").slice(6);
+
+        var stanze = myAnnuncio.Stanze[0];
+        var s = stanze[idStanza];
+        
+        if(confirm("Sicuro di voler eliminare la stanza " + idStanza)){
+            //mando richiesta di eliminare stanza
+            eliminaStanza(s);
+    
+        }
+        
+        
+        
+    });
+
+
 
 
 

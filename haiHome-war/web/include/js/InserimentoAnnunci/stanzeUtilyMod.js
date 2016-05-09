@@ -67,9 +67,9 @@ function resetStanza(s, idStanza) {
 
 
     }
-    
+
     //elimino gli hidden Input  
-    stanza.find("form").find("input[name='fotoEliminate']").each(function(){
+    stanza.find("form").find("input[name='fotoEliminate']").each(function () {
         alert("sono entrato");
         $(this).remove();
     });
@@ -121,30 +121,30 @@ function aggiungiStanza(s, i) {
          myDropzone.emit("complete", mockFile);
          */
     }
-    
-    var contenitoreStanza = contenitore.find("div#stanza" + i );
+
+    var contenitoreStanza = contenitore.find("div#stanza" + i);
     var form = contenitoreStanza.find("form");
-            
+
     //Aggiungo la funzione elimina foto
     dropContainer.find("a.removeOldImg").each(function () {
-        $(this).on('click',function(){
+        $(this).on('click', function () {
             //elimino l'immagine
             var imgContainer = $(this).parent();
             imgContainer.remove();
-            
+
             //aggiungo hidden input per ricordarmelo
             var nomeFoto = imgContainer.find("img").attr("id");
 
             alert(form.attr("id"));
-            var inputHidden = "<input type=\"hidden\" name=\"fotoEliminate\" value=\""+nomeFoto+"\" />";
+            var inputHidden = "<input type=\"hidden\" name=\"fotoEliminate\" value=\"" + nomeFoto + "\" />";
             form.append(inputHidden);
-            
+
         });
     });
-    
-    var oidHidden = "<input type=\"hidden\" name=\"oidStanza\" value=\""+s.OID+"\" />";
+
+    var oidHidden = "<input type=\"hidden\" name=\"oidStanza\" value=\"" + s.OID + "\" />";
     form.append(oidHidden);
-    
+
     stanzeMap.set(i, s);
     dropzoneMaps.set(i, myDropzone);
 }
@@ -221,13 +221,13 @@ function modificaStanza(stanzaContent) {
         if (myRequest.readyState === XMLHttpRequest.DONE) {
             var formStanza = stanzaContent.find("form");
             /*
-            stanzaContent.find("img.old").each(function () {
-                var nomeFoto = $(this).attr("id");
-                alert(nomeFoto);
-                var hiddInp = "<input type=\"hidden\" name=\"oldFoto\" value=\"" + nomeFoto + "\" class='tempInput' />";
-            });
-            */
-           
+             stanzaContent.find("img.old").each(function () {
+             var nomeFoto = $(this).attr("id");
+             alert(nomeFoto);
+             var hiddInp = "<input type=\"hidden\" name=\"oldFoto\" value=\"" + nomeFoto + "\" class='tempInput' />";
+             });
+             */
+
             $(formStanza).ajaxSubmit({
                 dataType: "json",
                 success: function (response) {
@@ -267,3 +267,48 @@ function modificaStanza(stanzaContent) {
 
 }
 
+//richiesta elimina stanza
+function eliminaStanza(stanza) {
+
+    var ajaxReq = $.ajax({
+        type: "POST",
+        url: "ServletAnnuncio",
+        data: "action=Annunci-editAnnuncio-eliminaStanza&oid=" + stanza.OID,
+        dataType: "json",
+        success: function (msg)
+        {
+            if (msg.response === "OK") {
+                alert("Successo");
+                //annuncio = msg.data;
+                console.log("nuovo annuncio");
+                var newAnn = msg.data;
+                ricaricaStanza(newAnn);
+    
+
+            } else {
+                alert("QUALCOSA NON VA");
+            }
+        },
+        error: function ()
+        {
+            alert("ERROE NELLA SERVLET");
+
+        }
+    });
+}
+
+function ricaricaStanza(newAnn){
+    
+                var tab = pannStanze.find("ul#contenitoreTab");
+                var contenitore = pannStanze.find("div#contenitoreStanze");
+                tab.empty();
+                contenitore.empty();
+ 
+                var stanze = newAnn.Stanze[0];
+                console.log("RICARICO STANZE");
+                for (var i = 0; i < stanze.length; i++) {
+                    var s = stanze[i];
+                    aggiungiStanza(s, i);
+                    console.log(s);
+                }
+}
