@@ -7,9 +7,9 @@
 var geocoder;
 var map;
 var geoAddress;
-var supermarket = "images/basket.png";
-var bank = "images/bank.png";
-var bus = "images/transport.png";
+var supermarket = "images/supermarket2.ico";
+var bank = "images/bank2.ico";
+var bus = "images/bus2.ico";
 
 var dim_image_car = 500;
 var dim_image_prof = 100;
@@ -50,7 +50,7 @@ $(document).ready(function () {
         } else {
             $("#bloccaButton").show();
         }
-    }else{
+    } else {
         loggatoStudente();
     }
 });
@@ -480,7 +480,7 @@ function checkAnnuncio(id) {
 }
 
 function salvaAnnuncioPreferiti() {
-    alert("Salvo l'annuncio nei Preferiti");
+    //alert("Salvo l'annuncio nei Preferiti");
     $.post("ServletController",
             {action: "studente-addAnnuncio", id: annuncio.OID},
             function (item) {
@@ -488,14 +488,24 @@ function salvaAnnuncioPreferiti() {
                 //alert(item);
                 console.log("Annuncio Salvato?: " + item);
                 if (item == "true") {
+                    var title = "Ok...";
+                    var body = "Annuncio salvato nei preferiti!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                     $("#saveButton").hide();
                     $("#deleteButton").show();
+                } else {
+                    var title = "Ops...";
+                    var body = "C'è stato un errore nel salvataggio nei preferiti, contatti l'admin per maggiori informazini.";
+                    ;
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                 }
             });
 }
 
 function cancellaAnnuncioPreferiti() {
-    alert("Cancello l'annuncio dai Preferiti");
+    //alert("Cancello l'annuncio dai Preferiti");
     $.post("ServletController",
             {action: "studente-removeAnnuncio", id: annuncio.OID},
             function (item) {
@@ -503,8 +513,18 @@ function cancellaAnnuncioPreferiti() {
                 //alert(item);
                 console.log("Annuncio eliminato?: " + item);
                 if (item == "true") {
+                    var title = "Ok...";
+                    var body = "Annuncio eliminato dai preferiti!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                     $("#deleteButton").hide();
                     $("#saveButton").show();
+                } else {
+                    var title = "Ops...";
+                    var body = "C'è stato un errore nella eliminazione dai preferiti, contatti l'admin per maggiori informazini.";
+                    ;
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                 }
             });
 }
@@ -514,11 +534,18 @@ function oscuraAnnuncio() {
             function (item) {
                 console.log("Annuncio oscurato?: " + item);
                 if (item.response == true) {
-                    alert("Annuncio Oscurato!!");
+                    //alert("Annuncio Oscurato!!");
+                    var title = "Ok...";
+                    var body = "Annuncio oscurato!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                     $("#oscuraButton").hide();
                     $("#visibileButton").show();
                 } else {
-                    alert("Errore nel oscurare l'annuncio!!");
+                    var title = "Ops...";
+                    var body = "Errore nel oscuramento del annuncio!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                 }
             });
 
@@ -530,11 +557,17 @@ function visibileAnnuncio() {
             function (item) {
                 console.log(item);
                 if (item.response == true) {
-                    alert("Annuncio Visibile!!");
+                    var title = "Ok...";
+                    var body = "Annuncio visibile!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                     $("#visibileButton").hide();
                     $("#oscuraButton").show();
                 } else {
-                    alert("Errore nel rendere visibile l'annuncio!!");
+                    var title = "Ops...";
+                    var body = "Errore nel rendere visibile l'annuncio!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                 }
             });
 }
@@ -545,11 +578,17 @@ function bloccaLocatore() {
             function (item) {
                 console.log("Locatore bloccato?: " + item);
                 if (item == "true") {
-                    alert("Locatore bloccato!!");
+                    var title = "Ok...";
+                    var body = "Locatore bloccato!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                     $("#bloccaButton").hide();
                     $("#sbloccaButton").show();
                 } else {
-                    alert("Errore nel bloccare il locatore!!");
+                    var title = "Ops...";
+                    var body = "Errore nel bloccare il Locatore!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                 }
             });
 }
@@ -560,32 +599,55 @@ function sbloccaLocatore() {
             function (item) {
                 console.log("Locatore sbloccato?: " + item);
                 if (item == "true") {
-                    alert("Locatore sbloccato!!");
+                    var title = "Ok...";
+                    var body = "Locatore sbloccato!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                     $("#sbloccaButton").hide();
                     $("#bloccaButton").show();
                 } else {
-                    alert("Errore nello sbloccare il locatore!!");
+                    var title = "Ops...";
+                    var body = "Errore nello sbloccare il Locatore!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                 }
             });
 }
-
+function request_sendSegn() {
+    //console.log("prendo la descrizione segnalazione");
+    var descrizione = $("#des_segn").val();
+    //console.log(descrizione);
+    if (descrizione != null) {
+        $.post("ServletController",
+                {action: "Segnalazione-addSegnalazione", id_annuncio: annuncio.OID, id_studente: id_studente, descrizione: descrizione},
+                function (item) {
+                    console.log("Annuncio segnalato?: " + item);
+                    console.log(clearModalMessage());
+                    if (item == "true") {
+                        var title = "Ok...";
+                        var body = "Annuncio segnalato, grazie!!";
+                        var footer = null;
+                        openModalMessage(title, body, footer);
+                    } else {
+                        var title = "Ops...";
+                        var body = "Errore nel invio della segnalazione, contatti l'admin per maggiori informazioni.";
+                        var footer = null;
+                        openModalMessage(title, body, footer);
+                    }
+                });
+    }
+}
 function segnalaAnnuncio() {
     //alert("annuncio Segnalato");
-    var descrizione = prompt("Inserisci testo segnalazione", "qui!!");
-    if (descrizione != null) {
-    $.post("ServletController",
-            {action: "Segnalazione-addSegnalazione", id_annuncio: annuncio.OID, id_studente: id_studente, descrizione: descrizione},
-            function (item) {
-                console.log("Annuncio segnalato?: " + item);
-                if (item == "true") {
-                    alert("Annuncio Segnalato!!");
-                } else {
-                    alert("annuncio non segnalato, contatta l'admin!!!");
-                }
-            });
-        }else{
-            segnalaAnnuncio();
-        }
+    var title = "Ok...";
+    var body="<div class=\"form-group\">"+
+    "<label for=\"des_segn\">Inserisci qui la tua segnalazione: </label>"+
+    "<input type=\"text\" class=\"form-control ten-margin\" id=\"des_segn\">"+
+    "</div>";
+    //var body = "<form><p class=\"text-muted\">Inserisci qui la tua segnalazione: <p><input type=\"text\" id=\"des_segn\"></input></form>";
+    var footer = "<button type=\"button\" class=\"btn btn-default\" onClick=\"request_sendSegn()\">Invia</button>" +
+            "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Annulla</button>";
+    openModalMessage(title, body, footer);
 }
 
 function callFoto(foto_OID) {
