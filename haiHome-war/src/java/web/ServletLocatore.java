@@ -51,15 +51,7 @@ public class ServletLocatore extends HttpServlet {
             throws ServletException, IOException {
         //response.setContentType("text/html;charset=UTF-8");
 
-        gestoreLocatore.reloadLocatore();
-
-        if (gestoreLocatore.getLocatore() != null) {
-            System.out.println("ANNUNCI DEL LOCATORE:");
-            for (Annuncio a : gestoreLocatore.getAnnunci()) {
-                System.out.println(a.toString());
-            }
-            System.out.println("FINE");
-        }
+  //      gestoreLocatore.reloadLocatore();
 
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
@@ -156,6 +148,8 @@ public class ServletLocatore extends HttpServlet {
                 }
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
+                gestoreLocatore.reloadLocatore();
+                
                 //    int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
                 //    int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
                 //   String bottone;
@@ -170,6 +164,7 @@ public class ServletLocatore extends HttpServlet {
                 out.write(html);
 
             } else if (action.equalsIgnoreCase("locatore-getArchivioAnnunci")) {
+                gestoreLocatore.reloadLocatore();
                 //     int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
                 //     int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
 
@@ -181,6 +176,7 @@ public class ServletLocatore extends HttpServlet {
                 out.write(html);
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunciOscurati")) {
+                gestoreLocatore.reloadLocatore();
                 //       int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
                 //       int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
 
@@ -192,6 +188,8 @@ public class ServletLocatore extends HttpServlet {
                 out.write(html);
 
             } else if (action.equalsIgnoreCase("locatore-edit-info")) {
+                gestoreLocatore.reloadLocatore();
+                
                 String field_name = request.getParameter("field-name");
                 String field_value = request.getParameter("field-value");
                 String error = "";
@@ -244,13 +242,15 @@ public class ServletLocatore extends HttpServlet {
                 out.write(jsonresult.toString());
 
             } else if (action.equalsIgnoreCase("locatore-delete-annuncio")) {
+                gestoreLocatore.reloadLocatore();
+                
                 long oid = Long.parseLong(request.getParameter("oid"));
                 boolean res = false;
 
                 System.out.println("Richiesta cancellazione annuncio " + oid);
 
-                Annuncio annuncio = gestoreAnnuncio.predniAnnuncio(oid); //dislessia by jack
-
+                Annuncio annuncio = gestoreAnnuncio.getAnnuncioByID(oid); 
+                
                 if (gestoreLocatore.checkAnnuncio(annuncio)) {
                     gestoreLocatore.removeAnnuncio(annuncio);
                     res = gestoreAnnuncio.eliminaAnnuncio(oid);
@@ -266,7 +266,8 @@ public class ServletLocatore extends HttpServlet {
                 out.write(res ? "ok" : "fail");
 
             } else if (action.equalsIgnoreCase("locatore-archivia-annuncio")) {
-                System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
+                gestoreLocatore.reloadLocatore();
+//                System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
                 long oid = Long.parseLong(request.getParameter("oid"));
                 System.out.println("ARCHIVIAZIONEEE annuncio " + oid);
                 /*
@@ -302,6 +303,8 @@ public class ServletLocatore extends HttpServlet {
                 out.write(res ? "ok" : "errore");
 
             } else if (action.equalsIgnoreCase("locatore-pubblica-annuncio")) {
+                gestoreLocatore.reloadLocatore();
+                
                 System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
                 long oid = Long.parseLong(request.getParameter("oid"));
                 System.out.println("PUBBLICAZIONEEEE annuncio " + oid);
@@ -340,6 +343,7 @@ public class ServletLocatore extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-get-session")) {
                 JSONObject jsonsession = new JSONObject();
                 
+                gestoreLocatore.reloadLocatore();
                 update_session(session);
                         
                 try {
@@ -362,7 +366,9 @@ public class ServletLocatore extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-blocca-by-id")) {
                 long oid = Long.parseLong(request.getParameter("oid"));
                 boolean bloccato = Boolean.parseBoolean(request.getParameter("bloccatoflag"));
-
+                
+                gestoreLocatore.reloadLocatore();
+                
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
                 out.write(String.valueOf(gestoreLocatore.bloccaLocatore(oid, bloccato)));
@@ -394,7 +400,7 @@ public class ServletLocatore extends HttpServlet {
 
         if (l.size() > 0) {
             for (Annuncio a : l) {
-                html += getDivAnnuncio(a);
+                html += getDivAnnuncio(a, gestoreLocatore.getLocatore().isBloccato());
             }
         } else {
             html = "No results";
@@ -418,39 +424,43 @@ public class ServletLocatore extends HttpServlet {
             System.out.println("...");*/
 
             for (Annuncio a : l.subList(first, first + offset)) {
-                html += getDivAnnuncio(a);
+                html += getDivAnnuncio(a, gestoreLocatore.getLocatore().isBloccato());
             }
         }
 
         return html;
     }
 
-    private String getDivAnnuncio(Annuncio a) {
+    private String getDivAnnuncio(Annuncio a, boolean modifiable) {
         String html = "";
         Long oid = a.getId();
+        String disabled = modifiable ? "" : " disabled='disabled' "; 
 
         html += "<div id='ann-" + oid + "' class='annuncio'>"; //CONTAINER 
         html += "<div class='panel panel-default'>"; // PANEL
         html += "<div class='panel-heading'>"; // PANEL HEADING
-        html += "<span class='nome-annuncio'>Annuncio " + oid + "</span>";
+        html += "<span class='nome-annuncio'>"; 
+        html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio " + oid + " in " + a.getIndirizzo() + "</a>";
+        html += "</span>";
         html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
         html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";
         html += "<span class='glyphicon glyphicon-menu-down'></span>";
         html += "</a>";
         html += "<ul class='dropdown-menu'>"; //INIZIO DROPZONE - OPZIONI
-        html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'>Modifica</a></li>";
-        html += "<li>" + getHTMLButtonAnnuncio(oid, a.isArchiviato()) + "</li>"; // pubblica / archivia
-        html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'>Elimina</a></li>";
+        html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'" + disabled + ">Modifica</a></li>";
+        html += "<li>" + getHTMLButtonAnnuncio(oid, a.isArchiviato(), disabled) + "</li>"; // pubblica / archivia
+        html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'" + disabled + ">Elimina</a></li>";
         html += "</ul>";
         html += "</div>"; //FINE DROPZONE
         html += "</div>"; //panel-heading
-        html += "<div class='panel-body'>"; // PANEL BODY
-        html += "<div>Proprietario: " + a.getLocatore().getEmail() + "</div>";
+        html += "<div class='panel-body'>"; // PANEL BODY 
         html += "<div>Indirizzo: " + a.getIndirizzo() + "</div>";
+        html += "<div>Affitto dal: " + a.getDataInizioAffitto()+ "</div>";
         html += "<div>Descrizione: " + a.getDescrizione() + "</div>";
         html += "</div>"; //FINE PANEL BODY
         html += "</div>"; //FINE PANEL
         html += "</div>"; //FINE CONTAINER ANNUNCIO
+        
 
         // var html = "<div id=\"annuncio-" + k + "\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">"; //1
         /*
@@ -467,11 +477,11 @@ public class ServletLocatore extends HttpServlet {
         return html;
     }
 
-    private String getHTMLButtonAnnuncio(Long oid, boolean is_archiviato) {
+    private String getHTMLButtonAnnuncio(Long oid, boolean is_archiviato, String disabled) {
         String id = "id='select-ann-" + oid + "'";
         String value = is_archiviato ? "Pubblica" : "Archivia";
         String css_class = " class='" + (is_archiviato ? "pubblica-annuncio" : "archivia-annuncio") + "' ";
-        return "<a " + id + css_class + " href='#0'>" + value + "</a>";
+        return "<a " + id + css_class + " href='#0'" + disabled + ">" + value + "</a>";
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

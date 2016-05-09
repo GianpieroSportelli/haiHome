@@ -58,8 +58,8 @@ public class ServletAnnuncio extends HttpServlet {
 
     @EJB
     private GestoreCittaLocal gestoreCitta;
-    
-        @EJB
+
+    @EJB
     private GestoreImmaginiLocal gestoreImmagini;
 
     /*
@@ -205,7 +205,7 @@ public class ServletAnnuncio extends HttpServlet {
                 String m = request.getParameter("Metratura").trim();
                 boolean arredato = request.getParameter("Arredato") != null;
                 System.out.println("M = " + m);
-                
+
                 double metraturaApp = 0;
                 if (!m.equalsIgnoreCase("")) {
                     metraturaApp = Double.parseDouble(m);
@@ -216,7 +216,7 @@ public class ServletAnnuncio extends HttpServlet {
                 GregorianCalendar gc = new GregorianCalendar(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]));
                 //Da gestire la data inizio affitto Date dataInizioAffitto = new Date();
                 System.out.println(gc.getTime());
-                gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime(),arredato);
+                gestoreAnnuncio.inserisciInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime(), arredato);
 
                 System.out.println("DESCRIZIONE: " + descrizione);
                 System.out.println("METRATURA: " + metraturaApp);
@@ -229,7 +229,7 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoStanze")) {
 
                 System.out.println("-----INFO STANZE");
-                
+
                 String[] numeroStanza = request.getParameterValues("numStanza");
 
                 String[] tipologiaStanze = request.getParameterValues("TipologiaStanza");
@@ -504,37 +504,35 @@ public class ServletAnnuncio extends HttpServlet {
                         }
 
                     }
-                    
+
                     //carico i Tipi stanze
                     ArrayList<String> tipoStanzeAffitto = gestoreAnnuncio.getTipologieStanzaAffitto();
                     ArrayList<String> tipoStanzeAccessorio = gestoreAnnuncio.getTipologieStanzaAcc();
 
-                    
-
                     JSONObject annuncio = gestoreAnnuncio.toJSON();
-                    
-                    JSONArray stanze =  annuncio.getJSONArray("Stanze").getJSONArray(0);
-                    
-                    for(int i =0;i<stanze.length();i++){
+
+                    JSONArray stanze = annuncio.getJSONArray("Stanze").getJSONArray(0);
+
+                    for (int i = 0; i < stanze.length(); i++) {
 
                         JSONObject s = stanze.getJSONObject(i);
                         ArrayList<String> fotos = (ArrayList<String>) s.get("Foto");
                         ArrayList<String> fotos64 = new ArrayList();
                         ArrayList<String> estensioniFoto64 = new ArrayList();
-                        for(String f : fotos){
+                        for (String f : fotos) {
                             System.out.print(f);
                             String est = f.substring(f.length() - 3);
                             System.out.println("Immagine: " + f + " estensione: " + est);
-                            String foto64 = gestoreImmagini.getImage(f,est);
+                            String foto64 = gestoreImmagini.getImage(f, est);
                             fotos64.add(foto64);
                             estensioniFoto64.add(est);
                         }
-                        
+
                         s.accumulate("Foto64", fotos64);
                         s.accumulate("Est64", estensioniFoto64);
-                        
+
                     }
-                    
+
                     JSONObject resp = new JSONObject();
                     resp.accumulate("response", "OK");
                     resp.accumulate("tipoAffitto", tipoStanzeAffitto);
@@ -549,8 +547,7 @@ public class ServletAnnuncio extends HttpServlet {
                 }
 
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoIndirizzo")) {
-                
-                
+
                 System.out.println("----- EDIT INDIRIZZO:");
 
                 String citta = "Torino";//request.getParameter("Città").trim();
@@ -568,11 +565,9 @@ public class ServletAnnuncio extends HttpServlet {
                 //gestoreAnnuncio.inserisciInfoIndirizzo(citta, quartiere, indirizzo, latlng);
                 gestoreAnnuncio.modificaInfoIndirizzo(citta, quartiere, indirizzo, latlng);
                 gestoreAnnuncio.rendiModifichePersistenti();
-                
+
                 JSONObject editAnnuncio = gestoreAnnuncio.toJSON();
-                
-                
-                
+
                 System.out.println("CITTA: " + citta);
                 System.out.println("QUARTIERE: " + quartiere);
                 System.out.println("INDIRIZZO: " + indirizzo);
@@ -585,16 +580,15 @@ public class ServletAnnuncio extends HttpServlet {
                 resp.accumulate("response", "OK");
                 resp.accumulate("data", editAnnuncio);
                 out.write(resp.toString());
-                
-                
-            } else if(action.equalsIgnoreCase("Annunci-editAnnuncio-infoAppartamento")){
-                
+
+            } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoAppartamento")) {
+
                 System.out.println("-----EDIT INFO APPARTAMENTO:");
 
                 String descrizione = request.getParameter("Descrizione").trim();
                 String m = request.getParameter("Metratura").trim();
                 boolean arredato = request.getParameter("Arredato") != null;
-                
+
                 double metraturaApp = 0;
                 if (!m.equalsIgnoreCase("")) {
                     metraturaApp = Double.parseDouble(m);
@@ -603,19 +597,19 @@ public class ServletAnnuncio extends HttpServlet {
                 String[] data = request.getParameter("DataInizioAffitto").split("-");
                 GregorianCalendar gc = new GregorianCalendar(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]));
                 //Da gestire la data inizio affitto Date dataInizioAffitto = new Date();
-                
-                gestoreAnnuncio.modificaInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime(),arredato);
+
+                gestoreAnnuncio.modificaInfoAnnuncio(descrizione, metraturaApp, (Date) gc.getTime(), arredato);
                 gestoreAnnuncio.rendiModifichePersistenti();
-                
+
                 JSONObject editAnnuncio = gestoreAnnuncio.toJSON();
-                
+
                 System.out.println("DESCRIZIONE: " + descrizione);
                 System.out.println("METRATURA: " + metraturaApp);
                 System.out.println("ARREDATO: " + arredato);
                 System.out.println("DATA: " + data[0] + " - " + data[1] + " - " + data[2]);
 
                 System.out.println("\n");
-                
+
                 //ELABORO RISPOSTA
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
@@ -623,48 +617,49 @@ public class ServletAnnuncio extends HttpServlet {
                 resp.accumulate("response", "OK");
                 resp.accumulate("data", editAnnuncio);
                 out.write(resp.toString());
-                
-            }
-            //metodi non di mia competenza 
-             else if(action.equalsIgnoreCase("Annunci-oscuraAnnuncio")){
-                
+
+            } //metodi non di mia competenza 
+            else if (action.equalsIgnoreCase("Annunci-oscuraAnnuncio")) {
+
                 System.out.println("-----OSCURA ANNUNCIO:");
 
                 String oidAnnuncio = request.getParameter("oidAnnuncio");
                 String value = request.getParameter("oscuratoValue");
- 
 
                 boolean res = gestoreAnnuncio.oscusaAnnuncio(Long.parseLong(oidAnnuncio), value.equalsIgnoreCase("true"));
-                
-                
+
                 //ELABORO RISPOSTA
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 JSONObject resp = new JSONObject();
                 resp.accumulate("response", res);
                 out.write(resp.toString());
-                
-            }
-              else if(action.equalsIgnoreCase("AnnuncioscuraAnnuncio")){
-                
+
+            } else if (action.equalsIgnoreCase("Annuncio-getJSONByOid")) {
+
                 System.out.println("-----RECUPERA ANNUNCIO BY OID:");
 
                 String oidAnnuncio = request.getParameter("oid");
 
- 
+                JSONObject res = gestoreAnnuncio.toJSON(Long.parseLong(oidAnnuncio));
 
-                //boolean res = gestoreAnnuncio.oscusaAnnuncio(Long.parseLong(oidAnnuncio), value.equalsIgnoreCase("true"));
-                
-                
                 //ELABORO RISPOSTA
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-                JSONObject resp = new JSONObject();
-                //resp.accumulate("response", res);
-                out.write(resp.toString());
-                
-            }
-            else {
+
+                if (res != null) {
+                    JSONObject resp = new JSONObject();
+                    resp.accumulate("response", "OK");
+                    resp.accumulate("data", res);
+                    out.write(resp.toString());
+                } else {
+                    JSONObject resp = new JSONObject();
+                    resp.accumulate("response", "NO");
+                    //resp.accumulate("data", res);
+                    out.write(resp.toString());
+                }
+
+            } else {
 
             }
             out.close();

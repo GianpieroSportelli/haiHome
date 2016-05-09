@@ -444,6 +444,7 @@ public class Annuncio implements Serializable,Comparable<Annuncio> {
             }
             annuncioJSON.accumulate("Prezzo", this.prezzo);
             annuncioJSON.accumulate("Quartiere", this.quartiere);
+            annuncioJSON.accumulate("Archiviato", this.archiviato);
             annuncioJSON.accumulate("NumeroLocali", this.numeroStanze);
             annuncioJSON.accumulate("Locatore", locatore.toJSON()); 
             annuncioJSON.accumulate("Descrizione", this.descrizione);
