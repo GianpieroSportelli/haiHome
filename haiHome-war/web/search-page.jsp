@@ -44,9 +44,9 @@
         <!-- end google+ login stuff -->
         <!----------------------- Fine import header -->
         
-        <!-- footer -->
-        <link href="tutcss.css" rel="stylesheet">
-        <!-- footer css -->
+        <!-- INIZIO footer css -->
+        <link href="include/css/footer/footer.css" rel="stylesheet">
+        <!-- FINE footer css -->
 
         <!-- INIZIO import SOL -SearchPage -->
         <script type="text/javascript" src="include/js/search/sol.js"></script>
@@ -241,7 +241,7 @@
                 </div>
             </div>
         </div>
-        <%@include file="/footer.jsp" %>
+        <%@include file="/footer2.jsp" %>
         <script>
             $(window).load(function () {
                 init_filtro();

@@ -34,9 +34,10 @@
 
 
         <!--<link href="tutcss.css" rel="stylesheet">
-        <!-- footer css -->
-                <!-- footer css -->
+        <!-- INIZIO footer css -->
         <link href="include/css/footer/footer.css" rel="stylesheet">
+        <!-- FINE footer css -->
+        
 
         <!--INIZIO - Form ajax plugin -->
         <script src="http://malsup.github.com/jquery.form.js"></script> 

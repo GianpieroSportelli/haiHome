@@ -7,9 +7,9 @@
 var geocoder;
 var map;
 var geoAddress;
-var supermarket = "images/basket.png";
-var bank = "images/bank.png";
-var bus = "images/transport.png";
+var supermarket = "images/supermarket2.ico";
+var bank = "images/bank2.ico";
+var bus = "images/bus2.ico";
 
 var dim_image_car = 500;
 var dim_image_prof = 100;
