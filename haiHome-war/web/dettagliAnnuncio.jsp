@@ -71,6 +71,10 @@
         <!--<script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>-->
         <script type="text/javascript" src="include/js/search/detailPage.js"></script>
         <!-- FINE import-->
+        
+        <!-- general Modal -->
+        <script type="text/javascript" src="include/js/generalModal.js"></script>
+        <!-- FINE General Modal -->
 
         <script>
             $("head").append("<title>haiHome!! - Annuncio-" + annuncio.Indirizzo + " </title>");
@@ -85,6 +89,7 @@
         <body>
             <%@include file="/header.jsp" %>
             <div class="container" id="dettagli-page">
+                <%@include file="/include/html/generalModal.html" %>
             <div class="row">
                 <div class="col-sm-9"><!--content -->
                     <div class="row">

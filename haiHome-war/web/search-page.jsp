@@ -85,11 +85,15 @@
         <script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>
         <!-- FINE import ajax-fun searchPage-->
         
+        <!-- general Modal -->
+        <script type="text/javascript" src="include/js/generalModal.js"></script>
+        <!-- FINE General Modal -->
 
     </head>
     <body>
         <%@include file="/header.jsp" %>
         <div class="container">
+            <%@include file="/include/html/generalModal.html" %>
             <div id="mydiv"></div>
             <div class="row">
                 <div class="col-sm-9 content">
