@@ -468,11 +468,21 @@ function persistiFiltro() {
     $.post("ServletController",
             {action: "Ricerca-salvaFiltro"},
             function (item) {
-                if (item == "ok")
-                    alert("Fitro Salvato!!");
-                var getf = $.Deferred();
-                getf.done(getfiltro);
-                getf.resolve();
+                if (item == "ok") {
+                    //alert("Fitro Salvato!!");
+                    var title="Ok...";
+                    var body="Salvataggio andato a buon fine!!";;
+                    var footer=null;
+                    openModalMessage(title, body, footer);
+                    var getf = $.Deferred();
+                    getf.done(getfiltro);
+                    getf.resolve();
+                }else{
+                   var title="Ops...";
+                    var body="C'è stato un errore nel salvataggio, contatti l'admin per maggiori informazini.";;
+                    var footer=null;
+                    openModalMessage(title, body, footer); 
+                }
             });
 }
 
@@ -491,7 +501,7 @@ function persistiFiltro_init() {
             getf.done(getfiltro);
             getf.resolve();
             persistiFiltro();
-            
+
         }
     });
 }

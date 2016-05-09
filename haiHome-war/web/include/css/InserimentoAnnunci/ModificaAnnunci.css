@@ -15,25 +15,38 @@ and open the template in the editor.
 }
 
 .formContainer{
-   border:solid 5px #000000;
--moz-border-radius-topleft: 5px;
--moz-border-radius-topright:43px;
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--webkit-border-top-left-radius:5px;
--webkit-border-top-right-radius:43px;
--webkit-border-bottom-left-radius:5px;
--webkit-border-bottom-right-radius:5px;
-border-top-left-radius:5px;
-border-top-right-radius:43px;
-border-bottom-left-radius:5px;
-border-bottom-right-radius:5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-right: 10px;
+      margin-left: 10px;
 }
 
-.formContainer  .nomeValore{
+.formContainer  .mylabel{
     color: blue;
 }
 
-.formContainer  .valore{
+.formContainer  .mylabel .valore{
     color: gray;
+}
+
+.dropzone .dz-preview .dz-image {
+      width: 80px;
+      height: 80px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-right: 0px;
+      margin-left: 0px;
+    }
+    
+    .dropzone{
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    }
+    
+    .not-active {
+   pointer-events: none;
+   cursor: not-allowed;
+   
 }

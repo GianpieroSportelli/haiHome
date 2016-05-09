@@ -82,6 +82,7 @@
 
 
         <%@include file="include/html/modalConfermaCancellazione.html"%>
+        <%@include file="include/html/modalConfermaCancellazioneAnnuncio.html"%>
         <!-- < %@include file="/header3Login.jsp" %>  -->
 
         <!-- Non voglio imparare HTML, notyplsbbbrb -->
@@ -290,9 +291,9 @@
              if (filtri.length !== 0) {
              //Ho messo due variabili perche' non aggiorna la sessione in real-time
              if (!activatedTutorial) {
-            <%/* if (session.getAttribute("tutorial") == null) {
+             <%/* if (session.getAttribute("tutorial") == null) {
                     session.setAttribute("tutorial", true);
-                  */ %>
+                 */ %>
              //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
              //Il problema nasce dal fatto che i tab sono dinamici
              var millisecondsToWait = 400;
@@ -300,7 +301,7 @@
              introJs().start();
              activatedTutorial = true;
              }, millisecondsToWait);
-            <%// }%>
+             <%// }%>
              }
              }
              }*/

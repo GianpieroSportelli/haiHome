@@ -55,12 +55,14 @@ public interface GestoreAnnuncioLocal {
     public boolean modificaInfoAnnuncio(String descrizione, double metratura, Date dataInizioAffitto,boolean arredato);
     
     public boolean modificaInfoStanze(int numeroStanze, boolean atomico);
+    
+    public boolean modificaStanza(long oid, Collection<String> newFoto,Collection<String> deletedFoto, double metratura);
 
-    public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo);
+    //public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo);
 
-    public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, double metratura);
+    //public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, double metratura);
 
-    public boolean modificaStanzaAccessoria(long oid, String tipo, Collection<String> foto, double metratura);
+    //public boolean modificaStanzaAccessoria(long oid, String tipo, Collection<String> foto, double metratura);
 
     public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento);
 

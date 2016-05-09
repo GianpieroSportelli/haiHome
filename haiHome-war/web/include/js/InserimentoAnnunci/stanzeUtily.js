@@ -331,7 +331,7 @@ function sendData() {
 
 
     }
-    myRequest.setRequestHeader("action", "action");
+    myRequest.setRequestHeader("action", "Annunci-newAnnuncio-FotoUpload");
 
     myRequest.send(formData);
 
