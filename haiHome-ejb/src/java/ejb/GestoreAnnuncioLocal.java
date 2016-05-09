@@ -72,7 +72,9 @@ public interface GestoreAnnuncioLocal {
     
     public boolean eliminaAnnuncio(long oidAnnuncio);
     
-    public boolean eliminaStanza(Stanza s);
+    //public boolean eliminaStanza(Stanza s);
+    
+    public boolean eliminaStanza(long oidStanza);
     
     //OSCURA
     

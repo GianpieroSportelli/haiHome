@@ -72,8 +72,8 @@ public class ServletAnnuncio extends HttpServlet {
     private final static String tempFolderPath = "//Users//giacomocavallo//NetBeansProjects//ProgettoSSCSWeb//haiHome//haiHome-war//web//Immagini//tempAppImg//";
     //ArrayList<FileOutputStream> photoTempPath;
     private HashMap<String, ArrayList<String>> photoTempPath;
-    
-        private ArrayList<String> editPhotoTempPath;
+
+    private ArrayList<String> editPhotoTempPath;
     private HashMap<String, ArrayList<String>> stanzeInfo;
     long idLocatore;
 
@@ -97,7 +97,7 @@ public class ServletAnnuncio extends HttpServlet {
             String header = request.getHeader("action");
 
             if (header != null) {
-                
+
                 action = header;
                 //action = "Annunci-newAnnuncio-FotoUpload";
 
@@ -292,7 +292,6 @@ public class ServletAnnuncio extends HttpServlet {
 
                 for (Part filePart : files) {
 
-                    
                     String fileName = filePart.getSubmittedFileName();
 
                     String numStanza = filePart.getName();
@@ -486,15 +485,15 @@ public class ServletAnnuncio extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
 
                 System.out.println("-----MODIFICA  RICHIESTA INIZIALE:");
-                
+
                 String oidAnnuncio = request.getParameter("idAnnuncio").trim();
                 String oidLocatore = request.getParameter("idAnnuncio").trim();
 
                 System.out.println("OID Annuncio: " + oidAnnuncio);
-                
+
                 //INizio recupero dati locatore
                 HttpSession session = request.getSession();
-                
+
                 String userType = (String) session.getAttribute("user-type");
 
                 if (userType == null) {
@@ -503,72 +502,68 @@ public class ServletAnnuncio extends HttpServlet {
                 if ((userType.equalsIgnoreCase("locatore")) /*(userType.equalsIgnoreCase("locatore"))*/) {
                     JSONObject locatoreJSON = (JSONObject) session.getAttribute("user-data");
                     idLocatore = (long) locatoreJSON.get("id");
-                     //Fine recupero dati locatore
-                    
+                    //Fine recupero dati locatore
+
                     boolean result = gestoreAnnuncio.modificaAnnuncio(Long.parseLong(oidAnnuncio));
 
-                if (result) {
-                    //carico lista quartieri
-                    capMap = gestoreCitta.getQuartieriCapMap();
-                    for (String key : capMap.keySet()) {
-                        System.out.println("Cap: " + key);
-                        System.out.println("Quartieri : ");
-                        for (String quart : capMap.get(key)) {
-                            System.out.println("- " + quart);
+                    if (result) {
+                        //carico lista quartieri
+                        capMap = gestoreCitta.getQuartieriCapMap();
+                        for (String key : capMap.keySet()) {
+                            System.out.println("Cap: " + key);
+                            System.out.println("Quartieri : ");
+                            for (String quart : capMap.get(key)) {
+                                System.out.println("- " + quart);
+                            }
+
                         }
 
-                    }
+                        //carico i Tipi stanze
+                        ArrayList<String> tipoStanzeAffitto = gestoreAnnuncio.getTipologieStanzaAffitto();
+                        ArrayList<String> tipoStanzeAccessorio = gestoreAnnuncio.getTipologieStanzaAcc();
 
-                    //carico i Tipi stanze
-                    ArrayList<String> tipoStanzeAffitto = gestoreAnnuncio.getTipologieStanzaAffitto();
-                    ArrayList<String> tipoStanzeAccessorio = gestoreAnnuncio.getTipologieStanzaAcc();
+                        JSONObject annuncio = gestoreAnnuncio.toJSON();
 
-                    JSONObject annuncio = gestoreAnnuncio.toJSON();
+                        JSONArray stanze = annuncio.getJSONArray("Stanze").getJSONArray(0);
 
-                    JSONArray stanze = annuncio.getJSONArray("Stanze").getJSONArray(0);
+                        for (int i = 0; i < stanze.length(); i++) {
 
-                    for (int i = 0; i < stanze.length(); i++) {
+                            JSONObject s = stanze.getJSONObject(i);
+                            ArrayList<String> fotos = (ArrayList<String>) s.get("Foto");
+                            ArrayList<String> fotos64 = new ArrayList();
+                            ArrayList<String> estensioniFoto64 = new ArrayList();
+                            for (String f : fotos) {
+                                System.out.print(f);
+                                String est = f.substring(f.length() - 3);
+                                System.out.println("Immagine: " + f + " estensione: " + est);
+                                String foto64 = gestoreImmagini.getImage(f, est);
+                                fotos64.add(foto64);
+                                estensioniFoto64.add(est);
+                            }
 
-                        JSONObject s = stanze.getJSONObject(i);
-                        ArrayList<String> fotos = (ArrayList<String>) s.get("Foto");
-                        ArrayList<String> fotos64 = new ArrayList();
-                        ArrayList<String> estensioniFoto64 = new ArrayList();
-                        for (String f : fotos) {
-                            System.out.print(f);
-                            String est = f.substring(f.length() - 3);
-                            System.out.println("Immagine: " + f + " estensione: " + est);
-                            String foto64 = gestoreImmagini.getImage(f, est);
-                            fotos64.add(foto64);
-                            estensioniFoto64.add(est);
+                            s.accumulate("Foto64", fotos64);
+                            s.accumulate("Est64", estensioniFoto64);
+
                         }
 
-                        s.accumulate("Foto64", fotos64);
-                        s.accumulate("Est64", estensioniFoto64);
+                        JSONObject resp = new JSONObject();
+                        resp.accumulate("response", "OK");
+                        resp.accumulate("tipoAffitto", tipoStanzeAffitto);
+                        resp.accumulate("tipoAccessorio", tipoStanzeAccessorio);
+                        resp.accumulate("data", annuncio);
+                        out.write(resp.toString());
 
+                    } else {
+                        JSONObject resp = new JSONObject();
+                        resp.accumulate("response", "NO");
+                        out.write(resp.toString());
                     }
-
-                    JSONObject resp = new JSONObject();
-                    resp.accumulate("response", "OK");
-                    resp.accumulate("tipoAffitto", tipoStanzeAffitto);
-                    resp.accumulate("tipoAccessorio", tipoStanzeAccessorio);
-                    resp.accumulate("data", annuncio);
-                    out.write(resp.toString());
 
                 } else {
                     JSONObject resp = new JSONObject();
                     resp.accumulate("response", "NO");
                     out.write(resp.toString());
                 }
-                    
-                    
-                }else{
-                    JSONObject resp = new JSONObject();
-                    resp.accumulate("response", "NO");
-                    out.write(resp.toString());
-                }
-               
-
-                
 
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoIndirizzo")) {
 
@@ -642,17 +637,16 @@ public class ServletAnnuncio extends HttpServlet {
                 resp.accumulate("data", editAnnuncio);
                 out.write(resp.toString());
 
-            }  else if (action.equalsIgnoreCase("Annunci-editAnnuncio-FotoUpload")) {
+            } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-FotoUpload")) {
 
                 System.out.println("-----EDIT NEW FOTO UPLOAD:");
-                
+
                 editPhotoTempPath = new ArrayList();
 
                 Collection<Part> files = request.getParts();
 
                 for (Part filePart : files) {
 
-                    
                     String fileName = filePart.getSubmittedFileName();
 
                     String numStanza = filePart.getName();
@@ -667,10 +661,10 @@ public class ServletAnnuncio extends HttpServlet {
                     System.out.println("NOME FOTO: " + fileName + " NUOVO PATH FOTO " + path);
 
                 }
-                
-                for(String p : editPhotoTempPath){
-                System.out.println(p);
-            }
+
+                for (String p : editPhotoTempPath) {
+                    System.out.println(p);
+                }
 
                 //ELABORO RISPOSTA
                 response.setContentType("application/json");
@@ -679,31 +673,35 @@ public class ServletAnnuncio extends HttpServlet {
                 resp.accumulate("response", "OK");
                 out.write(resp.toString());
 
-               
+            } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoEditStanze")) {
 
-            }  else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoEditStanze")) {
-                
                 System.out.println("-----EDIT INFO STANZA:");
-                String oidStanza = request.getParameter("oidStanza");             
-                                
-                String Metratura = request.getParameter("MetraturaS");
+                String oidStanza = request.getParameter("oidStanza");
+
+                String metratura = request.getParameter("MetraturaS");
                 String[] oldFoto = request.getParameterValues("fotoEliminate");
-                
-                
+
                 System.out.println("OID: " + oidStanza);
-                System.out.println("METRATURA: " + Metratura);
+                System.out.println("METRATURA: " + metratura);
                 System.out.println("FOTO ELIMINATE: ");
                 ArrayList<String> stanzeEliminate = new ArrayList();
-                for(int i=0;i<oldFoto.length;i++){
-                    System.out.println("NOME FOTO: " + oldFoto[i]);
-                    stanzeEliminate.add(oldFoto[i]);
+                if (oldFoto == null) {
+                    System.out.println("Non è stata eliminata alcuna foto");
+
+                } else {
+
+                    for (int i = 0; i < oldFoto.length; i++) {
+                        System.out.println("Foto eliminate");
+                        System.out.println("NOME FOTO: " + oldFoto[i]);
+                        stanzeEliminate.add(oldFoto[i]);
+                    }
+
                 }
                 long oid = Long.parseLong(oidStanza);
-                
-                boolean result = gestoreAnnuncio.modificaStanza(oid, editPhotoTempPath, stanzeEliminate, Double.parseDouble(Metratura));
+
+                boolean result = gestoreAnnuncio.modificaStanza(oid, editPhotoTempPath, stanzeEliminate, Double.parseDouble(metratura));
                 JSONObject annuncioEdited = gestoreAnnuncio.toJSON();
-                
-                
+
                 //ELABORO RISPOSTA
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
@@ -712,12 +710,55 @@ public class ServletAnnuncio extends HttpServlet {
                 resp.accumulate("data", annuncioEdited);
                 out.write(resp.toString());
 
-               
+            } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-eliminaStanza")) {
 
-            }
-            
-            
-            //metodi non di mia competenza  
+                String oidStanza = request.getParameter("oid");
+
+                System.out.println("-----ELIMINA STANZA OID: " + oidStanza);
+
+                boolean esito = this.gestoreAnnuncio.eliminaStanza(Long.parseLong(oidStanza));
+
+                //ELABORO RISPOSTA
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                if (esito) {
+                    JSONObject annuncioEdited = this.gestoreAnnuncio.toJSON();
+
+                    JSONArray stanze = annuncioEdited.getJSONArray("Stanze").getJSONArray(0);
+
+                    for (int i = 0; i < stanze.length(); i++) {
+
+                        JSONObject s = stanze.getJSONObject(i);
+                        ArrayList<String> fotos = (ArrayList<String>) s.get("Foto");
+                        ArrayList<String> fotos64 = new ArrayList();
+                        ArrayList<String> estensioniFoto64 = new ArrayList();
+                        for (String f : fotos) {
+                            System.out.print(f);
+                            String est = f.substring(f.length() - 3);
+                            System.out.println("Immagine: " + f + " estensione: " + est);
+                            String foto64 = gestoreImmagini.getImage(f, est);
+                            fotos64.add(foto64);
+                            estensioniFoto64.add(est);
+                        }
+
+                        s.accumulate("Foto64", fotos64);
+                        s.accumulate("Est64", estensioniFoto64);
+
+                    }
+
+                    JSONObject resp = new JSONObject();
+                    resp.accumulate("response", "OK");
+                    resp.accumulate("data", annuncioEdited);
+                    out.write(resp.toString());
+
+                } else {
+                    JSONObject resp = new JSONObject();
+                    resp.accumulate("response", "OK");
+                    out.write(resp.toString());
+                }
+
+            } //metodi non di mia competenza  
             else if (action.equalsIgnoreCase("Annunci-oscuraAnnuncio")) {
 
                 System.out.println("-----OSCURA ANNUNCIO:");

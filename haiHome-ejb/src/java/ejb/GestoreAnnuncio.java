@@ -626,12 +626,34 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
+    public boolean eliminaStanza(long oidStanza) {
+        
+        Stanza stanza = trovaStanza(oidStanza);
+        Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
+        listaStanze.remove(stanza);
+        annuncio.setListaStanza(listaStanze);
+        annuncioFacade.edit(this.annuncio);
+        
+        
+        if(stanza instanceof StanzaAccessoria){
+            this.stanzaAccessoriaFacade.remove((StanzaAccessoria)stanza);
+        }else if (stanza instanceof StanzaInAffitto){
+            this.stanzaInAffittoFacade.remove((StanzaInAffitto)stanza);
+        }else{
+            return false;
+        }
+        return true;
+        
+    }
+    
+   /* 
+    @Override
     public boolean eliminaStanza(Stanza s) {
         stanzaFacade.remove(s);
 
         return true;
     }
-
+*/
     @Override
     public Annuncio predniAnnuncio(long oid) {
         Annuncio temp = annuncioFacade.find(oid);
