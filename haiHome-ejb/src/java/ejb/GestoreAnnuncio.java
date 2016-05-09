@@ -390,10 +390,18 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     private Stanza trovaStanza(long oid) {
-        ArrayList<Stanza> stanze = (ArrayList<Stanza>) this.annuncio.getListaStanza();
+        //ArrayList<Stanza> stanze = (ArrayList<Stanza>) this.annuncio.getListaStanza();
+        Collection<Stanza> stanze = this.annuncio.getListaStanza();
+
+        
+        for(Stanza s : stanze){
+            if(s.getId()==oid){
+                return s;
+            }
+        }
+        /*
         boolean trovato = false;
         Stanza myStanza = null;
-
         int i = 0;
         while (!trovato && i < stanze.size()) {
             Stanza temp = stanze.get(i);
@@ -403,9 +411,92 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             }
             i++;
         }
-        return myStanza;
+        */
+        return null;
     }
 
+    
+    @Override
+    public boolean modificaStanza(long oid, Collection<String> newFoto,Collection<String> deletedFoto, double metratura) {
+        Stanza stanza = trovaStanza(oid);
+        if(stanza instanceof StanzaAccessoria){
+            
+        }else if (stanza instanceof StanzaInAffitto){
+            return modificaStanzaInAffitto(stanza,newFoto,deletedFoto,metratura);
+        }else{
+            return modificaStanzaAccessoria(stanza,newFoto,deletedFoto,metratura);
+        }
+        
+        return true;
+    }
+    
+    private boolean modificaStanzaInAffitto(Stanza stanza, Collection<String> newFoto,Collection<String> deletedFoto, double metratura) {
+        
+        StanzaInAffitto editedStanza = (StanzaInAffitto) stanza.clone();
+        Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
+        listaStanze.remove(stanza);
+        
+        if(metratura != editedStanza.getMetratura()){
+            editedStanza.setMetratura(metratura);
+        }
+        ArrayList<String> foto = (ArrayList<String>) editedStanza.getFoto();
+        
+        for(String deletedfoto: deletedFoto ){
+            foto.remove(deletedfoto);
+            PathUtily.eliminaFoto(deletedfoto);
+        }
+
+        for(String newfoto: newFoto ){
+            foto.add(newfoto);
+        }
+        
+        editedStanza.setFoto(foto);
+        stanzaInAffittoFacade.edit(editedStanza);
+        listaStanze.add(editedStanza);
+        this.annuncio.setListaStanza(listaStanze);
+        annuncioFacade.edit(this.annuncio);
+        return true;
+    }
+    
+        private boolean modificaStanzaAccessoria(Stanza stanza, Collection<String> newFoto,Collection<String> deletedFoto, double metratura) {
+        
+        StanzaAccessoria editedStanza = (StanzaAccessoria) stanza.clone();
+        Collection<Stanza> listaStanze =  this.annuncio.getListaStanza();
+        listaStanze.remove(stanza);
+        
+        if(metratura != editedStanza.getMetratura()){
+            editedStanza.setMetratura(metratura);
+        }
+        ArrayList<String> foto = (ArrayList<String>) editedStanza.getFoto();
+        
+        for(String deletedfoto: deletedFoto ){
+            foto.remove(deletedfoto);
+            PathUtily.eliminaFoto(deletedfoto);
+        }
+
+        for(String newfoto: newFoto ){
+            File fileTemp = (new File(newfoto));
+            File fileDef = (new File(newfoto.replace("_temp_","")));
+            
+            try {
+                PathUtily.spostaFoto(fileTemp, fileDef);
+            } catch (IOException ex) {
+                System.out.println("Errore!!!!!");
+                Logger.getLogger(GestoreAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            foto.add(fileDef.getPath());
+        }
+        
+        stanzaAccessoriaFacade.edit(editedStanza);
+        listaStanze.add(editedStanza);
+        this.annuncio.setListaStanza(listaStanze);
+        annuncioFacade.edit(this.annuncio);
+        return true;
+    }
+        
+    /*
     @Override
     public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo) {
 
@@ -478,7 +569,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
 
         return true;
     }
-
+*/
+    
     @Override
     public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento) {
         annuncio.setPrezzo(prezzo);
@@ -731,6 +823,9 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             return false;
         }
     }
+
+
+
 
 
 

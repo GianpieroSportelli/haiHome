@@ -139,7 +139,6 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a class="openlink" data-toggle="collapse" href="#collapse3">Modifica Stanze</a>
-                            <a class="start-edit editButton"  hidden><span class="glyphicon glyphicon-edit"></span>Modifica</a>
 
                         </h4>
                     </div>
