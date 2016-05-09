@@ -44,8 +44,9 @@
         <!-- end google+ login stuff -->
         <!----------------------- Fine import header -->
 
-        <link href="tutcss.css" rel="stylesheet">
-        <!-- footer css -->
+        <!-- INIZIO footer css -->
+        <link href="include/css/footer/footer.css" rel="stylesheet">
+        <!-- FINE footer css -->
 
         <!-- INIZIO import DetailPage css-->
         <link rel="stylesheet" href="include/css/search/detailPage.css">
@@ -71,6 +72,10 @@
         <!--<script type="text/javascript" src="include/js/search/ajax_fun_searchPage.js"></script>-->
         <script type="text/javascript" src="include/js/search/detailPage.js"></script>
         <!-- FINE import-->
+        
+        <!-- general Modal -->
+        <script type="text/javascript" src="include/js/generalModal.js"></script>
+        <!-- FINE General Modal -->
 
         <script>
             $("head").append("<title>haiHome!! - Annuncio-" + annuncio.Indirizzo + " </title>");
@@ -85,6 +90,7 @@
         <body>
             <%@include file="/header.jsp" %>
             <div class="container" id="dettagli-page">
+                <%@include file="/include/html/generalModal.html" %>
             <div class="row">
                 <div class="col-sm-9"><!--content -->
                     <div class="row">
@@ -123,7 +129,7 @@
             $("#service").append(service());
         </script>
 
-        <%@include file="/footer.jsp" %>
+        <%@include file="/footer2.jsp" %>
     </body>
 
 </html>
