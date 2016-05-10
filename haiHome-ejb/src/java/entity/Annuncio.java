@@ -453,6 +453,10 @@ public class Annuncio implements Serializable,Comparable<Annuncio> {
             annuncioJSON.accumulate("Lng", this.latLng[1]);
             annuncioJSON.accumulate("Metratura", this.metratura);
             annuncioJSON.accumulate("Atomico", this.atomico);
+            if(this.atomico){
+                annuncioJSON.accumulate("CompresoRiscaldamento", this.compresoRiscaldamento);
+                annuncioJSON.accumulate("CompresoCondominio", this.compresoCondominio); 
+            }
             annuncioJSON.accumulate("Arredato", this.arredato);
             annuncioJSON.accumulate("Oscurato", this.oscurato);
             

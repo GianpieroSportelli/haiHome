@@ -44,3 +44,9 @@ and open the template in the editor.
     padding-bottom: 0px;
     padding-left: 0px;
     }
+    
+    .not-active {
+   pointer-events: none;
+   cursor: not-allowed;
+   
+}

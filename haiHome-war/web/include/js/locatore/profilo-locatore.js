@@ -1,12 +1,7 @@
 jQuery(document).ready(function ($) {
-    /*
-     * Nella tendina "modifica-archivia-elimina" di ogni annuncio, mettere due 
-     * icone invisibili (V e X) per visualizzare l'esito dell'operazione 
-     * (utile per archiviazione e eliminazione che sono istantanee)
-     * */
     var login_type;
     var user_data;
-    var stato_locatore; //bloccato / anche no
+    var is_bloccato;
     var a_tot, a_num_vis, a_num_arch, a_num_osc;
     var backups = [];
 
@@ -73,16 +68,15 @@ jQuery(document).ready(function ($) {
                     $('#telefono').val(user_data.telefono);
                     $('#descrizione').val(user_data.descrizione);
 
-                    stato_locatore = user_data.bloccato;
-
+                    is_bloccato = user_data.bloccato === "true";
                     var $stato_locatore = $('#status-locatore');
 
-                    if (user_data.bloccato === "false") {
-                        $stato_locatore.text("ok");
-                        $stato_locatore.css('color', 'green');
-                    } else {
+                    if (is_bloccato) {
                         $stato_locatore.text("bloccato");
                         $stato_locatore.css('color', 'red');
+                    } else {
+                        $stato_locatore.text("ok");
+                        $stato_locatore.css('color', 'green');
                     }
 
 //                    $('#status-locatore').val(stato_locatore == true)
@@ -242,9 +236,10 @@ jQuery(document).ready(function ($) {
      * - html generato sulla server 
      * */
 
+
+
     /* Modifica annuncio */
     $(document).on('click', 'a.edit-annuncio', function (event) {
-        //var transaction_id = $(this).attr('id').replace('delete_', '');
         var oid = event.target.id.replace("edit-ann", "");
 
         window.location.replace("MA0-ModificaAnnunci.jsp?oid=" + oid);
@@ -257,22 +252,30 @@ jQuery(document).ready(function ($) {
         var oid = event.target.id.replace("delete-ann", "");
         console.log("> delete " + oid);
 
-        $.post(
-                "ServletController",
-                {
-                    'action': 'locatore-delete-annuncio',
-                    'oid': oid
-                },
-                function (response) {
-                    console.log("response - " + response);
+        $.confirm({
+            title: "Conferma cancellazione",
+            text: "Sei sicuro di voler eliminare l'annuncio?",
+            confirm: function () {
+                console.log("confirmed...");
 
-                    if (response === "ok") {
-                        // $("#ann-" + oid).css('display', 'none');
-                        $("#ann-" + oid).remove();
-                        updateInfoAnnunci();
-                    }
-                }
-        );
+                $.post(
+                        "ServletController",
+                        {
+                            'action': 'locatore-delete-annuncio',
+                            'oid': oid
+                        },
+                        function (response) {
+                            console.log("response - " + response);
+
+                            if (response === "ok") {
+                                // $("#ann-" + oid).css('display', 'none');
+                                $("#ann-" + oid).remove();
+                                updateInfoAnnunci();
+                            }
+                        }
+                );
+            }
+        });
     });
 
     /* Archiviazione di un annuncio */
@@ -280,25 +283,30 @@ jQuery(document).ready(function ($) {
         var oid = event.target.id.replace("select-ann-", "");
         console.log("> archivia " + oid);
 
-        $.post(
-                "ServletController",
-                {
-                    'action': 'locatore-archivia-annuncio',
-                    'oid': oid
-                },
-                function (response) {
-                    console.log("response - " + response);
-                    console.log("oid: " + oid);
+        $.confirm({
+            title: "Conferma archiviazione annuncio",
+            text: "Sei sicuro di voler archiviare l'annuncio?",
+            confirm: function () {
+                $.post(
+                        "ServletController",
+                        {
+                            'action': 'locatore-archivia-annuncio',
+                            'oid': oid
+                        },
+                        function (response) {
+                            console.log("response - " + response);
+                            console.log("oid: " + oid);
 
-                    if (response === "ok") {
-                        // $("#ann-" + oid).css('display', 'none');
-                        $("#ann-" + oid).remove();
-                        updateInfoAnnunci();
-                        loadArchivioAnnunci();
-
-                    }
-                }
-        );
+                            if (response === "ok") {
+                                // $("#ann-" + oid).css('display', 'none');
+                                $("#ann-" + oid).remove();
+                                updateInfoAnnunci();
+                                loadArchivioAnnunci();
+                            }
+                        }
+                );
+            }
+        });
     });
 
     /* Pubblicazione di un annuncio precedentemente archiviato */
@@ -306,28 +314,37 @@ jQuery(document).ready(function ($) {
         var oid = event.target.id.replace("select-ann-", "");
         console.log("> pubblica " + oid);
 
-        $.post(
-                "ServletController",
-                {
-                    'action': 'locatore-pubblica-annuncio',
-                    'oid': oid
-                },
-                function (response) {
-                    console.log("response - " + response);
+        $.confirm({
+            title: "Conferma pubblicazione annuncio",
+            text: "Sei sicuro di voler pubblicare l'annuncio?",
+            confirm: function () {
+                $.post(
+                        "ServletController",
+                        {
+                            'action': 'locatore-pubblica-annuncio',
+                            'oid': oid
+                        },
+                        function (response) {
+                            console.log("response - " + response);
 
-                    if (response === "ok") {
-                        // $("#ann-" + oid).css('display', 'none');
-                        $("#ann-" + oid).remove();
+                            if (response === "ok") {
+                                // $("#ann-" + oid).css('display', 'none');
+                                $("#ann-" + oid).remove();
 
-                        if (a_num_arch == 1) {
-                            $('#archivio-content').html("No results");
+                                if (a_num_arch == 1) {
+                                    $('#archivio-content').html("No results");
+                                }
+
+                                updateInfoAnnunci();
+                                loadAnnunci();
+                            }
                         }
+                );
+            }
+        });
 
-                        updateInfoAnnunci();
-                        loadAnnunci();
-                    }
-                }
-        );
+
+
     });
 
     $(document).on('click', 'a.annuncio-view-details', function (event) {
@@ -339,23 +356,18 @@ jQuery(document).ready(function ($) {
                 {
                     'action': 'Annuncio-getJSONByOid',
                     'oid': oid
-                }, function (responseJSON) {
-            if (responseJSON.response === "OK") {
-                console.log(responseJSON.data);
-                /* code by gianp */
-                var url = "/haiHome-war/dettagliAnnuncio.jsp";
-                $.session.set('dettagli', JSON.stringify(responseJSON.data));
-                $.session.set('admin', false);
-                window.open(url);
-            } else {
-                //   console.log("Che cazzo e' successo?"); 
-                console.log("Si e' verificato un errore inatteso");
-            }
-
-        });
+                },
+                function (responseJSON) {
+                    if (responseJSON.response === "OK") {
+                        console.log(responseJSON.data);
+                        /* code by gianp */
+                        var url = "/haiHome-war/dettagliAnnuncio.jsp";
+                        $.session.set('dettagli', JSON.stringify(responseJSON.data));
+                        $.session.set('admin', false);
+                        window.open(url);
+                    } else {
+                        console.log("Si e' verificato un errore inatteso");
+                    }
+                });
     });
-
-
-
-
 });

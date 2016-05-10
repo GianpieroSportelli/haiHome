@@ -64,6 +64,8 @@
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
+        
+        <script type="text/javascript" src="include/js/jquery.confirm.min.js"></script>
                 
         <script type="text/javascript" src="include/js/locatore/profilo-locatore.js"></script>
 
@@ -74,8 +76,8 @@
 
     </head>
     <body>
-        <%@include file="/header.jsp" %>
-
+        <%@include file="/header.jsp" %>        
+        
         <div class="container">
             <div class="row profile">
                 <div class="col-md-3">
@@ -207,31 +209,6 @@
                                 <div class="row" id="rigapwd"> 
                                     <!-- campo PASSWORD -->
                                     <div class="col-md-12">
-                                        <!--
-                                        <div id="panel-password" class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    Password
-                                                    <a data-toggle="collapse" href="#password-collapse">
-                                                        LOL
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="password-collapse" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                    <div class="col-md-4">
-                                                        <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="Vecchia password" disabled="disabled" />
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova password" />
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <input id="new-password2" class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..." />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
-
                                         <div id="panel-password" class="panel panel-default editable">
                                             <div class='panel-heading  panel-heading-custom'>
                                                 Password

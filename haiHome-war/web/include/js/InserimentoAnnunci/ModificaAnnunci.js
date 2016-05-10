@@ -9,19 +9,36 @@ var myAnnuncio;
 var tipoLetto;
 var tipoAcc;
 
+//Informazioni indirizzo
 var pannInd;
 var pIndopen = false;
+
+//Informazioni Appartamento
 var pannInfo;
 var pInfopen = false;
+
+//Informazioni Stanze
 var pannStanze;
 var pStaopen = false;
+
+
+//Informazioni prezzo
 var pannCosti;
 var pCosopen = false;
 
 //gestisco due stadi: ready(false) - edit(true)
 var editMode = false;
 
+//bottone di modifica Indirizzo - InfoAppartamento - Prezzo
 var editButton;
+
+//bottoni stanze
+var editStanza;
+var deleteStanza;
+var confermaStanza;
+var annullaStanza;
+
+
 
 $(document).ready(function () {
     pannInd = $("#indirizzoPanel");
@@ -31,6 +48,10 @@ $(document).ready(function () {
 
     editButton = $(".editButton");
 
+    editStanza = $(".editStanza");
+    deleteStanza = $(".deleteStanza");
+    confermaStanza = $(".confermaStanza");
+    annullaStanza = $(".annullaStanza");
 
     //funzioni bottoni
 
@@ -55,7 +76,7 @@ $(document).ready(function () {
 
             } else if (idpanel == pannStanze.attr("id")) {
                 //info stanze
-                
+
 
 
             } else if (idpanel == pannCosti.attr("id")) {
@@ -69,6 +90,7 @@ $(document).ready(function () {
 
 
     });
+
 
 
     //bottone conferma
@@ -137,6 +159,125 @@ $(document).ready(function () {
     });
 
 
+    //BOTTONI STANZE
+
+    //bottone modifica Stanza
+    editStanza.on("click", function () {
+
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+
+        var tabStanze = pannStanze.find(".nav-tabs");
+
+        //disattivo tutti i tab
+        tabStanze.find("a").each(function (index) {
+            var href = $(this).attr("href");
+            if (href != stanzaContent.attr("id")) {
+                $(this).addClass("not-active");
+            }
+
+        });
+        //abilito inserimento
+        abilitaInsetimentoDati(stanzaContent);
+        abilitaDropzone(stanzaContent);
+
+        //nascondo bottoni 1
+        editStanza.parent("div").hide();
+
+        //mostro bottoni 2 
+        confermaStanza.parent("div").show();
+
+    });
+
+    //bottone conferma Stanza
+    confermaStanza.on("click", function () {
+
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+        
+        modificaStanza(stanzaContent);
+
+        //disabilito l'inserimento
+        disabilitaInserimentoDati(stanzaContent);
+        disabilitaDropzone(stanzaContent);
+
+        //attivo tutti i tab
+        var tabStanze = pannStanze.find(".nav-tabs");
+
+        tabStanze.find("a").each(function (index) {
+            var href = $(this).attr("href");
+            if (href != stanzaContent.attr("id")) {
+                $(this).removeClass("not-active");
+            }
+
+        });
+
+        //nascondo bottoni 2
+        confermaStanza.parent("div").hide();
+
+        //mostro bottoni 1 
+        editStanza.parent("div").show();
+
+    });
+    
+    
+    
+    
+    
+
+    //bottone annulla stanza
+    annullaStanza.on("click", function () {
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+        var idStanza = stanzaContent.attr("id").slice(6);
+
+        var stanze = myAnnuncio.Stanze[0];
+        var s = stanze[idStanza];
+
+        resetStanza(s, idStanza);
+
+        //disabilito l'inserimento
+        disabilitaInserimentoDati(stanzaContent);
+        disabilitaDropzone(stanzaContent);
+
+        //attivo tutti i tab
+        var tabStanze = pannStanze.find(".nav-tabs");
+
+        tabStanze.find("a").each(function (index) {
+            var href = $(this).attr("href");
+            if (href != stanzaContent.attr("id")) {
+                $(this).removeClass("not-active");
+            }
+
+        });
+        //nascondo bottoni 2
+        confermaStanza.parent("div").hide();
+        //mostro bottoni 1 
+        editStanza.parent("div").show();
+    });
+    
+    
+    deleteStanza.on("click",function(){
+        //ricavo informazioni sulla stanza
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+        var idStanza = stanzaContent.attr("id").slice(6);
+
+        var stanze = myAnnuncio.Stanze[0];
+        var s = stanze[idStanza];
+        
+        if(confirm("Sicuro di voler eliminare la stanza " + idStanza)){
+            //mando richiesta di eliminare stanza
+            eliminaStanza(s);
+    
+        }
+        
+        
+        
+    });
+
+
+
 
 
     //CONTROLLO CLICK PANNELLI
@@ -168,7 +309,7 @@ $(document).ready(function () {
     });
 
 
-   //pannelo info stanze
+    //pannelo info stanze
     pannStanze.find("a.openlink").on("click", function () {
         console.log(pStaopen);
         pStaopen = !pStaopen;
@@ -206,10 +347,11 @@ $(document).ready(function () {
 });
 
 
+//richiesta iniziale
 function initalEditFunction() {
 
     var oidTag = $("input#OIDAnnuncio");
-    
+
     console.log(oidTag.attr("value"));
     var oid = oidTag.attr("value");
 
@@ -227,8 +369,8 @@ function initalEditFunction() {
                     myAnnuncio = annuncio;
                     tipoLetto = msg.tipoAffitto;
                     tipoAcc = msg.tipoAccessorio;
-                    setTipoCamere(tipoLetto,tipoAcc);
-                    
+                    setTipoCamere(tipoLetto, tipoAcc);
+
                     //riempio i campi
                     aggiornaIndForm(myAnnuncio);
                     aggiornaAptForm(myAnnuncio);
@@ -244,12 +386,13 @@ function initalEditFunction() {
             });
 }
 
+//Aggiorna Dati Indirizzo
 function aggiornaIndForm(ann) {
     var indirizzoTag = pannInd.find("#inpIndirizzo");
     var civicoTag = pannInd.find("#inpCivico");
     var quartTag = pannInd.find("#selQuartiere");
 
-    
+
 
     indirizzoTag.val(ann.Indirizzo.split(", ")[0]);
     civicoTag.val(ann.Indirizzo.split(", ")[1]);
@@ -259,15 +402,16 @@ function aggiornaIndForm(ann) {
 
 }
 
+//Aggiorna Dati Info Appartamento
 function aggiornaAptForm(ann) {
     var descrizioneTag = pannInfo.find("#textDescrizione");
     var metraturaTag = pannInfo.find("#inpMetratura");
     var dataInizio = pannInfo.find("input#inpDataInizio");
     var arredTag = pannInfo.find("#inpArredato");
-        
-    if(ann.Arredato){
+
+    if (ann.Arredato) {
         $(arredTag).attr('checked', true);
-    }else{
+    } else {
         $(arredTag).attr('checked', false);
     }
 
@@ -285,17 +429,19 @@ function aggiornaAptForm(ann) {
 
 }
 
-function aggiornaStanzeForm(ann){
+//Aggiorna form Stanze
+function aggiornaStanzeForm(ann) {
     var stanze = ann.Stanze[0];
-    for(var i = 0 ; i <stanze.length; i++){
+    for (var i = 0; i < stanze.length; i++) {
         var s = stanze[i];
-        aggiungiStanza(s,i);
+        aggiungiStanza(s, i);
         console.log(s);
 
-            
+
     }
 }
 
+//Abilita inserimento dati (generico)
 function abilitaInsetimentoDati(pannello) {
     var curInputs = pannello.find("input[type='text'],input[type='url'],input[type='number'],input[type='checkbox'],select,textarea");
     for (var i = 0; i < curInputs.length; i++) {
@@ -305,6 +451,7 @@ function abilitaInsetimentoDati(pannello) {
 
 }
 
+//Disabilita inserimento dati (generico)
 function disabilitaInserimentoDati(pannello) {
     var curInputs = pannello.find("input[type='text'],input[type='url'],input[type='number'],input[type='checkbox'],select,textarea");
     for (var i = 0; i < curInputs.length; i++) {
@@ -315,7 +462,7 @@ function disabilitaInserimentoDati(pannello) {
     dataInizio.datepicker("option", "showOn", "focus");
 }
 
-
+//Visualizza i bottoni nel footer (generico)
 function showFooterButton(pannello) {
     var footer = pannello.find("div.panel-footer");
 
@@ -327,13 +474,15 @@ function showFooterButton(pannello) {
 
 }
 
+//Nasconde i bottoni nel footer (generico)
 function hideFooterButton(pannello) {
     var footer = pannello.find("div.panel-footer");
     footer.empty();
 }
 
-//funzioni di invio dati
+//RICHIESTE DI MODIFICA
 
+//Richiesta modificia dati info Appartamento
 function sendEditAppartamentoRequest() {
     console.log("INVIO RICHIEDA MODIFICA INFO APPARTAMENTO");
 
@@ -346,7 +495,10 @@ function sendEditAppartamentoRequest() {
     });
 }
 
-//funzioni di controllo
+
+//FUNZIONI DI VERIFICA DATI
+
+//Verifica dati info Appartamento
 function checkInfoApp() {
 
     var descrizioneTag = pannInfo.find("#textDescrizione");
