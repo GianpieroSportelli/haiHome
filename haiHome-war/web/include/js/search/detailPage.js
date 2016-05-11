@@ -32,6 +32,7 @@ var service_info = "#service_info";
 var bus_info = "bus_info";
 
 var id_studente = "";
+var id_locatore = "";
 
 $('.qcar').carousel({
     pause: true,
@@ -52,6 +53,7 @@ $(document).ready(function () {
         }
     } else {
         loggatoStudente();
+        loggatoLocatore();
     }
 });
 
@@ -209,17 +211,13 @@ function create_Page(annuncio) {
     var stanze = annuncio.Stanze[0];
 
     $.each(stanze, function (index, stanza) {
-        //console.log(stanza);
         var classe_tab = "class=\"tab-stanza";
         if (index == 0) {
             classe_tab = "class=\"tab-stanza active";
         }
         if (stanza.SuperTipo == "StanzaInAffitto") {
-            //console.log(stanza.archiviato);
             var archiviato = stanza.archiviato;
             var visibile = stanza.visibile;
-            //console.log(visibile);
-            //console.log(archiviato);
             if (archiviato) {
                 classe_tab += " archiviato\"";
             } else if (!visibile) {
@@ -268,7 +266,9 @@ function create_corpo_accessoria(stanza, first) {
     //html += "<p>" + JSON.stringify(stanza) + "</p>";
     //html += "<div class=\"center\">";
     html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + " m<sup>2</sup></p>";
-    //html += "</div>";//center close
+    //html += "</div>";//center clos
+    html += "<button id=\"ArchiviaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaStanza(" + stanza.OID + ")\">Archivia</button>";
+    html += "<button id=\"PubblicaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"pubblicaStanza(" + stanza.OID + ")\">Pubblica</button>";
     html += "</div>";
     return html;
 }
@@ -309,6 +309,8 @@ function create_corpo_affitto(stanza, first, atomico) {
         html += "<p class=\"text-muted\"> " + compreso + "</p>";
     }
     //html += "</div>";//center close
+    html += "<button id=\"ArchiviaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaStanza(" + stanza.OID + ")\">Archivia</button>";
+    html += "<button id=\"PubblicaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"pubblicaStanza(" + stanza.OID + ")\">Pubblica</button>";
     html += "</div>";
     return html;
 }
@@ -387,32 +389,34 @@ function info_annuncio(annuncio) {
         html += "<p class=\"text-muted\"> L'annuncio non è fornito con <span class=\"text-primary\">arredamento </span></p>";
     }
     if (annuncio.Atomico) {
-        var cmp="";
-        var cmpC=annuncio.CompresoCondominio;
-        var cmpR=annuncio.CompresoRiscaldamento;
-        
-        if(cmpC && cmpR){
-            cmp="comprende le spese di <span class=\"text-primary\">Condominio</span> e di  <span class=\"text-primary\">Riscaldamento</span>.";
+        var cmp = "";
+        var cmpC = annuncio.CompresoCondominio;
+        var cmpR = annuncio.CompresoRiscaldamento;
+
+        if (cmpC && cmpR) {
+            cmp = "comprende le spese di <span class=\"text-primary\">Condominio</span> e di  <span class=\"text-primary\">Riscaldamento</span>.";
         }
-        
-        if(!cmpC && cmpR){
-            cmp="comprende le spese di <span class=\"text-primary\">Riscaldamento</span> ma non quelle di <span class=\"text-primary\">Condomino</span>.";
+
+        if (!cmpC && cmpR) {
+            cmp = "comprende le spese di <span class=\"text-primary\">Riscaldamento</span> ma non quelle di <span class=\"text-primary\">Condomino</span>.";
         }
-        
-        if(cmpC && !cmpR){
-            cmp="comprende le spese di <span class=\"text-primary\">Condomino</span> ma non quelle di <span class=\"text-primary\">Riscaldamento</span>.";
+
+        if (cmpC && !cmpR) {
+            cmp = "comprende le spese di <span class=\"text-primary\">Condomino</span> ma non quelle di <span class=\"text-primary\">Riscaldamento</span>.";
         }
-        
-        if(!cmpC && !cmpR){
-            cmp="non comprende le spese di <span class=\"text-primary\">Condomino</span> e di <span class=\"text-primary\">Riscaldamento</span>.";
+
+        if (!cmpC && !cmpR) {
+            cmp = "non comprende le spese di <span class=\"text-primary\">Condomino</span> e di <span class=\"text-primary\">Riscaldamento</span>.";
         }
-        
-        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Costo mensile: </span> " + annuncio.Prezzo + " &euro; "+cmp+"</p>";
+
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Costo mensile: </span> " + annuncio.Prezzo + " &euro; " + cmp + "</p>";
     }
     html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
     html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina</button>";
     html += "<button id=\"oscuraButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"oscuraAnnuncio()\" style=\"display:none\">Oscura</button>";
     html += "<button id=\"visibileButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"visibileAnnuncio()\" style=\"display:none\">Visibile</button>";
+    html += "<button id=\"ArchiviaButton\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaAnnuncio()\">Archivia Annuncio</button>";
+    html += "<button id=\"PubblicaButton\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"pubblicaAnnuncio()\">Pubblica Annuncio</button>";
     html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
@@ -478,6 +482,137 @@ function loggatoStudente() {
                 }
             });
 }
+
+function loggatoLocatore() {
+    //console.log("verifica log Studente");
+    $.post("ServletController",
+            {action: "Ricerca-loggatoLocatore"},
+            function (item) {
+                //var html = '';
+                //alert(item);
+                if (item != "") {
+                    console.log("Locatore loggato? id: " + item);
+                    id_locatore = item;
+                    makeVisibleOption();
+                } else {
+                    console.log("Locatore loggato? id: NO");
+                }
+            });
+}
+
+function makeVisibleOption() {
+    if (annuncio.Archiviato) {
+        $("#PubblicaButton").show("fast");
+    } else {
+        $("#ArchiviaButton").show("fast");
+    }
+    var stanze = annuncio.Stanze[0];
+
+    $.each(stanze, function (index, stanza) {
+        if (stanza.Archiviato) {
+            $("#PubblicaButton-" + stanza.OID).show("fast");
+        } else {
+            $("#ArchiviaButton-" + stanza.OID).show("fast");
+        }
+    });
+}
+function archiviaStanza(OID) {
+    $.post("ServletController",
+            {
+                action: "locatore-archivia-stanza",
+                oid: annuncio.OID,
+                oidStanza: OID
+            },
+            function (response) {
+                if (response == "ok") {
+                    var title = "Ok...";
+                    var body = "Stanza archiviata!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
+                    $("#ArchiviaButton-" + OID).hide();
+                    $("#PubblicaButton-" + OID).show("fast");
+                } else {
+                    var title = "Ops...";
+                    var body = "C'è stato un errore nel archiviare la stanza, contatti l'admin per maggiori informazini.";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
+                }
+            }
+    );
+}
+
+function pubblicaStanza(OID) {
+    $.post("ServletController",
+            {
+                action: "locatore-pubblica-stanza",
+                oid: annuncio.OID
+            },
+            function (response) {
+                if (response == "ok") {
+                    var title = "Ok...";
+                    var body = "Stanza pubblicata con successo!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
+                    $("#ArchiviaButton-" + OID).show("fast");
+                    $("#PubblicaButton-" + OID).hide();
+                } else {
+                    var title = "Ops...";
+                    var body = "C'è stato un errore nel pubblicare la stanza, contatti l'admin per maggiori informazini.";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
+                }
+            });
+}
+
+function archiviaAnnuncio() {
+    //alert("Annuncio archiviato");
+    $.post("ServletController",
+            {
+                action: "locatore-archivia-annuncio",
+                oid: annuncio.OID
+            },
+            function (response) {
+                if (response == "ok") {
+                    var title = "Ok...";
+                    var body = "Annuncio archiviato!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
+                    $("#ArchiviaButton").hide();
+                    $("#PubblicaButton").show("fast");
+                } else {
+                    var title = "Ops...";
+                    var body = "C'è stato un errore nel archiviare l'annuncio, contatti l'admin per maggiori informazini.";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
+                }
+            }
+    );
+
+}
+
+function pubblicaAnnuncio() {
+    $.post("ServletController",
+            {
+                action: "locatore-pubblica-annuncio",
+                oid: annuncio.OID
+            },
+            function (response) {
+                if (response == "ok") {
+                    var title = "Ok...";
+                    var body = "Annuncio pubblicato con successo!!";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
+                    $("#PubblicaButton").hide();
+                    $("#ArchiviaButton").show("fast");
+                } else {
+                    var title = "Ops...";
+                    var body = "C'è stato un errore nel pubblicare l'annuncio, contatti l'admin per maggiori informazini.";
+                    var footer = null;
+                    openModalMessage(title, body, footer);
+                }
+            });
+}
+
 function checkAnnuncio(id) {
     $.post("ServletController",
             {action: "Ricerca-checkAnnuncio", id: id},
@@ -656,10 +791,10 @@ function request_sendSegn() {
 function segnalaAnnuncio() {
     //alert("annuncio Segnalato");
     var title = "Ok...";
-    var body="<div class=\"form-group\">"+
-    "<label for=\"des_segn\">Inserisci qui la tua segnalazione: </label>"+
-    "<input type=\"text\" class=\"form-control ten-margin\" id=\"des_segn\">"+
-    "</div>";
+    var body = "<div class=\"form-group\">" +
+            "<label for=\"des_segn\">Inserisci qui la tua segnalazione: </label>" +
+            "<input type=\"text\" class=\"form-control ten-margin\" id=\"des_segn\">" +
+            "</div>";
     //var body = "<form><p class=\"text-muted\">Inserisci qui la tua segnalazione: <p><input type=\"text\" id=\"des_segn\"></input></form>";
     var footer = "<button type=\"button\" class=\"btn btn-default\" onClick=\"request_sendSegn()\">Invia</button>" +
             "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Annulla</button>";
