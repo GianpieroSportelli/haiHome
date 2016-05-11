@@ -146,7 +146,7 @@ function addServices_Bus(annuncio) {
     });
 }
 $(document).ready(function () {
-    $(document).on('click', '.fermata', function () {
+    $(document).on('click', '.fermata', function (event) {
         var target = $(event.target);
         var id = target.attr("id");
         var id_arr = id.split("-");
@@ -204,10 +204,6 @@ function create_Page(annuncio) {
     foto_page = new Array();
     var html = "";
     html += info_annuncio(annuncio);
-    /*html+="<div class=\"hr-line-dashed\"></div>";
-     html+="<div id=\"map\" class=\"\" >";   
-     html+="</div>";
-     html+="<div class=\"hr-line-dashed\"></div>";*/
     var open_ul = "<ul class=\"nav nav-tabs\">";
     html += open_ul;
     var stanze = annuncio.Stanze[0];
@@ -309,7 +305,7 @@ function create_corpo_affitto(stanza, first, atomico) {
             compreso += "non comprende le spese di <span class=\"text-primary\">Condomino</span> e di <span class=\"text-primary\">Riscaldamento</span>.";
         }
 
-        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + stanza.Prezzo + " &euro;</p>";
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Costo mensile: </span> " + stanza.Prezzo + " &euro;</p>";
         html += "<p class=\"text-muted\"> " + compreso + "</p>";
     }
     //html += "</div>";//center close
@@ -391,7 +387,27 @@ function info_annuncio(annuncio) {
         html += "<p class=\"text-muted\"> L'annuncio non è fornito con <span class=\"text-primary\">arredamento </span></p>";
     }
     if (annuncio.Atomico) {
-        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
+        var cmp="";
+        var cmpC=annuncio.CompresoCondominio;
+        var cmpR=annuncio.CompresoRiscaldamento;
+        
+        if(cmpC && cmpR){
+            cmp="comprende le spese di <span class=\"text-primary\">Condominio</span> e di  <span class=\"text-primary\">Riscaldamento</span>.";
+        }
+        
+        if(!cmpC && cmpR){
+            cmp="comprende le spese di <span class=\"text-primary\">Riscaldamento</span> ma non quelle di <span class=\"text-primary\">Condomino</span>.";
+        }
+        
+        if(cmpC && !cmpR){
+            cmp="comprende le spese di <span class=\"text-primary\">Condomino</span> ma non quelle di <span class=\"text-primary\">Riscaldamento</span>.";
+        }
+        
+        if(!cmpC && !cmpR){
+            cmp="non comprende le spese di <span class=\"text-primary\">Condomino</span> e di <span class=\"text-primary\">Riscaldamento</span>.";
+        }
+        
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Costo mensile: </span> " + annuncio.Prezzo + " &euro; "+cmp+"</p>";
     }
     html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
     html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina</button>";
