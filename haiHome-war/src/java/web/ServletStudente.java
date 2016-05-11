@@ -70,17 +70,22 @@ public class ServletStudente extends HttpServlet {
                         email = request.getParameter("user-email").trim(),
                         pwd = request.getParameter("user-pw"),
                         pwd2 = request.getParameter("user-pw-repeat"),
-                        op_result;
+                        op_result = "OK";
 
-                if (gestoreStudente.checkStudente(email) == false) {
-                    /* creo studente con avatar di default */
-                    gestoreStudente.aggiungiStudente(email, name, surname,
-                            "https://accrualnet.cancer.gov/sites/accrualnet.cancer.gov/themes/accrualnet/accrualnet-internals/images/avatars/male/Blue.png",
-                            pwd);
-                    op_result = "OK";
+                if (pwd.equals(pwd2)) {
+                    if (gestoreStudente.checkStudente(email) == false) {
+                        /* creo studente con avatar di default */
+                        gestoreStudente.aggiungiStudente(email, name, surname,
+                                "https://accrualnet.cancer.gov/sites/accrualnet.cancer.gov/themes/accrualnet/accrualnet-internals/images/avatars/male/Blue.png",
+                                pwd);
 
+                    } else if (gestoreStudente.getStudente().getPassword() == null) {
+                        gestoreStudente.changePassword(pwd);
+                    } else {
+                        op_result = "L'indirizzo email: " + email + " è già registrato.";
+                    }
                 } else {
-                    op_result = "email address <" + email + "> is already registered";
+                    op_result = "Le password non coincidono";
                 }
 
                 response.setContentType("text/plain");
@@ -118,13 +123,13 @@ public class ServletStudente extends HttpServlet {
                              session.setAttribute("IsStudente", true);*/
                             // getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
                         } else {
-                            op_result = "password incorretta";
+                            op_result = "Password Errata.";
                         }
                     } else {
                         op_result = "accedi via social...";
                     }
                 } else {
-                    op_result = "email non riconosciuta";
+                    op_result = "Email non riconosciuta";
                 }
 
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
