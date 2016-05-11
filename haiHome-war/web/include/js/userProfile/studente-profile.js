@@ -418,7 +418,8 @@ function deleteFilter() {
                     getListaFiltriPreferiti();
                 } else {
                     //Errore
-                    alert(data);
+                    $('#filtriUtente').attr('data-content', "Errore eliminazione filtro: " + data);
+                    $('#filtriUtente').popover('show');
                 }
             });
 }
@@ -433,6 +434,6 @@ function send_filtro(idFiltro) {
                     var url = "/haiHome-war/search-page.jsp";
                     window.location = url;
                 } else
-                    alert('ERRORE');
+                    console.log('ERRORE APERTURA FILTRO');
             });
 }

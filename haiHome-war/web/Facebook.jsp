@@ -106,7 +106,7 @@
                         });
 
                     } else {
-                        alert("Login attempt failed!");
+                        alert("Login fallito. Riprova.");
                     }
                 }, {scope: 'email,public_profile'});
             }

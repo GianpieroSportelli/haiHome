@@ -227,7 +227,16 @@ public class ServletStudente extends HttpServlet {
             } else if (action.equalsIgnoreCase("studente-getAnnunci")) {
                 response.setContentType("application/json");
                 if (gestoreStudente.reloadStudente()) {
-                    String json = gestoreStudente.getStudente().getAnnunciJSON().toString();
+                    String json = null;
+                    boolean richiestaSuccess = false;
+                    while (!richiestaSuccess) {
+                        try {
+                            json = gestoreStudente.getStudente().getAnnunciJSON().toString();
+                            richiestaSuccess = true;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
                     System.out.println(json);
                     out.write(json);
                 } else {
