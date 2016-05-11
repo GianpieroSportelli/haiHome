@@ -72,20 +72,24 @@ public class ServletStudente extends HttpServlet {
                         pwd2 = request.getParameter("user-pw-repeat"),
                         op_result = "OK";
 
-                if (pwd.equals(pwd2)) {
-                    if (gestoreStudente.checkStudente(email) == false) {
-                        /* creo studente con avatar di default */
-                        gestoreStudente.aggiungiStudente(email, name, surname,
-                                "https://accrualnet.cancer.gov/sites/accrualnet.cancer.gov/themes/accrualnet/accrualnet-internals/images/avatars/male/Blue.png",
-                                pwd);
-
-                    } else if (gestoreStudente.getStudente().getPassword() == null) {
-                        gestoreStudente.changePassword(pwd);
-                    } else {
-                        op_result = "L'indirizzo email: " + email + " è già registrato.";
-                    }
+                if (pwd.length() < 3 || pwd2.length() < 3) {
+                    op_result = "La lunghezza della password deve essere almeno di 3 caratteri.";
                 } else {
-                    op_result = "Le password non coincidono";
+                    if (pwd.equals(pwd2)) {
+                        if (gestoreStudente.checkStudente(email) == false) {
+                            /* creo studente con avatar di default */
+                            gestoreStudente.aggiungiStudente(email, name, surname,
+                                    "https://accrualnet.cancer.gov/sites/accrualnet.cancer.gov/themes/accrualnet/accrualnet-internals/images/avatars/male/Blue.png",
+                                    pwd);
+
+                        } else if (gestoreStudente.getStudente().getPassword() == null) {
+                            gestoreStudente.changePassword(pwd);
+                        } else {
+                            op_result = "L'indirizzo email: " + email + " è già registrato.";
+                        }
+                    } else {
+                        op_result = "Le password non coincidono";
+                    }
                 }
 
                 response.setContentType("text/plain");
