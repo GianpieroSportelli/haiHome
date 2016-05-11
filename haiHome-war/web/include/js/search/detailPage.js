@@ -501,20 +501,22 @@ function loggatoLocatore() {
 }
 
 function makeVisibleOption() {
-    if (annuncio.Archiviato) {
-        $("#PubblicaButton").show("fast");
-    } else {
-        $("#ArchiviaButton").show("fast");
-    }
-    var stanze = annuncio.Stanze[0];
-
-    $.each(stanze, function (index, stanza) {
-        if (stanza.Archiviato) {
-            $("#PubblicaButton-" + stanza.OID).show("fast");
+    if (id_locatore == annuncio.Locatore.id) {
+        if (annuncio.Archiviato) {
+            $("#PubblicaButton").show("fast");
         } else {
-            $("#ArchiviaButton-" + stanza.OID).show("fast");
+            $("#ArchiviaButton").show("fast");
         }
-    });
+        var stanze = annuncio.Stanze[0];
+
+        $.each(stanze, function (index, stanza) {
+            if (stanza.Archiviato) {
+                $("#PubblicaButton-" + stanza.OID).show("fast");
+            } else {
+                $("#ArchiviaButton-" + stanza.OID).show("fast");
+            }
+        });
+    }
 }
 function archiviaStanza(OID) {
     $.post("ServletController",
