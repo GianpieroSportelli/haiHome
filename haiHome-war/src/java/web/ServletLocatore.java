@@ -442,16 +442,18 @@ public class ServletLocatore extends HttpServlet {
         html += "<span class='nome-annuncio'>"; 
         html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio " + oid + " in " + a.getIndirizzo() + "</a>";
         html += "</span>";
-        html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
-        html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";
-        html += "Gestisci annuncio <span class='glyphicon glyphicon-menu-down'></span>";
-        html += "</a>";
-        html += "<ul class='dropdown-menu'>"; //INIZIO DROPZONE - OPZIONI
-        html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'>Modifica</a></li>";
-        html += "<li>" + getHTMLButtonAnnuncio(oid, a.isArchiviato(), locatore_bloccato) + "</li>"; // pubblica / archivia
-        html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'>Elimina</a></li>";
-        html += "</ul>";
-        html += "</div>"; //FINE DROPZONE
+        if (!a.isOscurato()) {
+            html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
+            html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";
+            html += "Gestisci annuncio <span class='glyphicon glyphicon-menu-down'></span>";
+            html += "</a>";
+            html += "<ul class='dropdown-menu'>"; //INIZIO DROPZONE - OPZIONI
+            html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'>Modifica</a></li>";
+            html += "<li>" + getHTMLButtonAnnuncio(oid, a.isArchiviato(), locatore_bloccato) + "</li>"; // pubblica / archivia
+            html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'>Elimina</a></li>";
+            html += "</ul>";
+            html += "</div>"; //FINE DROPZONE
+        }
         html += "</div>"; //panel-heading
         html += "<div class='panel-body'>"; // PANEL BODY 
         html += "<div>Indirizzo: " + a.getIndirizzo() + "</div>";

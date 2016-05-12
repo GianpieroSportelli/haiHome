@@ -17,17 +17,18 @@ import java.io.InputStream;
  * @author giacomocavallo
  */
 public class PathUtily {
+
     /*
     Aggiungete delle vostre variabili per il vostro path e cambiate il return, in
     questo modo non andiamo a modificare il Gestore Annunci
-    */
-    
+     */
+
     private static final String GiacomoPath = "//Users//giacomocavallo//Desktop//foto//";
-    private static final String GianpieroPath ="C://Users//SPORT//Pictures/haiHome!!//";
+    private static final String GianpieroPath = "C://Users//SPORT//Pictures/haiHome!!//";
     private static final String EugenioPath = "C://Users//Eugenio Liso//Desktop//foto//";
-    private static final String NicolaPath = "C://Users//nicol//Documents//imgHaiHome//"; 
-    
-/*            
+    private static final String NicolaPath = "C://Users//nicol//Documents//imgHaiHome//";
+
+    /*            
     public static String getSavePhotoPath(){
         return NicolaPath;
     }
@@ -36,9 +37,9 @@ public class PathUtily {
     public static String getPhotoPath(){
         return GiacomoPath;
     }
-    
-    public static boolean spostaFoto(File sorgente, File destinazione) throws FileNotFoundException, IOException{
-        
+
+    public static boolean spostaFoto(File sorgente, File destinazione) throws FileNotFoundException, IOException {
+
         InputStream inStream = new FileInputStream(sorgente);
 	FileOutputStream outStream = new FileOutputStream(destinazione);
         
@@ -63,13 +64,11 @@ public class PathUtily {
         
         return true;
     }
-    
-    public static boolean eliminaFoto(String path){
+
+    public static boolean eliminaFoto(String path) {
         File f = new File(path);
         f.delete();
         return true;
     }
 
-
-    
 }

@@ -17,6 +17,8 @@ var actual_1 = 0;
 var tabAnnunci = false;
 
 var annuncioToDelete = '';
+var paginaToDisplay = 2;
+var annuncioNumberToDelete;
 
 function activateScroll(activation) {
     tabAnnunci = activation;
@@ -65,24 +67,32 @@ function create_pageResult_studente() {
         //$("#list-result").append(result_div + no_res + close_div);
     }
     for (page = 0; page < n_page_1; page++) {
-        page_html = '';
-        page_html += '<div class = "search-result row" id =' + (page + 1) + '_RESULT1>';
-        var foto_page_actual_1 = new Array();
         for (var i = page * N_ANNUNCI_X_PAGE; (i < ((page + 1) * N_ANNUNCI_X_PAGE) && i < annunci.length); i++) {
+            var foto_page_actual_1 = new Array();
+            var page_html = '';
             var html = getCodeCarousel(annunci[i], i);
-            page_html += "<div class=\"col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">" + html + "</div>";
+            //page_html += "<div class=\col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">" + html + "</div>";
             foto_page_actual_1 = savePath(foto_page_actual_1, annunci[i]);
-            console.log(foto_page_actual_1);
+            //console.log(foto_page_actual_1);
+            // page_html += close_div;
+            // 
+            //page_annunci[i] = page_html;
+            page_annunci[i] = html;
+            foto_page[i] = foto_page_actual_1;
+            console.log('Immagini annuncio' + i + " " + foto_page[i]);
         }
-        page_html += close_div;
-        page_annunci[page] = page_html;
-        foto_page[page] = foto_page_actual_1;
-        foto_page_actual_1 = new Array();
     }
+    /*
+     for(var l = 0; l < page_annunci.length; l++){
+     console.log(page_annunci[l]);
+     }
+     for(var l = 0; l < foto_page.length; l++){
+     console.log(foto_page[l]);
+     }*/
 }
 
 function getCodeCarousel(annuncio, k) {
-    var html = "<div id=\"annuncio-" + k + "\">"; //1
+    var html = "<div class=\"annuncio-" + k + "\" id=\"annuncio-" + k + "\">"; //1
     html += "<div class=\"panel panel-default div_snippet\">"; //2
     html += "<div class='panel-heading' OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">"; //3
     html += create_carousel(annuncio);
@@ -131,7 +141,7 @@ function create_info_annuncio(annuncio, k) {
     }
     html += "</div>"; //chiusura center
 
-    html += "<div id=\"footerAnnuncio\"> <p> <a onclick=\"deleteAnnuncioModal(" + annuncio.OID + ")\" class=\" deleteButtonAnnuncio btn btn-danger\"><i class=\"fa fa-trash-o\" title=\"Delete\" aria-hidden=\"true\"></i> <span class=\"sr-only\">Delete</span>Elimina</a> </p> </div>";
+    html += "<div class=\"IDF" + annuncio.OID + "\" id=\"footerAnnuncio\"> <p> <a onclick=\"deleteAnnuncioModal(" + annuncio.OID + ")\" class=\" deleteButtonAnnuncio btn btn-danger\"><i class=\"fa fa-trash-o\" title=\"Delete\" aria-hidden=\"true\"></i> <span class=\"sr-only\">Delete</span>Elimina</a> </p> </div>";
     return html;
 }
 
@@ -237,8 +247,8 @@ function callFoto(foto_OID) {
     });
 }
 function loadAllfoto(page) {
-    console.log(foto_page);
     var fotoPage = foto_page[page];
+    console.log(" Load all foto di annuncio: " + page + " - " + fotoPage);
     for (var i = 0; i < fotoPage.length; i++) {
         var foto = fotoPage[i];
         callFoto(foto);
@@ -261,13 +271,90 @@ function savePath(list, annuncio) {
 
 function selectpage_1(page) {
     if (actual_1 === 0) {
-        $("#list-result").append(page_annunci[page - 1]);
-        loadAllfoto(page - 1);
+        var diplayFirst = false;
+        var displaySecond = false;
+        var inizio_html = '<div class = "search-result row" id =' + page + '_RESULT1>';
+        if (page_annunci[page - 1] != null) {
+            if (isNaN(page_annunci[page - 1].charAt(0)) === true) {
+                diplayFirst = true;
+                inizio_html += "<div class=\"idCanc-" + (page - 1) + " col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+                inizio_html += page_annunci[page - 1];
+                inizio_html += "</div>";
+            } else {
+                inizio_html += "<div class=\"idCanc-" + (page - 1) + " col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+                inizio_html += page_annunci[page - 1].substr(1, (page_annunci[page - 1].length - 1));
+                inizio_html += "</div>";
+            }
+            console.log("AGGIUNGO PAGINA: " + inizio_html);
+        }
+        if (page_annunci[page] != null) {
+            if (isNaN(page_annunci[page].charAt(0)) === true) {
+                displaySecond = true;
+                inizio_html += "<div class=\"idCanc-" + (page) + " col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+                inizio_html += page_annunci[page];
+                inizio_html += "</div>";
+            } else {
+                inizio_html += "<div class=\"idCanc-" + (page) + " col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+                inizio_html += page_annunci[page].substr(1, (page_annunci[page].length - 1));
+                inizio_html += "</div>";
+            }
+            console.log("AGGIUNGO PAGINA: " + inizio_html);
+        }
+        inizio_html += "</div>";
+        $("#list-result").append(inizio_html);
+        if (diplayFirst) {
+            loadAllfoto(page - 1);
+        }
+        if (displaySecond) {
+            loadAllfoto(page);
+        }
+        activateCaroselli();
         actual_1 = page;
+
     } else if (actual_1 !== (+page)) {
-        $("#" + (actual_1) + "_RESULT1").after(page_annunci[page - 1]);
-        loadAllfoto(page - 1);
+        var diplayFirst = false;
+        var displaySecond = false;
+        var inizio_html = '<div class = "search-result row" id =' + page + '_RESULT1>';
+        if (page_annunci[paginaToDisplay] != null) {
+            if (isNaN(page_annunci[paginaToDisplay].charAt(0)) === true) {
+                inizio_html += "<div class=\"idCanc-" + (paginaToDisplay) + " col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+                inizio_html += page_annunci[paginaToDisplay];
+                inizio_html += "</div>";
+                diplayFirst = true;
+            } else {
+                inizio_html += "<div class=\"idCanc-" + (paginaToDisplay) + " col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+                inizio_html += page_annunci[paginaToDisplay].substr(1, (page_annunci[paginaToDisplay].length - 1));
+                inizio_html += "</div>";
+            }
+
+            console.log("AGGIUNGO PAGINA: " + inizio_html);
+        }
+        if (page_annunci[paginaToDisplay + 1] != null) {
+            if (isNaN(page_annunci[paginaToDisplay + 1].charAt(0)) === true) {
+                inizio_html += "<div class=\"idCanc-" + (paginaToDisplay + 1) + " col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+                inizio_html += page_annunci[paginaToDisplay + 1];
+                inizio_html += "</div>";
+                displaySecond = true;
+            } else {
+                inizio_html += "<div class=\"idCanc-" + (paginaToDisplay + 1) + " col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+                inizio_html += page_annunci[paginaToDisplay + 1].substr(1, (page_annunci[paginaToDisplay + 1].length - 1));
+                inizio_html += "</div>";
+            }
+            console.log("AGGIUNGO PAGINA: " + inizio_html);
+        }
+        inizio_html += "</div>";
+        $("#" + (actual_1) + "_RESULT1").after(inizio_html);
+        if (diplayFirst) {
+            loadAllfoto(paginaToDisplay);
+        }
+        if (displaySecond) {
+            loadAllfoto(paginaToDisplay + 1);
+        }
+        activateCaroselli();
+        //   loadAllfoto(page - 1);
+        //   loadAllfoto(page);
         actual_1 = +page;
+        paginaToDisplay += 2;
     }
 }
 
@@ -356,12 +443,15 @@ $(window).scroll(function () {
 
 function deleteAnnuncioModal(idAnnuncio) {
     annuncioToDelete = idAnnuncio;
-
+    annuncioNumberToDelete = $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().attr("class").split(" ")[0];
+    annuncioNumberToDelete = annuncioNumberToDelete.toString().split("-")[1];
+    console.log("DEVI CANCELLARE -->>> " + annuncioNumberToDelete);
     //IL MODAL VIENE CARICATO NELL'INCLUDE DELLA PAGINA
     $('#modalCancellazioneAnnuncio').modal('show');
 }
 
 function deleteAnnuncio() {
+
     $.post("ServletController",
             {action: "studente-removeAnnuncio", id: annuncioToDelete},
             function (item) {
@@ -369,12 +459,139 @@ function deleteAnnuncio() {
                 //alert(item);
                 console.log("Annuncio eliminato?: " + item);
                 if (item == "true") {
-                    load_Annunci_Studente();
+                    refresh_annunci();
                 } else {
                     $('#annunci').attr('data-content', "Errore eliminazione annuncio: " + item);
                     $('#annunci').popover('show');
                 }
             });
 }
+
+function refresh_annunci() {
+    //
+    n_annunci -= 1;
+    actual_1 = 0;
+    n_page_1 = n_annunci / N_ANNUNCI_X_PAGE;
+    paginaToDisplay = 2;
+
+
+    for (var i = 0; i < page_annunci.length; i++) {
+        console.log("Annuncio: " + i + " - " + page_annunci[i]);
+    }
+    console.log("CANCELLARE: " + annuncioNumberToDelete);
+    /*var newAnnunci = new Array();
+     for (var i = 0; i < annuncioNumberToDelete; i++) {
+     newAnnunci[i] = page_annunci[i];
+     }
+     for (var i = annuncioNumberToDelete; i < page_annunci.length - 1; i++) {
+     newAnnunci[i] = page_annunci[(i + 1)];
+     }*/
+
+    page_annunci.splice(annuncioNumberToDelete, 1);
+    foto_page.splice(annuncioNumberToDelete, 1);
+
+    for (var i = 0; i < page_annunci.length; i++) {
+        console.log("POST Annuncio: " + i + " - " + page_annunci[i]);
+    }
+    $("#list-result").empty();
+    if (n_page_1 != 0) {
+        selectpage_1(1);
+    } else {
+        var no_res = "<div class=\"panel panel-default\">" +
+                "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\">Nessun annuncio salvato.</p>"
+                + "</div> " +
+                "</div>";
+        $("#annunci").empty();
+        $("#annunci").append(no_res);
+        //$("#list-result").append(result_div + no_res + close_div);
+
+    }
+}
+/*
+ function refresh_annunci_1() {
+ var annuncioIDPAGE = $('div.IDF' + annuncioToDelete).parent().parent().parent().attr("id").split("-")[1];
+ console.log("DA CANCELLARE " + annuncioIDPAGE);
+ //console.log("ID STAMPATO: " + $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().empty());
+ //DIV RISULTATO ROW
+ console.log("CLASSE PADRE ROW " + $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().parent().attr("class"));
+ console.log("HTML FRATELLO " + $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().next(".col-sm-6").html());
+ 
+ //console.log("FRATELLO " + $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().next().attr("id"));
+ if (annuncioIDPAGE % 2 === 0) {
+ //pari, sposto la roba a sinistra e poi scalo di uno
+ //Se non è vuoto
+ if (!$.trim($('div.IDF' + annuncioToDelete).parent().parent().parent().parent().next(".col-sm-6").html()) === false) {
+ //Html non vuoto, c'è un fratello
+ var newHtml = $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().next(".col-sm-6").html();
+ console.log("HTML: " + newHtml);
+ var inizioHTML = "<div class=\"col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
+ inizioHTML += newHtml;
+ inizioHTML += "</div>";
+ 
+ //Cancello la roba del padre
+ $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().parent().empty();
+ $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().parent().append(inizioHTML);
+ 
+ if (actual_1 === 1) {
+ //Prima pagina
+ }
+ //Non ho scrollato ancora il prossimo da aggiungere
+ if (actual_1 < paginaToDisplay && actual_1 !== 1) {
+ 
+ }
+ 
+ 
+ } else {
+ //O all'ultima pagina oppure sto cancellando l'ultimo annuncio
+ //Se non è la prima ROW
+ if ($('div.IDF' + annuncioToDelete).parent().parent().parent().parent().parent().attr("ID").split("_")[0] !== '1') {
+ console.log('ARRIVATO');
+ } else {
+ console.log('INIZIO');
+ }
+ }
+ }
+ 
+ }
+ */
+$(document).ajaxStop(function () {
+
+    for (var i = 0; i < paginaToDisplay; i++) {
+        if (!$.trim($('div.idCanc-' + i).html()) === false) {
+            page_annunci[i] = "" + i + $('div.idCanc-' + i).html();
+            console.log("Nuovo HTML per annuncio: " + i + " : " + page_annunci[i]);
+        }
+    }
+    /*
+     //Prima pagina da visualizzare
+     if (paginaToDisplay === 2) {
+     if (n_page_1 != 0) {
+     if (!$.trim($('div.annuncio-0').parent().html()) === false) {
+     page_annunci[0] = "0" + $('div.annuncio-0').parent().html();
+     console.log("HTML NUOVO DI 0 - " + page_annunci[0]);
+     }
+     
+     if (!$.trim($('div.annuncio-1').parent().html()) === false)
+     page_annunci[1] = "1" + $('div.annuncio-1').parent().html();
+     console.log("HTML NUOVO DI 1 - " + page_annunci[1]);
+     }
+     
+     
+     } else {
+     //Se non è vuoto
+     if (!$.trim($('div.annuncio-' + (paginaToDisplay - 2)).parent().html()) === false) {
+     // console.log("HTML ANNUNCIO: " + (paginaToDisplay - 2) + " - " + $('div.annuncio-' + +(paginaToDisplay - 2)).parent().html());
+     page_annunci[paginaToDisplay - 2] = "" + (paginaToDisplay - 2) + $('div.annuncio-' + +(paginaToDisplay - 2)).parent().html();
+     console.log(" HTML NUOVO DI " + (paginaToDisplay - 2) + " - " + page_annunci[paginaToDisplay - 2]);
+     }
+     if (!$.trim($('div.annuncio-' + (paginaToDisplay - 1)).parent().html()) === false) {
+     // console.log("HTML ANNUNCIO: " + (paginaToDisplay - 1) + " - " + $('div.annuncio-' + +(paginaToDisplay - 1)).parent().html());
+     page_annunci[paginaToDisplay - 1] = "" + (paginaToDisplay - 1) + $('div.annuncio-' + +(paginaToDisplay - 1)).parent().html();
+     console.log(" HTML NUOVO DI " + (paginaToDisplay - 1) + " - " + page_annunci[paginaToDisplay - 1]);
+     
+     }
+     }*/
+});
+
 
 
