@@ -56,15 +56,14 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     private CittàFacadeLocal cittàFacade;
     @EJB
     private AnnuncioFacadeLocal annuncioFacade;
-    
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     private Annuncio annuncio;
-    
+
     private Città citta;
-    
+
     private Locatore locatore;
-    
 
     //serve come passo inziale dell'inserimento dell'annuncio, inserisce solo
     //il Locatore
@@ -72,7 +71,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean CreaAnnuncio(Locatore locatore) {
 
         this.annuncio = new Annuncio();
-        
+
         this.locatore = locatore;
 
         annuncio.setLocatore(this.locatore);
@@ -93,14 +92,14 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean CreaAnnuncio(Object idLocatore) {
 
         this.annuncio = new Annuncio();
-        
+
         System.out.println(idLocatore.toString());
         Locatore l = locatoreFacade.find(idLocatore);
-        
+
         this.locatore = l;
-        
+
         annuncio.setLocatore(this.locatore);
-        
+
         this.annuncio.setLocatore(l);
         checkPhotoFolder();
         return l != null;
@@ -125,7 +124,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
                 trovato = true;
             }
         }
-        
+
         this.citta = città;
         this.annuncio.setCittà(this.citta);
         this.annuncio.setQuartiere(quartiere);
@@ -140,7 +139,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         if (metratura != 0) {
             this.annuncio.setMetratura(metratura);
         }
-        
+
         this.annuncio.setDataInizioAffitto(dataInizioAffitto);
         this.annuncio.setListaStanza(new ArrayList<>());
         this.annuncio.setArredato(arredato);
@@ -256,10 +255,10 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             Collection<String> foto = s.getFoto();
             ArrayList<String> tempFoto = new ArrayList();
             String newFotoPath = PathUtily.getPhotoPath() + annuncio.getLocatore().getId();
-           
+
             for (String f : foto) {
-                
-                tempFoto.add(f.replace("_temp_",""));
+
+                tempFoto.add(f.replace("_temp_", ""));
             }
 
             s.setFoto(tempFoto);
@@ -283,21 +282,19 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         changeNameFolder();
 
         annuncioFacade.create(this.annuncio);
-        
-        
+
         citta.addAnnuncio(this.annuncio);
-        
+
         cittàFacade.edit(citta);
-        
+
         //gestoreLocatore.addAnnuncio(this.annuncio);
-        
         locatore.addAnnuncio(annuncio);
-        
+
         locatoreFacade.edit(locatore);
-        
+
         locatore = locatoreFacade.find(locatore.getId());
-        
-        Collection<Annuncio> listAnn =  locatore.getListaAnnunci();
+
+        Collection<Annuncio> listAnn = locatore.getListaAnnunci();
 
         return true;
     }
@@ -306,13 +303,13 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public JSONObject toJSON() {
         return this.annuncio.toJSON();
     }
-    
+
     @Override
     public JSONObject toJSON(long oid) {
         Annuncio ann = annuncioFacade.find(oid);
-        if(ann!=null){
+        if (ann != null) {
             return ann.toJSON();
-        }else{
+        } else {
             return null;
         }
     }
@@ -320,15 +317,15 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean modificaAnnuncio(Annuncio annuncio) {
         this.annuncio = annuncio;
-        
+
         return true;
 
     }
-    
+
     @Override
     public boolean modificaAnnuncio(long oidAnnuncio) {
         this.annuncio = annuncioFacade.find(oidAnnuncio);
-        if(annuncio==null){
+        if (annuncio == null) {
             return false;
         }
         this.locatore = annuncio.getLocatore();
@@ -393,9 +390,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         //ArrayList<Stanza> stanze = (ArrayList<Stanza>) this.annuncio.getListaStanza();
         Collection<Stanza> stanze = this.annuncio.getListaStanza();
 
-        
-        for(Stanza s : stanze){
-            if(s.getId()==oid){
+        for (Stanza s : stanze) {
+            if (s.getId() == oid) {
                 return s;
             }
         }
@@ -411,45 +407,77 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             }
             i++;
         }
-        */
+         */
         return null;
     }
 
-    
     @Override
-    public boolean modificaStanza(long oid, Collection<String> newFoto,Collection<String> deletedFoto, double metratura) {
+    public boolean modificaStanza(long oid, Collection<String> newFoto, Collection<String> deletedFoto, double metratura) {
         Stanza stanza = trovaStanza(oid);
-        if(stanza instanceof StanzaAccessoria){
-            
-        }else if (stanza instanceof StanzaInAffitto){
-            return modificaStanzaInAffitto(stanza,newFoto,deletedFoto,metratura);
-        }else{
-            return modificaStanzaAccessoria(stanza,newFoto,deletedFoto,metratura);
+        if (stanza instanceof StanzaAccessoria) {
+            return modificaStanzaAccessoria(stanza, newFoto, deletedFoto, metratura);
+        } else if (stanza instanceof StanzaInAffitto) {
+            return modificaStanzaInAffitto(stanza, newFoto, deletedFoto, metratura);
+        } else {
+
         }
-        
+
         return true;
     }
-    
-    private boolean modificaStanzaInAffitto(Stanza stanza, Collection<String> newFoto,Collection<String> deletedFoto, double metratura) {
-        
+
+    @Override
+    public boolean modificaStanza(long oid, Collection<String> newFoto, Collection<String> deletedFoto, double metratura, double prezzo) {
+        Stanza stanza = trovaStanza(oid);
+        if (stanza instanceof StanzaAccessoria) {
+            return false;
+        } else if (stanza instanceof StanzaInAffitto) {
+            return modificaStanzaInAffitto(stanza, newFoto, deletedFoto, metratura, prezzo);
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean modificaStanza(long oid, boolean CC, boolean CR, double prezzo) {
+        Stanza stanza = trovaStanza(oid);
+
         StanzaInAffitto editedStanza = (StanzaInAffitto) stanza.clone();
         Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
         listaStanze.remove(stanza);
-        
-        if(metratura != editedStanza.getMetratura()){
+
+        editedStanza.setPrezzo(prezzo);
+        editedStanza.setCompresoCondominio(CC);
+        editedStanza.setCompresoRiscaldamento(CR);
+
+        stanzaInAffittoFacade.edit(editedStanza);
+        listaStanze.add(editedStanza);
+        this.annuncio.setListaStanza(listaStanze);
+        annuncioFacade.edit(this.annuncio);
+        return true;
+
+    }
+
+    private boolean modificaStanzaInAffitto(Stanza stanza, Collection<String> newFoto, Collection<String> deletedFoto, double metratura) {
+
+        StanzaInAffitto editedStanza = (StanzaInAffitto) stanza.clone();
+        Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
+        listaStanze.remove(stanza);
+
+        if (metratura != editedStanza.getMetratura()) {
             editedStanza.setMetratura(metratura);
         }
         ArrayList<String> foto = (ArrayList<String>) editedStanza.getFoto();
-        
-        for(String deletedfoto: deletedFoto ){
+
+        for (String deletedfoto : deletedFoto) {
             foto.remove(deletedfoto);
             PathUtily.eliminaFoto(deletedfoto);
         }
 
-        for(String newfoto: newFoto ){
+        for (String newfoto : newFoto) {
             foto.add(newfoto);
         }
-        
+
         editedStanza.setFoto(foto);
         stanzaInAffittoFacade.edit(editedStanza);
         listaStanze.add(editedStanza);
@@ -457,45 +485,127 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         annuncioFacade.edit(this.annuncio);
         return true;
     }
-    
-        private boolean modificaStanzaAccessoria(Stanza stanza, Collection<String> newFoto,Collection<String> deletedFoto, double metratura) {
-        
-        StanzaAccessoria editedStanza = (StanzaAccessoria) stanza.clone();
-        Collection<Stanza> listaStanze =  this.annuncio.getListaStanza();
+
+    private boolean modificaStanzaInAffitto(Stanza stanza, Collection<String> newFoto, Collection<String> deletedFoto, double metratura, double prezzo) {
+
+        StanzaInAffitto editedStanza = (StanzaInAffitto) stanza.clone();
+        Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
         listaStanze.remove(stanza);
-        
-        if(metratura != editedStanza.getMetratura()){
+
+        if (metratura != editedStanza.getMetratura()) {
             editedStanza.setMetratura(metratura);
         }
+
+        editedStanza.setPrezzo(prezzo);
+
         ArrayList<String> foto = (ArrayList<String>) editedStanza.getFoto();
-        
-        for(String deletedfoto: deletedFoto ){
+
+        for (String deletedfoto : deletedFoto) {
             foto.remove(deletedfoto);
             PathUtily.eliminaFoto(deletedfoto);
         }
 
-        for(String newfoto: newFoto ){
+        for (String newfoto : newFoto) {
+            foto.add(newfoto);
+        }
+
+        editedStanza.setFoto(foto);
+        stanzaInAffittoFacade.edit(editedStanza);
+        listaStanze.add(editedStanza);
+        this.annuncio.setListaStanza(listaStanze);
+        annuncioFacade.edit(this.annuncio);
+        return true;
+    }
+
+    private boolean modificaStanzaAccessoria(Stanza stanza, Collection<String> newFoto, Collection<String> deletedFoto, double metratura) {
+
+        StanzaAccessoria editedStanza = (StanzaAccessoria) stanza.clone();
+        Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
+        listaStanze.remove(stanza);
+
+        if (metratura != editedStanza.getMetratura()) {
+            editedStanza.setMetratura(metratura);
+        }
+        ArrayList<String> foto = (ArrayList<String>) editedStanza.getFoto();
+
+        for (String deletedfoto : deletedFoto) {
+            foto.remove(deletedfoto);
+            PathUtily.eliminaFoto(deletedfoto);
+        }
+
+        for (String newfoto : newFoto) {
             File fileTemp = (new File(newfoto));
-            File fileDef = (new File(newfoto.replace("_temp_","")));
-            
+            File fileDef = (new File(newfoto.replace("_temp_", "")));
+
             try {
                 PathUtily.spostaFoto(fileTemp, fileDef);
             } catch (IOException ex) {
                 System.out.println("Errore!!!!!");
                 Logger.getLogger(GestoreAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
+
             foto.add(fileDef.getPath());
         }
-        
+
         stanzaAccessoriaFacade.edit(editedStanza);
         listaStanze.add(editedStanza);
         this.annuncio.setListaStanza(listaStanze);
         annuncioFacade.edit(this.annuncio);
         return true;
     }
-        
+
+    @Override
+    public boolean aggiungiStanza(String tipologia, String tipo, Collection<String> foto, double metratura, double prezzo) {
+
+        if (tipologia.compareToIgnoreCase("1") == 0) {
+            //stanza in affitto
+            StanzaInAffitto s = new StanzaInAffitto();
+            s.setMetratura(metratura);
+            s.setFoto(foto);
+            s.setTipo(TipoStanzaInAffitto.valueOf(tipo));
+            if (prezzo > 0) {
+                s.setPrezzo(prezzo);
+                List<Stanza> listaStanze = (List<Stanza>) this.annuncio.getListaStanza();
+                boolean trovato = false;
+                int i = 0;
+                while (!trovato) {
+                    Stanza temp = listaStanze.get(i);
+                    if (temp instanceof StanzaInAffitto) {
+                        s.setCompresoCondominio(((StanzaInAffitto) temp).isCompresoCondominio());
+                        s.setCompresoRiscaldamento(((StanzaInAffitto) temp).isCompresoRiscaldamento());
+                        trovato = true;
+                    }
+                    i++;
+                }
+
+            }
+            stanzaFacade.create(s);
+
+            Collection<Stanza> oldListaStanze = this.annuncio.getListaStanza();
+            oldListaStanze.add(s);
+            this.annuncio.setListaStanza(oldListaStanze);
+
+            this.annuncio.setNumeroStanze(this.annuncio.getNumeroStanze() + 1);
+            annuncioFacade.edit(annuncio);
+        } else {
+            //stanza accessoria
+            StanzaAccessoria s = new StanzaAccessoria();
+            s.setMetratura(metratura);
+            s.setFoto(foto);
+            s.setTipo(TipoStanzaAccessoria.valueOf(tipo));
+
+            stanzaFacade.create(s);
+
+            Collection<Stanza> oldListaStanze = this.annuncio.getListaStanza();
+            oldListaStanze.add(s);
+            this.annuncio.setListaStanza(oldListaStanze);
+            this.annuncio.setNumeroStanze(this.annuncio.getNumeroStanze() + 1);
+            annuncioFacade.edit(annuncio);
+        }
+
+        return true;
+    }
+
     /*
     @Override
     public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo) {
@@ -569,13 +679,13 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
 
         return true;
     }
-*/
-    
+     */
     @Override
     public boolean modificaInfoCostiAppartamento(double prezzo, boolean compresoCondominio, boolean compresoRiscaldamento) {
         annuncio.setPrezzo(prezzo);
         annuncio.setCompresoCondominio(compresoCondominio);
         annuncio.setCompresoRiscaldamento(compresoRiscaldamento);
+        annuncioFacade.edit(this.annuncio);
         return true;
     }
 
@@ -583,8 +693,8 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     public boolean rendiModifichePersistenti() {
 
         //per ora non modifico la data di inserimento
-        
         //GregorianCalendar gc = new GregorianCalendar();
+        /*
         Date d = new Date();
         this.annuncio.setDataPubblicazione(d);   
         
@@ -615,45 +725,45 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         for (Stanza s : listaStanze) {
             stanzaFacade.remove(s);
             ArrayList<String> foto = (ArrayList<String>) s.getFoto();
-            for(String f : foto){
+            for (String f : foto) {
                 PathUtily.eliminaFoto(f);
-                
+
             }
         }
-        
+
         annuncioFacade.remove(annuncio);
         return true;
     }
 
     @Override
     public boolean eliminaStanza(long oidStanza) {
-        
+
         Stanza stanza = trovaStanza(oidStanza);
         Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
         listaStanze.remove(stanza);
         annuncio.setListaStanza(listaStanze);
+        this.annuncio.setNumeroStanze(this.annuncio.getNumeroStanze() - 1);
         annuncioFacade.edit(this.annuncio);
-        
-        
-        if(stanza instanceof StanzaAccessoria){
-            this.stanzaAccessoriaFacade.remove((StanzaAccessoria)stanza);
-        }else if (stanza instanceof StanzaInAffitto){
-            this.stanzaInAffittoFacade.remove((StanzaInAffitto)stanza);
-        }else{
+
+        if (stanza instanceof StanzaAccessoria) {
+            this.stanzaAccessoriaFacade.remove((StanzaAccessoria) stanza);
+        } else if (stanza instanceof StanzaInAffitto) {
+            this.stanzaInAffittoFacade.remove((StanzaInAffitto) stanza);
+        } else {
             return false;
         }
         return true;
-        
+
     }
-    
-   /* 
+
+    /* 
     @Override
     public boolean eliminaStanza(Stanza s) {
         stanzaFacade.remove(s);
 
         return true;
     }
-*/
+     */
     @Override
     public Annuncio predniAnnuncio(long oid) {
         Annuncio temp = annuncioFacade.find(oid);
@@ -692,11 +802,10 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         }
 
         Date d = new Date();
-        
-        Random r = new Random();
-        
 
-        String est = nomePhoto.substring(nomePhoto.length() - 3);
+        Random r = new Random();
+
+        String est = nomePhoto.split("\\.")[1];
 
         String photoName = denominazioneLocatore + r.nextInt(100) + d.getTime() + "." + est;
 
@@ -791,17 +900,56 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean archiviaAnnuncio(long oidAnnuncio, boolean archiviato) {
         this.annuncio = this.annuncioFacade.find(oidAnnuncio);
-        
+
         //XOR potentissimo!!!!!!!! se dà vero vuol dire che i due valori sono diversi
-        if(this.annuncio.isArchiviato() ^ archiviato){
+        if (this.annuncio.isArchiviato() ^ archiviato) {
             this.annuncio.setArchiviato(archiviato);
+
+            if (archiviato) {
+                Date d = new Date();
+                this.annuncio.setDataPubblicazione((Date) d);
+            }
+
             this.annuncioFacade.edit(annuncio);
             return true;
-            
-        }else{
+
+        } else {
             return false;
         }
-        
+
+    }
+
+    @Override
+    public boolean archiviaStanza(long oidAnnuncio, long oidStanza, boolean archiviato) {
+        this.annuncio = this.annuncioFacade.find(oidAnnuncio);
+
+        for(int i=0;i<this.annuncio.getListaStanza().size();i++){
+            
+            Stanza s = ((List<Stanza>) this.annuncio.getListaStanza()).get(i);
+            
+            if ((s.getId() == oidStanza)) {
+                
+                if(s instanceof StanzaInAffitto){
+                    
+                    if (((StanzaInAffitto) s).isArchiviato() ^ archiviato) {
+                        
+                        StanzaInAffitto newStanza = (StanzaInAffitto) s.clone();
+                        this.annuncio.getListaStanza().remove(s);
+                        newStanza.setArchiviato(archiviato);
+                        this.stanzaFacade.edit(newStanza);
+                        this.annuncio.getListaStanza().add(newStanza);
+                        this.annuncioFacade.edit(annuncio);
+                        
+                } else {
+                    return false;
+                }                  
+                }else{
+                    return false;
+                }
+            }
+
+        }
+            return false;
         
     }
 
@@ -812,48 +960,41 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         for (TipoStanzaInAffitto i : array) {
             res.add(i.toString());
         }
-        return res;   
+        return res;
     }
 
     @Override
     public ArrayList<String> getTipologieStanzaAcc() {
-       ArrayList<String> res = new ArrayList();
+        ArrayList<String> res = new ArrayList();
         TipoStanzaAccessoria[] array = TipoStanzaAccessoria.values();
         for (TipoStanzaAccessoria i : array) {
             res.add(i.toString());
         }
-        return res;     }
+        return res;
+    }
 
     @Override
-    public boolean modificaInfoStanze(int numeroStanze, boolean atomico) {
+    public boolean modificaInfoStanze(int numeroStanze, boolean atomico
+    ) {
         this.annuncio.setNumeroStanze(numeroStanze);
         this.annuncio.setAtomico(atomico);
         return true;
     }
 
     @Override
-    public boolean oscusaAnnuncio(long oidAnnuncio, boolean val) {
+    public boolean oscusaAnnuncio(long oidAnnuncio, boolean val
+    ) {
         this.annuncio = annuncioFacade.find(oidAnnuncio);
-        
+
         //XOR potentissimo!!!!!!!! se dà vero vuol dire che i due valori sono diversi
-        if(this.annuncio.isOscurato() ^ val){
+        if (this.annuncio.isOscurato() ^ val) {
             this.annuncio.setOscurato(val);
             this.annuncioFacade.edit(annuncio);
             return true;
-            
-        }else{
+
+        } else {
             return false;
         }
     }
-
-
-
-
-
-
-
-    
-    
-   
 
 }

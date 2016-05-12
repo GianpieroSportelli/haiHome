@@ -276,7 +276,7 @@ function generateCostiForm() {
         }
 
     });
-    var codiceFinale = "<div><input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"true\">Compreso Condominio<br><input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"true\" checked>Compreso Riscaldamento</div>";
+    var codiceFinale = "<div><input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"true\">Compreso Condominio<br><input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"true\">Compreso Riscaldamento</div>";
     $(codiceFinale).appendTo("#prezzoStanze");
 }
 

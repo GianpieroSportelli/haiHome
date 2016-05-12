@@ -57,6 +57,12 @@ public interface GestoreAnnuncioLocal {
     public boolean modificaInfoStanze(int numeroStanze, boolean atomico);
     
     public boolean modificaStanza(long oid, Collection<String> newFoto,Collection<String> deletedFoto, double metratura);
+    
+    public boolean modificaStanza(long oid, Collection<String> newFoto,Collection<String> deletedFoto, double metratura, double prezzo);
+    
+        public boolean modificaStanza(long oid, boolean CC, boolean CR, double prezzo);
+    
+    public boolean aggiungiStanza(String tipologia,String tipo, Collection<String> foto, double metratura, double prezzo);
 
     //public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo);
 
@@ -82,6 +88,8 @@ public interface GestoreAnnuncioLocal {
     
     // ARCHIVIA
     public boolean archiviaAnnuncio(long oidAnnuncio, boolean archiviato);
+    
+    public boolean archiviaStanza(long oidAnnuncio,long oidStanza, boolean archiviato);
     
     
     //UTILY FOTO

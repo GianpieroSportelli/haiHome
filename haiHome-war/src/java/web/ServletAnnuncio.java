@@ -534,7 +534,8 @@ public class ServletAnnuncio extends HttpServlet {
                             ArrayList<String> estensioniFoto64 = new ArrayList();
                             for (String f : fotos) {
                                 System.out.print(f);
-                                String est = f.substring(f.length() - 3);
+                                String est = f.split("\\.")[1];
+                                System.out.println("PATH FOTO " +  f + " " + est);
                                 System.out.println("Immagine: " + f + " estensione: " + est);
                                 String foto64 = gestoreImmagini.getImage(f, est);
                                 fotos64.add(foto64);
@@ -679,10 +680,12 @@ public class ServletAnnuncio extends HttpServlet {
                 String oidStanza = request.getParameter("oidStanza");
 
                 String metratura = request.getParameter("MetraturaS");
+                double prezzo = Double.parseDouble(request.getParameter("PrezzoS"));
                 String[] oldFoto = request.getParameterValues("fotoEliminate");
 
                 System.out.println("OID: " + oidStanza);
                 System.out.println("METRATURA: " + metratura);
+                System.out.println("PREZZO: " + prezzo);
                 System.out.println("FOTO ELIMINATE: ");
                 ArrayList<String> stanzeEliminate = new ArrayList();
                 if (oldFoto == null) {
@@ -698,15 +701,22 @@ public class ServletAnnuncio extends HttpServlet {
 
                 }
                 long oid = Long.parseLong(oidStanza);
+                boolean result;
+                if(prezzo<=0){
+                    result = gestoreAnnuncio.modificaStanza(oid, editPhotoTempPath, stanzeEliminate, Double.parseDouble(metratura));
 
-                boolean result = gestoreAnnuncio.modificaStanza(oid, editPhotoTempPath, stanzeEliminate, Double.parseDouble(metratura));
+                }else{
+                    result = gestoreAnnuncio.modificaStanza(oid, editPhotoTempPath, stanzeEliminate, Double.parseDouble(metratura),prezzo);
+
+                }
                 JSONObject annuncioEdited = gestoreAnnuncio.toJSON();
 
+                String risp = result ? "OK" : "NO";
                 //ELABORO RISPOSTA
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 JSONObject resp = new JSONObject();
-                resp.accumulate("response", "OK");
+                resp.accumulate("response", risp);
                 resp.accumulate("data", annuncioEdited);
                 out.write(resp.toString());
 
@@ -757,6 +767,195 @@ public class ServletAnnuncio extends HttpServlet {
                     resp.accumulate("response", "OK");
                     out.write(resp.toString());
                 }
+
+            } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-newStanza")) {
+
+                System.out.println("-----AGGIUNGI NUOVA STANZA");
+               
+
+                String tipologiaStanze = request.getParameter("TipologiaStanza");
+                String tipoL = request.getParameter("TipoL");
+                String tipoA = request.getParameter("TipoA");
+                String metraturaS = request.getParameter("MetraturaS");
+                String prezzoS = request.getParameter("PrezzoS");
+                
+                System.out.println("TIPOLOGIA STANZA: " + tipologiaStanze);
+                System.out.println("TIPO STANZA: " + tipoL + tipoA);
+                System.out.println("METRATURA: " + metraturaS);
+                System.out.println("PREZZO: " + prezzoS);
+                
+                System.out.println("FOTO STANZA");
+                for(String s : editPhotoTempPath){
+                    System.out.println(s + "\n");
+                }
+                String tipo;
+                
+                if(tipologiaStanze.compareToIgnoreCase("1")==0){
+                    tipo = tipoL;
+                }else{
+                    tipo=tipoA;
+                }
+                
+                boolean res = gestoreAnnuncio.aggiungiStanza(tipologiaStanze,tipo, editPhotoTempPath, Double.parseDouble(metraturaS), Double.parseDouble(prezzoS));
+                
+              
+                
+                if (res) {
+                    JSONObject annuncioEdited = this.gestoreAnnuncio.toJSON();
+
+                    JSONArray stanze = annuncioEdited.getJSONArray("Stanze").getJSONArray(0);
+
+                    for (int i = 0; i < stanze.length(); i++) {
+
+                        JSONObject s = stanze.getJSONObject(i);
+                        ArrayList<String> fotos = (ArrayList<String>) s.get("Foto");
+                        ArrayList<String> fotos64 = new ArrayList();
+                        ArrayList<String> estensioniFoto64 = new ArrayList();
+                        for (String f : fotos) {
+                            System.out.print(f);
+                            String est = f.substring(f.length() - 3);
+                            System.out.println("Immagine: " + f + " estensione: " + est);
+                            String foto64 = gestoreImmagini.getImage(f, est);
+                            fotos64.add(foto64);
+                            estensioniFoto64.add(est);
+                        }
+
+                        s.accumulate("Foto64", fotos64);
+                        s.accumulate("Est64", estensioniFoto64);
+
+                    }
+
+                    JSONObject resp = new JSONObject();
+                    resp.accumulate("response", "OK");
+                    resp.accumulate("data", annuncioEdited);
+                    out.write(resp.toString());
+
+                } else {
+                    JSONObject resp = new JSONObject();
+                    resp.accumulate("response", "OK");
+                    out.write(resp.toString());
+                }
+
+               
+              
+
+            } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoCosti")) {
+
+                System.out.println("-----EDIT INFO COSTI");
+               
+                JSONObject resp = new JSONObject();
+                
+                
+                String infoModifica = request.getParameter("info");
+                boolean risp = true;
+
+                
+                System.out.println("INFOCOSTI: " + infoModifica);
+                
+
+                boolean CC = request.getParameter("compresoCondominio") != null;
+                boolean CR = request.getParameter("compresoRiscaldamento") != null;
+                
+                if(infoModifica.compareToIgnoreCase("atomico-atomico")==0){
+                    //da atomico ad atomico
+                    String prezzo = request.getParameter("prezzoA");
+                    risp = gestoreAnnuncio.modificaInfoCostiAppartamento(Double.parseDouble(prezzo), CC, CR);
+                    
+                    
+                }else if(infoModifica.compareToIgnoreCase("atomico-stanze")==0){
+                    
+                   //elimino il prezzo all'appartamento
+                    risp = risp && gestoreAnnuncio.modificaInfoCostiAppartamento(0, false, false);
+                    
+                    JSONObject annAttuale = this.gestoreAnnuncio.toJSON();
+                    JSONArray JSONstanze = annAttuale.getJSONArray("Stanze").getJSONArray(0);
+                    
+                    String[] prezzoS = request.getParameterValues("PrezzoS");
+                    String[] oidS = request.getParameterValues("oidStanza");
+                    
+                    HashMap<Long,Long> mappaPrezzi = new HashMap();
+                    //preparo i dati
+                    for(int j =0;j<oidS.length;j++){
+                        mappaPrezzi.put(Long.parseLong(oidS[j]), Long.parseLong(prezzoS[j]));
+                    }
+                    
+
+                    for(int i=0;i<JSONstanze.length();i++){
+                        JSONObject jstanza = JSONstanze.getJSONObject(i);
+                        String tipoStanza = jstanza.getString("SuperTipo");
+                        if(tipoStanza.equalsIgnoreCase("StanzaInAffitto")){
+                            risp =  risp & gestoreAnnuncio.modificaStanza(jstanza.getLong("OID"),CC,CR,mappaPrezzi.get(jstanza.getLong("OID")));
+                            System.out.println("OID Stanza " + jstanza.getLong("OID") + "result = " + risp);                           
+                        }
+                    }
+                    
+                    risp = risp && gestoreAnnuncio.inserisciInfoStanze(JSONstanze.length(), false);
+                    risp = risp && gestoreAnnuncio.rendiModifichePersistenti();
+                    
+                if(risp){
+                        resp.accumulate("action", "mostra-prezzo-stanze");
+                    }
+ 
+                }else if(infoModifica.compareToIgnoreCase("stanze-stanze")==0){
+                    JSONObject annAttuale = this.gestoreAnnuncio.toJSON();
+                    JSONArray JSONstanze = annAttuale.getJSONArray("Stanze");
+                    JSONstanze = JSONstanze.getJSONArray(0);
+                    for(int i=0;i<JSONstanze.length();i++){
+                        JSONObject jstanza = JSONstanze.getJSONObject(i);
+                        String tipoStanza = jstanza.getString("SuperTipo");
+                        if(tipoStanza.equalsIgnoreCase("StanzaInAffitto")){
+                            risp =  gestoreAnnuncio.modificaStanza(jstanza.getLong("OID"),CC,CR,jstanza.getDouble("Prezzo"));
+                            System.out.println("OID Stanza " + jstanza.getLong("OID") + "result = " + risp);                           
+                        }
+                    }    
+                    
+                    
+                }else if(infoModifica.compareToIgnoreCase("stanze-atomico")==0){
+                    String prezzo = request.getParameter("prezzoA");
+                    
+                    JSONObject annAttuale = this.gestoreAnnuncio.toJSON();
+                    JSONArray JSONstanze = annAttuale.getJSONArray("Stanze");
+                    JSONstanze = JSONstanze.getJSONArray(0);
+                    for(int i=0;i<JSONstanze.length();i++){
+                        JSONObject jstanza = JSONstanze.getJSONObject(i);
+                        String tipoStanza = jstanza.getString("SuperTipo");
+                        if(tipoStanza.equalsIgnoreCase("StanzaInAffitto")){
+                            risp = gestoreAnnuncio.modificaStanza(jstanza.getLong("OID"),false,false,0);
+                                                      
+                        }
+                    }
+                    risp = risp && gestoreAnnuncio.modificaInfoCostiAppartamento(Double.parseDouble(prezzo), CC, CR);
+                    risp = risp && gestoreAnnuncio.inserisciInfoStanze(JSONstanze.length(), true);
+                    risp = risp && gestoreAnnuncio.rendiModifichePersistenti();
+                    if(risp){
+                        resp.accumulate("action", "nascondi-prezzo-stanze");
+                    }
+                    
+                    
+                }else{
+                    
+                }
+                
+                //ELABORO RISPOSTA
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                
+                if(risp){
+                    JSONObject editedAnnuncio = this.gestoreAnnuncio.toJSON();
+                    System.out.println("ANDATO A BUON FINE");
+                    resp.accumulate("response", "OK");
+                    resp.accumulate("data", editedAnnuncio);
+                    out.write(resp.toString());
+                }else{
+                System.out.println("NON ANDATO A BUON FINE");
+                    resp.accumulate("response", "NO");
+                    out.write(resp.toString());
+                }
+
+                
+
+               
+              
 
             } //metodi non di mia competenza  
             else if (action.equalsIgnoreCase("Annunci-oscuraAnnuncio")) {

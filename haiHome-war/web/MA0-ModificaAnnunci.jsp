@@ -75,8 +75,7 @@
         <link rel="stylesheet" href="include/css/InserimentoAnnunci/dropzone1.css"> 
         <script type="text/javascript" src="include/js/InserimentoAnnunci/dropzone1.js"></script>
         
-        <!--mio scriot autocomplite -->
-                <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
+
         
     </head>
     <body>
@@ -153,12 +152,15 @@
                 <div id="costiPanel" class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#collapse4">Collapsible panel 4</a>
+                            <a data-toggle="collapse" href="#collapse4" class="openlink">Modifica info Costi</a>
+                            <a class="start-edit editButton"  hidden><span class="glyphicon glyphicon-edit"></span>Modifica</a>
                         </h4>
                     </div>
                     <div id="collapse4" class="panel-collapse collapse">
-                        <div class="panel-body">Panel Body</div>
-                        <div class="panel-footer">Panel Footer</div>
+                        <div class="panel-body">
+                            <%@include file="MA4-InfoCosti.jsp" %>
+                        </div>
+                        <div class="panel-footer"></div>
                     </div>
                 </div>
 
@@ -167,6 +169,8 @@
 
 
         <!-- script miei -->
+                <!--mio scriot autocomplite -->
+         <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocompleteMod.js"></script>
         <link rel="stylesheet" href="include/css/InserimentoAnnunci/ModificaAnnunci.css">
         <script type="text/javascript" src="include/js/InserimentoAnnunci/ModificaAnnunci.js"></script>
         <script type="text/javascript" src="include/js/InserimentoAnnunci/stanzeUtilyMod.js"></script>

@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  *
@@ -52,7 +51,6 @@ public class PathUtily {
     	    	outStream.write(buffer, 0, length);
     	 
     	    }
-    	 
     	    inStream.close();
     	    outStream.close();
     	    
@@ -69,8 +67,6 @@ public class PathUtily {
     public static boolean eliminaFoto(String path){
         File f = new File(path);
         f.delete();
-        
-        
         return true;
     }
 
