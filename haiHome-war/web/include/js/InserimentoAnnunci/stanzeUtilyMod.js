@@ -20,7 +20,7 @@ var tab = pannStanze.find("ul#contenitoreTab");
 function setInfoAnnunci(atom){
    
     atomico = atom;
-    alert(atomico);
+    //alert(atomico);
 }
 
 function setTipoCamere(tl, ta) {
@@ -45,7 +45,7 @@ function resetStanza(s, idStanza) {
     //var html = stanzaHTMLCode(s,idStanza);
     var stanza = contenitore.find(".Stanza#stanza" + idStanza);
     var metTag = stanza.find("#inpMetratura");
-    alert(stanza.attr("id"));
+    //alert(stanza.attr("id"));
     metTag.val(s.Metratura);
 
     //alert("Metratura "+ s.Metratura +"\nId-Stanza " + idStanza);
@@ -76,7 +76,7 @@ function resetStanza(s, idStanza) {
 
     //elimino gli hidden Input  
     stanza.find("form").find("input[name='fotoEliminate']").each(function () {
-        alert("sono entrato");
+        //alert("sono entrato");
         $(this).remove();
     });
 
@@ -136,7 +136,7 @@ function aggiungiStanza(s, i) {
             //aggiungo hidden input per ricordarmelo
             var nomeFoto = imgContainer.find("img").attr("id");
 
-            alert(form.attr("id"));
+            //alert(form.attr("id"));
             var inputHidden = "<input type=\"hidden\" name=\"fotoEliminate\" value=\"" + nomeFoto + "\" />";
             form.append(inputHidden);
 
@@ -247,7 +247,7 @@ function modificaStanza(stanzaContent) {
 
     var key= parseInt(stanzaContent.attr("id").substr(6));
     
-    alert(key);
+    //alert(key);
     
     var files = dropzoneMaps.get(key).getQueuedFiles();
            for (var j = 0; j < files.length; j++) {
@@ -274,7 +274,7 @@ function eliminaStanza(stanza) {
         success: function (msg)
         {
             if (msg.response === "OK") {
-                alert("Successo");
+                //alert("Successo");
                 //annuncio = msg.data;
                 console.log("nuovo annuncio");
                 var newAnn = msg.data;
@@ -310,7 +310,7 @@ function salvaNuovaStanza(stanzaContent) {
                 success: function (msg)
         {
             if (msg.response === "OK") {
-                alert("Successo");
+               // alert("Successo");
                 //annuncio = msg.data;
                 console.log("nuovo annuncio");
                 var newAnn = msg.data;
@@ -342,7 +342,7 @@ function salvaNuovaStanza(stanzaContent) {
 
     var key= parseInt(stanzaContent.attr("id").substr(6));
     
-    alert(key);
+    //alert(key);
     
     var files = dropzoneMaps.get(key).getQueuedFiles();
            for (var j = 0; j < files.length; j++) {
@@ -541,14 +541,14 @@ function nascondiPrezzoStanze(){
     
     contenitore.find("div.Stanza").each(function(){
         var stanza = $(this);
-        alert(stanza);
+        //alert(stanza);
         var value = stanza.contents().find("input.tipoStanzaHidd").val();
-        alert("tipo di stanza " + value);
+        //alert("tipo di stanza " + value);
         //se è una stanza da letto
         if (value == "StanzaInAffitto") {
             
             stanza.find("input#inpPrezzoS").parent().hide();
-            alert(stanza + " " + stanza.find("input#inpPrezzoS").attr("id"));
+            //alert(stanza + " " + stanza.find("input#inpPrezzoS").attr("id"));
             stanza.find("input#inpPrezzoS").val("");
 
 
@@ -565,13 +565,13 @@ function mostraPrezzoStanze(stanze){
         var stanza = $(this);
         var value = stanza.contents().find("input.tipoStanzaHidd").val();
         var oidS = stanza.contents().find("input.oidStanza").val();
-        alert("stanza OID " + oidS);
+        //alert("stanza OID " + oidS);
         //se è una stanza da letto
         if (value == "StanzaInAffitto") {
             
             for (var i = 0; i < stanze.length; i++) {
                  var s = stanze[i];
-                  alert("stanza salvata OID " + s.OID);
+                  //alert("stanza salvata OID " + s.OID);
                 if(s.OID == oidS){
                     stanza.find("input#inpPrezzoS").parent().show();
                     stanza.find("input#inpPrezzoS").val(s.Prezzo);

@@ -69,15 +69,13 @@ public class ServletAnnuncio extends HttpServlet {
     double metraturaApp;*/
     //Utily Photo haiHome-war/src/java/web/FotoUploadServlet.java
     ////Users/giacomocavallo/NetBeansProjects/ProgettoSSCSWeb/haiHome/haiHome-war/web/Immagini/tempAppImg
-    private final static String tempFolderPath = "//Users//giacomocavallo//NetBeansProjects//ProgettoSSCSWeb//haiHome//haiHome-war//web//Immagini//tempAppImg//";
     //ArrayList<FileOutputStream> photoTempPath;
-    private HashMap<String, ArrayList<String>> photoTempPath;
+    //private HashMap<String, ArrayList<String>> photoTempPath;
 
-    private ArrayList<String> editPhotoTempPath;
-    private HashMap<String, ArrayList<String>> stanzeInfo;
-    long idLocatore;
+    //private ArrayList<String> editPhotoTempPath;
+    //private HashMap<String, ArrayList<String>> stanzeInfo;
 
-    private HashMap<String, ArrayList<String>> capMap;
+    //private HashMap<String, ArrayList<String>> capMap;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -122,7 +120,7 @@ public class ServletAnnuncio extends HttpServlet {
                 }
                 if ((userType.equalsIgnoreCase("locatore")) /*(userType.equalsIgnoreCase("locatore"))*/) {
                     JSONObject locatoreJSON = (JSONObject) session.getAttribute("user-data");
-                    idLocatore = (long) locatoreJSON.get("id");
+                    long idLocatore = (long) locatoreJSON.get("id");
                     System.out.println("Tipo utente: " + userType);
                     System.out.println("Id locatore : " + idLocatore);
                     boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
@@ -141,7 +139,7 @@ public class ServletAnnuncio extends HttpServlet {
                     }
 
                 } else {
-                    idLocatore = 36;
+                    long idLocatore = 36;
                     boolean result = gestoreAnnuncio.CreaAnnuncio(idLocatore);
                     System.out.println("ID LOCATORE aggiunto manualmente: " + idLocatore);
                     System.out.println("Annuncio inizializzato : " + result);
@@ -154,11 +152,18 @@ public class ServletAnnuncio extends HttpServlet {
 
                 }
                 //inizializzo arrayList stanze
-                photoTempPath = new HashMap();
-                stanzeInfo = new HashMap();
+                HashMap<String,ArrayList<String>> photoTempPath = new HashMap();
+                gestoreAnnuncio.setphotoTempPath(photoTempPath);
+                HashMap<String,ArrayList<String>> stanzeInfo = new HashMap();
+                gestoreAnnuncio.setstanzeInfo(stanzeInfo);
 
                 //Carico i quartieri
-                capMap = gestoreCitta.getQuartieriCapMap();
+                HashMap<String, ArrayList<String>> capMap = gestoreCitta.getQuartieriCapMap();
+                
+                //carico lista quartieri
+                gestoreCitta.buildQuartieriCapMap();
+                
+                /*
                 for (String key : capMap.keySet()) {
                     System.out.println("Cap: " + key);
                     System.out.println("Quartieri : ");
@@ -166,7 +171,7 @@ public class ServletAnnuncio extends HttpServlet {
                         System.out.println("-       -  " + quart);
                     }
 
-                }
+                }*/
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAppartamento")) {
 
@@ -228,6 +233,8 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoStanze")) {
 
                 System.out.println("-----INFO STANZE");
+                
+                
 
                 String[] numeroStanza = request.getParameterValues("numStanza");
 
@@ -263,7 +270,11 @@ public class ServletAnnuncio extends HttpServlet {
                         infoStanza.add(metraturaS[i]);
                     }
 
+                    HashMap<String, ArrayList<String>> stanzeInfo = gestoreAnnuncio.getstanzeInfo();
                     stanzeInfo.put(numeroStanza[i], infoStanza);
+                    gestoreAnnuncio.setstanzeInfo(stanzeInfo);
+                    
+                     HashMap<String,ArrayList<String>> photoTempPath = gestoreAnnuncio.getphotoTempPath();
 
                     ArrayList<String> fotoPath = photoTempPath.get(numeroStanza[i]);
                     for (String s : fotoPath) {
@@ -279,7 +290,11 @@ public class ServletAnnuncio extends HttpServlet {
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-FotoUpload")) {
 
                 System.out.println("-----FOTO DELLE STANZE");
-
+                
+                 HashMap<String,ArrayList<String>> photoTempPath = gestoreAnnuncio.getphotoTempPath();
+                HashMap<String,ArrayList<String>> stanzeInfo = gestoreAnnuncio.getstanzeInfo();
+                
+                System.out.println("bug detector");
                 //mi assicuro che non ci siano stane inserite
                 boolean listaStanzeVuota = photoTempPath.isEmpty();
                 if (!listaStanzeVuota) {
@@ -298,8 +313,15 @@ public class ServletAnnuncio extends HttpServlet {
 
                     InputStream filecontent;
                     filecontent = filePart.getInputStream();
+                    
+                    //prendo la sessione
+                    HttpSession session = request.getSession();
+                
+                    JSONObject locatoreJSON = (JSONObject) session.getAttribute("user-data");
+                    
+                    long idLocatore = (long) locatoreJSON.get("id");
 
-                    String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, this.idLocatore + "", numStanza);
+                    String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, idLocatore + "", numStanza);
 
                     if (!photoTempPath.containsKey(numStanza)) {
                         ArrayList<String> temp = new ArrayList();
@@ -314,7 +336,9 @@ public class ServletAnnuncio extends HttpServlet {
                     System.out.println("NOME FOTO: " + fileName + " NUOVO PATH FOTO " + path);
 
                 }
-
+                
+                gestoreAnnuncio.setphotoTempPath(photoTempPath);
+                gestoreAnnuncio.setstanzeInfo(stanzeInfo);
                 response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/Annunci_JSP/InserimentoAnnunci.jsp");
@@ -327,7 +351,13 @@ public class ServletAnnuncio extends HttpServlet {
                 System.out.println("----- INFO COSTI:");
 
                 String tipoCosti = request.getParameter("Tipo Costo").trim();
+                
+                HashMap<String,ArrayList<String>> stanzeInfo = gestoreAnnuncio.getstanzeInfo();
+                        
                 int numeroStanze = stanzeInfo.size();
+                
+                //recupero info foto
+                HashMap<String,ArrayList<String>> photoTempPath = gestoreAnnuncio.getphotoTempPath();
 
                 //Info sulle stanze
                 gestoreAnnuncio.inserisciInfoStanze(numeroStanze, tipoCosti.compareToIgnoreCase("1") == 0);
@@ -345,6 +375,8 @@ public class ServletAnnuncio extends HttpServlet {
                     boolean CCA = request.getParameter("compresoCondominioA") != null;
                     String compRiscA = request.getParameter("compresoRiscaldamentoA");
                     boolean CRA = request.getParameter("compresoRiscaldamentoA") != null;
+                    
+
 
                     //inserisco tutte le stanze
                     for (String s : listaChiavi) {
@@ -408,6 +440,8 @@ public class ServletAnnuncio extends HttpServlet {
                     System.out.println("COMPRESO CONDOMINIO STA: " + CCS);
                     System.out.println("COMPRESO RISCALDAMENTO STA: " + CRS);
                 }
+                
+                gestoreAnnuncio.setstanzeInfo(stanzeInfo);
 
                 //inserisco info finali sull'annuncio
                 JSONObject annuncio = gestoreAnnuncio.toJSON();
@@ -465,7 +499,7 @@ public class ServletAnnuncio extends HttpServlet {
                 if (cap != null) {
 
                     System.out.println("CAP " + cap);
-                    ArrayList<String> listaquartieri = capMap.get(cap);
+                    ArrayList<String> listaquartieri = gestoreCitta.getQuartieriByCap(cap);//capMap.get(cap);
                     String json = new Gson().toJson(listaquartieri);
                     System.out.println(json);
                     out.write(json);
@@ -501,22 +535,15 @@ public class ServletAnnuncio extends HttpServlet {
                 }
                 if ((userType.equalsIgnoreCase("locatore")) /*(userType.equalsIgnoreCase("locatore"))*/) {
                     JSONObject locatoreJSON = (JSONObject) session.getAttribute("user-data");
-                    idLocatore = (long) locatoreJSON.get("id");
+                    long idLocatore = (long) locatoreJSON.get("id");
                     //Fine recupero dati locatore
 
                     boolean result = gestoreAnnuncio.modificaAnnuncio(Long.parseLong(oidAnnuncio));
 
                     if (result) {
                         //carico lista quartieri
-                        capMap = gestoreCitta.getQuartieriCapMap();
-                        for (String key : capMap.keySet()) {
-                            System.out.println("Cap: " + key);
-                            System.out.println("Quartieri : ");
-                            for (String quart : capMap.get(key)) {
-                                System.out.println("- " + quart);
-                            }
-
-                        }
+                        gestoreCitta.buildQuartieriCapMap();
+                        
 
                         //carico i Tipi stanze
                         ArrayList<String> tipoStanzeAffitto = gestoreAnnuncio.getTipologieStanzaAffitto();
@@ -534,7 +561,8 @@ public class ServletAnnuncio extends HttpServlet {
                             ArrayList<String> estensioniFoto64 = new ArrayList();
                             for (String f : fotos) {
                                 System.out.print(f);
-                                String est = f.split("\\.")[1];
+                                String[] t = f.split("\\.");
+                                String est = t[t.length-1];
                                 System.out.println("PATH FOTO " +  f + " " + est);
                                 System.out.println("Immagine: " + f + " estensione: " + est);
                                 String foto64 = gestoreImmagini.getImage(f, est);
@@ -642,7 +670,9 @@ public class ServletAnnuncio extends HttpServlet {
 
                 System.out.println("-----EDIT NEW FOTO UPLOAD:");
 
-                editPhotoTempPath = new ArrayList();
+                ArrayList<String> editPhotoTempPath = new ArrayList();
+                gestoreAnnuncio.seteditPhotoTempPath(editPhotoTempPath);
+                
 
                 Collection<Part> files = request.getParts();
 
@@ -654,8 +684,19 @@ public class ServletAnnuncio extends HttpServlet {
 
                     InputStream filecontent;
                     filecontent = filePart.getInputStream();
+                    
+                   //prendo la sessione
+                    HttpSession session = request.getSession();
+                
+                    
+                    //controllo il tipo utente
 
-                    String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, this.idLocatore + "", numStanza);
+                    JSONObject locatoreJSON = (JSONObject) session.getAttribute("user-data");
+                    
+                    long idLocatore = (long) locatoreJSON.get("id");
+                    
+
+                    String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, idLocatore + "", numStanza);
 
                     editPhotoTempPath.add(path);
 
@@ -666,6 +707,8 @@ public class ServletAnnuncio extends HttpServlet {
                 for (String p : editPhotoTempPath) {
                     System.out.println(p);
                 }
+                
+                gestoreAnnuncio.seteditPhotoTempPath(editPhotoTempPath);
 
                 //ELABORO RISPOSTA
                 response.setContentType("application/json");
@@ -680,7 +723,17 @@ public class ServletAnnuncio extends HttpServlet {
                 String oidStanza = request.getParameter("oidStanza");
 
                 String metratura = request.getParameter("MetraturaS");
-                double prezzo = Double.parseDouble(request.getParameter("PrezzoS"));
+                
+                metratura = metratura.compareToIgnoreCase("")==0 ? "0" : metratura;
+                String prezzoTemp = request.getParameter("PrezzoS");
+                System.out.println("request " +prezzoTemp);
+                double prezzo;
+                if(prezzoTemp==null || prezzoTemp.compareToIgnoreCase("")==0){
+                    prezzo = -1;
+                }else{
+                    prezzo = Double.parseDouble(prezzoTemp);
+                }
+                
                 String[] oldFoto = request.getParameterValues("fotoEliminate");
 
                 System.out.println("OID: " + oidStanza);
@@ -702,6 +755,7 @@ public class ServletAnnuncio extends HttpServlet {
                 }
                 long oid = Long.parseLong(oidStanza);
                 boolean result;
+                ArrayList<String> editPhotoTempPath = gestoreAnnuncio.geteditPhotoTempPath();
                 if(prezzo<=0){
                     result = gestoreAnnuncio.modificaStanza(oid, editPhotoTempPath, stanzeEliminate, Double.parseDouble(metratura));
 
@@ -783,6 +837,8 @@ public class ServletAnnuncio extends HttpServlet {
                 System.out.println("TIPO STANZA: " + tipoL + tipoA);
                 System.out.println("METRATURA: " + metraturaS);
                 System.out.println("PREZZO: " + prezzoS);
+                
+                ArrayList<String> editPhotoTempPath = gestoreAnnuncio.geteditPhotoTempPath();
                 
                 System.out.println("FOTO STANZA");
                 for(String s : editPhotoTempPath){

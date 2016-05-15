@@ -165,7 +165,7 @@ $(document).ready(function () {
     form4.on('submit', function (e) {
 
         e.preventDefault();
-
+        
         var buttonForm = form4.find("button#submitButtom");
 
         console.log(buttonForm.attr("id"));
@@ -177,6 +177,8 @@ $(document).ready(function () {
         
 
         if (isValid && modelloCosti.val()!= 0) {
+            
+            $("button#submitButtom").hide();
             console.log("Dati form validi");
             form4.ajaxSubmit({
                 dataType: "json",
@@ -226,7 +228,7 @@ function sendInitialRequest() {
                 console.log("RISPOSTA");
                 console.log(msg);
                 aggiornaTipoStanze(msg.tipoAffitto, msg.tipoAccessorio);
-                openModalMessage("Locatore loggato","Il locatore è loggato"); 
+                //openModalMessage("Locatore loggato","Il locatore è loggato"); 
             } else {
                 openModalMessage("Errore di Autemtificazione","Si è verificato un errore di autentificazione"); 
             }

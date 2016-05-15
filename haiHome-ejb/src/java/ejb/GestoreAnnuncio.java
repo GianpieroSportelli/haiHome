@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -804,8 +805,10 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         Date d = new Date();
 
         Random r = new Random();
+        
+        String[] t = nomePhoto.split("\\.");
 
-        String est = nomePhoto.split("\\.")[1];
+        String est = t[t.length-1];
 
         String photoName = denominazioneLocatore + r.nextInt(100) + d.getTime() + "." + est;
 
@@ -982,8 +985,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     @Override
-    public boolean oscusaAnnuncio(long oidAnnuncio, boolean val
-    ) {
+    public boolean oscusaAnnuncio(long oidAnnuncio, boolean val) {
         this.annuncio = annuncioFacade.find(oidAnnuncio);
 
         //XOR potentissimo!!!!!!!! se dà vero vuol dire che i due valori sono diversi
@@ -996,5 +998,56 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             return false;
         }
     }
+    
+    //GESTIONE DATI DI STATO
+    
+    private HashMap<String, ArrayList<String>> photoTempPath = new HashMap();
+
+   
+
+
+
+    @Override
+    public HashMap<String, ArrayList<String>> getphotoTempPath() {
+        return this.photoTempPath;
+    }
+
+    @Override
+    public void setphotoTempPath(HashMap<String, ArrayList<String>> photoTempPath) {
+        this.photoTempPath = photoTempPath;
+        
+        
+    }
+    
+        
+    private ArrayList<String> editPhotoTempPath = new ArrayList();
+
+    @Override
+    public ArrayList<String> geteditPhotoTempPath() {
+        return this.editPhotoTempPath;
+    }
+
+    @Override
+    public void seteditPhotoTempPath(ArrayList<String> editPhotoTempPath) {
+        this.editPhotoTempPath = editPhotoTempPath;
+    }
+    
+        private HashMap<String, ArrayList<String>> stanzeInfo = new HashMap();
+        
+        
+    @Override
+    public HashMap<String, ArrayList<String>> getstanzeInfo() {
+        return this.stanzeInfo;
+    }
+
+    @Override
+    public void setstanzeInfo(HashMap<String, ArrayList<String>> stanzeInfo) {
+        this.stanzeInfo = stanzeInfo;
+        
+        
+    }
+
+        
+    
 
 }

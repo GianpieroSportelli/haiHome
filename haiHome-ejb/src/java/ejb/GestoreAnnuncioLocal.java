@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import javax.ejb.Local;
 import org.json.JSONObject;
 
@@ -112,4 +113,24 @@ public interface GestoreAnnuncioLocal {
     public boolean svuotaStante();
     
     public Annuncio getAnnuncioByID(long oid);
+
+    
+    //METODI DI STATO
+    
+    public HashMap<String, ArrayList<String>> getphotoTempPath();
+    
+    public void setphotoTempPath(HashMap<String, ArrayList<String>> photoTempPath);
+    
+    
+    public ArrayList<String> geteditPhotoTempPath();
+    
+    public void seteditPhotoTempPath(ArrayList<String> editPhotoTempPath);
+    
+    public HashMap<String, ArrayList<String>> getstanzeInfo();
+    
+    public void setstanzeInfo(HashMap<String, ArrayList<String>> stanzeInfo);
+    
+    
+    
+    
 }
