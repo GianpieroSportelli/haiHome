@@ -366,6 +366,29 @@ public class ServletLocatore extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 out.write(String.valueOf(gestoreLocatore.bloccaLocatore(oid, bloccato)));
             }
+            else if (action.equalsIgnoreCase("locatore-archivia-stanza")) {
+                long oid = Long.parseLong(request.getParameter("oid")), 
+                       oidStanza = Long.parseLong(request.getParameter("oidStanza")); 
+                
+                boolean res = gestoreAnnuncio.archiviaStanza(oid, oidStanza, true);
+                System.out.println("Risultato archiviazione stanza: " + res);
+                
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
+                out.write(res ? "ok" : "errore"); 
+            }
+            else if (action.equalsIgnoreCase("locatore-pubblica-stanza")) {
+                long oid = Long.parseLong(request.getParameter("oid")), 
+                       oidStanza = Long.parseLong(request.getParameter("oidStanza")); 
+                
+                boolean res = gestoreAnnuncio.archiviaStanza(oid, oidStanza, false);
+                System.out.println("Risultato pubblicazione stanza: " + res); 
+                
+                
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("UTF-8");
+                out.write(res ? "ok" : "errore"); 
+            }
         }
     }
 

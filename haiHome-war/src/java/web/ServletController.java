@@ -100,7 +100,7 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
-            } else  if (action.equalsIgnoreCase("Ricerca-loggatoLocatore")) {
+            } else if (action.equalsIgnoreCase("Ricerca-loggatoLocatore")) {
                 request.getRequestDispatcher("/ServletRicerca").forward(request, response);
 
             } else if (action.equalsIgnoreCase("Ricerca-getImage")) {
@@ -124,7 +124,7 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("Segnalazione-archivia")) {
                 request.getRequestDispatcher("/ServletSegnalazione").forward(request, response);
 
-            } else  if (action.equalsIgnoreCase("Annunci-oscuraAnnuncio")) {
+            } else if (action.equalsIgnoreCase("Annunci-oscuraAnnuncio")) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
             } else if (action.equalsIgnoreCase("logoutFacebook") || action.equalsIgnoreCase("user-logout")) {
@@ -181,10 +181,14 @@ public class ServletController extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("Annuncio-getJSONByOid")) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
-                
-            }
-            
-            else {
+
+            } else if (action.equalsIgnoreCase("locatore-archivia-stanza")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+
+            } else if (action.equalsIgnoreCase("locatore-pubblica-stanza")) {
+                request.getRequestDispatcher("/ServletLocatore").forward(request, response);
+
+            } else {
                 // action random
                 System.out.println(action);
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 
