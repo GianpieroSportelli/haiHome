@@ -73,7 +73,7 @@ public class ServletLocatore extends HttpServlet {
                 if (pwd.equals(pwd2)) {
                     // email non presente
                     if (!gestoreLocatore.checkLocatore(email)) {
-                        gestoreLocatore.aggiungiLocatore(email, pwd, name, surname, phone, "https://upload.wikimedia.org/wikipedia/commons/2/23/Pino_Scotto_ceroanKio_2009_6.jpg");
+                        gestoreLocatore.aggiungiLocatore(email, pwd, name, surname, phone, "https://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg");
                     } //email presente ma associata a un account social (password null)
                     else if (gestoreLocatore.getLocatore().getPassword() == null) {
                         gestoreLocatore.modificaPassword(pwd);
@@ -462,7 +462,7 @@ public class ServletLocatore extends HttpServlet {
         html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio " + oid + " in " + indirizzo + "</a>";
         html += "</span>";
         if (!a.isOscurato()) { //annuncio modificabile solo se non oscurato 
-            html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
+            html += "<div class='dropdown link-annuncio disabled'>"; //DROPZONE - HEADER
             html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";
             html += "Gestisci annuncio <span class='glyphicon glyphicon-menu-down'></span>";
             html += "</a>";
