@@ -32,14 +32,16 @@ jQuery(document).ready(function ($) {
                                             window.location.replace(destination);
                                         });
 
-                            } else
+                            } else {
                                 $submit.attr('data-content', response);
+                                $submit.popover('show');
+                            }
                         });
             } else {
-                $submit.attr('data-content', "le password non coincidono");
+                $submit.attr('data-content', "Le password non coincidono");
+                $submit.popover('show');
             }
 
-            $submit.popover('show');
         });
     }
 
