@@ -119,6 +119,7 @@ function eliminaStanza(num) {
 function cambiaSpecifiche() {
     console.log("--------------------------------------");
     console.log("Cambio Specifiche Prezzo");
+    $("button#submitButtom").show();
     $("option#nothing").remove();
     var value = $("#costi option:selected").val();
     var prezzoStanze = $("div#prezzoStanze");
@@ -132,14 +133,6 @@ function cambiaSpecifiche() {
 
         $("input#prezzoA").attr("required", "required");
         $("input#prezzoA").attr("type", "number");
-
-
-
-        /*
-         $(".prezzoStanza").each(function (index) {
-         console.log(index + ": " + $(this).text());
-         
-         });*/
 
         var numericInput = prezzoStanze.find("input.prezzoStanza");
 

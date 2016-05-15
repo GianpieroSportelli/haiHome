@@ -37,7 +37,7 @@
 
 
 
-            <button id="submitButtom" class="btn btn-success btn-lg pull-right" > Conferma</button>
+            <button id="submitButtom" class="btn btn-success btn-lg pull-right"style="display: none;" > Conferma</button>
         </form>
     </div>
 </div>

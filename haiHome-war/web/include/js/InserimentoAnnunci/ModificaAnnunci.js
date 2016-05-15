@@ -113,7 +113,7 @@ $(document).ready(function () {
         if (idpanel == pannInd.attr("id")) {
 
             if (checkIndirizzo()) {
-                alert("Indirizzo Corretto");
+                //alert("Indirizzo Corretto");
                 sendEditIndirizzoRequest();
                 disabilitaInserimentoDati(pannInd);
                 hideFooterButton(pannInd);
@@ -126,7 +126,7 @@ $(document).ready(function () {
         } else if (idpanel == pannInfo.attr("id")) {
 
             if (checkInfoApp()) {
-                alert("Dati Corretti");
+                //alert("Dati Corretti");
                 sendEditAppartamentoRequest();
                 disabilitaInserimentoDati(pannInfo);
                 hideFooterButton(pannInfo);
@@ -702,7 +702,7 @@ function aggiornaInfoCosti(ann) {
     divPrezzoSta.hide();
 
     if (atomico) {
-        alert("Appartamento Atomico");
+        //alert("Appartamento Atomico");
 
         selModelloCosti.find("option[value=1]").attr("selected", "selected");
         selModelloCosti.find("option[value=2]").removeAttr("selected", "selected");
@@ -853,7 +853,7 @@ function sendEditCosti(){
             console.log(response.data);
             myAnnuncio = response.data;
             aggiornaInfoCosti(myAnnuncio);
-            alert("risposta" + response.action);
+            //alert("risposta" + response.action);
             
             if(response.action=="nascondi-prezzo-stanze"){
                 nascondiPrezzoStanze();

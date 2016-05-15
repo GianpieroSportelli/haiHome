@@ -146,4 +146,39 @@ public class GestoreCitta implements GestoreCittaLocal {
         return capMap;
     }
     
+        
+        private HashMap<String, ArrayList<String>> capMap ;
+
+    @Override
+    public void setcapMap(HashMap<String, ArrayList<String>> capMap) {
+        this.capMap = capMap;
+        }
+
+    @Override
+    public ArrayList<String> getQuartieriByCap(String cap) {
+        return this.capMap.get(cap);
+    }
+
+    @Override
+    public void buildQuartieriCapMap() {
+       this.capMap = new HashMap();
+            for (Quartiere quartiere : quartiereFacade.findAll()) {
+                ArrayList<String> caps = (ArrayList<String>) quartiere.getCap();
+                for(String cap : caps){
+                    if(capMap.containsKey(cap)){
+                        ArrayList<String> quartTemp = capMap.get(cap);
+                        capMap.remove(cap);
+                        quartTemp.add(quartiere.getNome());
+                        capMap.put(cap, quartTemp);
+                    }else{
+                        ArrayList<String> quartTemp = new ArrayList();
+                        quartTemp.add(quartiere.getNome());
+                        capMap.put(cap, quartTemp);
+                    }
+                }
+            }
+        
+    }
+        
+    
 }
