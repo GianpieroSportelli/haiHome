@@ -90,8 +90,10 @@ $(document).ready(function () {
                 abilitaInsetimentoDati(pannCosti);
                 showFooterButton(pannCosti);
             } else {
-
+                
             }
+        }else{
+            openModalMessage("Modifica non consentita","Impossibile apportare ulteriori modifiche, conferma o annulla le modifiche in corso");
         }
 
 
@@ -105,6 +107,8 @@ $(document).ready(function () {
     $(document).on('click', 'a.edit-save', function (event) {
         var panel = $(this).closest("div.panel");
         var idpanel = panel.attr("id");
+        
+        //da inserire un modal, che permette di chiedere conferma della conferma ;)
 
         if (idpanel == pannInd.attr("id")) {
 
@@ -114,7 +118,7 @@ $(document).ready(function () {
                 disabilitaInserimentoDati(pannInd);
                 hideFooterButton(pannInd);
             } else {
-                alert("Indirizzo Non Corretto");
+                openModalMessage("Info Indirizzo","Impossibile salvare i dati, formato dati non corretto");
             }
 
 
@@ -127,15 +131,22 @@ $(document).ready(function () {
                 disabilitaInserimentoDati(pannInfo);
                 hideFooterButton(pannInfo);
             } else {
-                alert("Dati Non Corretti");
+                 openModalMessage("Info Annuncio","Impossibile salvare i dati, formato dati non corretto");
+
             }
 
         } else if (idpanel == pannStanze.attr("id")) {
 
         } else if (idpanel == pannCosti.attr("id")) {
+                
+            if(checkCosti()){ // da sviluppare la funzione
                 sendEditCosti();
                 disabilitaInserimentoDati(pannCosti);
                 hideFooterButton(pannCosti);
+            }else{
+                openModalMessage("Info Costi","Impossibile salvare i dati, formato dati non corretto");
+
+            }
                 
 
         } else {
@@ -149,6 +160,7 @@ $(document).ready(function () {
         var panel = $(this).closest("div.panel");
         var idpanel = panel.attr("id");
 
+        //da inserire un modal, che permette di chiedere conferma dell'annulla
 
         if (idpanel == pannInd.attr("id")) {
             aggiornaIndForm(myAnnuncio);
@@ -210,7 +222,10 @@ $(document).ready(function () {
         var navContent = pannStanze.find(".tab-content");
         var stanzaContent = navContent.find("div.active");
 
-        modificaStanza(stanzaContent);
+        // controllo dati stanza
+        if(checkStanza(stanzaContent)){
+            
+         modificaStanza(stanzaContent);
 
         //disabilito l'inserimento
         disabilitaInserimentoDati(stanzaContent);
@@ -232,6 +247,11 @@ $(document).ready(function () {
 
         //mostro bottoni 1 
         editStanza.parent("div").show();
+        }else{
+            openModalMessage("Modifica Stanze","Impossibile modificare i dati, formato dati non corretto");
+
+        }
+
 
     });
 
@@ -246,6 +266,7 @@ $(document).ready(function () {
         var stanzaContent = navContent.find("div.active");
         var idStanza = stanzaContent.attr("id").slice(6);
 
+        //da inserire un modal di conferma, per confermare l'annullamento delle modifiche
         var stanze = myAnnuncio.Stanze[0];
         var s = stanze[idStanza];
 
@@ -286,6 +307,7 @@ $(document).ready(function () {
 
         if (confirm("Sicuro di voler eliminare la stanza " + idStanza)) {
             //mando richiesta di eliminare stanza
+            //TODO controlla cosa fa la sevlet, evitare il caricamento delle immagini
             eliminaStanza(s);
 
         }
@@ -640,10 +662,14 @@ function sendEditAppartamentoRequest() {
 function checkInfoApp() {
 
     var descrizioneTag = pannInfo.find("#textDescrizione");
-    //var metraturaTag = pannInfo.find("#inpMetratura");
+    var metraturaTag = pannInfo.find("#inpMetratura");          //da aggiungere il controllo sui dati
     var dataInizio = pannInfo.find("input#inpDataInizio");
+    if(true){
+        return descrizioneTag.val() != "" && dataInizio.val() != "";
+    }else{
+        return false;
+    }
 
-    return descrizioneTag.val() != "" && dataInizio.val() != "";
 
 }
 

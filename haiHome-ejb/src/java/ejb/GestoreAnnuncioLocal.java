@@ -7,7 +7,6 @@ package ejb;
 
 import entity.Annuncio;
 import entity.Locatore;
-import entity.Stanza;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;

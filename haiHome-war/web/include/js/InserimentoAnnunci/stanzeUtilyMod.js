@@ -315,6 +315,7 @@ function salvaNuovaStanza(stanzaContent) {
                 console.log("nuovo annuncio");
                 var newAnn = msg.data;
                 setMyAnnuncio(newAnn);
+                //devo farmi restituire una Stanza e aggiungerla al JSON
                 ricaricaStanza(newAnn);
                 
 
@@ -574,14 +575,20 @@ function mostraPrezzoStanze(stanze){
                 if(s.OID == oidS){
                     stanza.find("input#inpPrezzoS").parent().show();
                     stanza.find("input#inpPrezzoS").val(s.Prezzo);
-                }
-                
+                }           
     }
-
-
-
         }
         
     });
+}
+
+
+//TODO da sviluppare il check dei costi e check stanze
+function checkCosti(){
+    return true;
+}
+
+function checkStanza(stanzaContent){
+    return true;
 }
 

@@ -75,6 +75,9 @@
         <link rel="stylesheet" href="include/css/InserimentoAnnunci/dropzone1.css"> 
         <script type="text/javascript" src="include/js/InserimentoAnnunci/dropzone1.js"></script>
         
+                <!-- general Modal -->
+        <script type="text/javascript" src="include/js/generalModal.js"></script>
+        <!-- FINE General Modal -->
 
         
     </head>
@@ -93,10 +96,15 @@
                }
                %>" />  
         
+        
+        
 
 
 
         <div class="container">
+            
+            <!-- modal generico -->
+            <%@include file="/include/html/generalModal.html" %>
             <div class="panel-group">
 
                 <div id="indirizzoPanel" class="panel panel-default">
