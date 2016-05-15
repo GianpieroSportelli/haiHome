@@ -97,7 +97,6 @@ public class ServletAnnuncio extends HttpServlet {
             if (header != null) {
 
                 action = header;
-                //action = "Annunci-newAnnuncio-FotoUpload";
 
             }
 
