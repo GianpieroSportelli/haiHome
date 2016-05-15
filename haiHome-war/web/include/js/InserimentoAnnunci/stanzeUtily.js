@@ -72,7 +72,7 @@ function nuovaStanza1() {
             {
                 // Prevents Dropzone from uploading dropped files immediately
                 autoProcessQueue: false,
-                url: "ServletAnnuncio",
+                url: "ServletController",
                 parallelUploads: 100,
                 uploadMultiple: true,
                 paramName: "file[]",
@@ -290,7 +290,7 @@ function getStanzaHTMLCode(number, tipoLetto, tipAcc) {
 
 function sendData() {
     var myRequest = new XMLHttpRequest();
-    var url = "ServletAnnuncio";
+    var url = "ServletController";
     var method = "post";
 
     myRequest.onreadystatechange = function () {

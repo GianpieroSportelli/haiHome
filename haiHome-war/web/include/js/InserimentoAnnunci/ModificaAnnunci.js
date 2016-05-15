@@ -514,7 +514,7 @@ function initalEditFunction() {
 
     console.log("INVIO RICHIEDA INIZIALE DI MODIFICA");
 
-    $.post("ServletAnnuncio",
+    $.post("ServletController",
             {action: "Annunci-editAnnuncio-initialRequest",
                 idAnnuncio: oid},
             function (msg) {

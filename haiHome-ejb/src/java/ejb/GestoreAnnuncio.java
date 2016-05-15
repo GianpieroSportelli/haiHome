@@ -942,7 +942,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
                         this.stanzaFacade.edit(newStanza);
                         this.annuncio.getListaStanza().add(newStanza);
                         this.annuncioFacade.edit(annuncio);
-                        
+                        return true;
                 } else {
                     return false;
                 }                  

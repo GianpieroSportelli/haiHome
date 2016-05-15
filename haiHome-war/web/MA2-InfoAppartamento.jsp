@@ -8,7 +8,7 @@
 <div class="col-xs-6 col-md-offset-3">
     <div class="col-md-12">
 
-        <form action="ServletAnnuncio" method="post" id="form-info-appartamento"> 
+        <form action="ServletController" method="post" id="form-info-appartamento"> 
             <input type="hidden" name="action" value="Annunci-editAnnuncio-infoAppartamento" /> 
             <div class="form-group">
                 <label class="control-label">Descrizione</label>

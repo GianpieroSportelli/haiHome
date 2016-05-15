@@ -218,7 +218,7 @@ function sendInitialRequest() {
 
     $.ajax({
         type: "POST",
-        url: "ServletAnnuncio",
+        url: "ServletController",
         data: "action=Annunci-newAnnuncio-initialRequest",
         dataType: "json",
         success: function (msg)
@@ -339,7 +339,7 @@ function rendiAnnuncioPersistente() {
 
     $.ajax({
         type: "POST",
-        url: "ServletAnnuncio",
+        url: "ServletController",
         data: "action=Annunci-newAnnuncio-persisti",
         dataType: "text",
         success: function (msg)
@@ -364,7 +364,7 @@ function rendiAnnuncioPersistente() {
 }
 
 function leggi_quartieri() {
-    $.post("ServletAnnuncio",
+    $.post("ServletController",
             {action: "Annunci-newAnnuncio-getQuartieri"},
             function (responseJson) {
                 var html = '';
@@ -380,7 +380,7 @@ function leggi_quartieri() {
 }
 
 function aggiornaListaQuartieri(inputCap) {
-    $.post("ServletAnnuncio",
+    $.post("ServletController",
             {action: "Annunci-newAnnuncio-getQuartieri",
                 cap: inputCap},
             function (responseJson) {
