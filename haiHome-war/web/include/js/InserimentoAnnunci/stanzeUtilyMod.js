@@ -10,12 +10,18 @@ var dropzoneMaps = new Map();
 
 var tipoLetto;
 var tipAcc;
+var atomico;
 
 var pannStanze = $("#stanzePanel");
 
 var contenitore = pannStanze.find("div#contenitoreStanze");
 var tab = pannStanze.find("ul#contenitoreTab");
 
+function setInfoAnnunci(atom){
+   
+    atomico = atom;
+    alert(atomico);
+}
 
 function setTipoCamere(tl, ta) {
     tipoLetto = tl;
@@ -115,11 +121,6 @@ function aggiungiStanza(s, i) {
         var dropContainer = $("div#mydropzone" + i);
         var fotoHTML = "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img id=\"" + foto[j] + "\" src=\"" + prefix + foto64[j] + "\" data-dz-thumbnail class='old'/></div><a class=\"dz-remove removeOldImg\" data-dz-remove>Remove File</a>\n</div>";
         dropContainer.append(fotoHTML);
-        /*
-         myDropzone.emit("addedfile", mockFile);
-         myDropzone.emit("thumbnail", mockFile, prefix + foto[j]);
-         myDropzone.emit("complete", mockFile);
-         */
     }
 
     var contenitoreStanza = contenitore.find("div#stanza" + i);
@@ -142,8 +143,13 @@ function aggiungiStanza(s, i) {
         });
     });
 
-    var oidHidden = "<input type=\"hidden\" name=\"oidStanza\" value=\"" + s.OID + "\" />";
+    var oidHidden = "<input type=\"hidden\" name=\"oidStanza\" class=\"oidStanza\" value=\"" + s.OID + "\" />";
     form.append(oidHidden);
+    
+    if(!atomico && s.SuperTipo=="StanzaInAffitto"){
+        $(contenitoreStanza).find("input#inpPrezzoS").parent().show();
+        
+    }
 
     stanzeMap.set(i, s);
     dropzoneMaps.set(i, myDropzone);
@@ -159,12 +165,16 @@ function stanzaHTMLCode(stanza, number) {
         var StanzaCode =
                 "<div id=\"stanza" + number + "\" class=\"tab-pane fade in active formContainer Stanza\">\n\
                   <form action=\"ServletAnnuncio\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-infoEditStanze\" />\n\
-                    <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
+                    <input type=\"hidden\" class=\"tipoStanzaHidd\" value=\"" + stanza.SuperTipo + "\" /> \
                 <div class=\"form-group\">\n\
                          <p class='mylabel'>Stanza :  <span class='valore'>" + stanza.SuperTipo + "</span></br>TipoStanza : <span class='valore'>" + stanza.Tipo + " </span>\n\
                         </p>\n\
                     <div class=\"form-group\">\n\
                         <label class=\"control-label\">Metratura</label> <input name='MetraturaS' type='number' id=\"inpMetratura\" class=\"form-control\" value=\"" + stanza.Metratura + "\"  disabled=\"disabled\" />\n\
+                        </div>\n\
+                         <div class=\"form-group\" hidden>\n\
+                            <label class=\"control-label\">Prezzo</label>\n\
+                            <input name='PrezzoS'  type='number' id=\"inpPrezzoS\" class=\"form-control\" value=\"" + stanza.Prezzo + "\"  disabled=\"disabled\"/><br />\n\
                         </div>\n\
                             <label class=\"control-label nomeValore\">Foto</label>\n\
                         <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable not-active \">\n\
@@ -179,12 +189,17 @@ function stanzaHTMLCode(stanza, number) {
         var StanzaCode =
                 "<div id=\"stanza" + number + "\" class=\"tab-pane fade formContainer Stanza\">\n\
                    <form action=\"ServletAnnuncio\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-infoEditStanze\" />\n\
+                    <input type=\"hidden\" class=\"tipoStanzaHidd\" value=\"" + stanza.SuperTipo + "\" /> \n\
                     <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
                         <div class=\"form-group\">\n\
                          <p class='mylabel'>Stanza :  <span class='valore'>" + stanza.SuperTipo + "</span></br>TipoStanza : <span class='valore'>" + stanza.Tipo + " </span>\n\
                         </p>\n\
                     <div class=\"form-group\">\n\
                         <label class=\"control-label\">Metratura</label> <input name='MetraturaS' type='number' id=\"inpMetratura\" class=\"form-control\" value=\"" + stanza.Metratura + "\"  disabled=\"disabled\" />\n\
+                        </div>\n\
+                       <div class=\"form-group\" hidden>\n\
+                            <label class=\"control-label\">Prezzo</label>\n\
+                            <input name='PrezzoS' type='number' id=\"inpPrezzoS\" class=\"form-control\" value=\"" + stanza.Prezzo + "\"  disabled=\"disabled\"/><br />\n\
                         </div>\n\
                             <label class=\"control-label nomeValore\">Foto</label>\n\
                         <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable not-active \">\n\
@@ -204,15 +219,6 @@ function stanzaHTMLCode(stanza, number) {
 //invio richiesta di modifica
 function modificaStanza(stanzaContent) {
 
-    var metrS = $(stanzaContent).find("input#inpMetratura").val();
-    var idStanza = $(stanzaContent).attr("id").slice(6);
-    alert(idStanza);
-    var oldStanza = stanzeMap.get(parseInt(idStanza));
-
-    //controllo se le immagini vecchie sono ancora presenti
-
-
-
     //inizializzo richiesta per le nuove stanze
     var myRequest = new XMLHttpRequest();
 
@@ -220,13 +226,6 @@ function modificaStanza(stanzaContent) {
     myRequest.onreadystatechange = function () {
         if (myRequest.readyState === XMLHttpRequest.DONE) {
             var formStanza = stanzaContent.find("form");
-            /*
-             stanzaContent.find("img.old").each(function () {
-             var nomeFoto = $(this).attr("id");
-             alert(nomeFoto);
-             var hiddInp = "<input type=\"hidden\" name=\"oldFoto\" value=\"" + nomeFoto + "\" class='tempInput' />";
-             });
-             */
 
             $(formStanza).ajaxSubmit({
                 dataType: "json",
@@ -246,20 +245,17 @@ function modificaStanza(stanzaContent) {
     //inizializzo i dati
     var formData = new FormData();
 
-
-    for (var key of dropzoneMaps.keys()){
-
-        var files = dropzoneMaps.get(key).getQueuedFiles();
-        console.log("Coda file Stanza numero " + key + " " + files.toString());
-
-        for (var j = 0; j < files.length; j++) {
+    var key= parseInt(stanzaContent.attr("id").substr(6));
+    
+    alert(key);
+    
+    var files = dropzoneMaps.get(key).getQueuedFiles();
+           for (var j = 0; j < files.length; j++) {
             formData.append(key, files[j]);
+            console.log("file da inviare " +files[j]);
 
         }
-
-
-    }
-
+    
     myRequest.setRequestHeader("action", "Annunci-editAnnuncio-FotoUpload");
 
     myRequest.send(formData);
@@ -270,7 +266,7 @@ function modificaStanza(stanzaContent) {
 //richiesta elimina stanza
 function eliminaStanza(stanza) {
 
-    var ajaxReq = $.ajax({
+    $.ajax({
         type: "POST",
         url: "ServletAnnuncio",
         data: "action=Annunci-editAnnuncio-eliminaStanza&oid=" + stanza.OID,
@@ -282,6 +278,7 @@ function eliminaStanza(stanza) {
                 //annuncio = msg.data;
                 console.log("nuovo annuncio");
                 var newAnn = msg.data;
+                setMyAnnuncio(newAnn);
                 ricaricaStanza(newAnn);
     
 
@@ -296,6 +293,72 @@ function eliminaStanza(stanza) {
         }
     });
 }
+
+//invio richiesta di aggiunta stanza
+function salvaNuovaStanza(stanzaContent) {
+
+    //inizializzo richiesta per le nuove stanze
+    var myRequest = new XMLHttpRequest();
+
+    //aggiungo la richiesta del check delle vecchie stanze e Metratura
+    myRequest.onreadystatechange = function () {
+        if (myRequest.readyState === XMLHttpRequest.DONE) {
+            var formStanza = stanzaContent.find("form");
+
+            $(formStanza).ajaxSubmit({
+                dataType: "json",
+                success: function (msg)
+        {
+            if (msg.response === "OK") {
+                alert("Successo");
+                //annuncio = msg.data;
+                console.log("nuovo annuncio");
+                var newAnn = msg.data;
+                setMyAnnuncio(newAnn);
+                //devo farmi restituire una Stanza e aggiungerla al JSON
+                ricaricaStanza(newAnn);
+                
+
+            } else {
+                alert("QUALCOSA NON VA");
+            }
+        },
+        error: function ()
+        {
+            alert("ERROE NELLA SERVLET");
+
+        }
+            });
+
+
+
+        }
+    };
+
+    myRequest.open("post", "ServletAnnuncio", false);
+
+    //inizializzo i dati
+    var formData = new FormData();
+
+    var key= parseInt(stanzaContent.attr("id").substr(6));
+    
+    alert(key);
+    
+    var files = dropzoneMaps.get(key).getQueuedFiles();
+           for (var j = 0; j < files.length; j++) {
+            formData.append(key, files[j]);
+            console.log("file da inviare " +files[j]);
+
+        }
+    
+    myRequest.setRequestHeader("action", "Annunci-editAnnuncio-FotoUpload");
+
+    myRequest.send(formData);
+
+
+}
+
+
 
 function ricaricaStanza(newAnn){
     
@@ -312,3 +375,220 @@ function ricaricaStanza(newAnn){
                     console.log(s);
                 }
 }
+
+
+function newEditableStanza(){
+    
+     var listaTab = tab.find("a");
+    console.log("numero a " + listaTab.length);
+    var max = -1;
+    for(var i=0;i<listaTab.length;i++){
+        var href= parseInt($(listaTab[i]).attr("href").substr(7));
+        if(href>max){
+            max = href;
+        }
+        
+    }
+    
+    var index = max+1;
+    
+    
+    var html = stanzanewHTMLCode(index);
+    
+    tab.find("li.active").removeClass("active");
+    
+    contenitore.find("div.active").removeClass("active").removeClass("in");
+    
+    tab.append(html.tabcode);
+    contenitore.append(html.stanzaCode);
+    
+    //creo la dropzone
+    var myDropzone = new Dropzone("div#mydropzone" + index,
+            {
+                // Prevents Dropzone from uploading dropped files immediately
+                autoProcessQueue: false,
+                url: "ServletAnnuncio",
+                parallelUploads: 100,
+                uploadMultiple: true,
+                paramName: "file[]",
+                addRemoveLinks: true,
+                thumbnailWidth: 100,
+                thumbnailHeight: 100,
+                previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img data-dz-thumbnail /></div>\n</div>"
+            });
+            
+    
+    dropzoneMaps.set(index, myDropzone);
+    
+        if(!atomico){
+        contenitore.find("div.active").find("input#inpPrezzoS").parent().show();
+        contenitore.find("input#inpPrezzoS").val("");
+    }
+ 
+
+    
+}
+
+    function stanzanewHTMLCode(number) {
+        
+        var tabHTML = "<li class='active'><a data-toggle=\"tab\" href=\"#stanza" + number + "\" >" + (number + 1) + ": Nuova Stanza</a></li>";
+    
+         var StanzaCode =
+                "<div id=\"stanza" + number + "\" class=\"tab-pane fade in active formContainer Stanza\">\n\
+                  <form action=\"ServletAnnuncio\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-newStanza\" />\n\
+                    <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
+                    <div class=\"form-group\">\n\
+                        <div class=\"form-group\">\n\
+                            <label class=\"control-label\">Stanza</label>\n\
+                            <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza()\">\n\
+                                <option value=\"1\">Stanza da Letto</option>\n\
+                                <option value=\"2\">Stanza Accessoria</option>\n\
+                            </select>\n\
+                        </div>\n\
+                        <div class=\"form-group\">\n\
+                            <label class=\"control-label\">Tipo di Stanza</label>\n\ ";
+
+    StanzaCode = StanzaCode + "<select name='TipoL' class=\"form-control\" id=\"seltipoLetto\"  >\n\ ";
+    for(var i =0;i<tipoLetto.length;i++){
+        StanzaCode = StanzaCode + "<option value=\"" +tipoLetto[i] + "\">" +tipoLetto[i] + "</option>\n\ ";
+    }  
+    StanzaCode = StanzaCode + "</select>\n\ ";
+
+        StanzaCode = StanzaCode + "<select name='TipoA' class=\"form-control\" id=\"seltipoAcc\" style=\"display:none\" >\n\ ";
+    for(var i =0;i<tipAcc.length;i++){
+        StanzaCode = StanzaCode + "<option value=\"" +tipAcc[i] + "\">" +tipAcc[i] + "</option>\n\ ";
+    }
+        StanzaCode = StanzaCode + "</select>\n\ ";
+    
+
+ StanzaCode = StanzaCode + "</div>\n\
+                        </div>\n\
+                         <div class=\"form-group\">\n\
+                            <label class=\"control-label\">Metratura</label>\n\
+                            <input name='MetraturaS' type='number' id=\"inpMetratura\" class=\"form-control\" /><br />\n\
+                        </div>\n\
+                         <div class=\"form-group\" style=\"display: none;\">\n\
+                            <label class=\"control-label\">Prezzo</label>\n\
+                            <input name='PrezzoS' type='number' id=\"inpPrezzoS\" class=\"form-control\" value='-1'/><br />\n\
+                        </div>\n\
+                        <div class=\"form-group col-md-12\">\n\
+                            <label class=\"control-label\">Foto</label>\n\
+                        <div>\n\
+                        <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
+                            <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\</div>\n\
+                        </div>\n\
+                    </div>\n\
+                </div>\n\
+                </form\n\
+            </div>";
+        
+            var result = {stanzaCode: StanzaCode, tabcode: tabHTML};
+    
+    
+    return result;
+}
+
+function cambiaSpecificheTipologiaStanza() {
+    
+    var stanza = pannStanze.find("div.active");
+
+    var value = stanza.contents().find("#selStanza option:selected").val();
+    //se è una stanza da letto
+    if (value == 1) {
+        console.log("stanza da letto " + value);
+        stanza.contents().find("select#seltipoLetto").show();
+        stanza.contents().find("select#seltipoAcc").hide();
+        if(!atomico){
+        stanza.find("input#inpPrezzoS").parent().show();
+        stanza.find("input#inpPrezzoS").val("");
+        
+    }
+    }
+    //se è una stanza accessoria
+    else {
+        console.log("stanza accessoria");
+        stanza.contents().find("select#seltipoLetto").hide();
+        stanza.contents().find("select#seltipoAcc").show();
+        stanza.find("input#inpPrezzoS").parent().hide();
+        stanza.find("input#inpPrezzoS").val("-1");
+
+    }
+
+}
+
+
+//PREZZO STANZA
+
+function getHTMLprezzoStanza(stanza){
+    
+    var PrezzoStanzaHTML = "<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
+            <input type=\"hidden\" name=\"oidStanza\" value=\"" + stanza.OID + "\" />\n\
+            <div class=\"col-md-6\">\n\
+                <label class=\"control-label\">Tipo: </label> <label class=\"control-label\">"+stanza.Tipo+"</label><br />\n\
+                <label class=\"control-label\">Metratura: </label> <label class=\"control-label\">"+stanza.Metratura+"</label><br />\n\
+            </div>\n\
+            <div class=\"col-md-6\">\n\
+                <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
+                <input name='PrezzoS' class=\"form-control\" /><br />\n\
+            </div>\n\
+        </div>";
+    
+    return PrezzoStanzaHTML;
+}
+
+
+function nascondiPrezzoStanze(){
+    
+    contenitore.find("div.Stanza").each(function(){
+        var stanza = $(this);
+        alert(stanza);
+        var value = stanza.contents().find("input.tipoStanzaHidd").val();
+        alert("tipo di stanza " + value);
+        //se è una stanza da letto
+        if (value == "StanzaInAffitto") {
+            
+            stanza.find("input#inpPrezzoS").parent().hide();
+            alert(stanza + " " + stanza.find("input#inpPrezzoS").attr("id"));
+            stanza.find("input#inpPrezzoS").val("");
+
+
+        }
+        
+    });
+
+
+}
+
+function mostraPrezzoStanze(stanze){
+    
+        contenitore.find("div.Stanza").each(function(){
+        var stanza = $(this);
+        var value = stanza.contents().find("input.tipoStanzaHidd").val();
+        var oidS = stanza.contents().find("input.oidStanza").val();
+        alert("stanza OID " + oidS);
+        //se è una stanza da letto
+        if (value == "StanzaInAffitto") {
+            
+            for (var i = 0; i < stanze.length; i++) {
+                 var s = stanze[i];
+                  alert("stanza salvata OID " + s.OID);
+                if(s.OID == oidS){
+                    stanza.find("input#inpPrezzoS").parent().show();
+                    stanza.find("input#inpPrezzoS").val(s.Prezzo);
+                }           
+    }
+        }
+        
+    });
+}
+
+
+//TODO da sviluppare il check dei costi e check stanze
+function checkCosti(){
+    return true;
+}
+
+function checkStanza(stanzaContent){
+    return true;
+}
+

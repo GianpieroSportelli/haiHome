@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  *
@@ -42,31 +41,33 @@ public class PathUtily {
     public static boolean spostaFoto(File sorgente, File destinazione) throws FileNotFoundException, IOException {
 
         InputStream inStream = new FileInputStream(sorgente);
-        FileOutputStream outStream = new FileOutputStream(destinazione);
-
-        byte[] buffer = new byte[1024];
-
-        int length;
-        //copy the file content in bytes 
-        while ((length = inStream.read(buffer)) > 0) {
-
-            outStream.write(buffer, 0, length);
-
-        }
-
-        inStream.close();
-        outStream.close();
-
-        //delete the original file
-        sorgente.delete();
-
+	FileOutputStream outStream = new FileOutputStream(destinazione);
+        
+         byte[] buffer = new byte[1024];
+    		
+    	    int length;
+    	    //copy the file content in bytes 
+    	    while ((length = inStream.read(buffer)) > 0){
+    	  
+    	    	outStream.write(buffer, 0, length);
+    	 
+    	    }
+    	    inStream.close();
+    	    outStream.close();
+    	    
+    	    //delete the original file
+    	    sorgente.delete();
+        
+        
+        
+        
+        
         return true;
     }
 
     public static boolean eliminaFoto(String path) {
         File f = new File(path);
         f.delete();
-
         return true;
     }
 

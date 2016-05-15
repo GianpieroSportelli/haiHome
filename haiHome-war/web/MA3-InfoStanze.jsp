@@ -20,7 +20,7 @@
         </div>
 
         <div class="row col-md-1 col-md-offset-11">
-            <a href="#0" class="start-edit">
+            <a class="aggiungiStanza">
                 <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
 
             </a>
@@ -31,10 +31,6 @@
         <div class="row">
 
             <div class="col-md-8">
-
-
-
-
 
                     <div  class="tab-content" id="contenitoreStanze">
 
@@ -64,13 +60,16 @@
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Annulla
                     </a>
                 </div>
-
-
-
-
-
-
-
+                
+            <div hidden>
+                    <a class="salvaNewStanza" >
+                        <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>Salva     
+                    </a>
+                    </br>
+                    <a class="annullanewStanza" >
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Elimina
+                    </a>
+                </div>
             </div>
 
 

@@ -38,6 +38,9 @@ var deleteStanza;
 var confermaStanza;
 var annullaStanza;
 
+var newStanza;
+var salvaNewStanza;
+var annullanewStanza;
 
 
 $(document).ready(function () {
@@ -52,6 +55,10 @@ $(document).ready(function () {
     deleteStanza = $(".deleteStanza");
     confermaStanza = $(".confermaStanza");
     annullaStanza = $(".annullaStanza");
+
+    newStanza = $(".aggiungiStanza");
+    salvaNewStanza = $(".salvaNewStanza");
+    annullanewStanza = $(".annullanewStanza");
 
     //funzioni bottoni
 
@@ -80,10 +87,13 @@ $(document).ready(function () {
 
 
             } else if (idpanel == pannCosti.attr("id")) {
-
+                abilitaInsetimentoDati(pannCosti);
+                showFooterButton(pannCosti);
             } else {
-
+                
             }
+        }else{
+            openModalMessage("Modifica non consentita","Impossibile apportare ulteriori modifiche, conferma o annulla le modifiche in corso");
         }
 
 
@@ -97,6 +107,8 @@ $(document).ready(function () {
     $(document).on('click', 'a.edit-save', function (event) {
         var panel = $(this).closest("div.panel");
         var idpanel = panel.attr("id");
+        
+        //da inserire un modal, che permette di chiedere conferma della conferma ;)
 
         if (idpanel == pannInd.attr("id")) {
 
@@ -106,7 +118,7 @@ $(document).ready(function () {
                 disabilitaInserimentoDati(pannInd);
                 hideFooterButton(pannInd);
             } else {
-                alert("Indirizzo Non Corretto");
+                openModalMessage("Info Indirizzo","Impossibile salvare i dati, formato dati non corretto");
             }
 
 
@@ -119,12 +131,23 @@ $(document).ready(function () {
                 disabilitaInserimentoDati(pannInfo);
                 hideFooterButton(pannInfo);
             } else {
-                alert("Dati Non Corretti");
+                 openModalMessage("Info Annuncio","Impossibile salvare i dati, formato dati non corretto");
+
             }
 
         } else if (idpanel == pannStanze.attr("id")) {
 
         } else if (idpanel == pannCosti.attr("id")) {
+                
+            if(checkCosti()){ // da sviluppare la funzione
+                sendEditCosti();
+                disabilitaInserimentoDati(pannCosti);
+                hideFooterButton(pannCosti);
+            }else{
+                openModalMessage("Info Costi","Impossibile salvare i dati, formato dati non corretto");
+
+            }
+                
 
         } else {
 
@@ -137,6 +160,7 @@ $(document).ready(function () {
         var panel = $(this).closest("div.panel");
         var idpanel = panel.attr("id");
 
+        //da inserire un modal, che permette di chiedere conferma dell'annulla
 
         if (idpanel == pannInd.attr("id")) {
             aggiornaIndForm(myAnnuncio);
@@ -151,6 +175,9 @@ $(document).ready(function () {
         } else if (idpanel == pannStanze.attr("id")) {
 
         } else if (idpanel == pannCosti.attr("id")) {
+            aggiornaInfoCosti(myAnnuncio);
+            disabilitaInserimentoDati(pannCosti);
+            hideFooterButton(pannCosti);
 
         } else {
 
@@ -194,8 +221,11 @@ $(document).ready(function () {
 
         var navContent = pannStanze.find(".tab-content");
         var stanzaContent = navContent.find("div.active");
-        
-        modificaStanza(stanzaContent);
+
+        // controllo dati stanza
+        if(checkStanza(stanzaContent)){
+            
+         modificaStanza(stanzaContent);
 
         //disabilito l'inserimento
         disabilitaInserimentoDati(stanzaContent);
@@ -217,13 +247,18 @@ $(document).ready(function () {
 
         //mostro bottoni 1 
         editStanza.parent("div").show();
+        }else{
+            openModalMessage("Modifica Stanze","Impossibile modificare i dati, formato dati non corretto");
+
+        }
+
 
     });
-    
-    
-    
-    
-    
+
+
+
+
+
 
     //bottone annulla stanza
     annullaStanza.on("click", function () {
@@ -231,6 +266,7 @@ $(document).ready(function () {
         var stanzaContent = navContent.find("div.active");
         var idStanza = stanzaContent.attr("id").slice(6);
 
+        //da inserire un modal di conferma, per confermare l'annullamento delle modifiche
         var stanze = myAnnuncio.Stanze[0];
         var s = stanze[idStanza];
 
@@ -255,9 +291,12 @@ $(document).ready(function () {
         //mostro bottoni 1 
         editStanza.parent("div").show();
     });
-    
-    
-    deleteStanza.on("click",function(){
+
+
+
+
+    //bottone cancella stanza
+    deleteStanza.on("click", function () {
         //ricavo informazioni sulla stanza
         var navContent = pannStanze.find(".tab-content");
         var stanzaContent = navContent.find("div.active");
@@ -265,15 +304,121 @@ $(document).ready(function () {
 
         var stanze = myAnnuncio.Stanze[0];
         var s = stanze[idStanza];
-        
-        if(confirm("Sicuro di voler eliminare la stanza " + idStanza)){
+
+        if (confirm("Sicuro di voler eliminare la stanza " + idStanza)) {
             //mando richiesta di eliminare stanza
+            //TODO controlla cosa fa la sevlet, evitare il caricamento delle immagini
             eliminaStanza(s);
-    
+
         }
-        
-        
-        
+
+
+
+    });
+
+
+    //bottone aggiungi stanza
+    newStanza.on("click", function () {
+
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+        var tabStanze = pannStanze.find(".nav-tabs");
+        //disattivo tutti i tab
+        tabStanze.find("a").each(function (index) {
+            var href = $(this).attr("href");
+            if (href != stanzaContent.attr("id")) {
+                $(this).addClass("not-active");
+            }
+
+        });
+
+        newEditableStanza();
+
+        //nascondo bottoni 1
+        editStanza.parent("div").hide();
+
+        //mostro bottoni 3
+        salvaNewStanza.parent("div").show();
+
+
+
+    });
+
+
+    //bottone annulla new Stanza
+    annullanewStanza.on("click", function () {
+
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+        var tabStanze = pannStanze.find(".nav-tabs");
+        var tabContent = tabStanze.find("li.active");
+
+        stanzaContent.remove();
+        tabContent.remove();
+
+
+        navContent.find("div#stanza0").addClass("active").addClass("in");
+        tabStanze.find("a[href='#stanza0']").parents("li").addClass("active");
+
+        //attivo tutti i tab
+        var tabStanze = pannStanze.find(".nav-tabs");
+
+        tabStanze.find("a").each(function (index) {
+            var href = $(this).attr("href");
+            if (href != stanzaContent.attr("id")) {
+                $(this).removeClass("not-active");
+            }
+
+        });
+
+
+
+        //mostro bottoni 1
+        editStanza.parent("div").show();
+
+        //nascondo bottoni 3
+        salvaNewStanza.parent("div").hide();
+
+
+
+    });
+
+
+    //bottone salva new Stanza
+    salvaNewStanza.on("click", function () {
+
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+        var tabStanze = pannStanze.find(".nav-tabs");
+        var tabContent = tabStanze.find("li.active");
+
+
+
+        salvaNuovaStanza(stanzaContent);
+
+
+        //disabilito l'inserimento
+        disabilitaInserimentoDati(stanzaContent);
+        disabilitaDropzone(stanzaContent);
+
+        //attivo tutti i tab
+        var tabStanze = pannStanze.find(".nav-tabs");
+
+        tabStanze.find("a").each(function (index) {
+            var href = $(this).attr("href");
+            if (href != stanzaContent.attr("id")) {
+                $(this).removeClass("not-active");
+            }
+
+        });
+
+
+        //mostro bottoni 1
+        editStanza.parent("div").show();
+
+        //nascondo bottoni 3
+        salvaNewStanza.parent("div").hide();
+
     });
 
 
@@ -322,6 +467,18 @@ $(document).ready(function () {
 
     });
 
+    //pannello info costi
+    pannCosti.find("a.openlink").on("click", function () {
+        console.log(pCosopen);
+        pCosopen = !pCosopen;
+        if (pCosopen) {
+            $(this).siblings(".editButton").show();
+        } else {
+            $(this).siblings(".editButton").hide();
+        }
+
+
+    });
 
 
     //UTILY PAGINA
@@ -371,10 +528,12 @@ function initalEditFunction() {
                     tipoAcc = msg.tipoAccessorio;
                     setTipoCamere(tipoLetto, tipoAcc);
 
+
                     //riempio i campi
                     aggiornaIndForm(myAnnuncio);
                     aggiornaAptForm(myAnnuncio);
                     aggiornaStanzeForm(myAnnuncio);
+                    aggiornaInfoCosti(myAnnuncio);
 
 
 
@@ -431,6 +590,7 @@ function aggiornaAptForm(ann) {
 
 //Aggiorna form Stanze
 function aggiornaStanzeForm(ann) {
+    setInfoAnnunci(ann.Atomico);
     var stanze = ann.Stanze[0];
     for (var i = 0; i < stanze.length; i++) {
         var s = stanze[i];
@@ -502,13 +662,220 @@ function sendEditAppartamentoRequest() {
 function checkInfoApp() {
 
     var descrizioneTag = pannInfo.find("#textDescrizione");
-    //var metraturaTag = pannInfo.find("#inpMetratura");
+    var metraturaTag = pannInfo.find("#inpMetratura");          //da aggiungere il controllo sui dati
     var dataInizio = pannInfo.find("input#inpDataInizio");
+    if(true){
+        return descrizioneTag.val() != "" && dataInizio.val() != "";
+    }else{
+        return false;
+    }
 
-    return descrizioneTag.val() != "" && dataInizio.val() != "";
 
 }
 
+function setMyAnnuncio(ann) {
+    myAnnuncio = ann;
+}
+
+
+//FUNZIONI UTILI ALLA MODIFICA DELLE INFO COSTI
+
+var flagAtomico; //  (atomico) true = costiAppartamento  - false = costiStanze
+
+var divPrezzoApp; //div prezzo appartamento
+
+var divPrezzoSta; // div prezzo stanza
+
+
+
+function aggiornaInfoCosti(ann) {
+    var atomico = ann.Atomico;
+    var condominio = false;
+    var riscaldamento = false;
+    var selModelloCosti = pannCosti.find("select#modelloCosti");
+
+
+    divPrezzoApp = pannCosti.find("div#prezzoAppartamento");
+    divPrezzoSta = pannCosti.find("div#prezzoStanze");
+
+    divPrezzoApp.hide();
+    divPrezzoSta.hide();
+
+    if (atomico) {
+        alert("Appartamento Atomico");
+
+        selModelloCosti.find("option[value=1]").attr("selected", "selected");
+        selModelloCosti.find("option[value=2]").removeAttr("selected", "selected");
+
+
+        divPrezzoApp.show();
+        divPrezzoApp.find("input#prezzoA").val(ann.Prezzo);
+
+        condominio = ann.CompresoCondominio;
+        riscaldamento = ann.CompresoRiscaldamento;
+        flagAtomico = true;
+
+
+
+    } else {
+        selModelloCosti.find("option[value=2]").attr("selected", "selected");
+        selModelloCosti.find("option[value=1]").removeAttr("selected", "selected");
+        divPrezzoSta.show();
+        divPrezzoSta.empty();
+        divPrezzoSta.append("Per modificare il prezzo delle stanze, seleziona Modifica Stanze");
+
+        var temp = ann.Stanze[0];
+        var trovato = false;
+        var j = 0;
+        while(!trovato && j<temp.length){
+            if(temp[j].SuperTipo == "StanzaInAffitto") {
+                condominio = temp[j].compresoCondominio;
+                riscaldamento = temp[j].compresoRiscaldamento;
+                trovato = true;
+               
+            }
+            j++;
+        }
+        
+        flagAtomico = false;
+    }
+
+    if (condominio) {
+        pannCosti.find("input#CC").attr("checked", "checked");
+    }else{
+        pannCosti.find("input#CC").removeAttr("checked", "checked");
+    }
+    if (riscaldamento) {
+        pannCosti.find("input#CR").attr("checked", "checked");
+
+    }else{
+        pannCosti.find("input#CR").removeAttr("checked", "checked");
+    }
+
+
+
+}
+
+function cambiaSpecificheCosti() {
+
+    if (flagAtomico) {
+        //prezzo riferito all'appartamenro  --> prezzo riferito alle camere
+        divPrezzoApp.hide();
+        divPrezzoSta.show();
+        divPrezzoSta.empty();
+        var atomico = myAnnuncio.Atomico;
+        if (atomico) {
+            var listaStanze = myAnnuncio.Stanze[0];
+            for (var i = 0; i < listaStanze.length; i++) {
+                var s = listaStanze[i];
+                if (s.SuperTipo == "StanzaInAffitto") {
+                    var htmlCode = getHTMLprezzoStanza(s);
+                    divPrezzoSta.append(htmlCode);
+                }
+            }
+        }else{
+            divPrezzoSta.append("Per modificare il prezzo delle stanze, seleziona Modifica Stanze");
+
+        }
+
+    } else {
+
+        //prezzo riferito alle camere  --> prezzo riferito all'appartamento
+        divPrezzoSta.hide();
+        divPrezzoApp.show();
+
+    }
+
+    flagAtomico = !flagAtomico;
+
+
+}
+
+function sendEditCosti(){
+    var hiddenInfo;
+    var doNothing = false;
+    if(flagAtomico){
+        
+        
+        if(myAnnuncio.Atomico){
+            //è atomico ed era atomico
+            var prezzo = divPrezzoApp.find("input#prezzoA").val();
+            var condominio = pannCosti.find("input#CC").prop("checked");
+            var riscaldamento = pannCosti.find("input#CR").prop("checked");
+                        
+            if(!((prezzo == myAnnuncio.Prezzo) && !XOR(condominio,myAnnuncio.CompresoCondominio) && !XOR(riscaldamento,myAnnuncio.CompresoRiscaldamento))) {
+                hiddenInfo = "<input type=\"hidden\" name=\"info\" class=\"infoCosti\"  value=\"atomico-atomico\">";
+            }else{
+                //Non ci sono state modifiche 
+                    doNothing = true;
+            }    
+            
+        }else{
+            //è a stanze ed era atomico 
+            hiddenInfo = "<input type=\"hidden\" name=\"info\" class=\"infoCosti\"  value=\"stanze-atomico\">";
+        }
+        
+    }else{
+        
+        
+        if(myAnnuncio.Atomico){
+            //era atomico ore è a stanze
+            hiddenInfo = "<input type=\"hidden\" name=\"info\" class=\"infoCosti\"  value=\"atomico-stanze\">";
+            
+        }else{
+            //era a stanze ora è a stanze
+            //DO NOTHING
+                var temp = myAnnuncio.Stanze[0];
+                var cc = temp[0].compresoCondominio;
+                var cr = temp[0].compresoRiscaldamento;
+        
+                var condominio = pannCosti.find("input#CC").prop("checked");
+                var riscaldamento = pannCosti.find("input#CR").prop("checked");
+                if(!XOR(condominio,cc) && !XOR(riscaldamento,cr) ){
+                        //Non ci sono state modifiche 
+                        doNothing = true;
+                        
+                }else{
+                hiddenInfo = "<input type=\"hidden\" name=\"info\" class=\"infoCosti\" value=\"stanze-stanze\">";
+                }
+        }
+    }
+    
+    var formInfoCosti = pannCosti.find("#form-edit-costi");
+    formInfoCosti.append(hiddenInfo);
+    
+    formInfoCosti.ajaxSubmit({
+        dataType: "json",
+        success: function (response) {
+            var esito = response.response;
+            console.log(response);
+            if(esito=="OK"){
+            console.log(response.data);
+            myAnnuncio = response.data;
+            aggiornaInfoCosti(myAnnuncio);
+            alert("risposta" + response.action);
+            
+            if(response.action=="nascondi-prezzo-stanze"){
+                nascondiPrezzoStanze();
+            }else if(response.action = "mostra-prezzo-stanze"){
+                mostraPrezzoStanze(myAnnuncio.Stanze[0]);
+            }
+
+            }
+            
+
+        }
+    });
+    
+    formInfoCosti.find("input.infoCosti").remove();
+
+}
+
+
+
+function XOR(A,B){
+    return (A && !B) || (!A && B);
+}
 
 
 
