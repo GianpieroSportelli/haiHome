@@ -38,9 +38,9 @@ public class GestoreImmagini implements GestoreImmaginiLocal {
             bos.close();
             return imageString;
         } catch (IOException ex) {
-            Logger.getLogger(GestoreImmagini.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(""+ex.getMessage());
+            return null;
         }
-        return imageString;
     }
 
 }
