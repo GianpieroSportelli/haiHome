@@ -453,7 +453,7 @@ public class ServletLocatore extends HttpServlet {
     private String getDivAnnuncio(Annuncio a, boolean locatore_bloccato) {
         String html = "";
         Long oid = a.getId();
-        String disabled = "";// modifiable ? "" : " disabled='disabled' "; 
+        String disabled = locatore_bloccato ? " disabled " : "";// modifiable ? "" : " disabled='disabled' "; 
         JSONObject json = a.toJSON(); 
         
         String indirizzo = null, 
@@ -463,6 +463,7 @@ public class ServletLocatore extends HttpServlet {
                prezzo = null, 
                num_locali = null, 
                 arredato = null; 
+        String tipo_annuncio = (a.isAtomico() ? "Appartamento" : "Stanze"); 
         
         try {
             indirizzo = json.getString("Indirizzo"); 
@@ -477,16 +478,15 @@ public class ServletLocatore extends HttpServlet {
             System.out.println("Cazzzzzz");
         }
         
-
         html += "<div id='ann-" + oid + "' class='annuncio'>"; //CONTAINER 
         html += "<div class='panel panel-default'>"; // PANEL
         html += "<div class='panel-heading'>"; // PANEL HEADING
         html += "<span class='nome-annuncio'>"; 
-        html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio " + oid + " in " + indirizzo + "</a>";
+        html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio #" + oid + " in " + indirizzo + "</a>";
         html += "</span>";
         if (!a.isOscurato()) { //annuncio modificabile solo se non oscurato 
-            html += "<div class='dropdown link-annuncio disabled'>"; //DROPZONE - HEADER
-            html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";
+            html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
+            html += "<a class='btn btn-link dropdown-toggle'" + disabled + " type='button' data-toggle='dropdown'>";
             html += "Gestisci annuncio <span class='glyphicon glyphicon-menu-down'></span>";
             html += "</a>";
             html += "<ul class='dropdown-menu'>"; //INIZIO DROPZONE - OPZIONI
@@ -499,8 +499,9 @@ public class ServletLocatore extends HttpServlet {
         html += "</div>"; //panel-heading
         html += "<div class='panel-body'>"; // PANEL BODY 
         
-        html += "<p><span class='text-primary'>Tipo annuncio: </span>" + (a.isAtomico() ? "Appartamento" : "Stanze") + "</p>";
+        html += "<p><span class='text-primary'>Tipo annuncio: </span>" + tipo_annuncio + "</p>";
         html += "<p><span class='text-primary'>Indirizzo: </span>" + indirizzo + "</p>"; 
+        html += "<p><span class='text-primary'>Quartiere: </span>" + quartiere + "</p>";
         html += "<p><span class='text-primary'>Metratura: </span>" + metratura + "</p>"; 
         html += "<p><span class='text-primary'>Affitto dal: </span>" + dataInizioAffitto + "</p>"; 
         html += "<p><span class='text-primary'>Prezzo: </span>" + prezzo + "</p>"; 
