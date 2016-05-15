@@ -1,7 +1,6 @@
 jQuery(document).ready(function ($) {
     var login_type;
     var user_data;
-    var is_bloccato;
     var a_tot, a_num_vis, a_num_arch, a_num_osc;
     var backups = [];
 
@@ -56,8 +55,8 @@ jQuery(document).ready(function ($) {
                     //        last_pag_osc = Math.ceil(a_num_osc / NUM_ANNUNCI_X_PAGE);
 
                     if (login_type === "g+" || login_type === "fb") {
-                        $('#rigapwd').remove();
-//                        $('#rigapwd').css('display', 'none');
+//                        $('#rigapwd').remove();
+                        $('#rigapwd').css('display', 'none');
                     }
                     /* Info profilo */
                     $('#nomeLocatore').text(user_data.nome + " " + user_data.cognome);
@@ -68,12 +67,13 @@ jQuery(document).ready(function ($) {
                     $('#telefono').val(user_data.telefono);
                     $('#descrizione').val(user_data.descrizione);
 
-                    is_bloccato = user_data.bloccato === "true";
                     var $stato_locatore = $('#status-locatore');
 
-                    if (is_bloccato) {
+                    if (user_data.bloccato === "true") {
                         $stato_locatore.text("bloccato");
                         $stato_locatore.css('color', 'red');
+                        
+                        $('#button-new-annuncio').addClass('disabled'); 
                     } else {
                         $stato_locatore.text("ok");
                         $stato_locatore.css('color', 'green');

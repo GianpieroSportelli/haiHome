@@ -78,13 +78,13 @@ public class ServletLocatore extends HttpServlet {
                     else if (gestoreLocatore.getLocatore().getPassword() == null) {
                         gestoreLocatore.modificaPassword(pwd);
                     } else {
-                        op_result = "email address <" + email + "> is already registered";
+                        op_result = "L'email " + email + " e' associata ad un altro account"; //email address <" + email + "> is already registered";
                     }
                 } else {
                     op_result = "password mismatch";
                 }
 
-                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+                response.setContentType("text/html");  // Set content type of the response so that jQuery knows what it can expect.
                 response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
                 out.write(op_result);
 
@@ -144,7 +144,7 @@ public class ServletLocatore extends HttpServlet {
                     getServletContext().getRequestDispatcher("/locatore-profile.jsp").forward(request, response);
 
                 } else {
-                    out.println("errore nell'autenticazione");
+                    out.println("Errore nell'autenticazione");
                 }
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
@@ -326,13 +326,6 @@ public class ServletLocatore extends HttpServlet {
                 System.out.println(res
                         ? "Pubblicazione annuncio " + oid + " completata con successo"
                         : "Pubblicazione annuncio " + oid + " fallita");
-                /*
-                System.out.println("annuncio dopo dell'operazione...");
-                for (Annuncio a : gestoreLocatore.getAnnunci()) {
-                    if (a.getId() == oid) {
-                        System.out.println(a.toJSON().toString());
-                    }
-                }*/
 
                 update_session(session);
 
@@ -372,7 +365,6 @@ public class ServletLocatore extends HttpServlet {
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
                 out.write(String.valueOf(gestoreLocatore.bloccaLocatore(oid, bloccato)));
-
             }
         }
     }
@@ -388,11 +380,15 @@ public class ServletLocatore extends HttpServlet {
     }
 
     private void update_session(HttpSession session) {
-        session.setAttribute("user-data", this.gestoreLocatore.toJSON());
-        session.setAttribute("num-annunci", this.gestoreLocatore.getAnnunci().size());
-        session.setAttribute("num-visibili", this.gestoreLocatore.getAnnunciVisibili().size());
-        session.setAttribute("num-archiviati", this.gestoreLocatore.getAnnunciArchiviati().size());
-        session.setAttribute("num-oscurati", this.gestoreLocatore.getAnnunciOscurati().size());
+        String type = (String) session.getAttribute("user-type");
+        
+        if (type != null && type.equals("locatore")) {
+            session.setAttribute("user-data", this.gestoreLocatore.toJSON());
+            session.setAttribute("num-annunci", this.gestoreLocatore.getAnnunci().size());
+            session.setAttribute("num-visibili", this.gestoreLocatore.getAnnunciVisibili().size());
+            session.setAttribute("num-archiviati", this.gestoreLocatore.getAnnunciArchiviati().size());
+            session.setAttribute("num-oscurati", this.gestoreLocatore.getAnnunciOscurati().size());
+        }
     }
 
     private String getPage(List<Annuncio> l) {
@@ -435,14 +431,37 @@ public class ServletLocatore extends HttpServlet {
         String html = "";
         Long oid = a.getId();
         String disabled = "";// modifiable ? "" : " disabled='disabled' "; 
+        JSONObject json = a.toJSON(); 
+        
+        String indirizzo = null, 
+               metratura = null, 
+               dataInizioAffitto = null, 
+               quartiere = null, 
+               prezzo = null, 
+               num_locali = null, 
+                arredato = null; 
+        
+        try {
+            indirizzo = json.getString("Indirizzo"); 
+            metratura = String.valueOf(json.getDouble("Metratura")) + " m<sup>2</sup>"; 
+            dataInizioAffitto = json.getString("DataInizioAffitto"); 
+            quartiere = json.getString("Quartiere"); 
+            prezzo = String.valueOf(json.getDouble("Prezzo")) + " &euro;";       
+            num_locali = String.valueOf(json.getInt("NumeroLocali")); 
+            arredato = a.isArredato() ? "s&igrave;" : "no"; 
+        }
+        catch (JSONException e) {
+            System.out.println("Cazzzzzz");
+        }
+        
 
         html += "<div id='ann-" + oid + "' class='annuncio'>"; //CONTAINER 
         html += "<div class='panel panel-default'>"; // PANEL
         html += "<div class='panel-heading'>"; // PANEL HEADING
         html += "<span class='nome-annuncio'>"; 
-        html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio " + oid + " in " + a.getIndirizzo() + "</a>";
+        html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio " + oid + " in " + indirizzo + "</a>";
         html += "</span>";
-        if (!a.isOscurato()) {
+        if (!a.isOscurato()) { //annuncio modificabile solo se non oscurato 
             html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
             html += "<a class='btn btn-link dropdown-toggle' type='button' data-toggle='dropdown'>";
             html += "Gestisci annuncio <span class='glyphicon glyphicon-menu-down'></span>";
@@ -456,9 +475,16 @@ public class ServletLocatore extends HttpServlet {
         }
         html += "</div>"; //panel-heading
         html += "<div class='panel-body'>"; // PANEL BODY 
-        html += "<div>Indirizzo: " + a.getIndirizzo() + "</div>";
-        html += "<div>Affitto dal: " + a.getDataInizioAffitto()+ "</div>";
-        html += "<div>Descrizione: " + a.getDescrizione() + "</div>";
+        
+        html += "<p><span class='text-primary'>Tipo annuncio: </span>" + (a.isAtomico() ? "Appartamento" : "Stanze") + "</p>";
+        html += "<p><span class='text-primary'>Indirizzo: </span>" + indirizzo + "</p>"; 
+        html += "<p><span class='text-primary'>Metratura: </span>" + metratura + "</p>"; 
+        html += "<p><span class='text-primary'>Affitto dal: </span>" + dataInizioAffitto + "</p>"; 
+        html += "<p><span class='text-primary'>Prezzo: </span>" + prezzo + "</p>"; 
+        html += "<p><span class='text-primary'>Numero locali: </span>" + num_locali + "</p>"; 
+        html += "<p><span class='text-primary'>Arredato: </span>" + arredato + "</p>"; 
+        
+        
         html += "</div>"; //FINE PANEL BODY
         html += "</div>"; //FINE PANEL
         html += "</div>"; //FINE CONTAINER ANNUNCIO

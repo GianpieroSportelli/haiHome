@@ -7,6 +7,7 @@ package web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +26,14 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         // If the value passed in is null, this has the same effect as calling removeAttribute().
-        session.setAttribute("user-type", null);
-        session.setAttribute("user-data", null);
+        Enumeration e = session.getAttributeNames(); 
+        
+        while (e.hasMoreElements()) {
+            session.setAttribute((String) e.nextElement(), null);
+        } 
+        
+    //    session.setAttribute("user-type", null);
+  //      session.setAttribute("user-data", null);
         response.setContentType("text/plain");  
         response.setCharacterEncoding("UTF-8"); 
         response.getWriter().write("ok");

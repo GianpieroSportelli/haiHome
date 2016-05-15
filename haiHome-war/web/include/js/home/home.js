@@ -11,26 +11,37 @@ $(document).ready(function () {
     $("#search").click(function () {
         goToSearch();
     });
-    
-    
-    $("#in_locatore").on('click', function() {
-        $('#modalLogin').modal('show');
-    }); 
+
+
+    $("#in_locatore").on('click', function () {
+        $.post("ServletController", {action: "locatore-get-session"}, function (responseJSON) {
+            if(jQuery.isEmptyObject(responseJSON)) {
+                $('#modalLogin').modal('show');
+            }
+            else if ($('#__user_type').text() === "locatore") {
+                location.replace("IA0-InserimentoAnnunci.jsp");
+            }
+            else {
+                console.log("utente non loggato come locatore"); 
+            }
+        });
+
+    });
 });
 
 function goToSearch() {
-    var search_page="./search-page.jsp";
+    var search_page = "./search-page.jsp";
     $.ajax({
         url: "ServletController",
         type: 'post',
         //dataType: 'json',
         data: {action: "Ricerca-setCity", city: city},
         success: function (response) {
-            if(response=="true"){
-            window.location=search_page;
-        }else{
-            console.log("Errore apertura ricerca");
+            if (response == "true") {
+                window.location = search_page;
+            } else {
+                console.log("Errore apertura ricerca");
+            }
         }
-    }
     });
 }
