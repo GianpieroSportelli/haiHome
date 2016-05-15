@@ -43,6 +43,11 @@
         <link rel="stylesheet" href="include/css/profiles/locatore.css">
         <!-- Fine Robe di UserProfile-->
 
+        <!-- INIZIO footer css -->
+        <link href="include/css/footer/footer.css" rel="stylesheet">
+        <!-- FINE footer css -->
+
+
         <!-- Robe di login2.jsp -->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 
@@ -60,13 +65,13 @@
         <!-- Fine Import script Facebook -->
         <!--
                 <script type="text/javascript" src="include/js/locatore/visualizzazione-annunci.js"></script> -->
-        
+
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
-        
+
         <script type="text/javascript" src="include/js/jquery.confirm.min.js"></script>
-                
+
         <script type="text/javascript" src="include/js/locatore/profilo-locatore.js"></script>
 
         <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
@@ -77,7 +82,7 @@
     </head>
     <body>
         <%@include file="/header.jsp" %>        
-        
+
         <div class="container">
             <div class="row profile">
                 <div class="col-md-3">
@@ -136,7 +141,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="IA0-InserimentoAnnunci.jsp" class="btn btn-danger">
+                                    <a id="button-new-annuncio" href="IA0-InserimentoAnnunci.jsp" class="btn btn-default">
                                         Inserisci nuovo annuncio
                                     </a>
                                 </li>
@@ -320,5 +325,6 @@
                 </div>  
             </div>
         </div>
+        <%@include file="/footer2.jsp" %>
     </body>
 </html>
