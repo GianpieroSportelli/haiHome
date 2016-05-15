@@ -141,7 +141,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="button-new-annuncio" href="IA0-InserimentoAnnunci.jsp" class="btn btn-default">
+                                    <a id="button-new-annuncio" href="IA0-InserimentoAnnunci.jsp" class="btn btn-primary">
                                         Inserisci nuovo annuncio
                                     </a>
                                 </li>
@@ -224,10 +224,10 @@
                                                     <input id="password" class="form-control pwd" name="old-pwd" type="password" placeholder="Vecchia password" disabled="disabled" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova password..." />
+                                                    <input id="new-password" class="form-control pwd" name="pwd" type="password" placeholder="Nuova password..." disabled="disabled" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input id="new-password2" class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..." />
+                                                    <input id="new-password2" class="form-control pwd" name="pwd-confirm" type="password" placeholder="Conferma password..." disabled="disabled" />
                                                 </div>
                                             </div>
                                         </div>

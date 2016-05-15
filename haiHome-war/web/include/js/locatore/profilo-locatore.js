@@ -72,8 +72,8 @@ jQuery(document).ready(function ($) {
                     if (user_data.bloccato === "true") {
                         $stato_locatore.text("bloccato");
                         $stato_locatore.css('color', 'red');
-                        
-                        $('#button-new-annuncio').addClass('disabled'); 
+
+                        $('#button-new-annuncio').addClass('disabled');
                     } else {
                         $stato_locatore.text("ok");
                         $stato_locatore.css('color', 'green');
@@ -166,6 +166,12 @@ jQuery(document).ready(function ($) {
 
         console.log("start-edit on -> " + target_name);
 
+        if (target_name === "password") {
+            $('#new-password').prop('disabled', false);
+            $('#new-password2').prop('disabled', false);
+        }
+
+
         backups[target_name] = $input_target.val();
         $input_target.prop("disabled", false);
 
@@ -181,6 +187,10 @@ jQuery(document).ready(function ($) {
         var $input_target = $("#" + target_name);
 
         console.log("cancel-edit on -> " + target_name);
+
+        if (target_name === "password") {
+            clear_pwd_fields();
+        }
 
         $(this).parent().children().each(function () {
             $(this).toggle();
@@ -223,6 +233,11 @@ jQuery(document).ready(function ($) {
                         $input_target.prop("disabled", "disabled");
                         $panel.children(".panel-body").removeClass("has-error");
                         //        $panel.children(".panel-body").addClass("has-success");
+
+                        if (target_name === "password") {
+                            clear_pwd_fields();
+                        }
+
                         console.log("done");
                     } else {
                         $panel.children(".panel-body").addClass("has-error");
@@ -371,3 +386,12 @@ jQuery(document).ready(function ($) {
                 });
     });
 });
+
+function clear_pwd_fields() {
+    $('#password').val("");
+    $('#new-password').val("");
+    $('#new-password2').val("");
+    $('#new-password').prop('disabled', 'disabled');
+    $('#new-password2').prop('disabled', 'disabled');
+
+}
