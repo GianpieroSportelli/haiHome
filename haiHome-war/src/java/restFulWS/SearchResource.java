@@ -136,8 +136,10 @@ public class SearchResource {
             String res=gestoreImmagini.getImage(obj.getString("url"), obj.getString("ext"));
             if(res!=null){
                 System.out.println("Image "+obj.getString("url")+" loaded");
-            }
-            return res;
+                return res;
+            }else{
+              return "";  
+            }   
         }else{
             return null;
         }

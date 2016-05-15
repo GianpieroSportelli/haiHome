@@ -339,7 +339,11 @@ public class ServletRicerca extends HttpServlet {
                 String type = request.getParameter("type");
                 String image="";
                 image=gestoreImmagini.getImage(url,type);
+                if(image==null){
+                out.write(""); //accrocchio momentaneo
+                }else{  
                 out.write(image);
+                }
             }
         }
     }
