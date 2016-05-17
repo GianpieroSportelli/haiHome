@@ -212,15 +212,15 @@ public class ServletLocatore extends HttpServlet {
                         error = "OLD PASSWORD INCORRECT";
                     }
                 } else if (field_name.equalsIgnoreCase("telefono")) {
+                    String phone_number = field_value.replace(" ", ""); 
                     Pattern pattern = Pattern.compile("^\\+?[0-9]{3}-?[0-9]{6,12}$");
-                    Matcher matcher = pattern.matcher(field_value.replace(" ", ""));
-                    res = matcher.matches();
+                    Matcher matcher = pattern.matcher(phone_number);
+                    res = phone_number.equals("") || matcher.matches();
 
                     if (res) {
                         gestoreLocatore.modificaTelefono(field_value);
-                        System.out.println("YEAH");
                     } else {
-                        error = "REGEX MISMATCH";
+                        error = "REGEX MISMATCH - " + phone_number + " non e' un numero di telefono valido";
                     }
                 } else if (field_name.equalsIgnoreCase("descrizione")) {
                     gestoreLocatore.modificaDescrizione(field_value);
@@ -270,27 +270,13 @@ public class ServletLocatore extends HttpServlet {
 //                System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
                 long oid = Long.parseLong(request.getParameter("oid"));
                 System.out.println("ARCHIVIAZIONEEE annuncio " + oid);
-                /*
-                System.out.println("annuncio prima dell'operazione...");
-                for (Annuncio a : gestoreLocatore.getAnnunci()) {
-                    if (a.getId() == oid) {
-                        System.out.println(a.toJSON().toString());
-                    }
-                }
-                 */
+                
                 boolean res = gestoreAnnuncio.archiviaAnnuncio(oid, true);
 
                 if (res) {
                     Annuncio a = gestoreAnnuncio.getAnnuncioByID(oid);
                     gestoreLocatore.updateAnnuncio(oid, a);
                 }
-                /*
-                System.out.println("annuncio dopo dell'operazione...");
-                for (Annuncio a : gestoreLocatore.getAnnunci()) {
-                    if (a.getId() == oid) {
-                        System.out.println(a.toJSON().toString());
-                    }
-                }*/
 
                 System.out.println(res
                         ? "Archiviazione annuncio " + oid + " completata con successo"
@@ -384,7 +370,6 @@ public class ServletLocatore extends HttpServlet {
                 boolean res = gestoreAnnuncio.archiviaStanza(oid, oidStanza, false);
                 System.out.println("Risultato pubblicazione stanza: " + res); 
                 
-                
                 response.setContentType("text/plain");
                 response.setCharacterEncoding("UTF-8");
                 out.write(res ? "ok" : "errore"); 
@@ -422,7 +407,7 @@ public class ServletLocatore extends HttpServlet {
                 html += getDivAnnuncio(a, gestoreLocatore.getLocatore().isBloccato());
             }
         } else {
-            html = "No results";
+            html = "Non sono presenti annunci al momento!";
         }
 
         return html;
@@ -463,7 +448,9 @@ public class ServletLocatore extends HttpServlet {
                prezzo = null, 
                num_locali = null, 
                 arredato = null; 
-        String tipo_annuncio = (a.isAtomico() ? "Appartamento" : "Stanze"); 
+        String tipo_annuncio = (a.isAtomico() ? "Appartamento" : "Stanze"), 
+               spese_comprese = ""; 
+        boolean is_appartamento = tipo_annuncio.equalsIgnoreCase("appartamento"); 
         
         try {
             indirizzo = json.getString("Indirizzo"); 
@@ -473,59 +460,60 @@ public class ServletLocatore extends HttpServlet {
             prezzo = String.valueOf(json.getDouble("Prezzo")) + " &euro;";       
             num_locali = String.valueOf(json.getInt("NumeroLocali")); 
             arredato = a.isArredato() ? "s&igrave;" : "no"; 
+            /* L'operatore ternario è l'invenzione del secolo */
+            spese_comprese = (a.isCompresoCondominio() ? "condominio" : "") +
+                    (a.isCompresoCondominio() && a.isCompresoRiscaldamento() ? ", " : "") +
+                                (a.isCompresoRiscaldamento() ? "riscaldamento" : ""); 
         }
         catch (JSONException e) {
-            System.out.println("Cazzzzzz");
+            System.out.println("Il json e' esploso, e vbb");
         }
         
-        html += "<div id='ann-" + oid + "' class='annuncio'>"; //CONTAINER 
+        html += "<div id='ann-" + oid + "' class='annuncio row'>"; //CONTAINER 
         html += "<div class='panel panel-default'>"; // PANEL
         html += "<div class='panel-heading'>"; // PANEL HEADING
         html += "<span class='nome-annuncio'>"; 
-        html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio #" + oid + " in " + indirizzo + "</a>";
+        html += "<a id='open-" + oid + "' class='annuncio-view-details' href='#0'>Annuncio " + tipo_annuncio + " in " + indirizzo + "</a>";
         html += "</span>";
+        
         if (!a.isOscurato()) { //annuncio modificabile solo se non oscurato 
-            html += "<div class='dropdown link-annuncio'>"; //DROPZONE - HEADER
+            html += "<div class='dropdown link-annuncio'>"; //DROPDOWN MENU - HEADER
             html += "<a class='btn btn-link dropdown-toggle'" + disabled + " type='button' data-toggle='dropdown'>";
-            html += "Gestisci annuncio <span class='glyphicon glyphicon-menu-down'></span>";
+            html += "Gestisci annuncio <span class='caret'></span>";
             html += "</a>";
-            html += "<ul class='dropdown-menu'>"; //INIZIO DROPZONE - OPZIONI
+            html += "<ul class='dropdown-menu'>"; //DROPDOWN MENU - OPZIONI
             html += "<li><a id='edit-ann" + oid + "' class='edit-annuncio' href='#0'>Modifica</a></li>";
             html += "<li>" + getHTMLButtonAnnuncio(oid, a.isArchiviato(), locatore_bloccato) + "</li>"; // pubblica / archivia
             html += "<li><a id='delete-ann" + oid + "' class='delete-annuncio' href='#0'>Elimina</a></li>";
             html += "</ul>";
-            html += "</div>"; //FINE DROPZONE
+            html += "</div>"; //FINE DROPDOWN MENU
         }
+        
         html += "</div>"; //panel-heading
         html += "<div class='panel-body'>"; // PANEL BODY 
         
-        html += "<p><span class='text-primary'>Tipo annuncio: </span>" + tipo_annuncio + "</p>";
-        html += "<p><span class='text-primary'>Indirizzo: </span>" + indirizzo + "</p>"; 
-        html += "<p><span class='text-primary'>Quartiere: </span>" + quartiere + "</p>";
-        html += "<p><span class='text-primary'>Metratura: </span>" + metratura + "</p>"; 
-        html += "<p><span class='text-primary'>Affitto dal: </span>" + dataInizioAffitto + "</p>"; 
-        html += "<p><span class='text-primary'>Prezzo: </span>" + prezzo + "</p>"; 
-        html += "<p><span class='text-primary'>Numero locali: </span>" + num_locali + "</p>"; 
-        html += "<p><span class='text-primary'>Arredato: </span>" + arredato + "</p>"; 
+        html += "<div class='col-md-6'>";
+        html += "<p class='text-muted'><b>Indirizzo:</b> " + indirizzo + "</p>";
+        html += "<p class='text-muted'><b>Metratura appartamento:</b> " + metratura + "</p>";
+        html += "<p class='text-muted'><b>In affitto dal:</b> " + dataInizioAffitto + "</p>";
+        if (is_appartamento) {
+            html += "<p class='text-muted'><b>Prezzo:</b> " + prezzo + "</p>"; 
+        }
+        html += "</div>";
         
+        html += "<div class='col-md-6'>";
+        html += "<p class='text-muted'><b>Quartiere:</b> " + quartiere + "</p>";
+        html += "<p class='text-muted'><b>Arredato:</b> " + arredato + "</p>";
+        if (is_appartamento) {
+            html += "<p class='text-muted'><b>Numero locali:</b> " + num_locali + "</p>";
+            html += "<p class='text-muted'><b>Spese comprese:</b> " + spese_comprese + "</p>";
+        }
+        html += "</div>";
         
         html += "</div>"; //FINE PANEL BODY
         html += "</div>"; //FINE PANEL
         html += "</div>"; //FINE CONTAINER ANNUNCIO
         
-
-        // var html = "<div id=\"annuncio-" + k + "\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">"; //1
-        /*
-        html += "<div class=\"panel panel-default div_snippet\">"; //2
-        html += "<div class='panel-heading'>"; //3
-        html += create_carousel(annuncio);
-        html += "</div>"; //chiusura testa del pannello
-        html += "<div class=\"panel-body snip\">";
-        html += create_info_annuncio(annuncio);
-        html += "</div>"; //3
-        html += "</div>"; //2
-        html += "</div>"; //1 */
-        // div_html += "<span class='dati-annuncio'><p>" + a.toJSON().toString() + "</p></span>";
         return html;
     }
 

@@ -32,7 +32,7 @@
                 gapi.auth2.init({fetch_basic_profile: false,
                     scope: 'https://www.googleapis.com/auth/plus.login'}).then(
                         function () {
-                            console.log('init');
+                            console.log('init g+ script...');
                             auth2 = gapi.auth2.getAuthInstance();
                             auth2.isSignedIn.listen(updateSignIn);
                             auth2.then(updateSignIn());
@@ -60,7 +60,7 @@
         } else if (authResult['error'] || authResult.currentUser.get().getAuthResponse() === null) {
             // There was an error, which means the user is not signed in.
             // As an example, you can handle by writing to the console:
-            console.log('There was an error: ' + authResult['error']);
+            console.log('g+ sign in - there was an error: ' + authResult['error']);
             $('#authResult').append('Logged out');
             $('#authOps').hide('slow');
             $('#gConnect').show();
