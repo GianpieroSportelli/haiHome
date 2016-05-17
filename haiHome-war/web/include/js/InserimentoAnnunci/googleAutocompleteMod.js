@@ -191,7 +191,7 @@ function checkAddress() {
 }
 
 function aggiornaListaQuartieri(inputCap) {
-    $.post("ServletAnnuncio",
+    $.post("ServletController",
             {action: "Annunci-editAnnuncio-getQuartieri",
                 cap: inputCap},
             function (responseJson) {

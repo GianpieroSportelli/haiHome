@@ -97,7 +97,7 @@ function aggiungiStanza(s, i) {
             {
                 // Prevents Dropzone from uploading dropped files immediately
                 autoProcessQueue: false,
-                url: "ServletAnnuncio",
+                url: "ServletController",
                 parallelUploads: 100,
                 uploadMultiple: true,
                 paramName: "file[]",
@@ -164,7 +164,7 @@ function stanzaHTMLCode(stanza, number) {
 
         var StanzaCode =
                 "<div id=\"stanza" + number + "\" class=\"tab-pane fade in active formContainer Stanza\">\n\
-                  <form action=\"ServletAnnuncio\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-infoEditStanze\" />\n\
+                  <form action=\"ServletController\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-infoEditStanze\" />\n\
                     <input type=\"hidden\" class=\"tipoStanzaHidd\" value=\"" + stanza.SuperTipo + "\" /> \
                 <div class=\"form-group\">\n\
                          <p class='mylabel'>Stanza :  <span class='valore'>" + stanza.SuperTipo + "</span></br>TipoStanza : <span class='valore'>" + stanza.Tipo + " </span>\n\
@@ -188,7 +188,7 @@ function stanzaHTMLCode(stanza, number) {
 
         var StanzaCode =
                 "<div id=\"stanza" + number + "\" class=\"tab-pane fade formContainer Stanza\">\n\
-                   <form action=\"ServletAnnuncio\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-infoEditStanze\" />\n\
+                   <form action=\"ServletController\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-infoEditStanze\" />\n\
                     <input type=\"hidden\" class=\"tipoStanzaHidd\" value=\"" + stanza.SuperTipo + "\" /> \n\
                     <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
                         <div class=\"form-group\">\n\
@@ -240,7 +240,7 @@ function modificaStanza(stanzaContent) {
         }
     };
 
-    myRequest.open("post", "ServletAnnuncio", false);
+    myRequest.open("post", "ServletController", false);
 
     //inizializzo i dati
     var formData = new FormData();
@@ -268,7 +268,7 @@ function eliminaStanza(stanza) {
 
     $.ajax({
         type: "POST",
-        url: "ServletAnnuncio",
+        url: "ServletController",
         data: "action=Annunci-editAnnuncio-eliminaStanza&oid=" + stanza.OID,
         dataType: "json",
         success: function (msg)
@@ -335,7 +335,7 @@ function salvaNuovaStanza(stanzaContent) {
         }
     };
 
-    myRequest.open("post", "ServletAnnuncio", false);
+    myRequest.open("post", "ServletController", false);
 
     //inizializzo i dati
     var formData = new FormData();
@@ -407,7 +407,7 @@ function newEditableStanza(){
             {
                 // Prevents Dropzone from uploading dropped files immediately
                 autoProcessQueue: false,
-                url: "ServletAnnuncio",
+                url: "ServletController",
                 parallelUploads: 100,
                 uploadMultiple: true,
                 paramName: "file[]",
@@ -435,7 +435,7 @@ function newEditableStanza(){
     
          var StanzaCode =
                 "<div id=\"stanza" + number + "\" class=\"tab-pane fade in active formContainer Stanza\">\n\
-                  <form action=\"ServletAnnuncio\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-newStanza\" />\n\
+                  <form action=\"ServletController\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-newStanza\" />\n\
                     <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
                     <div class=\"form-group\">\n\
                         <div class=\"form-group\">\n\
@@ -521,14 +521,14 @@ function cambiaSpecificheTipologiaStanza() {
 
 function getHTMLprezzoStanza(stanza){
     
-    var PrezzoStanzaHTML = "<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
+    var PrezzoStanzaHTML = "<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo\">\n\
             <input type=\"hidden\" name=\"oidStanza\" value=\"" + stanza.OID + "\" />\n\
             <div class=\"col-md-6\">\n\
                 <label class=\"control-label\">Tipo: </label> <label class=\"control-label\">"+stanza.Tipo+"</label><br />\n\
                 <label class=\"control-label\">Metratura: </label> <label class=\"control-label\">"+stanza.Metratura+"</label><br />\n\
             </div>\n\
             <div class=\"col-md-6\">\n\
-                <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
+                <label class=\"control-label\">Prezzo Stanza</label>\n\
                 <input name='PrezzoS' class=\"form-control\" /><br />\n\
             </div>\n\
         </div>";
