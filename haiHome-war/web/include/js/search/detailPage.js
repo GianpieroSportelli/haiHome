@@ -287,6 +287,11 @@ function create_corpo_affitto(stanza, first, atomico) {
     if (!visibile) {
         html += "<p class=\"text-muted\"> <span class=\"text-warning\">Questa camera non rispetta la tua ricerca ma è disponibile!!</span></p>";
     }
+    
+     var archiviato = stanza.archiviato;
+    if(archiviato){
+        html += "<p class=\"text-muted\"> <span class=\"text-warning\">Questa camera risulta non disponibile!!</span></p>";
+    }
     html += create_carousel_stanza(stanza);
     //html += "<p>" + JSON.stringify(stanza) + "</p>" ;
     //html += "<div class=\"center\">";
@@ -510,7 +515,7 @@ function makeVisibleOption() {
         var stanze = annuncio.Stanze[0];
 
         $.each(stanze, function (index, stanza) {
-            if (stanza.Archiviato) {
+            if (stanza.archiviato) {
                 $("#PubblicaButton-" + stanza.OID).show("fast");
             } else {
                 $("#ArchiviaButton-" + stanza.OID).show("fast");
@@ -547,7 +552,8 @@ function pubblicaStanza(OID) {
     $.post("ServletController",
             {
                 action: "locatore-pubblica-stanza",
-                oid: annuncio.OID
+                oid: annuncio.OID,
+                oidStanza:OID
             },
             function (response) {
                 if (response == "ok") {

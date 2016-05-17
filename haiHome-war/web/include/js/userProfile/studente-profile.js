@@ -258,7 +258,7 @@ function constructFiltriPage() {
                 quartieriHTML = "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML;
 
             }
-            var htmlCheckBox = '';
+            //var htmlCheckBox = '';
             var htmlCondominio = '';
             var htmlRiscaldamento = '';
             var htmlArredato = '';

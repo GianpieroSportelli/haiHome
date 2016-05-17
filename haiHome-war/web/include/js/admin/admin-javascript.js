@@ -11,7 +11,7 @@ function insertCitta() {
                     alert('Città ' + citta + " inserita con successo.");
 
                 } else
-                    alert('ERRORE INSERIMENTO');
+                    alert('ERRORE INSERIMENTO ' + citta);
                 $('#citta').val('');
             });
 }
@@ -25,7 +25,7 @@ function deleteCitta() {
                     alert('Città ' + citta + " cancellata con successo.");
 
                 } else
-                    alert('ERRORE CANCELLAZIONE');
+                    alert('ERRORE CANCELLAZIONE ' + citta);
                 $('#citta2').val('');
             });
 }
