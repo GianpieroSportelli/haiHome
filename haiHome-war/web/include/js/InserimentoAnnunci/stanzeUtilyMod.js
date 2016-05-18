@@ -113,12 +113,15 @@ function aggiungiStanza(s, i) {
     var foto64 = s.Foto64;
     var foto = s.Foto;
     var est = s.Est64;
+    
+    var dropContainer = $("div#mydropzone" + i);
+    dropContainer.empty();
 
     for (var j = 0; j < foto64.length; j++) {
         var mockFile = {name: "", size: 50000};
         var prefix = "data:image/" + est[j] + ";base64, ";
 
-        var dropContainer = $("div#mydropzone" + i);
+        //var dropContainer = $("div#mydropzone" + i);
         var fotoHTML = "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img id=\"" + foto[j] + "\" src=\"" + prefix + foto64[j] + "\" data-dz-thumbnail class='old'/></div><a class=\"dz-remove removeOldImg\" data-dz-remove>Remove File</a>\n</div>";
         dropContainer.append(fotoHTML);
     }
@@ -148,6 +151,7 @@ function aggiungiStanza(s, i) {
     
     if(!atomico && s.SuperTipo=="StanzaInAffitto"){
         $(contenitoreStanza).find("input#inpPrezzoS").parent().show();
+        $(contenitoreStanza).find("input#inpPrezzoS").val(s.Prezzo);
         
     }
 
@@ -422,7 +426,7 @@ function newEditableStanza(){
     
         if(!atomico){
         contenitore.find("div.active").find("input#inpPrezzoS").parent().show();
-        contenitore.find("input#inpPrezzoS").val("");
+        contenitore.find("div.active").find("input#inpPrezzoS").val("0");
     }
  
 
@@ -469,7 +473,7 @@ function newEditableStanza(){
                         </div>\n\
                          <div class=\"form-group\" style=\"display: none;\">\n\
                             <label class=\"control-label\">Prezzo</label>\n\
-                            <input name='PrezzoS' type='number' id=\"inpPrezzoS\" class=\"form-control\" value='-1'/><br />\n\
+                            <input name='PrezzoS' type='number' id=\"inpPrezzoS\" class=\"form-control\" value='0' /><br />\n\
                         </div>\n\
                         <div class=\"form-group col-md-12\">\n\
                             <label class=\"control-label\">Foto</label>\n\
@@ -500,7 +504,7 @@ function cambiaSpecificheTipologiaStanza() {
         stanza.contents().find("select#seltipoAcc").hide();
         if(!atomico){
         stanza.find("input#inpPrezzoS").parent().show();
-        stanza.find("input#inpPrezzoS").val("");
+        stanza.find("input#inpPrezzoS").val("0");
         
     }
     }
@@ -529,7 +533,7 @@ function getHTMLprezzoStanza(stanza){
             </div>\n\
             <div class=\"col-md-6\">\n\
                 <label class=\"control-label\">Prezzo Stanza</label>\n\
-                <input name='PrezzoS' class=\"form-control\" /><br />\n\
+                <input name='PrezzoS' class=\"form-control prezzoS\" /><br />\n\
             </div>\n\
         </div>";
     
@@ -549,7 +553,7 @@ function nascondiPrezzoStanze(){
             
             stanza.find("input#inpPrezzoS").parent().hide();
             //alert(stanza + " " + stanza.find("input#inpPrezzoS").attr("id"));
-            stanza.find("input#inpPrezzoS").val("");
+            stanza.find("input#inpPrezzoS").val("-1");
 
 
         }
@@ -583,12 +587,33 @@ function mostraPrezzoStanze(stanze){
 }
 
 
-//TODO da sviluppare il check dei costi e check stanze
-function checkCosti(){
-    return true;
-}
+
 
 function checkStanza(stanzaContent){
-    return true;
+    var prezzoS = stanzaContent.find("input#inpPrezzoS");
+    var prezzoMet = stanzaContent.find("input#inpMetratura");
+
+    var pre= prezzoS.val()!="" && parseInt(prezzoS.val())>0;
+    
+    alert(pre);
+    var met = true;
+    if(prezzoMet.val()==""){
+         prezzoMet.val(0);
+    }
+    
+    var drop=true;
+    
+    var key= parseInt(stanzaContent.attr("id").substr(6));
+    
+    var dropContainer = stanzaContent.find("div#mydropzone" + key);
+    var img = $(dropContainer).find("img");
+    
+    var files = dropzoneMaps.get(key).getQueuedFiles();
+    
+    var totimg = img.length + files.length;
+    
+    drop = totimg>0;
+    
+    return pre && met && drop;
 }
 

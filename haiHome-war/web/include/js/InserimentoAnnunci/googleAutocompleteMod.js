@@ -117,15 +117,15 @@ function fillInAddress() {
 
 
         } else {
-            alert("Ci sono problemi: Errore nell'inserimento","L'indirizzo non esiste");
-            //openModalMessage("Errore nell'inserimento","L'indirizzo non esiste"); 
+            //alert("Ci sono problemi: Errore nell'inserimento","L'indirizzo non esiste");
+            openModalMessage("Errore nell'inserimento","L'indirizzo non esiste"); 
 
             acIndFlag = false;
         }
 
     }else{
-        alert("Ci sono problemi: Errore nell'inserimento","L'indirizzo inserito non è a Torino");
-        //openModalMessage("Errore nell'inserimento","L'indirizzo inserito non è a Torino");
+        //alert("Ci sono problemi: Errore nell'inserimento","L'indirizzo inserito non è a Torino");
+        openModalMessage("Errore nell'inserimento","L'indirizzo inserito non è a Torino");
         indirizzoTag.val("");
     }
 
@@ -177,7 +177,7 @@ function civicoFunction() {
 }
 
 function checkIndirizzo(){
-    alert("civico: " + acCivFlag + "\n" + "indirizzo: " + acIndFlag);
+    //alert("civico: " + acCivFlag + "\n" + "indirizzo: " + acIndFlag);
     return checkAddress();
 }
 

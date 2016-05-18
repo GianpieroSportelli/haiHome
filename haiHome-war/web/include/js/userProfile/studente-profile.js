@@ -173,12 +173,8 @@ function getListaFiltriPreferiti() {
 
 
                 if (filtri.length === 0) {
-                    var page_html = "<div>" +
-                            "<div class=\"panel panel-default\">" +
-                            "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\">Nessun filtro salvato.</p>"
-                            + "</div> " +
-                            "</div>" +
-                            "</div>";
+                    var page_html =
+                            "<p>Nessun filtro salvato.</p>";
                     page_filtri[0] = page_html;
                     selectpage(1);
                 } else {
@@ -210,7 +206,13 @@ function selectpage(page) {
     console.log(page);
     $("#num_page").html(page + " di " + page_filtri.length);
     if (actual === 0) {
-        $("#filtriUtente").append(page_filtri[page - 1]);
+
+        var page_html = '<div class=\"panel-heading\"> I tuoi filtri </div> ';
+        page_html += '<div class=\"panel-body\">';
+        page_html += page_filtri[page - 1];
+        page_html += '</div>';
+
+        $("#filtriUtente").append(page_html);
         actual = page;
     } else if (actual !== (+page)) {
         $("#" + (actual) + "_RESULT").before(page_filtri[page - 1]);
@@ -258,7 +260,7 @@ function constructFiltriPage() {
                 quartieriHTML = "<hr> <p> <i class=\"glyphicon glyphicon-info-sign\"></i> <span class=\"text-primary\">Quartieri</span>: " + quartieriHTML;
 
             }
-            var htmlCheckBox = '';
+            //var htmlCheckBox = '';
             var htmlCondominio = '';
             var htmlRiscaldamento = '';
             var htmlArredato = '';
