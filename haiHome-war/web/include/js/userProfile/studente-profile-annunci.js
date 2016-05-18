@@ -56,10 +56,9 @@ function create_pageResult_studente() {
     page_annunci = [];
     var result_div = '<div class = "search-result" >';
     var close_div = '</div>';
-    var no_res = "<div class=\"panel panel-default\">" +
-            "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\">Nessun annuncio salvato.</p>"
-            + "</div> " +
-            "</div>";
+    var no_res = "<div class=\"panel-heading\"> I tuoi annunci </div>" +
+            "<div class=\"panel-body\"> <p>Nessun annuncio salvato.</p>"
+            + "</div> ";
     var page_html = '';
     if (n_page_1 == 0) {
         $("#annunci").empty();
@@ -366,11 +365,11 @@ function activateCaroselli() {
 }
 
 /*function prevpage_1() {
-    if (actual_1 > 1) {
-        var page = actual_1 - 1;
-        selectpage_1(page);
-    }
-}*/
+ if (actual_1 > 1) {
+ var page = actual_1 - 1;
+ selectpage_1(page);
+ }
+ }*/
 
 function nextpage_1() {
     if (n_page_1 != 0) {
@@ -493,10 +492,9 @@ function refresh_annunci() {
     if (n_page_1 != 0) {
         selectpage_1(1);
     } else {
-        var no_res = "<div class=\"panel panel-default\">" +
-                "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\">Nessun annuncio salvato.</p>"
-                + "</div> " +
-                "</div>";
+        var no_res = "<div class=\"panel-heading\"> I tuoi annunci </div>" +
+                "<div class=\"panel-body\"> <p>Nessun annuncio salvato.</p>"
+                + "</div> ";
         $("#annunci").empty();
         $("#annunci").append(no_res);
         //$("#list-result").append(result_div + no_res + close_div);
