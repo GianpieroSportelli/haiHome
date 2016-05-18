@@ -62,7 +62,7 @@
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
         
-         
+
       
 
         
@@ -78,7 +78,13 @@
                 <!-- general Modal -->
         <script type="text/javascript" src="include/js/generalModal.js"></script>
         <!-- FINE General Modal -->
-
+        
+                        <!-- general Modal -->
+        <script type="text/javascript" src="include/js/confirm-bootstrap.js"></script>
+        <!-- FINE General Modal -->
+        
+        
+        
         
     </head>
     <body>

@@ -117,6 +117,8 @@ $(document).ready(function () {
                 sendEditIndirizzoRequest();
                 disabilitaInserimentoDati(pannInd);
                 hideFooterButton(pannInd);
+                openModalMessage("Info Indirizzo","Dati salvati Correttamente");
+
             } else {
                 openModalMessage("Info Indirizzo","Impossibile salvare i dati, formato dati non corretto");
             }
@@ -130,6 +132,7 @@ $(document).ready(function () {
                 sendEditAppartamentoRequest();
                 disabilitaInserimentoDati(pannInfo);
                 hideFooterButton(pannInfo);
+                openModalMessage("Info Annuncio","Dati salvati Correttamente");
             } else {
                  openModalMessage("Info Annuncio","Impossibile salvare i dati, formato dati non corretto");
 
@@ -143,6 +146,7 @@ $(document).ready(function () {
                 sendEditCosti();
                 disabilitaInserimentoDati(pannCosti);
                 hideFooterButton(pannCosti);
+                openModalMessage("Info Costi","Dati salvati Correttamente");
             }else{
                 openModalMessage("Info Costi","Impossibile salvare i dati, formato dati non corretto");
 
@@ -247,6 +251,7 @@ $(document).ready(function () {
 
         //mostro bottoni 1 
         editStanza.parent("div").show();
+        openModalMessage("Modifica Stanza","Dati salvati Correttamente");
         }else{
             openModalMessage("Modifica Stanze","Impossibile modificare i dati, formato dati non corretto");
 
@@ -297,22 +302,11 @@ $(document).ready(function () {
 
     //bottone cancella stanza
     deleteStanza.on("click", function () {
-        //ricavo informazioni sulla stanza
-        var navContent = pannStanze.find(".tab-content");
-        var stanzaContent = navContent.find("div.active");
-        var idStanza = stanzaContent.attr("id").slice(6);
-
-        var stanze = myAnnuncio.Stanze[0];
-        var s = stanze[idStanza];
-
-        if (confirm("Sicuro di voler eliminare la stanza " + idStanza)) {
-            //mando richiesta di eliminare stanza
-            //TODO controlla cosa fa la sevlet, evitare il caricamento delle immagini
-            eliminaStanza(s);
-
-        }
-
-
+        var title ="Sicuro di voler eliminare la stanza?";
+        var body = "Eliminando la stanza non si può tornare più indietro";
+        var footer = "<button type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\">NO</button>";
+        footer += "<button type=\"button\" class=\"btn btn-success\" onclick=\"cancellaStanza()\"data-dismiss=\"modal\">SI</button>"
+        openModalMessage(title, body, footer);
 
     });
 
@@ -331,7 +325,7 @@ $(document).ready(function () {
             }
 
         });
-
+        setInfoAnnunci(myAnnuncio.Atomico);
         newEditableStanza();
 
         //nascondo bottoni 1
@@ -347,16 +341,20 @@ $(document).ready(function () {
 
     //bottone annulla new Stanza
     annullanewStanza.on("click", function () {
+        
+        
 
         var navContent = pannStanze.find(".tab-content");
         var stanzaContent = navContent.find("div.active");
         var tabStanze = pannStanze.find(".nav-tabs");
         var tabContent = tabStanze.find("li.active");
 
+        
         stanzaContent.remove();
         tabContent.remove();
 
 
+        
         navContent.find("div#stanza0").addClass("active").addClass("in");
         tabStanze.find("a[href='#stanza0']").parents("li").addClass("active");
 
@@ -378,6 +376,7 @@ $(document).ready(function () {
 
         //nascondo bottoni 3
         salvaNewStanza.parent("div").hide();
+        
 
 
 
@@ -392,9 +391,9 @@ $(document).ready(function () {
         var tabStanze = pannStanze.find(".nav-tabs");
         var tabContent = tabStanze.find("li.active");
 
-
-
-        salvaNuovaStanza(stanzaContent);
+        
+        if(checkStanza(stanzaContent)){
+            salvaNuovaStanza(stanzaContent);
 
 
         //disabilito l'inserimento
@@ -418,6 +417,12 @@ $(document).ready(function () {
 
         //nascondo bottoni 3
         salvaNewStanza.parent("div").hide();
+        openModalMessage("Nuova Stanza","Dati salvati Correttamente");
+        } else {
+                openModalMessage("Nuova Stanza","Impossibile salvare i dati, formato dati non corretto");
+            }
+
+
 
     });
 
@@ -494,9 +499,6 @@ $(document).ready(function () {
         dayNamesMin: ["Do", "Lu", "Ma", "Me", "Gi", "Ve", "Sa"],
         dateFormat: "dd-mm-yy"
     });
-
-
-
 
 
 
@@ -664,11 +666,13 @@ function checkInfoApp() {
     var descrizioneTag = pannInfo.find("#textDescrizione");
     var metraturaTag = pannInfo.find("#inpMetratura");          //da aggiungere il controllo sui dati
     var dataInizio = pannInfo.find("input#inpDataInizio");
-    if(true){
-        return descrizioneTag.val() != "" && dataInizio.val() != "";
-    }else{
-        return false;
+    var met = true;
+    if(metraturaTag.val()==""){
+         metraturaTag.val(0);
     }
+    
+        return descrizioneTag.val() != "" && dataInizio.val() != "" && met;
+    
 
 
 }
@@ -869,6 +873,39 @@ function sendEditCosti(){
     
     formInfoCosti.find("input.infoCosti").remove();
 
+}
+
+function cancellaStanza(){
+            //ricavo informazioni sulla stanza
+        var navContent = pannStanze.find(".tab-content");
+        var stanzaContent = navContent.find("div.active");
+        var idStanza = stanzaContent.attr("id").slice(6);
+
+        var stanze = myAnnuncio.Stanze[0];
+        var s = stanze[idStanza];
+
+            eliminaStanza(s);
+
+}
+
+//TODO da sviluppare il check dei costi e check stanze
+function checkCosti(){
+    var selModelloCosti = pannCosti.find("select#modelloCosti");
+    var modelloCode = selModelloCosti.val();
+    if(modelloCode == "1"){
+        //prezzo atomico
+        var PrezzoA = pannCosti.find("input#prezzoA");
+        return PrezzoA.val()!="" && parseInt(PrezzoA.val())>0;
+    }else{
+        //prezzo a stanze
+        var PrezzoS = pannCosti.find("input.prezzoS");
+        var result = true;
+        for(var i=0;i<PrezzoS.length;i++){
+            result = result && $(PrezzoS[i]).val()!="" && parseInt($(PrezzoS[i]).val())>0;
+        }
+        return result;
+    }
+    
 }
 
 
