@@ -199,7 +199,7 @@
                 <div class="col-xs-9" >
                     <!-- Tab panes -->
                     <div class="profile-content tab-content">
-                        <div class="tab-pane fade in active panel panel-default" id="home">
+                        <div class="tab-pane fade in active panel panel-primary" id="home">
                             <div class="panel-heading">
                                 Info
                             </div>
@@ -266,19 +266,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="annunci">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="ibox float-e-margins">
-
-                                        <div class="ibox-content" id="list-result">
-                                            <div class="hr-line-dashed"></div>
+                        <div class="tab-pane fade in panel panel-primary" id="annunci">
+                            <div class="panel-heading">
+                                I tuoi annunci preferiti
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="list-result">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="filtriUtente"></div>
+                        <div class="tab-pane fade in panel panel-primary" id="filtriUtente"></div>
                     </div>
                 </div>  
             </div>
@@ -292,7 +293,7 @@
              //Ho messo due variabili perche' non aggiorna la sessione in real-time
              if (!activatedTutorial) {
              <%/* if (session.getAttribute("tutorial") == null) {
-                    session.setAttribute("tutorial", true);
+                        session.setAttribute("tutorial", true);
                  */ %>
              //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
              //Il problema nasce dal fatto che i tab sono dinamici

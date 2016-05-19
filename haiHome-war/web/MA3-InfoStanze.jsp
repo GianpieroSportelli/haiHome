@@ -46,7 +46,7 @@
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Mofidica     
                     </a></br>
                     <a class="deleteStanza">
-                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>Elimina
+                        <span class="glyphicon glyphicon-remove-circle" data-toggle="confirmation" aria-hidden="true"></span>Elimina
                     </a>
                     </br>
                 </div>

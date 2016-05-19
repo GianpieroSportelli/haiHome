@@ -124,7 +124,28 @@ public class ServletRicerca extends HttpServlet {
                     String nB = request.getParameter("numeroBagni");
                     String nC = request.getParameter("numeroCamere");
                     String met = request.getParameter("metratura");
-                    result = gestoreRicerca.aggiornaAFiltroAppartamento(Integer.valueOf(nL), Integer.valueOf(nB), Integer.valueOf(nC), Double.valueOf(met));
+                    
+                    int inL=0;
+                    if(!nL.equals("")){
+                       inL=Integer.valueOf(nL); 
+                    }
+                    
+                    int inB=0;
+                    if(!nB.equals("")){
+                       inB=Integer.valueOf(nB); 
+                    }
+                    
+                    int inC=0;
+                    if(!nC.equals("")){
+                       inC=Integer.valueOf(nC); 
+                    }
+                    
+                    double imet=0;
+                    if(!met.equals("")){
+                       imet=Double.valueOf(met); 
+                    }
+                    
+                    result = gestoreRicerca.aggiornaAFiltroAppartamento(inL,inB, inC, imet);
                     System.out.println("Filtro Appartamento: "+gestoreRicerca.attualeToJSON());
                 
                 } else if (tipo.equalsIgnoreCase("Stanza")) {

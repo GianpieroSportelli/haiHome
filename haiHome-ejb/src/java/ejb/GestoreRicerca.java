@@ -108,6 +108,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             nuovoAttuale.setListaQuartieri(filtroAttuale.getListaQuartieri());
             nuovoAttuale.setCompresoCondominio(filtroAttuale.isCompresoCondominio());
             nuovoAttuale.setCompresoRiscaldamento(filtroAttuale.isCompresoRiscaldamento());
+            nuovoAttuale.setArredato(filtroAttuale.isArredato());
             //END CAST
             nuovoAttuale.setMetratura(metratura);
             nuovoAttuale.setNumeroBagni(numeroBagni);
@@ -135,6 +136,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                 nuovoAttuale.setListaQuartieri(filtroAttuale.getListaQuartieri());
                 nuovoAttuale.setCompresoCondominio(filtroAttuale.isCompresoCondominio());
                 nuovoAttuale.setCompresoRiscaldamento(filtroAttuale.isCompresoRiscaldamento());
+                nuovoAttuale.setArredato(filtroAttuale.isArredato());
                 //END CAST
                 nuovoAttuale.setTipo(enumTipo);
                 filtroAttuale = nuovoAttuale;
