@@ -393,7 +393,13 @@ function getfiltro() {
                 });
 
                 $("#quartieri-div").show();
-                $('#pricefrom').val(filtro.Prezzo);
+                
+                if (filtro.Prezzo != 0) {
+                    $('#pricefrom').val(filtro.Prezzo);
+                }else{
+                   $('#pricefrom').val(""); 
+                }
+                
                 $('#compCondominio').prop('checked', filtro.CompresoCondominio);
                 $('#compRiscaldamento').prop('checked', filtro.CompresoRiscaldamento);
                 $('#arredato').prop('checked', filtro.Arredato);
@@ -401,10 +407,31 @@ function getfiltro() {
                 var tipo = filtro.Tipo;
                 if (tipo == "Appartamento") {
                     $('#tipo-' + tipo).prop('selected', true);
-                    $('#numeroLocali').val(filtro.NumeroLocali);
-                    $('#numeroCamere').val(filtro.NumeroCamereDaLetto);
-                    $('#numeroBagni').val(filtro.NumeroBagni);
-                    $('#metratura').val(filtro.Metratura);
+
+                    if (filtro.NumeroLocali != 0) {
+                        $('#numeroLocali').val(filtro.NumeroLocali);
+                    } else {
+                        $('#numeroLocali').val("");
+                    }
+
+                    if (filtro.NumeroCamereDaLetto != 0) {
+                        $('#numeroCamere').val(filtro.NumeroCamereDaLetto);
+                    } else {
+                        $('#numeroCamere').val("");
+                    }
+
+                    if (filtro.NumeroBagni != 0) {
+                        $('#numeroBagni').val(filtro.NumeroBagni);
+                    } else {
+                        $('#numeroBagni').val("");
+                    }
+
+                    if (filtro.Metratura != 0) {
+                        $('#metratura').val(filtro.Metratura);
+                    } else {
+                        $('#metratura').val("");
+                    }
+
                     $("#divTipoStanza").hide();
                     $("#divNLocali").show("slow");
                     $("#divNCamere").show("slow");
@@ -470,18 +497,20 @@ function persistiFiltro() {
             function (item) {
                 if (item == "ok") {
                     //alert("Fitro Salvato!!");
-                    var title="Ok...";
-                    var body="Salvataggio andato a buon fine!!";;
-                    var footer=null;
+                    var title = "Ok...";
+                    var body = "Salvataggio andato a buon fine!!";
+                    ;
+                    var footer = null;
                     openModalMessage(title, body, footer);
                     var getf = $.Deferred();
                     getf.done(getfiltro);
                     getf.resolve();
-                }else{
-                   var title="Ops...";
-                    var body="C'è stato un errore nel salvataggio, contatti l'admin per maggiori informazini.";;
-                    var footer=null;
-                    openModalMessage(title, body, footer); 
+                } else {
+                    var title = "Ops...";
+                    var body = "C'è stato un errore nel salvataggio, contatti l'admin per maggiori informazini.";
+                    ;
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                 }
             });
 }
