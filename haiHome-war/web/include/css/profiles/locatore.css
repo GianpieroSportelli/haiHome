@@ -30,7 +30,12 @@ input[type="password"] {
 textarea:disabled {
     background: transparent !important;
     border-color: transparent;
+    resize: none; 
 };
+
+textarea {
+    resize: none; 
+}
 
 
 input:disabled::-webkit-input-placeholder { /* WebKit browsers */

@@ -460,10 +460,14 @@ public class ServletLocatore extends HttpServlet {
             prezzo = String.valueOf(json.getDouble("Prezzo")) + " &euro;";       
             num_locali = String.valueOf(json.getInt("NumeroLocali")); 
             arredato = a.isArredato() ? "s&igrave;" : "no"; 
+            
             /* L'operatore ternario è l'invenzione del secolo */
             spese_comprese = (a.isCompresoCondominio() ? "condominio" : "") +
                     (a.isCompresoCondominio() && a.isCompresoRiscaldamento() ? ", " : "") +
                                 (a.isCompresoRiscaldamento() ? "riscaldamento" : ""); 
+            if (spese_comprese.equalsIgnoreCase("")) {
+                spese_comprese = "nessuna";
+            }
         }
         catch (JSONException e) {
             System.out.println("Il json e' esploso, e vbb");
@@ -492,7 +496,7 @@ public class ServletLocatore extends HttpServlet {
         html += "</div>"; //panel-heading
         html += "<div class='panel-body'>"; // PANEL BODY 
         
-        html += "<div class='col-md-6'>";
+        html += "<div class='col-md-6'>"; // COLONNA 1 
         html += "<p class='text-muted'><b>Indirizzo:</b> " + indirizzo + "</p>";
         html += "<p class='text-muted'><b>Metratura appartamento:</b> " + metratura + "</p>";
         html += "<p class='text-muted'><b>In affitto dal:</b> " + dataInizioAffitto + "</p>";
@@ -501,11 +505,11 @@ public class ServletLocatore extends HttpServlet {
         }
         html += "</div>";
         
-        html += "<div class='col-md-6'>";
+        html += "<div class='col-md-6'>"; // COLONNA 2 
         html += "<p class='text-muted'><b>Quartiere:</b> " + quartiere + "</p>";
         html += "<p class='text-muted'><b>Arredato:</b> " + arredato + "</p>";
+        html += "<p class='text-muted'><b>Numero locali:</b> " + num_locali + "</p>";
         if (is_appartamento) {
-            html += "<p class='text-muted'><b>Numero locali:</b> " + num_locali + "</p>";
             html += "<p class='text-muted'><b>Spese comprese:</b> " + spese_comprese + "</p>";
         }
         html += "</div>";

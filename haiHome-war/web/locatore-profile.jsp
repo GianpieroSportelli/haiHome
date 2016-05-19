@@ -208,7 +208,7 @@
                                             <div class="panel-body has-feedback">
                                                 <textarea class="form-control" id="descrizione" 
                                                           name="description" rows="8" cols="50" 
-                                                          maxlength="255" disabled="disabled" 
+                                                          maxlength="255" disabled="disabled" style="resize:none"
                                                           placeholder="Scrivi qualcosa su di te"></textarea>
                                             </div>
                                         </div>
