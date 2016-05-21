@@ -252,6 +252,7 @@
             $(document).ready(function () {
                 $(".infobox").colorbox({rel: 'infobox'});
             });
+            
             $("select").change(function () {
                 if ($("#tipo").val() === "Appartamento") {
                     //alert("Appartamento");
@@ -278,7 +279,7 @@
 
             });
 
-            $("#searchForm").on("submit", function () {
+            /*$("#searchForm").on("submit", function () {
                 //alert("in");
 
                 if ($("#pricefrom").val() === '') {
@@ -303,7 +304,7 @@
                         //alert("prezzo 0");
                     }
                 }
-            });
+            });*/
 
             $("#detail-price-Button").click(function () {
                 if ($("#detail-price-Button").hasClass("glyphicon-plus")) {

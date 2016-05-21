@@ -24,7 +24,7 @@ function loadSegnalazioni() {
     $.post("ServletController",
             {action: "Segnalazione-getAllSegnalazioni"},
             function (responseJson) {
-                console.log(responseJson);
+                //console.log(responseJson);
                 $.each(responseJson, function (index, risp) {
                     var html = createSegnalazione(risp, index);
                     segn.push(risp);
@@ -106,55 +106,60 @@ function send_Segnalazione(index) {
 }
 
 $(window).scroll(function () {
-    if (($(window).scrollTop() + 200) >= $(document).height() - $(window).height()) {
+    //console.log("Scroll: "+f_segn+"-"+f_segn_arch);
+    if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
         if (f_segn) {
+            //console.log("nextpage()");
             nextpage();
         }
         if (f_segn_arch) {
+            //console.log("nextpage_arch()");
             nextpage_arch();
         }
     }
 });
 
 function nextpage() {
-    if (actual < annunciSegn_html.lenght) {
+    //console.log(actual +"-"+annunciSegn_html.length);
+    if (actual < annunciSegn_html.length) {
         var alt = actual + STEP;
         for (var i = actual; i < alt && i < annunciSegn_html.length; i++) {
             $("#segnalazioni").append(annunciSegn_html[i]);
-            actual = i;
+            actual = i+1;
         }
     }
 }
 
 function nextpage_arch() {
-    if (actual < annunciSegnArch_html.lenght) {
+    //console.log(annunciSegnArch_html.length);
+    if (actual_arch < annunciSegnArch_html.length) {
         var alt = actual_arch + STEP;
         for (var i = actual_arch; i < alt && i < annunciSegnArch_html.length; i++) {
             $("#segnalazioni-archiviate").append(annunciSegnArch_html[i]);
-            actual_arch = i;
+            actual_arch = i+1;
         }
     }
 }
 
 function topSegn() {
-    console.log("TOP");
+    //console.log("TOP");
     if(annunciSegn_html.length==0){
         $("#segnalazioni").append("<p>Non ci sono segnalazioni in sospeso!!!</p>");
     }
     for (var i = 0; i < STEP && i < annunciSegn_html.length; i++) {
         $("#segnalazioni").append(annunciSegn_html[i]);
-        actual = i;
+        actual = i+1;
     }
 }
 
 function topSegn_archiviate() {
-    console.log("TOP arch");
+    //console.log("TOP arch");
     if(annunciSegnArch_html.length==0){
         $("#segnalazioni-archiviate").append("<p>Non ci sono segnalazioni Archiviate!!!</p>");
     }
     for (var i = 0; i < STEP && i < annunciSegnArch_html.length; i++) {
         $("#segnalazioni-archiviate").append(annunciSegnArch_html[i]);
-        actual_arch = i;
+        actual_arch = i+1;
     }
 }
 
