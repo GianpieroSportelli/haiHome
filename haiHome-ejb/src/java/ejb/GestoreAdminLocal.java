@@ -14,7 +14,7 @@ import javax.ejb.Local;
 @Local
 public interface GestoreAdminLocal {
 
-    boolean checkAdmin(String email);
+    boolean checkAdmin(String email, String password);
 
     boolean addAdmin(String email, String password);
 

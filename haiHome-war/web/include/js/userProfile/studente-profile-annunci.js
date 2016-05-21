@@ -114,11 +114,14 @@ function create_info_annuncio(annuncio, k) {
     var indirizzo_arr = indirizzo.split(",");
     indirizzo = indirizzo_arr[0] + "," + indirizzo_arr[1];
     var htmlOscurato = '';
-    if (annuncio.Oscurato === true) {
+    if (annuncio.Oscurato) {
         htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO OSCURATO</span> </p>";
     }
-    if (annuncio.Archiviato === true) {
+    if (annuncio.Archiviato) {
         htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO ARCHIVIATO</span> </p>";
+    }
+    if (annuncio.Locatore.bloccato) {
+        htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">LOCATORE BLOCCATO</span> </p>";
     }
     html += "<div class=\"center\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">" +
             htmlOscurato +
@@ -388,6 +391,9 @@ function send_Annuncio(k) {
         $('#annuncio-' + k).popover('show');
     } else if (annuncio.Archiviato) {
         $('#annuncio-' + k).attr('data-content', "L'annuncio è stato archiviato e non può essere visualizzato.");
+        $('#annuncio-' + k).popover('show');
+    } else if (annuncio.Locatore.bloccato) {
+        $('#annuncio-' + k).attr('data-content', "Il locatore è stato bloccato e non può essere visualizzato.");
         $('#annuncio-' + k).popover('show');
     } else {
         var url = "/haiHome-war/dettagliAnnuncio.jsp";

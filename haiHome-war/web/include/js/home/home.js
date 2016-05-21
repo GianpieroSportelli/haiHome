@@ -15,18 +15,27 @@ $(document).ready(function () {
 
     $("#in_locatore").on('click', function () {
         $.post("ServletController", {action: "locatore-get-session"}, function (responseJSON) {
-            if(jQuery.isEmptyObject(responseJSON)) {
+            if (jQuery.isEmptyObject(responseJSON)) {
                 $('#modalLogin').modal('show');
-            }
-            else if ($('#__user_type').text() === "locatore") {
+            } else if ($('#__user_type').text() === "locatore") {
                 location.replace("IA0-InserimentoAnnunci.jsp");
-            }
-            else {
-                console.log("utente non loggato come locatore"); 
+            } else {
+                console.log("utente non loggato come locatore");
             }
         });
 
     });
+
+    $('#admin-access').on('click', function () {
+        $.post("ServletController", {action: "admin-get-session"}, function (response) {
+            if (response === "OK") {
+                location.assign("admin-profile.jsp"); 
+            } else {
+                $('#adminModal').modal('show');
+            } 
+        });
+    });
+
 });
 
 function goToSearch() {
