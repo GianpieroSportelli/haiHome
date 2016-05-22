@@ -120,7 +120,10 @@ function create_info_annuncio(annuncio, k) {
     if (annuncio.Archiviato) {
         htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO ARCHIVIATO</span> </p>";
     }
-    if (annuncio.Locatore.bloccato) {
+    
+    //console.log("IL LOCATORE E' BLOCCATO?: " + annuncio.Locatore.bloccato + " E: " + (locBloccato == "true"));
+    if (annuncio.Locatore.bloccato === "true") {
+        //console.log("SONO ENTRATO PERCHE' IL LOCATORE BLOCCATO VALUE E': " + annuncio.Locatore.bloccato);
         htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">LOCATORE BLOCCATO</span> </p>";
     }
     html += "<div class=\"center\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">" +
@@ -392,7 +395,7 @@ function send_Annuncio(k) {
     } else if (annuncio.Archiviato) {
         $('#annuncio-' + k).attr('data-content', "L'annuncio è stato archiviato e non può essere visualizzato.");
         $('#annuncio-' + k).popover('show');
-    } else if (annuncio.Locatore.bloccato) {
+    } else if (annuncio.Locatore.bloccato === "true") {
         $('#annuncio-' + k).attr('data-content', "Il locatore è stato bloccato e non può essere visualizzato.");
         $('#annuncio-' + k).popover('show');
     } else {
