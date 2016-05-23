@@ -27,7 +27,7 @@ public class GestoreAdmin implements GestoreAdminLocal {
 
         for (Administrator adm : listaAdmin) {
             if (adm.getEmail().equalsIgnoreCase(email)
-                    && adm.getPassword().equalsIgnoreCase(password)) {
+                    && adm.getPassword().equals(password)) {
                 return true;
             }
         }

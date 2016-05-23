@@ -10,11 +10,24 @@
 
 <%
     boolean session_exists = session.getAttribute("user-type") != null;
+    String user_type = (String) session.getAttribute("user-type"); 
+    JSONObject user_data = null; 
+    
+    if (user_type != null && user_type.equalsIgnoreCase("studente")) {
+        user_data = (JSONObject) session.getAttribute("user-data");
+    }
+    else {
+        out.print("<script>alert('Devi loggarti come studente per poter accedere a questa pagina!');"
+                + "window.location.replace('index.jsp');</script>");
+    }
+    /*
+    
+    boolean session_exists = session.getAttribute("user-type") != null;
     JSONObject user_data = null;
 
     if (session_exists) {
         user_data = (JSONObject) session.getAttribute("user-data");
-    }
+    } */
 %>
 
 <!DOCTYPE html>

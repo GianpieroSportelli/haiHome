@@ -25,17 +25,6 @@ $(document).ready(function () {
         });
 
     });
-
-    $('#admin-access').on('click', function () {
-        $.post("ServletController", {action: "admin-get-session"}, function (response) {
-            if (response === "OK") {
-                location.assign("admin-profile.jsp"); 
-            } else {
-                $('#adminModal').modal('show');
-            } 
-        });
-    });
-
 });
 
 function goToSearch() {

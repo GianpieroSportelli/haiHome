@@ -4,14 +4,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    boolean session_exists = session.getAttribute("user-type") != null;
-    JSONObject user_data = null;
-
-    /* da convertire in controllo lato client, questo è brutto come la merda */
-    if (session_exists) {
-        user_data = (JSONObject) session.getAttribute("user-data");
+    String user_type = (String) session.getAttribute("user-type"); 
+    String img = null; 
+    
+    if (user_type != null && user_type.equalsIgnoreCase("locatore")) {
+        JSONObject user_data = (JSONObject) session.getAttribute("user-data");
+        img = user_data.getString("fotoProfilo");
     } else {
-        out.print("<script>alert('You have to log into your account');"
+        out.print("<script>alert('Devi loggarti come locatore per poter accedere a questa pagina!');"
                 + "window.location.replace('index.jsp');</script>");
 
     }
@@ -89,7 +89,7 @@
                     <div class="profile-sidebar">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic"> 
-                            <img src="<%= user_data.getString("fotoProfilo")%>" class="img-responsive" alt=""/>
+                            <img src="<%= img %>" class="img-responsive" alt=""/>
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->

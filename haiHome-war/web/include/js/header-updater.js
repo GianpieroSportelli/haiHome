@@ -59,4 +59,17 @@ jQuery(document).ready(function ($) {
     $('#help').on('click', function () {
         alert("nope");
     });
+    
+    /* Apertura modal login admin - footer */
+    $('#admin-access').on('click', function () {
+        $.post("ServletController", {action: "admin-get-session"}, function (response) {
+            if (response === "OK") {
+                location.assign("admin-profile.jsp"); 
+            } else {
+                $('#adminModal').modal('show');
+            } 
+        });
+    });
+    
+    
 }); 
