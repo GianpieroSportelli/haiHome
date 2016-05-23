@@ -237,7 +237,7 @@ public class ServletStudente extends HttpServlet {
                 response.setContentType("application/json");
                 if (gestoreStudente.reloadStudente()) {
                     String json = null;
-                    boolean richiestaSuccess = false;
+                    /*boolean richiestaSuccess = false;
                     while (!richiestaSuccess) {
                         try {
                             json = gestoreStudente.getStudente().getAnnunciJSON().toString();
@@ -245,7 +245,8 @@ public class ServletStudente extends HttpServlet {
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
                         }
-                    }
+                    }*/
+                    json = gestoreStudente.getStudente().getAnnunciJSON().toString();
                     System.out.println(json);
                     out.write(json);
                 } else {
