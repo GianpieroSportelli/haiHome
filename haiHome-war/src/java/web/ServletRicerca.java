@@ -54,7 +54,10 @@ public class ServletRicerca extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             RequestDispatcher rd = null;
             String action = request.getParameter("action");
-            System.out.println(action);
+            
+            System.out.println("ACTION: "+action);
+            
+            
             if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
                 response.setContentType("application/json");
                 String json = gestoreRicerca.attualeToJSON().toString();
@@ -62,10 +65,12 @@ public class ServletRicerca extends HttpServlet {
                 out.write(json);
 
             } else if (action.equalsIgnoreCase("Ricerca-setCity")) {
+                
                 String city = request.getParameter("city");
+                //selezionare la città corrisponde a generare un filtro con solo la città impostata
                 boolean result = gestoreRicerca.selezionaCittà(city);
                 //invia quartieri
-                System.out.println("Filtro Creato:" + result);
+                System.out.println("Selezione andata a buon fine? " + result);
                 System.out.println(gestoreRicerca.attualeToJSON());
                 out.write("" + result);
 

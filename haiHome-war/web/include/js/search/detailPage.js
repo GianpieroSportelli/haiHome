@@ -69,7 +69,7 @@ function initialize(annuncio, opt) {
     var marker = new google.maps.Marker({
         map: map,
         position: latlng,
-        title: 'geocode request address'
+        title: annuncio.Indirizzo
     });
     map.setZoom(16);
 
@@ -92,9 +92,7 @@ function addServices_superMarket(annuncio) {
         dataType: 'json',
         data: {action: "Ricerca-addSuperMarket", annuncio: JSON.stringify(annuncio)},
         success: function (responseJson) {
-            //console.log(responseJson);
             $.each(responseJson, function (index, item) {
-                //console.log(item);
                 var lat = item.location.lat;
                 var lng = item.location.lng;
                 var label = item.name;
@@ -118,14 +116,10 @@ function addServices_Bus(annuncio) {
         data: {action: "Ricerca-addBus", annuncio: JSON.stringify(annuncio)},
         success: function (responseJson) {
             var html = html_tail("", "<div id=\"" + bus_info + "\">" + "\n");
-            //console.log("risposta:" + responseJson);
-            //console.log(html);
             html = html_tail(html, "<h1 > Fermate vicine</h1>" + "\n"); //class=\"text-muted\"
             var fermate = "fermate_info";
             html = html_tail(html, "<div id=\"" + fermate + "\" style=\"overflow-y:scroll\">" + "\n");
-            //$(fermate).css("overflow-y", "scroll");
             $.each(responseJson, function (index, item) {
-                //console.log(item);
                 var lat = item.location.lat;
                 var lng = item.location.lng;
                 var label = item.name;
@@ -142,22 +136,19 @@ function addServices_Bus(annuncio) {
             });
             html = html_tail(html, "</div>" + "\n");
             html = html_tail(html, "</div>" + "\n");
-            //console.log(html);
             $(service_info).append(html);
         }
     });
 }
+
 $(document).ready(function () {
     $(document).on('click', '.fermata', function (event) {
         var target = $(event.target);
         var id = target.attr("id");
         var id_arr = id.split("-");
         id = id_arr[0];
-        //console.log("fermata: "+id);
         google.maps.event.trigger(markers_bus[id], 'click');
         document.getElementById('map').scrollIntoView();
-        //$("html, body").animate({ scrollTop: $("#map").offset().top }, "slow");
-
     });
 });
 
@@ -168,9 +159,7 @@ function addServices_Bank(annuncio) {
         dataType: 'json',
         data: {action: "Ricerca-addBank", annuncio: JSON.stringify(annuncio)},
         success: function (responseJson) {
-            //console.log(responseJson);
             $.each(responseJson, function (index, item) {
-                //console.log(item);
                 var lat = item.location.lat;
                 var lng = item.location.lng;
                 var label = item.name;
@@ -385,16 +374,16 @@ function info_annuncio(annuncio) {
     html += "<p class=\"text-muted\">" + annuncio.Indirizzo + "</p>" +
             "<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
             "<p class=\"text-muted\"><span class=\"text-primary\">Metratura Appartamento:</span> " + annuncio.Metratura + " m<sup>2</sup></p>" +
-            "<p class=\"text-muted\"><span class=\"text-primary\"> Data inizio: </span> " + annuncio.DataInizioAffitto + "</p>" +
+            "<p class=\"text-muted\"><span class=\"text-primary\"> Data inizio affitto: </span> " + annuncio.DataInizioAffitto + "</p>" +
             "<p class=\"text-muted\"><span class=\"text-primary\"> Data pubblicazione: </span> " + annuncio.DataPubblicazione + "</p>" +
             "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
     if (annuncio.Arredato) {
-        html += "<p class=\"text-muted\"> L'annuncio è comprensivo di <span class=\"text-primary\">arredamento </span></p>";
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Arredato </span></p>";
     } else {
-        html += "<p class=\"text-muted\"> L'annuncio non è fornito con <span class=\"text-primary\">arredamento </span></p>";
+        html += "<p class=\"text-muted\"> <span class=\"text-primary\">Non Arredato </span></p>";
     }
     if (annuncio.Atomico) {
-        var cmp = "";
+        var cmp = "il prezzo ";
         var cmpC = annuncio.CompresoCondominio;
         var cmpR = annuncio.CompresoRiscaldamento;
 
@@ -416,10 +405,10 @@ function info_annuncio(annuncio) {
 
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Costo mensile: </span> " + annuncio.Prezzo + " &euro; " + cmp + "</p>";
     }
-    html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
-    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina</button>";
-    html += "<button id=\"oscuraButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"oscuraAnnuncio()\" style=\"display:none\">Oscura</button>";
-    html += "<button id=\"visibileButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"visibileAnnuncio()\" style=\"display:none\">Visibile</button>";
+    html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva nei Preferiti</button>";
+    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina dai Preferti</button>";
+    html += "<button id=\"oscuraButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"oscuraAnnuncio()\" style=\"display:none\">Oscura Annuncio</button>";
+    html += "<button id=\"visibileButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"visibileAnnuncio()\" style=\"display:none\">Rendi Visibile Annuncio</button>";
     html += "<button id=\"ArchiviaButton\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaAnnuncio()\">Archivia Annuncio</button>";
     html += "<button id=\"PubblicaButton\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"pubblicaAnnuncio()\">Pubblica Annuncio</button>";
     html += "</div>";
@@ -440,18 +429,18 @@ function info_loc(locatore) {
     html += "<div class=\"row center\">";
     html += "<img src='" + locatore.fotoProfilo + "'class='img-responsive img-circle' alt=''style=\"width:" + dim_image_prof + "px;height:" + dim_image_prof + "px;\" \>";
     html += "</div>";
-    //html+="<p>"+JSON.stringify(locatore)+"</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Nome: </span>" + locatore.nome + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">email: </span><span id=\"mail\">" + locatore.email + "</span></p>";
-    html += "<button id=\"segnalaButton\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala</button>";
-    html += "<button id=\"bloccaButton\" type=\"button\" class=\"btn btn-danger detailButton\" style=\"display:none\" onClick=\"bloccaLocatore()\">Blocca</button>";
-    html += "<button id=\"sbloccaButton\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"sbloccaLocatore()\">Sblocca</button>";
+    html += "<button id=\"segnalaButton\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala Annuncio</button>";
+    html += "<button id=\"bloccaButton\" type=\"button\" class=\"btn btn-danger detailButton\" style=\"display:none\" onClick=\"bloccaLocatore()\">Blocca Locatore</button>";
+    html += "<button id=\"sbloccaButton\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"sbloccaLocatore()\">Sblocca Locatore</button>";
     html += "</div>";
     return html;
 }
 
+//parte statica messa qui solo per comodità
 function service() {
     var html = "";
     html += "<div class=\"center blockService\" id=\"MapOptionDiv\">";
@@ -465,18 +454,14 @@ function service() {
     html += "<div class=\"checkbox services\">";
     html += "<label><input id=\"bus\" class=\"checkbox_service\" type=\"checkbox\" checked>Fermate bus</label>";
     html += "</div>";
-    //html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" onClick=\"getServices()\">Cancella marker</button>";
     html += "</div>";
     return html;
 }
 
 function loggatoStudente() {
-    //console.log("verifica log Studente");
     $.post("ServletController",
             {action: "Ricerca-loggatoStudente"},
             function (item) {
-                //var html = '';
-                //alert(item);
                 if (item != "") {
                     console.log("Studente loggato? id: " + item);
                     id_studente = item;
@@ -489,12 +474,9 @@ function loggatoStudente() {
 }
 
 function loggatoLocatore() {
-    //console.log("verifica log Studente");
     $.post("ServletController",
             {action: "Ricerca-loggatoLocatore"},
             function (item) {
-                //var html = '';
-                //alert(item);
                 if (item != "") {
                     console.log("Locatore loggato? id: " + item);
                     id_locatore = item;
@@ -573,7 +555,6 @@ function pubblicaStanza(OID) {
 }
 
 function archiviaAnnuncio() {
-    //alert("Annuncio archiviato");
     $.post("ServletController",
             {
                 action: "locatore-archivia-annuncio",
@@ -625,8 +606,6 @@ function checkAnnuncio(id) {
     $.post("ServletController",
             {action: "Ricerca-checkAnnuncio", id: id},
             function (item) {
-                //var html = '';
-                //alert(item);
                 console.log("Annuncio Salvato?: " + item);
                 if (item == "true") {
                     $("#deleteButton").show("fast");
@@ -639,12 +618,9 @@ function checkAnnuncio(id) {
 }
 
 function salvaAnnuncioPreferiti() {
-    //alert("Salvo l'annuncio nei Preferiti");
     $.post("ServletController",
             {action: "studente-addAnnuncio", id: annuncio.OID},
             function (item) {
-                //var html = '';
-                //alert(item);
                 console.log("Annuncio Salvato?: " + item);
                 if (item == "true") {
                     var title = "Ok...";
@@ -664,12 +640,9 @@ function salvaAnnuncioPreferiti() {
 }
 
 function cancellaAnnuncioPreferiti() {
-    //alert("Cancello l'annuncio dai Preferiti");
     $.post("ServletController",
             {action: "studente-removeAnnuncio", id: annuncio.OID},
             function (item) {
-                //var html = '';
-                //alert(item);
                 console.log("Annuncio eliminato?: " + item);
                 if (item == "true") {
                     var title = "Ok...";
@@ -693,7 +666,6 @@ function oscuraAnnuncio() {
             function (item) {
                 console.log("Annuncio oscurato?: " + item);
                 if (item.response == true) {
-                    //alert("Annuncio Oscurato!!");
                     var title = "Ok...";
                     var body = "Annuncio oscurato!!";
                     var footer = null;
@@ -773,9 +745,7 @@ function sbloccaLocatore() {
             });
 }
 function request_sendSegn() {
-    //console.log("prendo la descrizione segnalazione");
     var descrizione = $("#des_segn").val();
-    //console.log(descrizione);
     if (descrizione != null) {
         $.post("ServletController",
                 {action: "Segnalazione-addSegnalazione", id_annuncio: annuncio.OID, id_studente: id_studente, descrizione: descrizione},
@@ -797,13 +767,11 @@ function request_sendSegn() {
     }
 }
 function segnalaAnnuncio() {
-    //alert("annuncio Segnalato");
     var title = "Ok...";
     var body = "<div class=\"form-group\">" +
             "<label for=\"des_segn\">Inserisci qui la tua segnalazione: </label>" +
             "<input type=\"text\" class=\"form-control ten-margin\" id=\"des_segn\">" +
             "</div>";
-    //var body = "<form><p class=\"text-muted\">Inserisci qui la tua segnalazione: <p><input type=\"text\" id=\"des_segn\"></input></form>";
     var footer = "<button type=\"button\" class=\"btn btn-default\" onClick=\"request_sendSegn()\">Invia</button>" +
             "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Annulla</button>";
     openModalMessage(title, body, footer);
@@ -821,16 +789,12 @@ function callFoto(foto_OID) {
     var id_foto_ext_arr = id_foto_ext.split(".");
     var id_foto = id_foto_ext_arr[0];
     var type = id_foto_ext_arr[1];
-    //console.log("in load: " + id_foto + " ext: " + type);
-    //console.log("in load " + id_foto);
     $.ajax({
         url: "ServletController",
         type: 'get',
         dataType: 'text',
-        //contentType: "image/jpg",
         data: {action: "Ricerca-getImage", url: foto, type: type},
         success: function (base64Image) {
-            //(foto + ": " + base64Image);
             var f = "<img class=\"img-responsive img-thumbnail\" src=\"data:image/" + type + ";base64, " + base64Image + "\" style=\"width:" + dim_image_car + "px;height:" + dim_image_car + "px;\">";
             $("#" + OID + "-" + id_foto + "").append(f);
         }
@@ -838,14 +802,11 @@ function callFoto(foto_OID) {
 }
 
 function loadAllfoto() {
-    //console.log(page);
     var fotoPage = foto_page;
-    //console.log("foto pagina: " + fotoPage);
     for (var i = 0; i < fotoPage.length; i++) {
         var foto = fotoPage[i];
         callFoto(foto);
     }
-    //activateCaroselli();
 }
 
 function savePath(list, annuncio) {
@@ -859,22 +820,12 @@ function savePath(list, annuncio) {
     return list;
 }
 
-/*$(window).scroll(function(){    
- $("#MapOptionDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
- });*/
 $(document).ready(function () {
     $('.checkbox_service').click(function () {
-        console.log("IN check");
-        /*if (!$(this).is(':checked')) {
-         return confirm("Are you sure?");
-         }*/
         var bus = $("#bus").is(':checked');
         var banche = $("#banche").is(':checked');
         var superM = $("#super").is(':checked');
-
-        console.log("super: " + superM + " banche: " + banche + " bus: " + bus);
-        var opt = [superM, banche, bus];
-
+        
         if (superM) {
             setMapOnAll(map, markers_super);
         } else {
