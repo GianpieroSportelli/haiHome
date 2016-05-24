@@ -31,6 +31,8 @@ $(document).ready(function () {
 
         backups = $input_target.val();
         $input_target.prop("disabled", false);
+        $('#new-password').prop("disabled", false);
+        $('#new-password2').prop("disabled", false);
 
         $(this).parent().children().each(function () {
             $(this).toggle();
@@ -52,6 +54,10 @@ $(document).ready(function () {
         $input_target.val(backups);
         $panel.children(".panel-body").removeClass("has-error");
         $input_target.prop("disabled", "disabled");
+        $('#new-password').val('');
+        $('#new-password2').val('');
+        $('#new-password').prop('disabled', true);
+        $('#new-password2').prop('disabled', true);
     });
 
     $('.save-edit').on('click', function () {
@@ -68,51 +74,57 @@ $(document).ready(function () {
             console.log("password mismatch - client side");
             $('#new-password2').attr('data-content', 'Le password non coincidono.');
             $('#new-password2').popover('show');
-            return false;
-        }
 
-        $.post(
-                "ServletController",
-                {
-                    'action': 'studente-edit-info',
-                    'field-value': new_content, /* credo di sì invece */
-                    'new-pw': $('#new-password').val()
-                },
-                function (responseJson) {
-                    if (responseJson.result) {
-                        $this2.parent().children().each(function () {
-                            $(this).toggle();
-                        });
-                        $input_target.prop("disabled", "disabled");
-                        $panel.children(".panel-body").removeClass("has-error");
+            var millisecondsToWait = 5000;
+            setTimeout(function () {
+                $('#new-password2').popover('hide');
+            }, millisecondsToWait);
+        } else {
 
-                        //        $panel.children(".panel-body").addClass("has-success");
-                        console.log("done");
-                        $('.start-edit').attr('data-content', 'Password modificata con successo');
-                        $('.start-edit').popover('show');
+            $.post(
+                    "ServletController",
+                    {
+                        'action': 'studente-edit-info',
+                        'field-value': new_content, /* credo di sì invece */
+                        'new-pw': $('#new-password').val()
+                    },
+                    function (responseJson) {
+                        if (responseJson.result) {
+                            $this2.parent().children().each(function () {
+                                $(this).toggle();
+                            });
+                            $input_target.prop("disabled", "disabled");
+                            $('#new-password').prop('disabled', true);
+                            $('#new-password2').prop('disabled', true);
+                            $panel.children(".panel-body").removeClass("has-error");
 
-                        var millisecondsToWait = 10000;
-                        setTimeout(function () {
-                            $('.start-edit').popover('hide');
-                        }, millisecondsToWait);
+                            //        $panel.children(".panel-body").addClass("has-success");
+                            console.log("done");
+                            $('#panel-password').attr('data-content', 'Password modificata con successo');
+                            $('#panel-password').popover('show');
 
-                    } else {
-                        $panel.children(".panel-body").addClass("has-error");
-                        console.log("error code: " + responseJson.error);
-                        $('.save-edit').attr('data-content', responseJson.error);
-                        $('.save-edit').popover('show');
+                            var millisecondsToWait = 5000;
+                            setTimeout(function () {
+                                $('#panel-password').popover('destroy');
+                            }, millisecondsToWait);
 
-                        var millisecondsToWait = 10000;
-                        setTimeout(function () {
-                            $('.save-edit').popover('hide');
-                        }, millisecondsToWait);
+                        } else {
+                            $panel.children(".panel-body").addClass("has-error");
+                            console.log("error code: " + responseJson.error);
+                            $('#panel-password').attr('data-content', responseJson.error);
+                            $('#panel-password').popover('show');
+
+                            var millisecondsToWait = 5000;
+                            setTimeout(function () {
+                                $('#panel-password').popover('destroy');
+                            }, millisecondsToWait);
+                        }
+                        $('#password').val('');
+                        $('#new-password').val('');
+                        $('#new-password2').val('');
                     }
-                    $('#password').val('');
-                    $('#new-password').val('');
-                    $('#new-password2').val('');
-                }
-        );
-
+            );
+        }
 
     });
 });
@@ -123,6 +135,9 @@ function checkStudenteType() {
     if (login_type === "g+" || login_type === "fb") {
         $('#rigapwd').css('display', 'none');
         //$('#rigaEmail').attr("class", "col-md-6 col-md-offset-3");
+    } else {
+        $('#new-password').prop('disabled', true);
+        $('#new-password2').prop('disabled', true);
     }
 
 }

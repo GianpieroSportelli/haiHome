@@ -12,13 +12,8 @@ import facade.QuartiereFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -33,8 +28,13 @@ public class GestoreCitta implements GestoreCittaLocal {
     @EJB
     private QuartiereFacadeLocal quartiereFacade;
 
-        
-    
+    /**
+     * Inserisce una città nel Database
+     *
+     * @param nome Il nome della città da inserire
+     * @return true se l'inserimento viene eseguito con successo, false
+     * altrimenti
+     */
     @Override
     public boolean insertCitta(String nome) {
 
@@ -51,8 +51,12 @@ public class GestoreCitta implements GestoreCittaLocal {
         return cittàFacade.find(city.getId()) != null;
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    /**
+     * Cancella una città dal Database
+     *
+     * @param nome Il nome della città da eliminare
+     * @return true se la città è stata eliminata, false altrimenti
+     */
     @Override
     public boolean deleteCitta(String nome) {
         for (Città c : cittàFacade.findAll()) {
@@ -64,6 +68,16 @@ public class GestoreCitta implements GestoreCittaLocal {
         return false;
     }
 
+    /**
+     * Inserisce, in una determinata citta, un quartiere e i cap ad esso
+     * associati
+     *
+     * @param nomeCittà Il nome della città
+     * @param nomeQuartiere Il nome del quartiere
+     * @param cap I CAP associati al quartiere
+     * @return false se la città non è stata trovata, true se l'inserimento è
+     * andato a buon fine
+     */
     @Override
     public boolean insertQuartiere(String nomeCittà, String nomeQuartiere, Collection<String> cap) {
         Città find = null;
@@ -85,9 +99,7 @@ public class GestoreCitta implements GestoreCittaLocal {
 
             quartiereFacade.create(nuovoQuartiere);
             quartieri.add(nuovoQuartiere);
-            for (Quartiere quartiere : quartieri) {
-                System.out.println(quartiere.getNome());
-            }
+
             find.setListaQuartieri(quartieri);
             cittàFacade.edit(find);
             return true;
@@ -95,7 +107,12 @@ public class GestoreCitta implements GestoreCittaLocal {
         return false;
 
     }
-    
+
+    /**
+     * Restituisce il nome di tutte le città presenti nel Database
+     *
+     * @return Un arrayList contenente il nome delle città
+     */
     @Override
     public ArrayList<String> getAllCittàNome() {
         ArrayList<String> lista = new ArrayList();
@@ -105,6 +122,12 @@ public class GestoreCitta implements GestoreCittaLocal {
         return lista;
     }
 
+    /**
+     * Restituisce i quartieri di una determinata città
+     *
+     * @param nomeCittà Il nome della città
+     * @return Un arrayList contenente i quartieri della città specificata
+     */
     @Override
     public ArrayList<String> getListaQuartieri(String nomeCittà) {
         ArrayList<String> listaQuartieri = null;
@@ -127,32 +150,31 @@ public class GestoreCitta implements GestoreCittaLocal {
     @Override
     public HashMap<String, ArrayList<String>> getQuartieriCapMap() {
         HashMap<String, ArrayList<String>> capMap = new HashMap();
-            for (Quartiere quartiere : quartiereFacade.findAll()) {
-                ArrayList<String> caps = (ArrayList<String>) quartiere.getCap();
-                for(String cap : caps){
-                    if(capMap.containsKey(cap)){
-                        ArrayList<String> quartTemp = capMap.get(cap);
-                        capMap.remove(cap);
-                        quartTemp.add(quartiere.getNome());
-                        capMap.put(cap, quartTemp);
-                    }else{
-                        ArrayList<String> quartTemp = new ArrayList();
-                        quartTemp.add(quartiere.getNome());
-                        capMap.put(cap, quartTemp);
-                    }
+        for (Quartiere quartiere : quartiereFacade.findAll()) {
+            ArrayList<String> caps = (ArrayList<String>) quartiere.getCap();
+            for (String cap : caps) {
+                if (capMap.containsKey(cap)) {
+                    ArrayList<String> quartTemp = capMap.get(cap);
+                    capMap.remove(cap);
+                    quartTemp.add(quartiere.getNome());
+                    capMap.put(cap, quartTemp);
+                } else {
+                    ArrayList<String> quartTemp = new ArrayList();
+                    quartTemp.add(quartiere.getNome());
+                    capMap.put(cap, quartTemp);
                 }
             }
-        
+        }
+
         return capMap;
     }
-    
-        
-        private HashMap<String, ArrayList<String>> capMap ;
+
+    private HashMap<String, ArrayList<String>> capMap;
 
     @Override
     public void setcapMap(HashMap<String, ArrayList<String>> capMap) {
         this.capMap = capMap;
-        }
+    }
 
     @Override
     public ArrayList<String> getQuartieriByCap(String cap) {
@@ -161,24 +183,23 @@ public class GestoreCitta implements GestoreCittaLocal {
 
     @Override
     public void buildQuartieriCapMap() {
-       this.capMap = new HashMap();
-            for (Quartiere quartiere : quartiereFacade.findAll()) {
-                ArrayList<String> caps = (ArrayList<String>) quartiere.getCap();
-                for(String cap : caps){
-                    if(capMap.containsKey(cap)){
-                        ArrayList<String> quartTemp = capMap.get(cap);
-                        capMap.remove(cap);
-                        quartTemp.add(quartiere.getNome());
-                        capMap.put(cap, quartTemp);
-                    }else{
-                        ArrayList<String> quartTemp = new ArrayList();
-                        quartTemp.add(quartiere.getNome());
-                        capMap.put(cap, quartTemp);
-                    }
+        this.capMap = new HashMap();
+        for (Quartiere quartiere : quartiereFacade.findAll()) {
+            ArrayList<String> caps = (ArrayList<String>) quartiere.getCap();
+            for (String cap : caps) {
+                if (capMap.containsKey(cap)) {
+                    ArrayList<String> quartTemp = capMap.get(cap);
+                    capMap.remove(cap);
+                    quartTemp.add(quartiere.getNome());
+                    capMap.put(cap, quartTemp);
+                } else {
+                    ArrayList<String> quartTemp = new ArrayList();
+                    quartTemp.add(quartiere.getNome());
+                    capMap.put(cap, quartTemp);
                 }
             }
-        
+        }
+
     }
-        
-    
+
 }
