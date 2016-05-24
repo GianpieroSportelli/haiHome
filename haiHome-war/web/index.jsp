@@ -102,7 +102,7 @@
         <div class="container"> 
             <div class="col-sm-12 outer-div non_opaco" id="div_studente">
                 <div class="inner-div non_opaco" id="search_div">
-                    <h1>Sei in cerca di casa a Torino <span id="search" class="glyphicon glyphicon-search fake_button"></span></h1>
+                    <h1>Sei in cerca di casa a Torino? <span id="search" class="glyphicon glyphicon-search fake_button"></span></h1>
                 </div>
             </div>
             <div class="col-sm-12" id="div_intermezzo">

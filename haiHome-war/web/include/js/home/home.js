@@ -7,7 +7,6 @@ var city = "Torino";
 
 
 $(document).ready(function () {
-    console.log("OK");
     $("#search").click(function () {
         goToSearch();
     });
@@ -27,18 +26,19 @@ $(document).ready(function () {
     });
 });
 
+
+//Funzione richiamata alla pressione del cerca nella home page.
 function goToSearch() {
     var search_page = "./search-page.jsp";
     $.ajax({
         url: "ServletController",
         type: 'post',
-        //dataType: 'json',
         data: {action: "Ricerca-setCity", city: city},
         success: function (response) {
             if (response == "true") {
                 window.location = search_page;
             } else {
-                console.log("Errore apertura ricerca");
+                alert("Errore apertura ricerca! contatta l'admin");
             }
         }
     });
