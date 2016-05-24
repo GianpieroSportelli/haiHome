@@ -42,10 +42,9 @@ public class ServletController extends HttpServlet {
              out.println("</head>");
              out.println("<body>");*/
 
-            
             //Prende il parametro "action" dalla form della pagina JSP ed elabora la richiesta
             String action = request.getParameter("action");
-            
+
             action = request.getHeader("action") != null ? request.getHeader("action") : action;
 
             if (action.equalsIgnoreCase("signup-studente") || action.equalsIgnoreCase("login-studente")) {
@@ -193,7 +192,7 @@ public class ServletController extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-pubblica-stanza")) {
                 request.getRequestDispatcher("/ServletLocatore").forward(request, response);
 
-            }else if (action.equalsIgnoreCase("Annunci-newAnnuncio-initialRequest")) {
+            } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-initialRequest")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
@@ -201,76 +200,60 @@ public class ServletController extends HttpServlet {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoAnnuncio")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
-
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoStanze")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-FotoUpload")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
-
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-infoCosti")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getImage")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
-
 
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-persisti")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-
             } else if (action.equalsIgnoreCase("Annunci-newAnnuncio-getQuartieri") || (action.equalsIgnoreCase("Annunci-editAnnuncio-getQuartieri"))) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-initialRequest")) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
-                
 
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoIndirizzo")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoAppartamento")) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
-
 
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-FotoUpload")) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoEditStanze")) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-eliminaStanza")) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
-               
 
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-newStanza")) {
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-            
             } else if (action.equalsIgnoreCase("Annunci-editAnnuncio-infoCosti")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-            } 
-            else if (action.equalsIgnoreCase("Annunci-oscuraAnnuncio")) {
+            } else if (action.equalsIgnoreCase("Annunci-oscuraAnnuncio")) {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
@@ -278,7 +261,10 @@ public class ServletController extends HttpServlet {
 
                 request.getRequestDispatcher("/ServletAnnuncio").forward(request, response);
 
-            }  else {
+            } else if (action.equalsIgnoreCase("admin-get-session")) {
+                request.getRequestDispatcher("/ServletAdmin").forward(request, response);
+                
+            } else {
                 // action random
                 System.out.println(action);
                 response.sendRedirect(request.getContextPath() + "/index.jsp"); // NOPE 

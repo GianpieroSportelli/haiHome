@@ -32,7 +32,7 @@ public class ServletRicerca extends HttpServlet {
 
     @EJB
     private GestoreRicercaLocal gestoreRicerca;
-    
+
     @EJB
     private GestoreImmaginiLocal gestoreImmagini;
 
@@ -54,7 +54,10 @@ public class ServletRicerca extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             RequestDispatcher rd = null;
             String action = request.getParameter("action");
-            System.out.println(action);
+            
+            System.out.println("ACTION: "+action);
+            
+            
             if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
                 response.setContentType("application/json");
                 String json = gestoreRicerca.attualeToJSON().toString();
@@ -62,14 +65,16 @@ public class ServletRicerca extends HttpServlet {
                 out.write(json);
 
             } else if (action.equalsIgnoreCase("Ricerca-setCity")) {
+                
                 String city = request.getParameter("city");
-                boolean result=gestoreRicerca.selezionaCittà(city);
+                //selezionare la città corrisponde a generare un filtro con solo la città impostata
+                boolean result = gestoreRicerca.selezionaCittà(city);
                 //invia quartieri
-                System.out.println("Filtro Creato:"+result);
+                System.out.println("Selezione andata a buon fine? " + result);
                 System.out.println(gestoreRicerca.attualeToJSON());
-                out.write(""+result);
+                out.write("" + result);
 
-            }else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+            } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
                 String id = request.getParameter("ID");
                 boolean esito = gestoreRicerca.loadFiltro(id);
                 out.write("" + esito);
@@ -83,17 +88,26 @@ public class ServletRicerca extends HttpServlet {
                 getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
 
             } else if (action.equalsIgnoreCase("search")) {
-                
+
                 String[] quartieri = request.getParameterValues("quartieri");
-                
+
                 String tipo = request.getParameter("tipo");
                 String pricefrom = request.getParameter("pricefrom");
-                
-                boolean compCondomino = request.getParameter("compCondominio")!=null;
-                boolean compRiscaldamento = request.getParameter("compRiscaldamento")!=null;
-                boolean arredato= request.getParameter("arredato")!=null;
-                
-                System.out.println("cmpCond: "+compCondomino+" cmpRis: "+compRiscaldamento+" arredato: "+arredato);
+
+                double prezzo = 0;
+                if (!pricefrom.equals("")) {
+                    try {
+                        prezzo = Double.valueOf(pricefrom);
+                    } catch (NumberFormatException ex) {
+                        System.err.println("Prezzo errato messo di default a 0");
+                    }
+                }
+
+                boolean compCondomino = request.getParameter("compCondominio") != null;
+                boolean compRiscaldamento = request.getParameter("compRiscaldamento") != null;
+                boolean arredato = request.getParameter("arredato") != null;
+
+                //System.out.println("cmpCond: "+compCondomino+" cmpRis: "+compRiscaldamento+" arredato: "+arredato);
                 //System.out.println("Quartieri selezionti");
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();
@@ -116,23 +130,61 @@ public class ServletRicerca extends HttpServlet {
                 }
 
                 boolean result;
-                result = gestoreRicerca.creaFiltroDiRicerca(Integer.valueOf(pricefrom), quartieriSel, compCondomino , compRiscaldamento,arredato);
-                System.out.println(gestoreRicerca.attualeToJSON());
-                
+                result = gestoreRicerca.creaFiltroDiRicerca(prezzo, quartieriSel, compCondomino, compRiscaldamento, arredato);
+
                 if (tipo.equalsIgnoreCase("Appartamento")) {
                     String nL = request.getParameter("numeroLocali");
                     String nB = request.getParameter("numeroBagni");
                     String nC = request.getParameter("numeroCamere");
                     String met = request.getParameter("metratura");
-                    result = gestoreRicerca.aggiornaAFiltroAppartamento(Integer.valueOf(nL), Integer.valueOf(nB), Integer.valueOf(nC), Double.valueOf(met));
-                    System.out.println("Filtro Appartamento: "+gestoreRicerca.attualeToJSON());
-                
+
+                    int inL = 0;
+                    if (!nL.equals("")) {
+                        try {
+                            inL = Integer.valueOf(nL);
+                        } catch (NumberFormatException ex) {
+                            System.err.println("numero Locali errato messo di default a 0");
+                        }
+                    }
+
+                    int inB = 0;
+                    if (!nB.equals("")) {
+                        try {
+                            inB = Integer.valueOf(nB);
+                        } catch (NumberFormatException ex) {
+                            System.err.println("numero Bagni errato messo di default a 0");
+                        }
+                    }
+
+                    int inC = 0;
+                    if (!nC.equals("")) {
+                        try {
+                            inC = Integer.valueOf(nC);
+                        } catch (NumberFormatException ex) {
+                            System.err.println("numero Camere errato messo di default a 0");
+                        }
+                    }
+
+                    double imet = 0;
+                    if (!met.equals("")) {
+                        try {
+                            imet = Double.valueOf(met);
+                        } catch (NumberFormatException ex) {
+                            System.err.println("metratura errata messa di default a 0");
+                        }
+                    }
+
+                    result = gestoreRicerca.aggiornaAFiltroAppartamento(inL, inB, inC, imet);
+                    System.out.println("Filtro Appartamento: " + gestoreRicerca.attualeToJSON());
+
                 } else if (tipo.equalsIgnoreCase("Stanza")) {
                     String tS = request.getParameter("tipoStanza");
                     result = gestoreRicerca.aggiornaAFiltroStanza(tS);
-                    System.out.println("Filtro Stanza: "+gestoreRicerca.attualeToJSON());
+                    System.out.println("Filtro Stanza: " + gestoreRicerca.attualeToJSON());
+                } else {
+                    System.out.println("Filtro Generale: " + gestoreRicerca.attualeToJSON());
                 }
-                
+
                 response.setContentType("application/json");
                 System.out.println(" Filtro Aggiornato: " + result);
                 String json = new Gson().toJson("" + result);
@@ -296,14 +348,14 @@ public class ServletRicerca extends HttpServlet {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
                 boolean result = false;
-                String id="";
+                String id = "";
                 if (session != null) {
                     String user_type = (String) session.getAttribute("user-type");
                     if (user_type != null) {
                         if (user_type.equalsIgnoreCase("STUDENTE")) {
                             JSONObject Jstudente = (JSONObject) session.getAttribute("user-data");
                             try {
-                                id=""+Jstudente.get("id");
+                                id = "" + Jstudente.get("id");
                                 result = true;
                             } catch (JSONException ex) {
                                 Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
@@ -311,20 +363,20 @@ public class ServletRicerca extends HttpServlet {
                         }
                     }
                 }
-                
+
                 out.write("" + id);
-            } else  if (action.equalsIgnoreCase("Ricerca-loggatoLocatore")) {
+            } else if (action.equalsIgnoreCase("Ricerca-loggatoLocatore")) {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
                 boolean result = false;
-                String id="";
+                String id = "";
                 if (session != null) {
                     String user_type = (String) session.getAttribute("user-type");
                     if (user_type != null) {
                         if (user_type.equalsIgnoreCase("LOCATORE")) {
                             JSONObject Jstudente = (JSONObject) session.getAttribute("user-data");
                             try {
-                                id=""+Jstudente.get("id");
+                                id = "" + Jstudente.get("id");
                                 result = true;
                             } catch (JSONException ex) {
                                 Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
@@ -332,17 +384,17 @@ public class ServletRicerca extends HttpServlet {
                         }
                     }
                 }
-                
+
                 out.write("" + id);
             } else if (action.equalsIgnoreCase("Ricerca-getImage")) {
                 String url = request.getParameter("url");
                 String type = request.getParameter("type");
-                String image="";
-                image=gestoreImmagini.getImage(url,type);
-                if(image==null){
-                out.write(""); //accrocchio momentaneo
-                }else{  
-                out.write(image);
+                String image = "";
+                image = gestoreImmagini.getImage(url, type);
+                if (image == null) {
+                    out.write(""); //accrocchio momentaneo
+                } else {
+                    out.write(image);
                 }
             }
         }

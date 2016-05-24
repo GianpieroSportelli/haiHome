@@ -14,8 +14,9 @@
             <a class="linkFooter" href="index.jsp">Home</a>
             ·
             <a class="linkFooter" href="#">About</a>
-            ·
-            <a class="linkFooter" data-toggle="modal" href="#adminModal">Area Riservata</a>
+            ·<!--
+            <a class="linkFooter" data-toggle="modal" href="#adminModal">Area Riservata</a> -->
+            <a id='admin-access' class="linkFooter" href='#0'>Area Riservata</a>
         </p>
 
         <p>haiHome? &copy; 2016</p>

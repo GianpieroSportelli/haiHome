@@ -22,14 +22,12 @@ public class GestoreAdmin implements GestoreAdminLocal {
     private AdministratorFacadeLocal administratorFacade;
 
     @Override
-    public boolean checkAdmin(String email) {
+    public boolean checkAdmin(String email, String password) {
         List<Administrator> listaAdmin = administratorFacade.findAll();
 
         for (Administrator adm : listaAdmin) {
-            if (adm.getEmail().compareToIgnoreCase(email) == 0
-                    && adm.getPassword().compareToIgnoreCase(adm.getPassword()) == 0) {
-                //ho trovato uno studente duplicato
-                //Mi salvo il riferimento allo studente trovato
+            if (adm.getEmail().equalsIgnoreCase(email)
+                    && adm.getPassword().equals(password)) {
                 return true;
             }
         }

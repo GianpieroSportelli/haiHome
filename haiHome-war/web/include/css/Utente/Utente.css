@@ -268,20 +268,6 @@ table {
 
 hr { margin: 14px; border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
 
-.filtri{
-    border-top: 1.5px dashed #E7EAEC;
-    border-bottom: 1.5px dashed #E7EAEC;
-    border-left: 1.5px dashed #E7EAEC;
-    border-right: 1.5px dashed #E7EAEC;
-}
-
-.ibox-content{
-    border-top: 1.5px dashed #E7EAEC;
-    border-bottom: 1.5px dashed #E7EAEC;
-    border-left: 1.5px dashed #E7EAEC;
-    border-right: 1.5px dashed #E7EAEC;
-}
-
 #footerAnnuncio{
     height:100px; 
 }

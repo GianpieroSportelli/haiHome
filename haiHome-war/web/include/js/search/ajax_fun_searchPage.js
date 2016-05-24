@@ -19,7 +19,7 @@ var actual = 0;
 
 
 
-//Funzion Ajax per caricare e inizializzare la mappa e caricare gli annunci
+//Funzione Ajax per caricare e inizializzare la mappa e caricare gli annunci
 function annunci_search() {
     $.post("ServletController",
             {action: "Ricerca-geoCity"},
@@ -28,7 +28,6 @@ function annunci_search() {
                 $.each(responseJson, function (index, item) {
                     latlng[index] = item;
                 });
-                //disableSave();
                 //funzione che inizializza la mappa sulla città
                 initialize(latlng[0], latlng[1]);
                 //Deferred serve pr delegare l'esecuzione di funzioni javascript
@@ -57,7 +56,6 @@ function addMarker(location, label) {
         position: location,
         title: label,
         map: map
-                //icon: icon
     });
     return marker;
 }
@@ -106,7 +104,6 @@ function load_Annunci() {
                     annunci[index] = annuncio;
                     var marker = addMarkerToJSON(annuncio, index);
                     marker_annunci.push(marker);
-                    //console.log(load_annuncio_image(annuncio));
                 });
                 actual = 0;
                 n_page = n_annunci / N_ANNUNCI_X_PAGE;
@@ -118,8 +115,6 @@ function load_Annunci() {
 }
 
 function create_pageResult() {
-    //console.log("CREATE");
-    //console.log(12 / N_ANNUNCI_X_PAGE);
     page_annunci = [];
     var result_div = '<div class = "search-result" >';
     var close_div = '</div>';
@@ -170,11 +165,9 @@ function create_info_annuncio(annuncio) {
     html += "<div class=\"center\">" +
             "<h1>" + tipoAnnuncio + "</h1>" +
             "<p>" + indirizzo + "</p>" +
-            //"<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
             "<p><span class=\"text-primary\">Metratura Appartamento: </span>" + annuncio.Metratura + " m<sup>2</sup></p>" +
             "<p><span class=\"text-primary\">Data inizio affitto: </span>" + annuncio.DataInizioAffitto + "</p>" +
             "<p> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
-    //"<p class=\"text-muted\"> <span class=\"text-primary\">Locatore: </span> " + annuncio.Locatore.nome + "</p>";
     if (annuncio.Arredato) {
         html += "<p> <span class=\"text-primary\">Arredato: </span> Si </p>";
     } else {
@@ -289,6 +282,7 @@ function callFoto(foto_OID) {
         }
     });
 }
+
 function loadAllfoto(page) {
 
     var fotoPage = foto_page[page];
@@ -345,7 +339,16 @@ function nextpage() {
     }
 }
 
-
+function loggatoStudente() {
+    $.post("ServletController",
+            {action: "Ricerca-loggatoStudente"},
+            function (item) {
+                console.log("Studente loggato?: " + item);
+                if (item != "") {
+                    $("#saveButton").show("fast");
+                }
+            });
+}
 
 function init_filtro() {
     $("#quartieri-div").hide();
@@ -361,7 +364,6 @@ function init_filtro() {
                 filtro_S.done(init_filtro_tipoStanze);
                 filtro_S.resolve();
             });
-
 }
 
 function init_filtro_tipoStanze() {
@@ -383,7 +385,6 @@ function getfiltro() {
     $.post("ServletController",
             {action: "Ricerca-getFiltro"},
             function (filtro) {
-                //console.log(filtro);
                 var Quartieri = filtro.Quartieri;
                 $.each(Quartieri, function (index, quart) {
                     $('#' + quart).prop('selected', true);
@@ -393,7 +394,13 @@ function getfiltro() {
                 });
 
                 $("#quartieri-div").show();
-                $('#pricefrom').val(filtro.Prezzo);
+                
+                if (filtro.Prezzo != 0) {
+                    $('#pricefrom').val(filtro.Prezzo);
+                }else{
+                   $('#pricefrom').val(""); 
+                }
+                
                 $('#compCondominio').prop('checked', filtro.CompresoCondominio);
                 $('#compRiscaldamento').prop('checked', filtro.CompresoRiscaldamento);
                 $('#arredato').prop('checked', filtro.Arredato);
@@ -401,10 +408,31 @@ function getfiltro() {
                 var tipo = filtro.Tipo;
                 if (tipo == "Appartamento") {
                     $('#tipo-' + tipo).prop('selected', true);
-                    $('#numeroLocali').val(filtro.NumeroLocali);
-                    $('#numeroCamere').val(filtro.NumeroCamereDaLetto);
-                    $('#numeroBagni').val(filtro.NumeroBagni);
-                    $('#metratura').val(filtro.Metratura);
+
+                    if (filtro.NumeroLocali != 0) {
+                        $('#numeroLocali').val(filtro.NumeroLocali);
+                    } else {
+                        $('#numeroLocali').val("");
+                    }
+
+                    if (filtro.NumeroCamereDaLetto != 0) {
+                        $('#numeroCamere').val(filtro.NumeroCamereDaLetto);
+                    } else {
+                        $('#numeroCamere').val("");
+                    }
+
+                    if (filtro.NumeroBagni != 0) {
+                        $('#numeroBagni').val(filtro.NumeroBagni);
+                    } else {
+                        $('#numeroBagni').val("");
+                    }
+
+                    if (filtro.Metratura != 0) {
+                        $('#metratura').val(filtro.Metratura);
+                    } else {
+                        $('#metratura').val("");
+                    }
+
                     $("#divTipoStanza").hide();
                     $("#divNLocali").show("slow");
                     $("#divNCamere").show("slow");
@@ -439,30 +467,6 @@ function send_Annuncio(k) {
     window.open(url);
 }
 
-// implement JSON.stringify serialization
-JSON.stringify = JSON.stringify || function (obj) {
-    var t = typeof (obj);
-    if (t != "object" || obj === null) {
-        // simple data type
-        if (t == "string")
-            obj = '"' + obj + '"';
-        return String(obj);
-    } else {
-        // recurse array or object
-        var n, v, json = [], arr = (obj && obj.constructor == Array);
-        for (n in obj) {
-            v = obj[n];
-            t = typeof (v);
-            if (t == "string")
-                v = '"' + v + '"';
-            else if (t == "object" && v !== null)
-                v = JSON.stringify(v);
-            json.push((arr ? "" : '"' + n + '":') + String(v));
-        }
-        return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-    }
-};
-
 function persistiFiltro() {
     console.log("salva filtro");
     $.post("ServletController",
@@ -470,18 +474,20 @@ function persistiFiltro() {
             function (item) {
                 if (item == "ok") {
                     //alert("Fitro Salvato!!");
-                    var title="Ok...";
-                    var body="Salvataggio andato a buon fine!!";;
-                    var footer=null;
+                    var title = "Ok...";
+                    var body = "Salvataggio andato a buon fine!!";
+                    ;
+                    var footer = null;
                     openModalMessage(title, body, footer);
                     var getf = $.Deferred();
                     getf.done(getfiltro);
                     getf.resolve();
-                }else{
-                   var title="Ops...";
-                    var body="C'è stato un errore nel salvataggio, contatti l'admin per maggiori informazini.";;
-                    var footer=null;
-                    openModalMessage(title, body, footer); 
+                } else {
+                    var title = "Ops...";
+                    var body = "C'è stato un errore nel salvataggio, contatti l'admin per maggiori informazini.";
+                    ;
+                    var footer = null;
+                    openModalMessage(title, body, footer);
                 }
             });
 }
@@ -508,7 +514,6 @@ function persistiFiltro_init() {
 //Invio della form tramite PLUGIN
 $(document).ready(function () {
     $('#searchForm').ajaxForm(function () {
-        //$("#searchDiv").stop().animate({"marginTop": "0px"}, "slow");
         clearMarkers(marker_annunci);
         marker_annunci = new Array();
         load_Annunci();
@@ -523,22 +528,30 @@ $(window).scroll(function () {
     if (($(window).scrollTop() + 200) >= $(document).height() - $(window).height()) {
         nextpage();
     }
-    /*per far camminare il div del filtro
-     * if (($(window).scrollTop()+700) <= $(document).height() - $(window).height() && ($(window).scrollTop()-700) <= $(document).height() - $(window).height()) {
-     $("#searchDiv").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft": ($(window).scrollLeft()) + "px"}, "slow");
-     }*/
 });
 
-
-function loggatoStudente() {
-    $.post("ServletController",
-            {action: "Ricerca-loggatoStudente"},
-            function (item) {
-                console.log("Studente loggato?: " + item);
-                if (item != "") {
-                    $("#saveButton").show("fast");
-                }
-            });
-}
+// implement JSON.stringify serialization
+JSON.stringify = JSON.stringify || function (obj) {
+    var t = typeof (obj);
+    if (t != "object" || obj === null) {
+        // simple data type
+        if (t == "string")
+            obj = '"' + obj + '"';
+        return String(obj);
+    } else {
+        // recurse array or object
+        var n, v, json = [], arr = (obj && obj.constructor == Array);
+        for (n in obj) {
+            v = obj[n];
+            t = typeof (v);
+            if (t == "string")
+                v = '"' + v + '"';
+            else if (t == "object" && v !== null)
+                v = JSON.stringify(v);
+            json.push((arr ? "" : '"' + n + '":') + String(v));
+        }
+        return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    }
+};
 
 

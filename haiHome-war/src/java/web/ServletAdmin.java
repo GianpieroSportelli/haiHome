@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,21 +40,28 @@ public class ServletAdmin extends HttpServlet {
             String action = request.getParameter("action");
             /*gestoreAdmin.addAdmin("admin@haihome.it", "haihome");
             out.write("Aggiunto");*/
+            HttpSession session = request.getSession(); 
             
             if (action.equalsIgnoreCase("login-admin")) {
                 
                 String email = request.getParameter("adminEmail");
-                String pass = request.getParameter("adminPW");
-                //System.out.println(email + " " + pass);
+                String password = request.getParameter("adminPW");
                 
-                
-                if (gestoreAdmin.checkAdmin(email) == true) {
-                    //E' presente un admin con quelle credenziali
+                if (gestoreAdmin.checkAdmin(email, password)) {
                     out.write("OK");
+                    
+                    session.setAttribute("user-type", "admin");
+                    session.setAttribute("email", email);
                 } else {
                     out.write("Credenziali ADMIN errate.");
                 }
                 //getServletContext().getRequestDispatcher("/admin.jsp").forward(request, response);
+            }
+            else if (action.equalsIgnoreCase("admin-get-session")) {
+                //ansia ^ 2
+                String user_type = (String) session.getAttribute("user-type"); 
+                boolean res = user_type != null && user_type.equalsIgnoreCase("admin");
+                out.write(res ? "OK" : "ERR");
             }
         }
     }

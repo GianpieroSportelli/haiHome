@@ -61,7 +61,6 @@
 
         <!-- Robe di login2.jsp ROBE IN DUBBIO DA DECIDERE-->
         <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-
         <link rel="stylesheet" href="include/css/login//reset.css"> <!-- CSS reset -->
         <link rel="stylesheet" href="include/css/login/style2.css"> <!-- Gem style -->
         <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
@@ -252,6 +251,7 @@
             $(document).ready(function () {
                 $(".infobox").colorbox({rel: 'infobox'});
             });
+            
             $("select").change(function () {
                 if ($("#tipo").val() === "Appartamento") {
                     //alert("Appartamento");
@@ -278,33 +278,6 @@
 
             });
 
-            $("#searchForm").on("submit", function () {
-                //alert("in");
-
-                if ($("#pricefrom").val() === '') {
-                    $("#pricefrom").val("0");
-                    //alert("prezzo 0");
-                }
-                if ($("#tipo").val() === 'Appartamento') {
-                    if ($("#numeroLocali").val() === '') {
-                        $("#numeroLocali").val("0");
-                        //alert("prezzo 0");
-                    }
-                    if ($("#numeroCamere").val() === '') {
-                        $("#numeroCamere").val("0");
-                        //alert("prezzo 0");
-                    }
-                    if ($("#numeroBagni").val() === '') {
-                        $("#numeroBagni").val("0");
-                        //alert("prezzo 0");
-                    }
-                    if ($("#metratura").val() === '') {
-                        $("#metratura").val("0");
-                        //alert("prezzo 0");
-                    }
-                }
-            });
-
             $("#detail-price-Button").click(function () {
                 if ($("#detail-price-Button").hasClass("glyphicon-plus")) {
                     $("#detail-price").show("slow");
@@ -328,6 +301,7 @@
                     $("#detail-NBagni-Button").addClass("glyphicon-plus");
                 }
             });
+            
             $("#detail-metratura-Button").click(function () {
                 if ($("#detail-metratura-Button").hasClass("glyphicon-plus")) {
                     $("#metratura-div").show("slow");
@@ -339,6 +313,7 @@
                     $("#detail-metratura-Button").addClass("glyphicon-plus");
                 }
             });
+            
             $("#detail-numeroCamere-Button").click(function () {
                 if ($("#detail-numeroCamere-Button").hasClass("glyphicon-plus")) {
                     $("#numeroCamere-div").show("slow");

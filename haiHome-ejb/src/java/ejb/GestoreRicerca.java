@@ -40,23 +40,21 @@ public class GestoreRicerca implements GestoreRicercaLocal {
 
     @EJB
     private FiltroDiRicercaFacadeLocal filtroDiRicercaFacade;
-    @EJB
-    private QuartiereFacadeLocal quartiereFacade;
+    
     @EJB
     private CittàFacadeLocal cittàFacade;
+    
     @EJB
     private GoogleMapsBeanLocal gmb;
+    
     @EJB
     private GestoreStudenteLocal gestoreStudente;
 
     FiltroDiRicerca filtroAttuale = null;
 
     Città cittàAttuale = null;
-    
 
-    // Add business logic below. (Right-click in editor and choose
-    
-    // "Insert Code > Add Business Method")
+ 
     @Override
     public boolean selezionaCittà(String città) {
         for (Città cit : cittàFacade.findAll()) {
@@ -108,6 +106,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             nuovoAttuale.setListaQuartieri(filtroAttuale.getListaQuartieri());
             nuovoAttuale.setCompresoCondominio(filtroAttuale.isCompresoCondominio());
             nuovoAttuale.setCompresoRiscaldamento(filtroAttuale.isCompresoRiscaldamento());
+            nuovoAttuale.setArredato(filtroAttuale.isArredato());
             //END CAST
             nuovoAttuale.setMetratura(metratura);
             nuovoAttuale.setNumeroBagni(numeroBagni);
@@ -135,6 +134,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                 nuovoAttuale.setListaQuartieri(filtroAttuale.getListaQuartieri());
                 nuovoAttuale.setCompresoCondominio(filtroAttuale.isCompresoCondominio());
                 nuovoAttuale.setCompresoRiscaldamento(filtroAttuale.isCompresoRiscaldamento());
+                nuovoAttuale.setArredato(filtroAttuale.isArredato());
                 //END CAST
                 nuovoAttuale.setTipo(enumTipo);
                 filtroAttuale = nuovoAttuale;
@@ -144,7 +144,6 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         }
         return false;
     }
-//Non vengono considerati per ora il compresoRiscaldamento-Condominio
 
     @Override
     public JSONArray usaFiltroAttuale() {
@@ -153,12 +152,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
             try {
                 Collection<Annuncio> listResult = new ArrayList<>();
                 Collection<Annuncio> annunci = filtroAttuale.getCittà().getAnnunci();
-                int i = 1;
-                for (Annuncio x : annunci) {
-                    System.out.println(i++ + "-" + x.toJSON());
-                }
                 Collection<String> quartieriFiltro = filtroAttuale.getListaQuartieri();
-
                 for (Annuncio x : annunci) {
                     Annuncio after = acceptAnnuncio(x, quartieriFiltro);
                     if (after != null) {
@@ -166,10 +160,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                     }
                 }
                 Collections.sort((List<Annuncio>) listResult);
-                
-                
                 result = CollectionToJSONArray(listResult);
-
             } catch (JSONException ex) {
                 Logger.getLogger(GestoreRicerca.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -223,16 +214,15 @@ public class GestoreRicerca implements GestoreRicercaLocal {
     }
 
     private Annuncio acceptAnnuncio(Annuncio x, Collection<String> quartieriFiltro) {
-        //Ricordati di aggiungere compreso riscaldamento e compreso condominio
         Annuncio result = x.clone();
 
         boolean accept = false;
-        //System.out.println("filtro arredato: " + filtroAttuale.isArredato() + " annuncio " + x.getId() + " : " + x.isArredato());
-        boolean sentArr = filtroAttuale.isArredato() && !x.isArredato();
-        System.out.println("locatore: " + x.getLocatore().isBloccato());
-        if (!x.getLocatore().isBloccato()) {
+        
+        boolean sentinella_Arredato = filtroAttuale.isArredato() && !x.isArredato();
+        //Primo step di accettazione
+        if (!x.getLocatore().isBloccato()) { //locatore bloccato
             if (!x.isArchiviato() && !x.isOscurato()) {
-                if (!sentArr) {
+                if (!sentinella_Arredato) {
                     if (!quartieriFiltro.isEmpty()) {
                         for (String quart : quartieriFiltro) {
                             if (x.getQuartiere().equalsIgnoreCase(quart)) {
@@ -246,32 +236,35 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                 }
             }
         }
+        
         if (accept) {
-            //accept = true;
+            //Superato primo step ora si passa a controlli più approfonditi
             accept = false;
+            //FiltroAttuale istanza di FiltroAppartamento accettati solo annunci Appartamento
             if (filtroAttuale instanceof FiltroAppartamento) {
                 FiltroAppartamento attuale = (FiltroAppartamento) filtroAttuale;
                 if (!x.isAtomico()) {
                     accept = false;
                 } else {
                     boolean out_prezzo = attuale.getPrezzo() != 0 && x.getPrezzo() > attuale.getPrezzo();
-                    boolean out_locali = attuale.getNumeroLocali() != 0 && attuale.getNumeroLocali() > x.getNumeroStanze();
+                    boolean out_locali = attuale.getNumeroLocali() != 0 &&  x.getNumeroStanze() < attuale.getNumeroLocali();
                     int[] stanze = countRoom(x);
                     boolean out_bagni = !out_locali && attuale.getNumeroBagni() != 0 && stanze[0] < attuale.getNumeroBagni();
                     boolean out_camere_letto = !out_locali && attuale.getNumeroCamereDaLetto() != 0 && stanze[1] < attuale.getNumeroCamereDaLetto();
-                    boolean out_met = !out_locali && attuale.getMetratura() != 0 && attuale.getMetratura() > x.getMetratura();
+                    boolean out_met = !out_locali && attuale.getMetratura() != 0 && x.getMetratura() < attuale.getMetratura();
                     boolean cmpCon = attuale.isCompresoCondominio() && !x.isCompresoCondominio();
                     boolean cmpRisc = attuale.isCompresoRiscaldamento() && !x.isCompresoRiscaldamento();
-
+                    
                     accept = !out_bagni && !out_camere_letto && !out_locali && !out_met && !out_prezzo && !cmpCon && !cmpRisc;
                 }
 
-            } else if (filtroAttuale instanceof FiltroStanza) {
+            }//filtroAttuale FiltroStanze accettati solo annunci per stanze che rispettano i criteri
+            else if (filtroAttuale instanceof FiltroStanza) {
                 FiltroStanza attuale = (FiltroStanza) filtroAttuale;
                 boolean ok;
                 if (!x.isAtomico()) {
                     Collection<Stanza> stanze = x.getListaStanza();
-                    ArrayList<Stanza> newStanze = new ArrayList<Stanza>();
+                    ArrayList<Stanza> newStanze = new ArrayList<>();
                     for (Stanza s : stanze) {
                         if (s instanceof StanzaInAffitto) {
                             StanzaInAffitto sF = (StanzaInAffitto) s;
@@ -281,6 +274,7 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                             boolean cmpRisc = attuale.isCompresoRiscaldamento() && !sF.isCompresoRiscaldamento();
                             boolean tipo = sF.getTipo() != attuale.getTipo();
                             ok = !archiviato && !out_prezzo && !tipo && !cmpCond && !cmpRisc;
+                            
                             if (ok || archiviato) {
                                 newStanze.add(sF);
                                 accept = accept || ok;
@@ -299,39 +293,32 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                     accept = false;
                 }
 
-            } else if (x.isAtomico()) {
+            } //filtro di tipo generale controllo di accettazione su entrambi i tipi di annnuncio
+            else if (x.isAtomico()) {
                 boolean out_prezzo_atomico = filtroAttuale.getPrezzo() != 0 && x.isAtomico() && x.getPrezzo() > filtroAttuale.getPrezzo();
                 boolean cmpCon_atomico = filtroAttuale.isCompresoCondominio() && x.isAtomico() && !x.isCompresoCondominio();
                 boolean cmpRisc_atomico = filtroAttuale.isCompresoRiscaldamento() && x.isAtomico() && !x.isCompresoRiscaldamento();
                 accept = !out_prezzo_atomico && !cmpCon_atomico && !cmpRisc_atomico;
             } else {
                 boolean ok;
-                ArrayList<Stanza> newStanze = new ArrayList<Stanza>();
+                ArrayList<Stanza> newStanze = new ArrayList<>();
                 for (Stanza s : x.getListaStanza()) {
                     if (s instanceof StanzaInAffitto) {
                         StanzaInAffitto sF = (StanzaInAffitto) s;
-
                         boolean archiviato = sF.isArchiviato();
                         boolean out_prezzo = filtroAttuale.getPrezzo() != 0 && sF.getPrezzo() > filtroAttuale.getPrezzo();
                         boolean cmpCond = filtroAttuale.isCompresoCondominio() && !sF.isCompresoCondominio();
                         boolean cmpRisc = filtroAttuale.isCompresoRiscaldamento() && !sF.isCompresoRiscaldamento();
                         boolean searchCriteria=!out_prezzo && !cmpCond && !cmpRisc;
+                        
                         ok = !archiviato && searchCriteria;
-                        //System.out.println("Pass stanza "+sF.getId()+": "+(archiviato && !searchCriteria));
+                       
                         if (ok || archiviato) {
                             newStanze.add(sF);
                             accept = accept || ok;
                         } else {
                             StanzaInAffitto newS = (StanzaInAffitto) sF.clone();
-                            //newS.setId(sF.getId());
                             newS.setVisibile(false);
-                            
-                            /*newS.setCompresoCondominio(sF.isCompresoCondominio());
-                            newS.setCompresoRiscaldamento(sF.isCompresoRiscaldamento());
-                            newS.setFoto(sF.getFoto());
-                            newS.setMetratura(sF.getMetratura());
-                            newS.setPrezzo(sF.getPrezzo());
-                            newS.setTipo(sF.getTipo());*/
                             newStanze.add(newS);
                         }
                     } else {
@@ -341,6 +328,10 @@ public class GestoreRicerca implements GestoreRicercaLocal {
                 result.setListaStanza(newStanze);
             }
         }
+        //fine accettazione annuncio
+        
+        
+        
         if (!accept) {
             result = null;
         }
@@ -368,12 +359,10 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return result;
     }
 
-    //NOTA info Locatore prese con il .toString() cercare metodo migliore
     private JSONArray CollectionToJSONArray(Collection<Annuncio> annunci) throws JSONException {
         JSONArray result = new JSONArray();
         for (Annuncio x : annunci) {
             result.put(x.toJSON());
-            //result.put(x.getId());
         }
         return result;
     }
@@ -405,20 +394,13 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return null;
     }
 
-    /**
-     *
-     * @param lat
-     * @param lng
-     * @param rad
-     * @return
-     */
+    
     @Override
     public JSONArray getSupermarketNearBy(double lat, double lng, double rad) {
         JSONArray result = new JSONArray();
         ArrayList<JSONObject> superM = gmb.getSupermarketNearBy(lat, lng, rad);
         for (JSONObject x : superM) {
             result.put(x);
-            //result.put(x.getId());
         }
         return result;
     }
@@ -429,7 +411,6 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         ArrayList<JSONObject> superM = gmb.getBankNearBy(lat, lng, rad);
         for (JSONObject x : superM) {
             result.put(x);
-            //result.put(x.getId());
         }
         return result;
     }
@@ -440,7 +421,6 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         ArrayList<JSONObject> superM = gmb.getBusNearBy(lat, lng, rad);
         for (JSONObject x : superM) {
             result.put(x);
-            //result.put(x.getId());
         }
         return result;
     }
@@ -466,6 +446,9 @@ public class GestoreRicerca implements GestoreRicercaLocal {
         return filtroAttuale != null;
     }
 
+    
+    //METODI WS_RESTFUL
+    
     @Override
     public JSONObject create_useFilter(JSONObject obj) {
         JSONObject result = new JSONObject();

@@ -56,10 +56,9 @@ function create_pageResult_studente() {
     page_annunci = [];
     var result_div = '<div class = "search-result" >';
     var close_div = '</div>';
-    var no_res = "<div class=\"panel panel-default\">" +
-            "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\">Nessun annuncio salvato.</p>"
-            + "</div> " +
-            "</div>";
+    var no_res = "<div class=\"panel-heading\"> I tuoi annunci </div>" +
+            "<div class=\"panel-body\"> <p>Nessun annuncio salvato.</p>"
+            + "</div> ";
     var page_html = '';
     if (n_page_1 == 0) {
         $("#annunci").empty();
@@ -115,11 +114,17 @@ function create_info_annuncio(annuncio, k) {
     var indirizzo_arr = indirizzo.split(",");
     indirizzo = indirizzo_arr[0] + "," + indirizzo_arr[1];
     var htmlOscurato = '';
-    if (annuncio.Oscurato === true) {
+    if (annuncio.Oscurato) {
         htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO OSCURATO</span> </p>";
     }
-    if (annuncio.Archiviato === true) {
+    if (annuncio.Archiviato) {
         htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">ANNUNCIO ARCHIVIATO</span> </p>";
+    }
+    
+    //console.log("IL LOCATORE E' BLOCCATO?: " + annuncio.Locatore.bloccato + " E: " + (locBloccato == "true"));
+    if (annuncio.Locatore.bloccato === "true") {
+        //console.log("SONO ENTRATO PERCHE' IL LOCATORE BLOCCATO VALUE E': " + annuncio.Locatore.bloccato);
+        htmlOscurato = "<p style=\"color:red;\"><span class=\"center\">LOCATORE BLOCCATO</span> </p>";
     }
     html += "<div class=\"center\" OnClick=send_Annuncio(" + k + ") style=\"cursor:pointer\">" +
             htmlOscurato +
@@ -366,11 +371,11 @@ function activateCaroselli() {
 }
 
 /*function prevpage_1() {
-    if (actual_1 > 1) {
-        var page = actual_1 - 1;
-        selectpage_1(page);
-    }
-}*/
+ if (actual_1 > 1) {
+ var page = actual_1 - 1;
+ selectpage_1(page);
+ }
+ }*/
 
 function nextpage_1() {
     if (n_page_1 != 0) {
@@ -389,6 +394,9 @@ function send_Annuncio(k) {
         $('#annuncio-' + k).popover('show');
     } else if (annuncio.Archiviato) {
         $('#annuncio-' + k).attr('data-content', "L'annuncio è stato archiviato e non può essere visualizzato.");
+        $('#annuncio-' + k).popover('show');
+    } else if (annuncio.Locatore.bloccato === "true") {
+        $('#annuncio-' + k).attr('data-content', "Il locatore è stato bloccato e non può essere visualizzato.");
         $('#annuncio-' + k).popover('show');
     } else {
         var url = "/haiHome-war/dettagliAnnuncio.jsp";
@@ -493,10 +501,9 @@ function refresh_annunci() {
     if (n_page_1 != 0) {
         selectpage_1(1);
     } else {
-        var no_res = "<div class=\"panel panel-default\">" +
-                "<div class=\"panel-heading\"> <p class=\"text-primary\"> <img src=\"include/css/Utente/Error-30.png\">Nessun annuncio salvato.</p>"
-                + "</div> " +
-                "</div>";
+        var no_res = "<div class=\"panel-heading\"> I tuoi annunci </div>" +
+                "<div class=\"panel-body\"> <p>Nessun annuncio salvato.</p>"
+                + "</div> ";
         $("#annunci").empty();
         $("#annunci").append(no_res);
         //$("#list-result").append(result_div + no_res + close_div);

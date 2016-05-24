@@ -51,10 +51,7 @@ jQuery(document).ready(function ($) {
         $form.keyup(function () {
             var empty = false;
 
-            /* questa roba qua, una volta funzionante, 
-             * va messa in modo che triggeri per ogni singolo input - 
-             * diventa più leggero e non agiamo su tutto il form ogni volta
-             */
+            
             $form.each(function () {
                 var name = $(this).attr("name");
                 var input_value = $(this).val().trim();
