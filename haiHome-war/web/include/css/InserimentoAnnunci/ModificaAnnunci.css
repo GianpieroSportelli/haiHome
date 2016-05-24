@@ -8,6 +8,20 @@ and open the template in the editor.
     Author     : giacomocavallo
 */
 
+
+body {
+    background-color: white;
+}
+
+p {
+    font-family: initial ;
+}
+
+h1, h2, h3, h4 {
+    font-family: initial;
+    font-weight: initial;
+}
+
 .buttonTopRight{
     position: absolute;
     float: right;

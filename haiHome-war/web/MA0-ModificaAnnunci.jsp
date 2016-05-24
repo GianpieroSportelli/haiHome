@@ -48,6 +48,7 @@
         <!-- end google+ login stuff -->
         
         <!-- Inizio import header --------------------->
+        <link rel="stylesheet" href="include/css/header.css">
         <script src="include/js/header-updater.js"></script>
         <!-- Script modal login -->
         <script src="include/js/login/modal_validation_and_stuff.js"></script> 
@@ -62,15 +63,11 @@
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
         
-
-      
-
         
-        <!-- fine roba utile al footer e al header -->
-
-
-        
-        
+                        <!-- INIZIO footer css -->
+        <link href="include/css/footer/footer.css" rel="stylesheet">
+        <!-- FINE footer css -->
+                
         <!-- dropzone -->
         <link rel="stylesheet" href="include/css/InserimentoAnnunci/dropzone1.css"> 
         <script type="text/javascript" src="include/js/InserimentoAnnunci/dropzone1.js"></script>
@@ -179,8 +176,13 @@
                 </div>
 
             </div>
+            <div>
+                  <a href="locatore-profile.jsp">Torna al Profilo</a>          
+            </div>
         </div> <!-- fine container -->
-
+        
+                        
+                <%@include file="/footer2.jsp" %>
 
         <!-- script miei -->
                 <!--mio scriot autocomplite -->
@@ -190,6 +192,9 @@
         <script type="text/javascript" src="include/js/InserimentoAnnunci/stanzeUtilyMod.js"></script>
         
         <!-- fine script miei -->
+        
+
+
 
 
     </body>

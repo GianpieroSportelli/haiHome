@@ -1032,7 +1032,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         this.editPhotoTempPath = editPhotoTempPath;
     }
     
-        private HashMap<String, ArrayList<String>> stanzeInfo = new HashMap();
+    private HashMap<String, ArrayList<String>> stanzeInfo = new HashMap();
         
         
     @Override

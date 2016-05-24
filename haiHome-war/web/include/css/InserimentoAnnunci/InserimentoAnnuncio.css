@@ -8,6 +8,9 @@ and open the template in the editor.
     Author     : giacomocavallo
 */
 
+body{
+    background: white;
+}
 .stepwizard-step p {
     margin-top: 10px;
 }
@@ -16,8 +19,9 @@ and open the template in the editor.
 }
 .stepwizard {
     display: table;
-    width: 50%;
+    width: 100%;
     position: relative;
+
 }
 .stepwizard-step button[disabled] {
     opacity: 1 !important;
@@ -49,18 +53,24 @@ and open the template in the editor.
 }
 
 .formContainer {
-    border-radius: 50px 50px 50px 50px;
-    -moz-border-radius: 50px 50px 50px 50px;
-    -webkit-border-radius: 50px 50px 50px 50px;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
     border: 3px solid #448eb0;
-    border-top-width: 50px ;
-    margin-top: 10px;
-    margin-bottom:  10px
+    border-top-width: 30px ;
+    margin-top: 2px;
+    margin-bottom:  2px
+
+}
+
+.formContainer .formStanzaElement {
+    margin-top: 7px;
+    margin-bottom:  3px
 
 }
 
 .prezzoStanzaCont{ 
-        border-radius: 50px 50px 50px 50px;
+    border-radius: 50px 50px 50px 50px;
     -moz-border-radius: 50px 50px 50px 50px;
     -webkit-border-radius: 50px 50px 50px 50px;
     border: 3px solid #448eb0;
@@ -78,7 +88,7 @@ and open the template in the editor.
 
 .formContainer div{
     position: relative;
-    
+
 }
 
 .buttonElimina{
@@ -86,6 +96,160 @@ and open the template in the editor.
     border: 3px solid #FF0000;
     background: #FF0000;
     color:white;
-   
+
+
+}
+
+.dropContainer{
+    height: 100%;
+    background: #FF1234;
+}
+
+.mycontainer{
+    background: whitesmoke;
+    box-shadow: 1px 1px 1px 0px graytext;
+    padding: 10px 10px 10px 10px;
+    border-radius: 0px 0px 10px 10px;
+    -moz-border-radius: 0px 0px 10px 10px;
+    -webkit-border-radius: 0px 0px 10px 10px;
+    min-height: 300px
+}
+
+.mycontainer label{
+    color: #2b669a;
+    font-size: 17px
+}
+
+.mycontainer h3{
+    font-weight:bold;
+}
+
+.mycontainer select {
+    background: white;
+    border-radius: 0px 0px 10px 10px;
+    -moz-border-radius: 0px 0px 10px 10px;
+    -webkit-border-radius: 0px 0px 10px 10px;
+}
+
+.mycontainer textarea {
+    height: 100px;
+}
+
+.stepwizard p{
+    font-weight:bold;
+    font-size: 17px
+}
+
+.myStepContainer{
+    background: whitesmoke;
+    box-shadow: 1px 1px 1px 0px graytext;
+    padding: 5px 0px 5px 0px;
+    margin-bottom: 10px;
+    border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    -webkit-border-radius: 10px 10px 0px 0px;
+}
+
+.mycontainer input[type=checkbox]
+{
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    padding: 10px;
+    margin-left: 10px;
+}
+
+/*select*/
+.select-style {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    width: 100%;
+    border-radius: 3px;
+    overflow: hidden;
+    background-color: #fff;
+    background: #fff url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif") no-repeat 99% 50%;
+}
+
+.select-style select {
+    padding: 1% 1% 1% 2%;
+    border: none;
+    width: 100%;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+.verticalCenter {
+    padding: 11px 0px 11px 0px;
+}
+
+/*
+.cont-stanze{
+    background: white;
+    border-radius: 25px 25px 25px 25px;
+    -moz-border-radius: 25px 25px 25px 25px;
+    -webkit-border-radius: 25px 25px 25px 25px;
+    border: 3px solid white;
+    margin: 10px 10px;
+    padding: 20px 20px;
+
+}
+
+.cont-stanza {
+    border-radius: 10px 10px 5px 5px;
+    -moz-border-radius: 10px 10px 5px 5px;
+    -webkit-border-radius: 10px 10px 5px 5px;
+    border: 3px solid #448eb0;
+    border-top-width: 30px ;
+    margin-top: 10px;
+    margin-bottom:  10px
+
+}
+
+.cont-stanza .formStanzaElement {
+    margin-top: 7px;
+    margin-bottom:  3px
+
+}
+
+.cont-stanza .stanzaTitle{
+    background: #448eb0;
+    text-align: center;
+    position: relative;
+    color: white;
+}
+*/
+.infoContainer{
+    border-radius: 10px 10px 5px 5px;
+    -moz-border-radius: 10px 10px 5px 5px;
+    -webkit-border-radius: 10px 10px 5px 5px;
+    border: 1px solid windowframe;
+    border-top-width: 3px ;
+    margin: 20px 10px 20px 10px;
+    background:whitesmoke;
+    padding: 5px 5px 5px 5px;
     
+}
+
+
+.mod-prw-style .modal-header{
+    background: whitesmoke;
+}
+
+.mod-prw-style .modal-body{
+    background:white;
+}
+
+.mod-prw-style .modal-footer{
+    background: whitesmoke;
 }

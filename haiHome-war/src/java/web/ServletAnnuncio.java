@@ -407,12 +407,12 @@ public class ServletAnnuncio extends HttpServlet {
                     boolean CCS = request.getParameter("compresoCondominioS") != null;
 
                     boolean CRS = request.getParameter("compresoRiscaldamentoS") != null;
-
+                                        
                     for (int i = 0; i < idStanze.length; i++) {
                         String idStanze1 = idStanze[i];
                         ArrayList<String> infoStanza = stanzeInfo.get(idStanze1);
                         gestoreAnnuncio.inserisciNuovaStanzaInAffitto(infoStanza.get(1), photoTempPath.get(idStanze1), CCS, CRS, Double.parseDouble(infoStanza.get(2)), Double.parseDouble(prezzoS[i]));
-                        stanzeInfo.remove(idStanze1);
+                        //stanzeInfo.remove(idStanze1);
                     }
 
                     Set<String> listaChiavi = stanzeInfo.keySet();
@@ -440,7 +440,7 @@ public class ServletAnnuncio extends HttpServlet {
                     System.out.println("COMPRESO RISCALDAMENTO STA: " + CRS);
                 }
                 
-                gestoreAnnuncio.setstanzeInfo(stanzeInfo);
+                //gestoreAnnuncio.setstanzeInfo(stanzeInfo);
 
                 //inserisco info finali sull'annuncio
                 JSONObject annuncio = gestoreAnnuncio.toJSON();

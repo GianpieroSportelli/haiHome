@@ -4,11 +4,13 @@
     Author     : giacomocavallo
 --%>
 
-<div class="col-xs-6 col-md-offset-3">
-    <div class="col-md-12">
-        <form action="ServletController" method="post" id="form-info-costi"> 
-            <input type="hidden" name="action" value="Annunci-newAnnuncio-infoCosti" /> 
-            
+
+<div class="col-md-12">
+
+    <h3> Info Costi</h3>
+    <form action="ServletController" method="post" id="form-info-costi"> 
+        <input type="hidden" name="action" value="Annunci-newAnnuncio-infoCosti" /> 
+
         <div class="form-group">
             <label class="control-label">Modello di Costi</label>
 
@@ -18,27 +20,45 @@
                 <option  value="2">Prezzo singole Stanze</option>
             </select>
 
-        </div>                       
+        </div> 
+        
+        <hr>
 
-        <div>
-            <div class="form-group" id="prezzoAppartamento" hidden>
-            <label class="control-label">Prezzo Appartamento</label>
-            <input id = 'prezzoA' name = 'prezzoA' class="form-control" /><br />
-            <input name='compresoCondominioA' type="checkbox"  value="true">Compreso Condominio<br>
-            <input name='compresoRiscaldamentoA' type="checkbox"  value="true">Compreso Riscaldamento<br>
+
+        <div class="form-group" id="prezzoAppartamento" hidden>
+
+            <div class="row col-md-12">
+                <label class="control-label">Prezzo Appartamento</label>
+                <input id = 'prezzoA' name = 'prezzoA' class="form-control" />
+            </div>
             
-        </div>
+            <div class="row col-md-12">
+                <div class="col-md-4 verticalCenter">
+                    <label>Compreso Condominio</label>
+                </div>
+                <div class="col-md-5 verticalCenter">
+                    <input name='compresoCondominioA' type="checkbox"  value="true">  
+                </div>
+            </div>
+
+            <div class="row col-md-12">
+                <div class="col-md-4 verticalCenter">
+                    <label>Compreso Riscaldamento</label>
+                </div>
+                <div class="col-md-5 verticalCenter">
+                    <input name='compresoRiscaldamentoA' type="checkbox"  value="true"> 
+                </div>
+            </div>
+            
+            
         </div>
         
         <div id="prezzoStanze" hidden>
-            
+
         </div>
-
-
-
-
+        <div class="row">
             <button id="submitButtom" class="btn btn-success btn-lg pull-right"style="display: none;" > Conferma</button>
-        </form>
-    </div>
-</div>
+            </div>
+    </form>
 
+</div>

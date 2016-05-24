@@ -12,7 +12,9 @@ var contatoreStanze = 0;
 
 var tipologiaLetto;
 var tipologiaStanze;
-var PrezzoStanzaHTML = "<div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
+
+var PrezzoStanzaHTML2 = "\
+        <div class=\"form-group col-md-12 prezzoStanzaCont\" id=\"prezzo$_$_$\">\n\
             <div class=\"col-md-6\">\n\
                 <input type=\"hidden\" name=\"idStanza\" value=\"$__$\" />\n\
                 <label class=\"control-label\">Tipo: </label> <label class=\"control-label\">&_tipo&</label><br />\n\
@@ -24,6 +26,25 @@ var PrezzoStanzaHTML = "<div class=\"form-group col-md-12 prezzoStanzaCont\" id=
             </div>\n\
         </div>";
 
+var PrezzoStanzaHTML = "\
+        <div class=\"form-group col-md-8 col-md-offset-2\" id=\"prezzo$_$_$\">\n\
+            <input type=\"hidden\" name=\"idStanza\" value=\"$__$\" />\n\
+            <div class=\"panel panel-info col-md-12\">\n\
+                <div class=\"panel-heading row\">\n\
+                    <div class='col-md-5'>\n\
+                        <label class=\"control-label\">Tipo: </label> <label class=\"control-label\"> &_tipo&</label>\n\
+                    </div>\n\
+                    <div class='col-md-2'></div>\n\
+                    <div class='col-md-5'>\n\
+                        <label class=\"control-label\">Metratura: </label><label class=\"control-label\">&_met&</label>\n\
+                    </div>\n\
+                </div>\n\
+                <div class=\"panel-body\">\n\
+                    <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
+                    <input name='PrezzoS' type='number' maxlength=\"100\" class=\"form-control prezzoStanza\" />\n\
+                </div>\n\
+            </div>\n\
+        </div>";
 
 var dropzones = new Array();
 
@@ -36,11 +57,6 @@ function addDropzoneStanza(dz, i) {
     var key = "Stanza" + i;
     dropzoneMaps.set(key, dz);
 }
-
-//aggiunge un elemento all'arrey delle form
-/*function addFormStanza(fs, i){
- stanzeForms[i] = fs;
- }*/
 
 //restituisce il temlate HTML del prezzo stanza
 function getPrezzoStanzaHTMLCode() {
@@ -61,9 +77,6 @@ var submitFormButton = document.querySelector("button#buttStanze2");
 
 
 
-
-
-
 function nuovaStanza1() {
     numStanze++;
     var stanzaCode = getStanzaHTMLCode(numStanze, tipologiaLetto,tipologiaStanze);
@@ -76,21 +89,20 @@ function nuovaStanza1() {
                 parallelUploads: 100,
                 uploadMultiple: true,
                 paramName: "file[]",
-                addRemoveLinks: true});
+                addRemoveLinks: true,
+                previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img data-dz-thumbnail /></div>\n</div>"});
     addDropzoneStanza(myDropzone, numStanze);
 
     contatoreStanze++;
-
-
 
 }
 
 
 
 
-// per ora va solo avanti
+//validazione form stanze
 function validateFormStanze(butt) {
-    //alert("Validazione form");
+
     var curStep = butt.closest(".setup-content");
     var curStepBtn = curStep.attr("id");
     var nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
@@ -182,7 +194,7 @@ function cambiaSpecificheTipologiaStanza(id) {
 
 }
 
-/* da permettere la modifica del tipo stanza in seguito alla selezione (vecchio) DA ELIMINARE*/
+/* da permettere la modifica del tipo stanza in seguito alla selezione (vecchio) DA ELIMINARE
 function cambiaCameraSpecifiche() {
     console.log("random");
     var value = $("#selStanza option:selected").val();
@@ -196,62 +208,34 @@ function cambiaCameraSpecifiche() {
         $("div#prezzoAppartamento").hide();
         $("div#prezzoStanze").show();
     }
-}
+}*/
+
+//            <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('" + number + "')\">-</div><br />\n\
+
+//                 <a onclick=\"eliminaStanza('" + number + "')\" >Elimina Stanza<span class=\"glyphicon glyphicon-remove-circle\"></span></a>\n\
 
 //restituisce il codice HTML della stanza
-function getStanzaHTMLCode(number, tipoLetto, tipAcc) {
-     var StanzaCode2 =
-            "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
-        <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
-        <div class=\"form-group col-md-6\">\n\
-            <div class=\"form-group\">\n\
-                <label class=\"control-label\">Stanza</label>\n\
-                <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('Stanza" + number + "')\">\n\
-                    <option value=\"1\">Stanza da Letto</option>\n\
-                    <option value=\"2\">Stanza Accessoria</option>\n\
-                </select>\n\
-            </div>\n\
-            <div class=\"form-group\">\n\
-                <label class=\"control-label\">Tipo di Stanza</label>\n\
-                <select name='TipoL' class=\"form-control\" id=\"seltipoLetto\"  >\n\
-                    <option value=\"Singola\">Singola</option>\n\
-                    <option value=\"Doppia\">Doppia</option>\n\
-                    <option value=\"Altro\">Altro</option>\n\
-                </select>\n\
-                <select name='TipoA' class=\"form-control\" id=\"seltipoAcc\" style=\"display:none\" >\n\
-                    <option>Bagno</option><option>Cucina</option>\n\
-                    <option>Soggiorno</option>\n\
-                    <option>Altro</option>\n\
-                </select>\n\
-            </div>\n\
-        </div>\n\
-        <div class=\"form-group col-md-6\">\n\
-            <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('" + number + "')\">-</div><br />\n\
-            <label class=\"control-label\">Metratura</label> <input name='MetraturaS' type='number' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
-        </div>\n\
-    <div class=\"form-group col-md-12\">\n\
-        <label class=\"control-label\">Foto</label>\n\
-    <div>\n\
-    <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
-        <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\</div>\n\
-    </div>\n\
-    </div>\n\
-    </div>\n\
-</div>";
+function getStanzaHTMLCode2(number, tipoLetto, tipAcc) {
     
+    // style=\"background:yellow \"
          var StanzaCode =
-            "<div id=\"Stanza" + number + "\" class=\"col-md-12 formContainer Stanza\">\n\
-        <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \
-        <div class=\"form-group col-md-6\">\n\
-            <div class=\"form-group\">\n\
-                <label class=\"control-label\">Stanza</label>\n\
-                <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('Stanza" + number + "')\">\n\
-                    <option value=\"1\">Stanza da Letto</option>\n\
-                    <option value=\"2\">Stanza Accessoria</option>\n\
-                </select>\n\
+   "<div id=\"Stanza" + number + "\" class=\"col-md-8 col-md-offset-2 cont-stanza Stanza \" >\n\
+            <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \n\
+            <div class=\"row\">\n\
+                <div class=\"btn btn-danger col-md-1 pull-right\" onclick=\"eliminaStanza('" + number + "')\">\n\
+                    <span class=\"glyphicon glyphicon-minus\"></span>\n\
+                </div>\n\
             </div>\n\
-            <div class=\"form-group\">\n\
-                <label class=\"control-label\">Tipo di Stanza</label>\n\ ";
+            <div class=\"col-md-12 row\">\n\
+                <div class=\"col-md-6 formStanzaElement \">\n\
+                    <label class=\"control-label\">Stanza</label>\n\
+                    <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('Stanza" + number + "')\">\n\
+                        <option value=\"1\">Stanza da Letto</option>\n\
+                        <option value=\"2\">Stanza Accessoria</option>\n\
+                    </select>\n\
+                </div>\n\
+                <div class=\"col-md-6 formStanzaElement\">\n\
+                    <label class=\"control-label\">Tipo di Stanza</label>\n\ ";
     
     console.log(tipoLetto);
     StanzaCode = StanzaCode + "<select name='TipoL' class=\"form-control\" id=\"seltipoLetto\"  >\n\ ";
@@ -267,26 +251,94 @@ function getStanzaHTMLCode(number, tipoLetto, tipAcc) {
         StanzaCode = StanzaCode + "</select>\n\ ";
     
 
- StanzaCode = StanzaCode + "</div>\n\
-        </div>\n\
-        <div class=\"form-group col-md-6\">\n\
-            <div id=\"aggiungia \" class=\"btn buttonElimina\" onclick=\"eliminaStanza('" + number + "')\">-</div><br />\n\
-            <label class=\"control-label\">Metratura</label> <input name='MetraturaS' type='number' id=\"inpMetratura\"maxlength=\"100\" type=\"text\" class=\"form-control\" placeholder=\"Metratura\" /><br />\n\
-        </div>\n\
-    <div class=\"form-group col-md-12\">\n\
-        <label class=\"control-label\">Foto</label>\n\
-    <div>\n\
-    <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
-        <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\</div>\n\
-    </div>\n\
-    </div>\n\
-    </div>\n\
-</div>";
+
+ StanzaCode = StanzaCode + "\
+                </div>\n\
+            </div>\n\
+            <div class=\"col-md-6 formStanzaElement\">\n\
+                <label class=\"control-label\">Metratura</label> \n\
+                <input name='MetraturaS' type='number' id=\"inpMetratura\"maxlength=\"100\" class=\"form-control\" placeholder=\"Metratura\" />\n\
+            </div>\n\
+            <div class=\"col-md-12 formStanzaElement\">\n\
+                <label class=\"control-label\">Foto</label>\n\
+                <div>\n\
+                    <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
+                        <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\
+                        </div>\n\
+                    </div>\n\
+                </div>\n\
+            </div>";
     
     
     return StanzaCode;
 }
 
+//restituisce il codice HTML della stanza PROVAAA
+function getStanzaHTMLCode(number, tipoLetto, tipAcc) {
+    
+    // style=\"background:yellow \"
+         var StanzaCode =
+   "<div id=\"Stanza" + number + "\" class=\"col-md-8 col-md-offset-2 Stanza \" >\n\
+        <input type=\"hidden\" name=\"numStanza\" value=\"Stanza" + number + "\" /> \n\
+        <div class='panel panel-primary'>\n\
+            <div class='panel-heading' >\n\
+                <div class=\"btn btn-danger col-md-offset-9\" onclick=\"eliminaStanza('" + number + "')\">\n\
+                    <span class=\"glyphicon glyphicon-remove\"></span>\n\
+                </div>\n\
+            </div>\n\
+            <div class='panel-body' style=\"background:whitesmoke \">\n\
+                <div class=\"col-md-12 row\">\n\
+                    <div class=\"col-md-6 formStanzaElement \">\n\
+                        <label class=\"control-label\">Stanza</label>\n\
+                        <div class='select-style'>\n\
+                            <select name='TipologiaStanza' class=\"form-control\" id=\"selStanza\" onchange=\"cambiaSpecificheTipologiaStanza('Stanza" + number + "')\">\n\
+                                <option value=\"1\">Stanza da Letto</option>\n\
+                                <option value=\"2\">Stanza Accessoria</option>\n\
+                            </select>\n\
+                        </div>\n\
+                    </div>\n\
+                    <div class=\"col-md-6 formStanzaElement\">\n\
+                        <label class=\"control-label\">Tipo di Stanza</label>\n\
+                        <div class='select-style'>\n\ ";
+    
+    console.log(tipoLetto);
+    StanzaCode = StanzaCode + "<select name='TipoL' class=\"form-control\" id=\"seltipoLetto\"  >\n\ ";
+    for(var i =0;i<tipoLetto.length;i++){
+        StanzaCode = StanzaCode + "<option value=\"" +tipoLetto[i] + "\">" +tipoLetto[i] + "</option>\n\ ";
+    }  
+    StanzaCode = StanzaCode + "</select>\n\ ";
+    console.log(tipAcc);
+        StanzaCode = StanzaCode + "<select name='TipoA' class=\"form-control\" id=\"seltipoAcc\" style=\"display:none\" >\n\ ";
+    for(var i =0;i<tipAcc.length;i++){
+        StanzaCode = StanzaCode + "<option value=\"" +tipAcc[i] + "\">" +tipAcc[i] + "</option>\n\ ";
+    }
+        StanzaCode = StanzaCode + "</select>\n\ ";
+    
+
+
+ StanzaCode = StanzaCode + "</div>\n\
+                    </div>\n\
+                </div>\n\
+                <div class='col-md-12 row'>\n\
+                    <div class=\"col-md-6 formStanzaElement\">\n\
+                        <label class=\"control-label\">Metratura</label> \n\
+                        <input name='MetraturaS' type='number' id=\"inpMetratura\"maxlength=\"100\" class=\"form-control\" placeholder=\"Metratura\" />\n\
+                    </div>\n\
+                </div>\n\
+                <div class=\"col-md-12 formStanzaElement\">\n\
+                    <label class=\"control-label\">Foto</label>\n\
+                <div>\n\
+                <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
+                    <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\
+                    </div>\n\
+                </div>\n\
+            </div>\n\
+        </div>\n\
+    </div>";
+    
+    
+    return StanzaCode;
+}
 
 function sendData() {
     var myRequest = new XMLHttpRequest();

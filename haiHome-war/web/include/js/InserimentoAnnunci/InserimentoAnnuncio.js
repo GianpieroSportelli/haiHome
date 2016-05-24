@@ -178,7 +178,6 @@ $(document).ready(function () {
 
         if (isValid && modelloCosti.val()!= 0) {
             
-            $("button#submitButtom").hide();
             console.log("Dati form validi");
             form4.ajaxSubmit({
                 dataType: "json",
@@ -278,7 +277,23 @@ function generateCostiForm() {
         }
 
     });
-    var codiceFinale = "<div><input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"true\">Compreso Condominio<br><input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"true\">Compreso Riscaldamento</div>";
+    var codiceFinale2 = "<div><input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"true\">Compreso Condominio<br><input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"true\">Compreso Riscaldamento</div>";
+    var codiceFinale="<div class=\"row col-md-12\">\n\
+                <div class=\"col-md-4 verticalCenter\">\n\
+                    <label>Compreso Condominio</label>\n\
+                </div>\n\
+                <div class=\"col-md-5 verticalCenter\">\n\
+                    <input name='compresoCondominioS' class=\"CompCond\" type=\"checkbox\"  value=\"true\">\n\
+                </div>\n\
+            </div>\n\
+            <div class=\"row col-md-12\">\n\
+                <div class=\"col-md-4 verticalCenter\">\n\
+                    <label>Compreso Riscaldamento</label>\n\
+                </div>\n\
+                <div class=\"col-md-5 verticalCenter\">\n\
+                    <input name='compresoRiscaldamentoS' class=\"CompRisc\" type=\"checkbox\"  value=\"true\">\n\
+                </div>\n\
+            </div>";
     $(codiceFinale).appendTo("#prezzoStanze");
 }
 

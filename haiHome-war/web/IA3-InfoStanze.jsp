@@ -4,32 +4,39 @@
     Author     : giacomocavallo
 --%>
 
-<div class="col-xs-6 col-md-offset-3">
+
+    <div class="col-md-12">
 
     <h3> Info Stanze</h3>
 
-    <!-- bottone di aggiunta nuova stanza -->
-    <div class="form-group row">
-        <div class="col-md-10"></div>
-        <div id="aggiungia " class="btn btn-success col-md-2" onclick="nuovaStanza1()">+</div>
+    <!-- bottone di aggiunta nuova stanza 
+    <div class="row pull-right">
+        <div id="aggiungia " class="btn btn-success col-md-2" onclick="nuovaStanza1()">
+            <span class="glyphicon glyphicon-plus"></span>
+        </div>
 
-    </div>
+    </div>-->
 
 
         <!-- contenitore stanze -->
     <form action="ServletController" method="post" id="formStanze">
         <input type="hidden" name="action" value="Annunci-newAnnuncio-infoStanze" /> 
-        <div  class="col-md-12" id="contenitoreStanze">
-
-
-
+        <div  class="cont-stanze col-md-12" id="contenitoreStanze">
+            
         </div>
     </form>
     
 
-    <div class="form-group row">
+    <div class="row">
+        
+        <div id="aggiungia " class="btn btn-success col-md-1" onclick="nuovaStanza1()">
+            <span class="glyphicon glyphicon-plus"></span>
+        </div>
+        
         <div class="col-md-10"></div>
-        <button class="btn btn-primary nextBtn btn-lg pull-right col-md-2" id="buttStanze" type="button" >Next</button>
-    </div>
+        
+        <button class="btn btn-primary nextBtn pull-right col-md-1" id="buttStanze" type="button" >Next</button>
 
-</div>
+    </div>
+        
+    </div>

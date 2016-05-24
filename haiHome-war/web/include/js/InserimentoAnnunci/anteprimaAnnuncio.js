@@ -24,30 +24,12 @@ $('.qcar').carousel({
 });
 
 
-
-function initialize(annuncio) {
-    geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(annuncio.Lat, annuncio.Lng);
-    var mapOptions = {
-        zoom: 8,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.TERRAIN
-    };
-    map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    var marker = new google.maps.Marker({
-        map: map,
-        position: latlng,
-        title: 'geocode request address'
-    });
-    map.setZoom(16);
-    
-}
-
 function create_Page(annuncio) {
     foto_page = new Array();
     var html = "";
     html += info_annuncio(annuncio);
 
+    html += "<div class='infoContainer'> ";
     //apre nav bar
     var open_ul = "<ul class=\"nav nav-tabs\">";
     html += open_ul;
@@ -101,6 +83,7 @@ function create_Page(annuncio) {
     
     var close_content = "</div>";
     html += close_content;
+    html +="</div>"
     foto_page = savePath(foto_page, annuncio);
     //console.log("Path delle foto: " + foto_page.toString());
     return html;
@@ -119,7 +102,13 @@ function create_corpo_accessoria(stanza, first) {
     html += create_carousel_stanza(stanza);
     //html += "<p>" + JSON.stringify(stanza) + "</p>";
     //html += "<div class=\"center\">";
-    html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + "</p>";
+
+    var met= stanza.Metratura!="" && parseInt(stanza.Metratura)>0;
+    if(met){
+            html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + "m&sup2</p>";
+
+    }
+    
     //html += "</div>";//center close
     html += "</div>";
     return html;
@@ -142,7 +131,15 @@ function create_corpo_affitto(stanza, first, atomico) {
     html += create_carousel_stanza(stanza);
     //html += "<p>" + JSON.stringify(stanza) + "</p>" ;
     //html += "<div class=\"center\">";
-    html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + "</p>";
+    
+        var met= stanza.Metratura!="" && parseInt(stanza.Metratura)>0;
+    
+    if(met){
+            html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + "m&sup2</p>";
+
+    }
+    
+
     if (!atomico) {
         var cmpCon = stanza.compresoCondominio;
         var cmpRisc = stanza.compresoRiscaldamento;
@@ -227,64 +224,42 @@ function indicator(stanza) {
 }
 
 function info_annuncio(annuncio) {
-    var html = "<div class=\"center\">";
+    var html = "<div class=\"infoContainer\">";
     if (annuncio.Atomico) {
         html += "<h1 class=\"text-muted\"> Annuncio Appartamento</h1>";
     } else {
         html += "<h1 class=\"text-muted\"> Annuncio Stanze</h1>";
     }
     html += "<p class=\"text-muted\">" + annuncio.Indirizzo + "</p>" +
-            "<p class=\"text-muted\">" + annuncio.Descrizione + "</p>" +
-            "<p class=\"text-muted\"><span class=\"text-primary\">Metratura Appartamento:</span> " + annuncio.Metratura + "</p>" +
-            "<p class=\"text-muted\"><span class=\"text-primary\"> Data inizio: </span> " + annuncio.DataInizioAffitto + "</p>" +
+            "<p class=\"text-muted\">" + annuncio.Descrizione + "</p>";
+    
+    var met= annuncio.Metratura!="" && parseInt(annuncio.Metratura)>0;
+    
+    if(met){
+        html += "<p class=\"text-muted\"><span class=\"text-primary\">Metratura Appartamento:</span> " + annuncio.Metratura + " m&sup2</p>";
+
+    }
+    
+    html += "<p class=\"text-muted\"><span class=\"text-primary\"> Data inizio: </span> " + annuncio.DataInizioAffitto + "</p>" +
             "<p class=\"text-muted\"> <span class=\"text-primary\">Quartiere: </span> " + annuncio.Quartiere + "</p>";
+    
+
     if (annuncio.Atomico) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Prezzo: </span> " + annuncio.Prezzo + " &euro;</p>";
     }
-    //html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva</button>";
-    html += "</div>";
+    
+   if(annuncio.Arredato){
+        html += "<p class=\"text-muted\">L'appartamento è fornito di <span class=\"text-primary\">Arredo</span>.</p>";
+    }else{
+                html += "<p class=\"text-muted\">L'appartamento non è fornito con <span class=\"text-primary\">Arredo</span>.</p>";
+
+    }
+        html += "</div>";
     html += " <div class=\"hr-line-dashed\"></div>";
     return html;
 }
 
-function init_info(annuncio) {
-    var locatore = annuncio.Locatore;
-    //console.log(locatore);
-    return info_loc(locatore);
-}
-function info_loc(locatore) {
-    var html = "";
-    html += "<div id=\"info_locatore\" class=\"center blockLoc\">";
-    html += "<div class=\"row center\">";
-    html += "<img src='" + locatore.fotoProfilo + "'class='img-responsive img-circle' alt=''style=\"width:" + dim_image_prof + "px;height:" + dim_image_prof + "px;\" \>";
-    html += "</div>";
-    //html+="<p>"+JSON.stringify(locatore)+"</p>";
-    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Nome: </span>" + locatore.nome + "</p>";
-    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
-    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
-    html += "<p class=\"text-muted infLoc\"><span class=\"text-primary\">email: </span>" + locatore.email + "</p>";
-    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" style=\"display:none\" onClick=\"seganalaAnnuncio()\">Seganala</button>";
-    html += "</div>";
-    html += "<div class=\"center blockLoc\">";
-    html += "<button id=\"segnalaBtn\" type=\"button\" class=\"btn btn-warning\" onClick=\"getServices()\">Cancella marker</button>";
-    html += "</div>";
-    return html;
-}
 
-function loggatoStudente() {
-    //console.log("verifica log Studente");
-    $.post("ServletController",
-            {action: "Ricerca-loggatoStudente"},
-            function (item) {
-                //var html = '';
-                //alert(item);
-                //console.log("Studente loggato?: " + item);
-                if (item == "true") {
-                    $("#saveButton").show("fast");
-                    $("#segnalaBtn").show("fast");
-                }
-            });
-}
 
 function callFoto(foto_OID) {
     var foto_arr = foto_OID.split("$");

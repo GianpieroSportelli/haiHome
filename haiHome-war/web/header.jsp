@@ -1,7 +1,7 @@
 <%@page import="org.json.JSONObject"%>
 <!--
 <header role="banner"> -->
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default myHeader">
         <div style="display:none">
             <div id="__user_type"><%= session.getAttribute("user-type") %></div>   
             <div id="__user_data"><%= session.getAttribute("user-data") %></div>
@@ -10,7 +10,7 @@
         
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.jsp">HaiHome!!</a>
+                <a class="navbar-brand" href="index.jsp"><img src="images/hai_home_logo.png" /></a>
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a id="logged-as" class="link-navbar"></a></li>

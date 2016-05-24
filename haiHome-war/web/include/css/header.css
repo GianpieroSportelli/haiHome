@@ -7,4 +7,13 @@ body{
     text-decoration: none; 
 }
 
+.myHeader{
+    height: 70px;
+}
+
+.myHeader li{
+    margin-top: 11px;
+    font-size: large;
+}
+
 
