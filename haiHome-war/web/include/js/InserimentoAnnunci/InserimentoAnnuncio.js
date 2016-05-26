@@ -316,11 +316,25 @@ function validateForm(buttonForm) {
             console.log("Dati non Validi");
             isValid = false;
             $(curInputs[i]).closest(".form-group").addClass("has-error");
+        }else if($(curInputs[i]).attr("id")=="inpMetratura"){
+            var met = $(curInputs[i]).val();
+            isValid = met=="" || parseInt(met)>=0;
+            if(!isValid){
+              $(curInputs[i]).closest(".form-group").addClass("has-error");
+            }
+        }else if($(curInputs[i]).attr("id")=="prezzoA" || $(curInputs[i]).attr("id")=="prezzoS"){
+            var prezz = $(curInputs[i]).val();
+            isValid = parseInt(prezz)>0;
+            if(!isValid){
+              $(curInputs[i]).closest(".form-group").addClass("has-error");
+            }
         }
+        
     }
 
     //aggiunta controllo dropzone
     console.log("Numero di dropzone " + myDropzone.length);
+
     for (var i = 0; i < myDropzone.length; i++) {
         console.log("Dropzone da controllare id: " + $(myDropzone).attr("id"));
         if (!$(myDropzone[i]).hasClass("dz-started")) {
@@ -333,9 +347,7 @@ function validateForm(buttonForm) {
                 "color": '#FF0000'
             });
             message.append("Inserire o trascinare almeno una foto");
-
-           openModalMessage("Errore nell'inserimento dati","Biogna caricare almeno una foto per Stanza"); 
-
+            dropValide = false;
         
         }
     }

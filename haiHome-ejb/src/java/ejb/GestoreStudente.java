@@ -30,13 +30,20 @@ public class GestoreStudente implements GestoreStudenteLocal {
 
     private Studente studente = null;
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    //gli altri parametri, i.e. listaPreferiti saranno per forza null
+    /**
+     * Aggiunge uno studente indicando le sue informazioni
+     *
+     * @param email L'email dello studente
+     * @param nome Il nome dello studente
+     * @param cognome Il cognome dello studente
+     * @param foto La foto dello studente
+     * @param password La password dello studente. Se è null, lo studente si è
+     * loggato attraverso un canale social
+     * @return true se l'operazione è andata a buon fine, false altrimenti
+     */
     @Override
     public boolean aggiungiStudente(String email, String nome, String cognome, String foto, String password) {
 
-        //L'oggetto si crea senza costruttore (perchè sta fatto così)
         Studente stud = new Studente();
         stud.setEmail(email);
         stud.setNome(nome);
@@ -44,7 +51,7 @@ public class GestoreStudente implements GestoreStudenteLocal {
         stud.setFotoProfilo(foto);
         stud.setPassword(password);
 
-        //LO FACCIO DIVENTARE PERSISTENTE!
+        //Persisto l'oggetto
         studenteFacade.create(stud);
 
         //vedo se è stato inserito
@@ -53,12 +60,17 @@ public class GestoreStudente implements GestoreStudenteLocal {
         if (checkStudente == null) {
             return false;
         } else {
-            //Mi mantengo il riferimento allo studente durante la sessione
+            //Mi mantengo il riferimento allo studente 
             this.studente = stud;
             return true;//tutto ok
         }
     }
 
+    /**
+     * Permette di ottenere la lista di tutti gli studenti memorizzati
+     *
+     * @return Una lista contenente gli studenti
+     */
     @Override
     public List<String> getStudenti() {
         List<Studente> listaStudenti = studenteFacade.findAll();
@@ -70,8 +82,11 @@ public class GestoreStudente implements GestoreStudenteLocal {
         return result;
     }
 
-    //Non serve alcun parametro poichè lo studente, per rimuoversi, sarà loggato
-    //Se è loggato, allora l'oggetto studente sarà avvalorato e quindi non ha 
+    /**
+     * Rimuove uno studente memorizzato all'interno del Database
+     *
+     * @return true se l'eliminazione è andata a buon fine, false altrimenti
+     */
     @Override
     public boolean removeStudente() {
 
@@ -84,8 +99,8 @@ public class GestoreStudente implements GestoreStudenteLocal {
     }
 
     /**
-     * Metodo per cercare se esiste uno studente specifico. Se esiste, lo
-     * studente viene memorizzato all'interno della sessione.
+     * Cerca, se esiste, uno studente specifico. Se esiste, lo studente viene
+     * memorizzato
      *
      * @param email L'email dello studente da cercare
      * @return true sse lo studente è già presente, false altrimenti
@@ -105,11 +120,21 @@ public class GestoreStudente implements GestoreStudenteLocal {
         return false;
     }
 
+    /**
+     * Restituisce il JSON associato allo studente attualmente utilizzato
+     *
+     * @return JSONObject contenente il JSON dello studente
+     */
     @Override
     public JSONObject toJSON() {
         return this.studente.toJSON();
     }
 
+    /**
+     * Restituisce lo studente attualmente utilizzato
+     *
+     * @return Lo studente attualmente in uso
+     */
     @Override
     public Studente getStudente() {
         return this.studente;
@@ -127,6 +152,12 @@ public class GestoreStudente implements GestoreStudenteLocal {
         return s;
     }
 
+    /**
+     * Ricarica il riferimento allo studente presente all'interno del gestore
+     *
+     * @return false se lo studente non è loggato oppure non viene trovato nel
+     * Database, true altrimenti
+     */
     @Override
     public boolean reloadStudente() {
         if (this.getStudente() == null) {
@@ -143,6 +174,14 @@ public class GestoreStudente implements GestoreStudenteLocal {
 
     }
 
+    /**
+     * Aggiunge un filtro preferito nella lista dei filtri preferiti di uno
+     * studente
+     *
+     * @param id ID dello studente
+     * @param filtro Filtro da memorizzare
+     * @return true se l'inserimento va a buon fine, false altrimenti
+     */
     @Override
     public boolean addFiltroStudente(String id, FiltroDiRicerca filtro) {
         Studente stud = studenteFacade.find(Long.valueOf(id));
@@ -155,6 +194,13 @@ public class GestoreStudente implements GestoreStudenteLocal {
         return true;
     }
 
+    /**
+     * Rimuove un filtro preferito di uno studente
+     *
+     * @param id ID dello studente
+     * @param filtro Filtro da eliminare
+     * @return true se l'eliminazione è andata a buon fine, false altrimenti
+     */
     @Override
     public boolean removeFiltroStudente(String id, FiltroDiRicerca filtro) {
         Studente stud = studenteFacade.find(Long.valueOf(id));
@@ -167,6 +213,13 @@ public class GestoreStudente implements GestoreStudenteLocal {
         return true;
     }
 
+    /**
+     * Aggiunge un annuncio preferito alla lista degli annunci preferiti dello
+     * studente attualmente in uso
+     *
+     * @param id ID dell'annuncio da aggiungere
+     * @return false se l'annuncio è già presente, true altrimenti
+     */
     @Override
     public boolean addAnnuncio(String id) {
         Annuncio a = this.gestoreAnnuncio.getAnnuncioByID(Long.parseLong(id));
@@ -181,14 +234,38 @@ public class GestoreStudente implements GestoreStudenteLocal {
         return true;
     }
 
+    /**
+     * Rimuove un annuncio preferito dalla lista degli annunci preferiti dello
+     * studente attualmente in uso
+     *
+     * @param id ID dell'annuncio da eliminare
+     * @return false se l'annuncio è già presente, true altrimenti
+     */
     @Override
     public boolean removeAnnuncio(String id) {
         Annuncio a = this.gestoreAnnuncio.getAnnuncioByID(Long.valueOf(id));
+
+        boolean annuncioPresente = false;
+        for (Annuncio aTemp : this.studente.getListaAnnunciPreferiti()) {
+            if (aTemp.getId().toString().equalsIgnoreCase(id)) {
+                annuncioPresente = true;
+                break;
+            }
+        }
+        if (!annuncioPresente) {
+            return false;
+        }
+        
         this.studente.deleteAnnuncio(a);
         studenteFacade.edit(this.studente);
         return true;
     }
 
+    /**
+     * Cambia la password dello studente attualmente in uso
+     *
+     * @param password La nuova password
+     */
     @Override
     public void changePassword(String password) {
         this.studente.setPassword(password);

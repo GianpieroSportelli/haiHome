@@ -44,15 +44,6 @@
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
         <!-- FINEIMPORT NECESSARI BOOTSTRAP E ICONE -->
 
-        <!--<link rel="stylesheet" href="include/css/login/normalize.css"> -->
-
-        <!-- -->
-
-        <!-- FILE RANDOMICO CHE FA FUNZIONARE IL CAROUSEL. VUOI SAPERE IL PERCHE'?
-        AHHAHHAHAAHAHAHAHAHAHAHAHAHAHAHAH NO RIMANE RANDOM IL MOTIVO. 
-        COPIATO LE PARTI ESSENZIALI IN UTENTE.CSS
-        <link rel="stylesheet" href="include/css/login/reset.css"> <!-- CSS reset -->
-
         <!-- Robe di UserProfile-->
         <link rel="stylesheet" href="include/css/Utente/Utente.css">
         <link rel="stylesheet" href="include/css/Utente/bootstrap.vertical-tabs.css">
@@ -73,9 +64,10 @@
         <link rel="stylesheet" href="include/css/login/style2.css">  
         <link rel="stylesheet" href="include/css/login/normalize.css">
         <script src="include/js/login/modernizr.js"></script> <!-- Modernizr -->
-
-
+        
+        
         <!-- Inizio import header --------------------->
+        <link rel="stylesheet" href="include/css/header.css">
         <script src="include/js/header-updater.js"></script>
         <!-- Script modal login -->
         <script src="include/js/login/modal_validation_and_stuff.js"></script> 
@@ -96,9 +88,7 @@
 
         <%@include file="include/html/modalConfermaCancellazione.html"%>
         <%@include file="include/html/modalConfermaCancellazioneAnnuncio.html"%>
-        <!-- < %@include file="/header3Login.jsp" %>  -->
-
-        <!-- Non voglio imparare HTML, notyplsbbbrb -->
+        
         <div style="display:none"> 
             <div id="user-access"><%= session.getAttribute("user-access")%></div>
         </div>
@@ -115,13 +105,6 @@
                                             + "class='img-responsive' alt=''/>");
                                 }
                             %>
-                            <!--
-                            < %
-                                sessione = request.getSession();
-                                JSONObject datiUtente = (JSONObject) sessione.getAttribute("JSONList");
-
-                            %>
-                            <img src="< %= datiUtente.getString("Foto")%>" class="img-responsive" alt=""> -->
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
@@ -134,35 +117,6 @@
                             </div>
                             <div class="profile-usertitle-job">Studente</div>
                         </div>
-
-
-                        <!-- END SIDEBAR USER TITLE -->
-                        <!-- SIDEBAR BUTTONS -->
-                        <!-- END SIDEBAR BUTTONS -->
-                        <!-- SIDEBAR MENU -->
-                        <!--<div class="tabbable">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab1" data-toggle="tab">Request Audit</a></li>
-                                <li class=""><a href="#tab2" data-toggle="tab">Status</a></li>
-                                <li class=""><a href="#tab3" data-toggle="tab">Settings</a></li>
-                                <li class=""><a href="#tab4" data-toggle="tab">Help</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab1">
-                                    <p>Placeholder 1</p>
-                                </div>
-                                <div class="tab-pane" id="tab2">
-                                    <p>Placeholder 2</p>
-                                </div>
-                                <div class="tab-pane" id="tab3">
-                                    <p>Placeholder 3</p>
-                                </div>
-                                <div class="tab-pane" id="tab4">
-                                    <p>Placeholder</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
 
                         <div class="profile-usermenu"> <!-- required for floating -->
                             <!-- Nav tabs -->
@@ -178,33 +132,6 @@
                                         Filtri Preferiti</a></li>
                             </ul>
                         </div>
-
-
-
-                        <!--<div class="profile-usermenu">
-                            <ul class="nav">
-                                <li class="active">
-                                    <a href="#">
-                                        <i class="glyphicon glyphicon-home"></i>
-                                        Overview </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        Account Settings </a>
-                                </li>
-                                <li>
-                                    <a href="#" target="_blank">
-                                        <i class="glyphicon glyphicon-ok"></i>
-                                        Tasks </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="glyphicon glyphicon-flag"></i>
-                                        Help </a>
-                                </li>
-                            </ul>
-                        </div>-->
                         <!-- END MENU -->
                     </div>
 
@@ -297,29 +224,6 @@
                 </div>  
             </div>
         </div> 
-
-        <script>
-            /*
-             function startTutorial() {
-             
-             if (filtri.length !== 0) {
-             //Ho messo due variabili perche' non aggiorna la sessione in real-time
-             if (!activatedTutorial) {
-             <%/* if (session.getAttribute("tutorial") == null) {
-                        session.setAttribute("tutorial", true);
-                 */ %>
-             //Analogo del thread.sleep. Ho dovuto metterlo altrimenti si bugga il primo tutorial. 
-             //Il problema nasce dal fatto che i tab sono dinamici
-             var millisecondsToWait = 400;
-             setTimeout(function () {
-             introJs().start();
-             activatedTutorial = true;
-             }, millisecondsToWait);
-             <%// }%>
-             }
-             }
-             }*/
-        </script>
 
         <%@include file="/footer2.jsp" %>
 

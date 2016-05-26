@@ -22,7 +22,7 @@ var PrezzoStanzaHTML2 = "\
             </div>\n\
             <div class=\"col-md-6\">\n\
                 <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
-                <input name='PrezzoS' maxlength=\"100\" class=\"form-control prezzoStanza\" /><br />\n\
+                <input id=\"prezzoS\" name='PrezzoS' maxlength=\"100\" class=\"form-control prezzoStanza\" /><br />\n\
             </div>\n\
         </div>";
 
@@ -41,7 +41,7 @@ var PrezzoStanzaHTML = "\
                 </div>\n\
                 <div class=\"panel-body\">\n\
                     <label class=\"control-label\">Prezzo Stanza &_&</label>\n\
-                    <input name='PrezzoS' type='number' maxlength=\"100\" class=\"form-control prezzoStanza\" />\n\
+                    <input id=\"prezzoS\" name='PrezzoS' type='number' maxlength=\"100\" class=\"form-control prezzoStanza\" />\n\
                 </div>\n\
             </div>\n\
         </div>";
@@ -255,9 +255,9 @@ function getStanzaHTMLCode2(number, tipoLetto, tipAcc) {
  StanzaCode = StanzaCode + "\
                 </div>\n\
             </div>\n\
-            <div class=\"col-md-6 formStanzaElement\">\n\
+            <div class=\"col-md-6 formStanzaElement form-group\">\n\
                 <label class=\"control-label\">Metratura</label> \n\
-                <input name='MetraturaS' type='number' id=\"inpMetratura\"maxlength=\"100\" class=\"form-control\" placeholder=\"Metratura\" />\n\
+                <input name='MetraturaS' type='number' id=\"inpMetratura\"  class=\"form-control\" placeholder=\"Metratura\" />\n\
             </div>\n\
             <div class=\"col-md-12 formStanzaElement\">\n\
                 <label class=\"control-label\">Foto</label>\n\
@@ -320,9 +320,9 @@ function getStanzaHTMLCode(number, tipoLetto, tipAcc) {
                     </div>\n\
                 </div>\n\
                 <div class='col-md-12 row'>\n\
-                    <div class=\"col-md-6 formStanzaElement\">\n\
+                    <div class=\"col-md-6 formStanzaElement form-group\">\n\
                         <label class=\"control-label\">Metratura</label> \n\
-                        <input name='MetraturaS' type='number' id=\"inpMetratura\"maxlength=\"100\" class=\"form-control\" placeholder=\"Metratura\" />\n\
+                        <input name='MetraturaS' type='number' id=\"inpMetratura\" class=\"form-control\" placeholder=\"Metratura\" />\n\
                     </div>\n\
                 </div>\n\
                 <div class=\"col-md-12 formStanzaElement\">\n\
@@ -415,6 +415,8 @@ $(document).ready(function () {
                 generateCostiForm();
 
 
+            }else{
+                openModalMessage("Errore nell'inserimento dati","Controlla che tutti i dati siano stati inseriti correttamente");
             }
 
         } else {

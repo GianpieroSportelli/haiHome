@@ -396,7 +396,7 @@ function send_Annuncio(k) {
         $('#annuncio-' + k).attr('data-content', "L'annuncio è stato archiviato e non può essere visualizzato.");
         $('#annuncio-' + k).popover('show');
     } else if (annuncio.Locatore.bloccato === "true") {
-        $('#annuncio-' + k).attr('data-content', "Il locatore è stato bloccato e non può essere visualizzato.");
+        $('#annuncio-' + k).attr('data-content', "Il locatore è stato bloccato e il suo annuncio non può essere visualizzato.");
         $('#annuncio-' + k).popover('show');
     } else {
         var url = "/haiHome-war/dettagliAnnuncio.jsp";

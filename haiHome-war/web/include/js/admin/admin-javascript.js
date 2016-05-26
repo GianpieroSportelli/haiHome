@@ -1,4 +1,4 @@
-$(document).ready(function () {    
+$(document).ready(function () {
     getListaCitta();
 });
 
@@ -33,6 +33,8 @@ function deleteCitta() {
 function getListaCitta() {
     no_segn();
     $("#cittaDB").empty();
+    $("#quartieriDIV").hide();
+    $("#capDIV").hide();
     $.post("ServletController",
             {action: "get-lista-citta"},
             function (responseJson) {

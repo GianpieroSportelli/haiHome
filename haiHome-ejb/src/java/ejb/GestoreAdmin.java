@@ -21,6 +21,14 @@ public class GestoreAdmin implements GestoreAdminLocal {
     @EJB
     private AdministratorFacadeLocal administratorFacade;
 
+    /**
+     * Controlla se un admin è presente con le credenziali fornite
+     *
+     * @param email La mail dell'admin
+     * @param password La password dell'admin
+     * @return true se l'admin con le credenziali fornite è presente, false
+     * altrimenti
+     */
     @Override
     public boolean checkAdmin(String email, String password) {
         List<Administrator> listaAdmin = administratorFacade.findAll();
@@ -34,6 +42,13 @@ public class GestoreAdmin implements GestoreAdminLocal {
         return false;
     }
 
+    /**
+     * Aggiunge un admin con le credenziali fornite
+     *
+     * @param email La mail dell'admin
+     * @param password La password dell'admin
+     * @return true se l'admin è stato inserito con successo, false altrimenti
+     */
     @Override
     public boolean addAdmin(String email, String password) {
         Administrator adm = new Administrator();

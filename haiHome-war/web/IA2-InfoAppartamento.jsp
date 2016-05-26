@@ -17,15 +17,15 @@
         </div>
 
         <div class="form-group col-md-12 row">
-            <label class="">Metratura</label>
+            <label class="control-label">Metratura</label>
             <input id='inpMetratura' name='Metratura' type="number" class="form-control input-lg" />
         </div>
 
-        <div class="row col-md-12">
+        <div class="row col-md-12 form-group">
 
             <div class="col-md-3 verticalCenter">
 
-                    <label>Data inizio Affitto</label>
+                    <label class="control-label">Data inizio Affitto</label>
 
             </div>
 

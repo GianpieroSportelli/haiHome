@@ -26,11 +26,11 @@
                 
       
                 <div class="col-md-10 form-group ">
-                        <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control input-lg" placeholder="Inserisci Indirizzo"  name='Indirizzo' onkeypress="return event.keyCode != 13"/>
+                        <input id='inpIndirizzo'maxlength="100" type="text" required="required" class="form-control input-lg" placeholder="Inserisci Indirizzo"  name='Indirizzo' onkeypress="return event.keyCode != 13 "/>
                         
                 </div>
                 <div class="col-md-2 form-group ">
-                        <input id='inpCivico'maxlength="5"  type="text" required="required" class="form-control input-lg" placeholder="n°" name='Civico' onkeypress="return event.keyCode != 13" onclick="civicoFunction()"  />
+                        <input id='inpCivico'maxlength="5"  type="text" required="required" class="form-control input-lg" placeholder="n°" name='Civico' onkeypress="return event.keyCode != 13 && event.keyCode != 9" onclick="civicoFunction()"  />
                 </div>
 
             </div>
