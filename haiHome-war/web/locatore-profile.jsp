@@ -1,5 +1,3 @@
-
-
 <%@page import="org.json.JSONObject"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -24,6 +22,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>haiHome? - Profilo Locatore </title>
 
+        
+        <link rel="stylesheet" href="include/css/header.css">
+        
         <link rel="stylesheet" href="include/css/login/normalize.css">
 
         <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
@@ -63,16 +64,14 @@
         <!-- Import script Facebook -->
         <script type="text/javascript" src="include/js/login/FacebookScript.js"></script>
         <!-- Fine Import script Facebook -->
-        <!--
-                <script type="text/javascript" src="include/js/locatore/visualizzazione-annunci.js"></script> -->
-
+        
         <!-- SESSION -->
         <script type="text/javascript" src="include/js/search/jquery.session.js"></script>
         <!-- FINE SESSION -->
 
         <script type="text/javascript" src="include/js/jquery.confirm.min.js"></script>
 
-        <script type="text/javascript" src="include/js/locatore/profilo-locatore.js"></script>
+        <script type="text/javascript" src="include/js/userProfile/locatore-profile.js"></script>
 
         <script src="include/js/login/modal_validation_and_stuff.js"></script> <!-- Gem jQuery -->
         <script src="include/js/login/ajax_req_and_stuff.js"></script>
@@ -258,6 +257,5 @@
             </div>
         </div>
         <%@include file="/footer2.jsp" %>
-        
     </body>
 </html>

@@ -10,6 +10,7 @@ import ejb.GestoreLocatoreLocal;
 import entity.Annuncio;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import verifytoken.Verify;
@@ -57,8 +59,9 @@ public class ServletLocatore extends HttpServlet {
             String action = request.getParameter("action");
             HttpSession session = request.getSession();
 
-            System.out.println("--Servlet Locatore");
-
+            System.out.println("> Servlet Locatore");
+            System.out.println("Action '" + action + "'");
+            
             if (action.equalsIgnoreCase("signup-locatore")) {
                 /* registrazione */
                 String name = request.getParameter("user-name").trim(),
@@ -69,6 +72,8 @@ public class ServletLocatore extends HttpServlet {
                         pwd2 = request.getParameter("user-pw-repeat"),
                         op_result = "OK";
 
+                /* String DigestUtils.shaHex(String data) */
+                
                 /* controllo correttezza email, telefono, password */
                 if (pwd.equals(pwd2)) {
                     // email non presente
@@ -84,15 +89,14 @@ public class ServletLocatore extends HttpServlet {
                     op_result = "password mismatch";
                 }
 
-                response.setContentType("text/html");  // Set content type of the response so that jQuery knows what it can expect.
-                response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+                response.setContentType("text/html"); 
+                response.setCharacterEncoding("UTF-8"); 
                 out.write(op_result);
 
             } else if (action.equalsIgnoreCase("login-locatore")) {
                 String email = request.getParameter("user-email").trim(),
                         pwd = request.getParameter("user-pw"),
                         op_result = "OK"; // ottimismo, gianni!
-                // controlli sull'input ??
 
                 if (gestoreLocatore.checkLocatore(email, pwd)) {
                     instantiate_session(session, "");
@@ -100,19 +104,18 @@ public class ServletLocatore extends HttpServlet {
                     op_result = "credenziali non corrette";
                 }
 
-                response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
-                response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+                response.setContentType("text/plain");  
+                response.setCharacterEncoding("UTF-8"); 
                 out.write(op_result);
 
             } else if (action.equalsIgnoreCase("loginFacebookLocatore")) {
                 String email = request.getParameter("mailUser");
                 String foto = request.getParameter("profilo");
-                // String nome = dataUser[0];String cognome = dataUser[1];
                 String[] dataUser = request.getParameter("userData").split(",");
 
                 if (!gestoreLocatore.checkLocatore(email)) {
                     gestoreLocatore.aggiungiLocatore(email, null, dataUser[0], dataUser[1], "", foto);
-                } // si potrebbe aggiornare l'immagine del profilo, possibile che sia cambiata...
+                }
                 else {
                     gestoreLocatore.modificaAvatarByURL(foto);
                 }
@@ -128,10 +131,7 @@ public class ServletLocatore extends HttpServlet {
                 if (verify != null) {
                     String name = request.getParameter("name");
                     String surname = request.getParameter("surname");
-                    //            String email = verify[1];
                     String email = request.getParameter("email");
-                    String url_img = request.getParameter("url-profile-img");// + "?sz=200";
-
                     String img = request.getParameter("url-profile-img").split("sz=")[0] + "sz=200";
 
                     if (!gestoreLocatore.checkLocatore(email)) {
@@ -142,7 +142,6 @@ public class ServletLocatore extends HttpServlet {
 
                     instantiate_session(session, "g+");
                     getServletContext().getRequestDispatcher("/locatore-profile.jsp").forward(request, response);
-
                 } else {
                     out.println("Errore nell'autenticazione");
                 }
@@ -150,13 +149,6 @@ public class ServletLocatore extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-getAnnunci")) {
                 gestoreLocatore.reloadLocatore();
                 
-                //    int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
-                //    int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
-                //   String bottone;
-
-                //     bottone = "";
-                //       System.out.println("#PAGINA=" + NUM_ANNUNCI_X_PAGE + "req=" + requested_page);
-                //     String html = getPage(gestoreLocatore.getAnnunciVisibili(), NUM_ANNUNCI_X_PAGE, requested_page);
                 String html = getPage(gestoreLocatore.getAnnunciVisibili());
 
                 response.setContentType("text/html");
@@ -165,10 +157,7 @@ public class ServletLocatore extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("locatore-getArchivioAnnunci")) {
                 gestoreLocatore.reloadLocatore();
-                //     int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
-                //     int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
-
-                //         String html = getPage(gestoreLocatore.getAnnunciArchiviati(), NUM_ANNUNCI_X_PAGE, requested_page);
+                
                 String html = getPage(gestoreLocatore.getAnnunciArchiviati());
 
                 response.setContentType("text/html");
@@ -177,10 +166,7 @@ public class ServletLocatore extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("locatore-getAnnunciOscurati")) {
                 gestoreLocatore.reloadLocatore();
-                //       int requested_page = Integer.parseInt(request.getParameter("page")) - 1;
-                //       int NUM_ANNUNCI_X_PAGE = Integer.parseInt(request.getParameter("axp"));
-
-                //      String html = getPage(gestoreLocatore.getAnnunciOscurati(), NUM_ANNUNCI_X_PAGE, requested_page);
+                
                 String html = getPage(gestoreLocatore.getAnnunciOscurati());
 
                 response.setContentType("text/html");
@@ -225,9 +211,8 @@ public class ServletLocatore extends HttpServlet {
                 } else if (field_name.equalsIgnoreCase("descrizione")) {
                     gestoreLocatore.modificaDescrizione(field_value);
                 }
-                //refresh sessione
-                update_session(session);
-//                session.setAttribute("user-data", this.gestoreLocatore.toJSON());
+                
+                update_session(session); //refresh sessione
 
                 try {
                     jsonresult.accumulate("id", field_name);
@@ -267,7 +252,7 @@ public class ServletLocatore extends HttpServlet {
 
             } else if (action.equalsIgnoreCase("locatore-archivia-annuncio")) {
                 gestoreLocatore.reloadLocatore();
-//                System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
+                
                 long oid = Long.parseLong(request.getParameter("oid"));
                 System.out.println("ARCHIVIAZIONEEE annuncio " + oid);
                 
@@ -278,10 +263,7 @@ public class ServletLocatore extends HttpServlet {
                     gestoreLocatore.updateAnnuncio(oid, a);
                 }
 
-                System.out.println(res
-                        ? "Archiviazione annuncio " + oid + " completata con successo"
-                        : "Archiviazione annuncio " + oid + " fallita");
-
+                System.out.println(res ? "ok" : "errore"); 
                 update_session(session);
 
                 response.setContentType("text/plain");
@@ -291,28 +273,17 @@ public class ServletLocatore extends HttpServlet {
             } else if (action.equalsIgnoreCase("locatore-pubblica-annuncio")) {
                 gestoreLocatore.reloadLocatore();
                 
-                System.out.println("PRESUNTO OID = " + request.getParameter("oid"));
                 long oid = Long.parseLong(request.getParameter("oid"));
-                System.out.println("PUBBLICAZIONEEEE annuncio " + oid);
-                /*
-                System.out.println("annuncio prima dell'operazione...");
-                for (Annuncio a : gestoreLocatore.getAnnunci()) {
-                    if (a.getId() == oid) {
-                        System.out.println(a.toJSON().toString());
-                    }
-                }
-                 */
                 boolean res = gestoreAnnuncio.archiviaAnnuncio(oid, false);
+                
+                System.out.println("PUBBLICAZIONEEEE annuncio " + oid);
 
                 if (res) {
                     Annuncio a = gestoreAnnuncio.getAnnuncioByID(oid);
                     gestoreLocatore.updateAnnuncio(oid, a);
                 }
 
-                System.out.println(res
-                        ? "Pubblicazione annuncio " + oid + " completata con successo"
-                        : "Pubblicazione annuncio " + oid + " fallita");
-
+                System.out.println(res ? "ok" : "errore"); 
                 update_session(session);
 
                 response.setContentType("text/plain");
@@ -326,7 +297,6 @@ public class ServletLocatore extends HttpServlet {
                 update_session(session);
                         
                 try {
-                    //jsonsession.accumulate("user-access", "loc"); 
                     jsonsession.accumulate("user_access", session.getAttribute("user-access"));
                     jsonsession.accumulate("user_type", session.getAttribute("user-type"));
                     jsonsession.accumulate("user_data", session.getAttribute("user-data"));
@@ -419,14 +389,6 @@ public class ServletLocatore extends HttpServlet {
         String html = "";
 
         if (offset > 0) {
-            /*
-            System.out.println("********************************");
-            System.out.println("l.size()=" + l.size() + ",first=" + first);
-            System.out.println("offset=" + offset);
-            System.out.println("sublist(" + first + ", " + (first + offset) + ")...");
-            System.out.println("totale_dati=" + l.size());
-            System.out.println("...");*/
-
             for (Annuncio a : l.subList(first, first + offset)) {
                 html += getDivAnnuncio(a, gestoreLocatore.getLocatore().isBloccato());
             }
@@ -438,17 +400,13 @@ public class ServletLocatore extends HttpServlet {
     private String getDivAnnuncio(Annuncio a, boolean locatore_bloccato) {
         String html = "";
         Long oid = a.getId();
-        String disabled = locatore_bloccato ? " disabled " : "";// modifiable ? "" : " disabled='disabled' "; 
+        String disabled = locatore_bloccato ? " disabled " : "";
         JSONObject json = a.toJSON(); 
         
-        String indirizzo = null, 
-               metratura = null, 
-               dataInizioAffitto = null, 
-               quartiere = null, 
-               prezzo = null, 
-               num_locali = null, 
-                arredato = null; 
-        String tipo_annuncio = (a.isAtomico() ? "Appartamento" : "Stanze"), 
+        String indirizzo = null, metratura = null, 
+               dataInizioAffitto = null, quartiere = null, 
+               prezzo = null, num_locali = null, arredato = null, 
+               tipo_annuncio = (a.isAtomico() ? "Appartamento" : "Stanze"), 
                spese_comprese = ""; 
         boolean is_appartamento = tipo_annuncio.equalsIgnoreCase("appartamento"); 
         

@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
 
         $.post(
                 "ServletController",
-                {'action': 'locatore-get-session'},
+                {action: 'locatore-get-session'},
                 function (responseJSON) {
                     login_type = responseJSON.user_access;
                     user_data = responseJSON.user_data;
@@ -21,7 +21,6 @@ jQuery(document).ready(function ($) {
 
                     if (login_type === "g+" || login_type === "fb") {
                         $('#panel-password').css('display', 'none');
-//                        $('#rigapwd').css('display', 'none');
                     }
                     /* Info profilo */
                     $('#nomeLocatore').text(user_data.nome + " " + user_data.cognome);
@@ -62,40 +61,6 @@ jQuery(document).ready(function ($) {
 
     });
 
-    function updateInfoAnnunci() {
-        console.log("Update sessione...");
-
-        $.post(
-                "ServletController",
-                {'action': 'locatore-get-session'},
-                function (responseJSON) {
-                    console.log("Update annuncio:..." + responseJSON);
-
-                    a_tot = responseJSON.num_annunci;
-                    a_num_vis = responseJSON.num_visibili;
-                    a_num_arch = responseJSON.num_archiviati;
-                    a_num_osc = responseJSON.num_oscurati;
-
-                    $('#num-annunci-visibili').text("(" + a_num_vis + ")");
-                    $('#num-annunci-archiviati').text("(" + a_num_arch + ")");
-                    $('#num-annunci-oscurati').text("(" + a_num_osc + ")");
-                }
-        );
-    }
-
-    function loadAnnunci() {
-        $('#annunci-content').load("ServletController?action=locatore-getAnnunci");
-    }
-
-    function loadArchivioAnnunci() {
-        $('#archivio-content').load("ServletController?action=locatore-getArchivioAnnunci");
-    }
-
-    function loadAnnunciOscurati() {
-        $('#oscurati-content').load("ServletController?action=locatore-getAnnunciOscurati");
-    }
-
-
     /* Bottoni per la modifica delle info nel profilo */
     $('.start-edit').on('click', function () {
         var target_name = $(this).parents(".panel-default").attr("id").replace("panel-", "");
@@ -133,7 +98,6 @@ jQuery(document).ready(function ($) {
         $panel.children(".panel-body").removeClass("has-error");
         $input_target.prop("disabled", "disabled");
 
-
     });
 
     $('.save-edit').on('click', function () {
@@ -148,7 +112,7 @@ jQuery(document).ready(function ($) {
         if (target_name === "password" &&
                 $('#new-password').val() !== $('#new-password2').val()) {
             setClasses($panel, "panel-danger");
-            //       $panel.children(".panel-body").addClass("has-error");
+
             console.log("password mismatch - client side")
             return false;
         }
@@ -156,7 +120,7 @@ jQuery(document).ready(function ($) {
         $.post(
                 "ServletController",
                 {
-                    'action': 'locatore-edit-info',
+                    action: 'locatore-edit-info',
                     'field-name': target_name,
                     'field-value': new_content,
                     'new-pw': $('#new-password').val()
@@ -165,22 +129,13 @@ jQuery(document).ready(function ($) {
                     if (responseJson.result) {
                         $input_target.prop("disabled", "disabled");
                         $panel.children(".panel-body").removeClass("has-error");
-                        //        $panel.children(".panel-body").addClass("has-success");
-
-                        //$panel.removeClass("panel-default panel-danger panel-success"); 
                         $panel.removeClass("panel-danger");
-//                        $panel.addClass("panel-success"); 
                         setClasses($panel, "panel-success");
-
-
 
                         toggle_edit_buttons($this2);
                         clear_pwd_fields(target_name);
                     } else {
                         setClasses($panel, "panel-danger", "has-error");
-//                        $panel.addClass("panel-danger"); 
-
-                        //                      $panel.children(".panel-body").addClass("has-error");
                         console.log("error code: " + responseJson.error);
                     }
                 }
@@ -207,19 +162,16 @@ jQuery(document).ready(function ($) {
             title: "Conferma cancellazione",
             text: "Sei sicuro di voler eliminare l'annuncio?",
             confirm: function () {
-                console.log("confirmed...");
-
                 $.post(
                         "ServletController",
                         {
-                            'action': 'locatore-delete-annuncio',
-                            'oid': oid
+                            action: 'locatore-delete-annuncio',
+                            oid: oid
                         },
                         function (response) {
                             console.log("response - " + response);
 
                             if (response === "ok") {
-                                // $("#ann-" + oid).css('display', 'none');
                                 $("#ann-" + oid).remove();
                                 updateInfoAnnunci();
                             }
@@ -241,8 +193,8 @@ jQuery(document).ready(function ($) {
                 $.post(
                         "ServletController",
                         {
-                            'action': 'locatore-archivia-annuncio',
-                            'oid': oid
+                            action: 'locatore-archivia-annuncio',
+                            oid: oid
                         },
                         function (response) {
                             console.log("response - " + response);
@@ -251,11 +203,11 @@ jQuery(document).ready(function ($) {
                             if (response === "ok") {
                                 // $("#ann-" + oid).css('display', 'none');
                                 $("#ann-" + oid).remove();
-                                
+
                                 if (a_num_vis === 1) {
                                     $('#annunci-content').html("Non sono presenti annunci al momento!");
                                 }
-                                
+
                                 updateInfoAnnunci();
                                 loadArchivioAnnunci();
                             }
@@ -277,8 +229,8 @@ jQuery(document).ready(function ($) {
                 $.post(
                         "ServletController",
                         {
-                            'action': 'locatore-pubblica-annuncio',
-                            'oid': oid
+                            action: 'locatore-pubblica-annuncio',
+                            oid: oid
                         },
                         function (response) {
                             console.log("response - " + response);
@@ -306,8 +258,8 @@ jQuery(document).ready(function ($) {
         $.post(
                 "ServletController",
                 {
-                    'action': 'Annuncio-getJSONByOid',
-                    'oid': oid
+                    action: 'Annuncio-getJSONByOid',
+                    oid: oid
                 },
                 function (responseJSON) {
                     if (responseJSON.response === "OK") {
@@ -324,6 +276,42 @@ jQuery(document).ready(function ($) {
     });
 
 });
+
+/* Aggiorna tab annunci */
+function updateInfoAnnunci() {
+    console.log("Update sessione...");
+
+    $.post(
+            "ServletController",
+            {action: 'locatore-get-session'},
+            function (responseJSON) {
+                console.log("Update annuncio:..." + responseJSON);
+
+                a_tot = responseJSON.num_annunci;
+                a_num_vis = responseJSON.num_visibili;
+                a_num_arch = responseJSON.num_archiviati;
+                a_num_osc = responseJSON.num_oscurati;
+
+                $('#num-annunci-visibili').text("(" + a_num_vis + ")");
+                $('#num-annunci-archiviati').text("(" + a_num_arch + ")");
+                $('#num-annunci-oscurati').text("(" + a_num_osc + ")");
+            }
+    );
+}
+
+/* Aggiornamento categorie annunci */
+
+function loadAnnunci() {
+    $('#annunci-content').load("ServletController?action=locatore-getAnnunci");
+}
+
+function loadArchivioAnnunci() {
+    $('#archivio-content').load("ServletController?action=locatore-getArchivioAnnunci");
+}
+
+function loadAnnunciOscurati() {
+    $('#oscurati-content').load("ServletController?action=locatore-getAnnunciOscurati");
+}
 
 // Cancella il contenuto e disabilita gli input relativi alla modifica della password
 function clear_pwd_fields(target_name) {
@@ -346,5 +334,7 @@ function toggle_edit_buttons($this_element) {
 function setClasses($panel, panel_classes) {
     $panel.removeClass("panel-danger panel-success");
     $panel.addClass(panel_classes);
-    setTimeout(function () { $panel.removeClass(panel_classes); }, 3000); 
+    setTimeout(function () {
+        $panel.removeClass(panel_classes);
+    }, 3000);
 }

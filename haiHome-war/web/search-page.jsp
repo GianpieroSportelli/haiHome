@@ -31,6 +31,7 @@
         <!--Tema bootstrap -->
         
         <!-- Inizio import header --------------------->
+        <link rel="stylesheet" href="include/css/header.css">
         <script src="include/js/header-updater.js"></script>
         <!-- Script modal login -->
         <script src="include/js/login/modal_validation_and_stuff.js"></script> 
