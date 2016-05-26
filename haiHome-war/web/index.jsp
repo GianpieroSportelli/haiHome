@@ -110,7 +110,7 @@
             </div>
             <div class="col-sm-12 outer-div non_opaco" id="div_locatore">
                 <div class="inner-div non_opaco" id="search_div">
-                    <h1>Vuoi affitare a Studenti a Torino <span id="in_locatore" class="glyphicon glyphicon-plus fake_button"></span></h1>
+                    <h1>Vuoi affittare a Studenti a Torino? <span id="in_locatore" class="glyphicon glyphicon-plus fake_button"></span></h1>
                 </div>
             </div>
 
