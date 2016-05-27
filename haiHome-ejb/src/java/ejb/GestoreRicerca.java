@@ -18,7 +18,6 @@ import entity.TipoStanzaAccessoria;
 import entity.TipoStanzaInAffitto;
 import facade.CittàFacadeLocal;
 import facade.FiltroDiRicercaFacadeLocal;
-import facade.QuartiereFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

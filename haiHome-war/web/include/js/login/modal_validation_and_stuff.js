@@ -40,11 +40,6 @@ jQuery(document).ready(function ($) {
             myModal.modal('hide');
         }
     });
-
-    /*
-    function submit_with_enter_listener($form) {
-        //boh
-    } */
    
     //disable submit button until all fields have valid values
     function check_filled_form($form, $submit) {
@@ -59,13 +54,10 @@ jQuery(document).ready(function ($) {
                 if (((name === "user-name" || name === "user-surname") && input_value == '') ||
                         (name === "user-email" && !email_regex.test(input_value)) ||
                         (name === "user-phone" && !phone_regex.test(input_value)) ||
-                        ((name === "user-pw" || name === "user-pw-repeat") && input_value == '')) { /*|| non funge D: 
-                         (name === "user-pw-repeat" && input_value !== $form.find('input[name="user-pw"]').val())*/
+                        ((name === "user-pw" || name === "user-pw-repeat") && input_value == '')) { 
                     empty = true;
                     return false;
                 }
-
-//                    alert(form.find('input[name="user-pw"]').val()); - è undefined D:
             });
 
             empty ? $submit.attr('disabled', 'disabled') : $submit.removeAttr('disabled');
