@@ -256,8 +256,9 @@ function create_corpo_accessoria(stanza, first) {
     //html += "<div class=\"center\">";
     html += "<p class=\"text-muted\"> <span class=\"text-primary\">Metratura: </span> " + stanza.Metratura + " m<sup>2</sup></p>";
     //html += "</div>";//center clos
-    html += "<button id=\"ArchiviaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaStanza(" + stanza.OID + ")\">Archivia</button>";
-    html += "<button id=\"PubblicaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"pubblicaStanza(" + stanza.OID + ")\">Pubblica</button>";
+    /*html += "<button id=\"ArchiviaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaStanza(" + stanza.OID + ")\">Archivia</button>";
+     html += "<button id=\"PubblicaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"pubblicaStanza(" + stanza.OID + ")\">Pubblica</button>";
+     */
     html += "</div>";
     return html;
 }
@@ -276,9 +277,9 @@ function create_corpo_affitto(stanza, first, atomico) {
     if (!visibile) {
         html += "<p class=\"text-muted\"> <span class=\"text-warning\">Questa camera non rispetta la tua ricerca ma è disponibile!!</span></p>";
     }
-    
-     var archiviato = stanza.archiviato;
-    if(archiviato){
+
+    var archiviato = stanza.archiviato;
+    if (archiviato) {
         html += "<p class=\"text-muted\"> <span class=\"text-warning\">Questa camera risulta non disponibile!!</span></p>";
     }
     html += create_carousel_stanza(stanza);
@@ -303,8 +304,10 @@ function create_corpo_affitto(stanza, first, atomico) {
         html += "<p class=\"text-muted\"> " + compreso + "</p>";
     }
     //html += "</div>";//center close
-    html += "<button id=\"ArchiviaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaStanza(" + stanza.OID + ")\">Archivia</button>";
-    html += "<button id=\"PubblicaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"pubblicaStanza(" + stanza.OID + ")\">Pubblica</button>";
+    if (!atomico) {
+        html += "<button id=\"ArchiviaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaStanza(" + stanza.OID + ")\">Archivia</button>";
+        html += "<button id=\"PubblicaButton-" + stanza.OID + "\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"pubblicaStanza(" + stanza.OID + ")\">Pubblica</button>";
+    }
     html += "</div>";
     return html;
 }
@@ -432,7 +435,8 @@ function info_loc(locatore) {
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Nome: </span>" + locatore.nome + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Cognome: </span>" + locatore.cognome + "</p>";
     html += "<p class=\"text-muted\"><span class=\"text-primary\">Descrizione: </span>" + locatore.descrizione + "</p>";
-    html += "<p class=\"text-muted\"><span class=\"text-primary\">email: </span><span id=\"mail\">" + locatore.email + "</span></p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">Telefono: </span>" + locatore.telefono + "</p>";
+    html += "<p class=\"text-muted\"><span class=\"text-primary\">Email: </span><span id=\"mail\">" + locatore.email + "</span></p>";
     html += "<button id=\"segnalaButton\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"segnalaAnnuncio()\">Segnala Annuncio</button>";
     html += "<button id=\"bloccaButton\" type=\"button\" class=\"btn btn-danger detailButton\" style=\"display:none\" onClick=\"bloccaLocatore()\">Blocca Locatore</button>";
     html += "<button id=\"sbloccaButton\" type=\"button\" class=\"btn btn-success detailButton\" style=\"display:none\" onClick=\"sbloccaLocatore()\">Sblocca Locatore</button>";
@@ -535,7 +539,7 @@ function pubblicaStanza(OID) {
             {
                 action: "locatore-pubblica-stanza",
                 oid: annuncio.OID,
-                oidStanza:OID
+                oidStanza: OID
             },
             function (response) {
                 if (response == "ok") {
@@ -825,7 +829,7 @@ $(document).ready(function () {
         var bus = $("#bus").is(':checked');
         var banche = $("#banche").is(':checked');
         var superM = $("#super").is(':checked');
-        
+
         if (superM) {
             setMapOnAll(map, markers_super);
         } else {
