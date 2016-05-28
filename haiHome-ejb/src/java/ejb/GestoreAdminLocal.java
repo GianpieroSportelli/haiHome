@@ -14,8 +14,20 @@ import javax.ejb.Local;
 @Local
 public interface GestoreAdminLocal {
 
+    /**
+     * verifica la presenza di un admin denominato dai parametri
+     * @param email
+     * @param password
+     * @return valore di verità corrispondente al check
+     */
     boolean checkAdmin(String email, String password);
 
+    /**
+     * Aggiunge un admin dati i parametri
+     * @param email
+     * @param password
+     * @return esito
+     */
     boolean addAdmin(String email, String password);
 
 }

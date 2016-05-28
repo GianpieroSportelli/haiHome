@@ -54,32 +54,44 @@ public class ServletRicerca extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             RequestDispatcher rd = null;
             String action = request.getParameter("action");
-            
-            System.out.println("ACTION: "+action);
-            
-            
+
+            System.out.println("ACTION: " + action);
+
+            /*
+            Richiesta del filtro attualmente salvato in gestoreRicerca
+             */
             if (action.equalsIgnoreCase("Ricerca-getFiltro")) {
+
                 response.setContentType("application/json");
-                String json = gestoreRicerca.attualeToJSON().toString();
-                System.out.println("Filtro: " + json);
+                JSONObject filtro = gestoreRicerca.attualeToJSON();
+                String json = "null";
+
+                if (filtro != null) {
+                    json = filtro.toString();
+                }
                 out.write(json);
 
-            } else if (action.equalsIgnoreCase("Ricerca-setCity")) {
-                
+            }/*
+                Richiesta usata per impostare la città attuale, viene inviata una Stringa corrispondente alla
+                città selezionata
+             */ else if (action.equalsIgnoreCase("Ricerca-setCity")) {
+
                 String city = request.getParameter("city");
                 //selezionare la città corrisponde a generare un filtro con solo la città impostata
                 boolean result = gestoreRicerca.selezionaCittà(city);
-                //invia quartieri
-                System.out.println("Selezione andata a buon fine? " + result);
+                //System.out.println("Selezione andata a buon fine? " + result);
                 System.out.println(gestoreRicerca.attualeToJSON());
                 out.write("" + result);
 
-            } else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
+            }/*
+             Richiesta che imposta in gestoreRicerca un particolare Filtro di Ricerca persistito
+             */ else if (action.equalsIgnoreCase("Ricerca-setFiltro")) {
                 String id = request.getParameter("ID");
                 boolean esito = gestoreRicerca.loadFiltro(id);
                 out.write("" + esito);
 
-            } else if (action.equalsIgnoreCase("setCity")) {
+            }/*
+             else if (action.equalsIgnoreCase("setCity")) {
                 String city = request.getParameter("city");
                 gestoreRicerca.selezionaCittà(city);
                 //invia quartieri
@@ -87,7 +99,10 @@ public class ServletRicerca extends HttpServlet {
                 System.out.println(gestoreRicerca.attualeToJSON());
                 getServletContext().getRequestDispatcher("/search-page.jsp").forward(request, response);
 
-            } else if (action.equalsIgnoreCase("search")) {
+            }*/
+             /*
+             Richiesta aggiornamento filtro di ricerca contenuto in gestoreRicerca
+             */ else if (action.equalsIgnoreCase("search")) {
 
                 String[] quartieri = request.getParameterValues("quartieri");
 
@@ -107,15 +122,12 @@ public class ServletRicerca extends HttpServlet {
                 boolean compRiscaldamento = request.getParameter("compRiscaldamento") != null;
                 boolean arredato = request.getParameter("arredato") != null;
 
-                //System.out.println("cmpCond: "+compCondomino+" cmpRis: "+compRiscaldamento+" arredato: "+arredato);
-                //System.out.println("Quartieri selezionti");
                 ArrayList<String> quartieriCittà = gestoreRicerca.getQuartieriCittà();
                 ArrayList<String> quartieriSel = new ArrayList();
                 if (quartieri == null) {
-                    // quartieriSel = quartieriCittà;
+                    
                 } else {
                     for (String selection : quartieri) {
-                        //System.out.println(selection);
                         boolean find = false;
                         for (String qC : quartieriCittà) {
                             if (qC.equalsIgnoreCase(selection)) {
@@ -190,44 +202,51 @@ public class ServletRicerca extends HttpServlet {
                 String json = new Gson().toJson("" + result);
                 out.write(json);
 
-            } else if (action.equalsIgnoreCase("AjaxGetInfo")) {
+            } /*else if (action.equalsIgnoreCase("AjaxGetInfo")) {
                 System.out.println("I'm in!!");
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.geocodeCurrentCity());
                 System.out.println(json);
                 out.write(json);
 
-            } else if (action.equalsIgnoreCase("Ricerca-geoCity")) {
-                //System.out.println("I'm in!!");
+            }*/
+             /*
+             Richiesta per coordinate geocodifica della città selezionata in gestoreRicerca
+             */ else if (action.equalsIgnoreCase("Ricerca-geoCity")) {
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.geocodeCurrentCity());
+                out.write(json);
+
+            }/*
+             Richiesta annunci che rispettano filtro di ricerca contenuto in gestoreRicerca
+             */ else if (action.equalsIgnoreCase("Ricerca-getAnnunciFiltro")) {
+                response.setContentType("application/json");
+                JSONArray ris = gestoreRicerca.usaFiltroAttuale();
+                System.out.println("n. Risultati: "+ris.length());
+                String json = ris.toString();
                 //System.out.println(json);
                 out.write(json);
 
-            } else if (action.equalsIgnoreCase("Ricerca-getAnnunciFiltro")) {
-                //System.out.println("I'm in!!");
-                response.setContentType("application/json");
-                JSONArray ris = gestoreRicerca.usaFiltroAttuale();
-                System.out.println(ris.length());
-                String json = ris.toString(); //new Gson().toJson(gestoreRicerca.usaFiltroAttuale());
-                System.out.println(json);
-                out.write(json);
-
-            } else if (action.equalsIgnoreCase("Ricerca-getQuartieri")) {
-                //System.out.println("I'm in!!");
+            }/*
+             Richiesta quartieri città selezionata in gestoreRicerca
+             */ else if (action.equalsIgnoreCase("Ricerca-getQuartieri")) {
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.getQuartieriCittà());
                 System.out.println(json);
                 out.write(json);
 
-            } else if (action.equalsIgnoreCase("Ricerca-getTipoStanza")) {
-                //System.out.println("I'm in!!");
+            }/*
+             Richiesta tipiStanza trattati da haihome
+             */ else if (action.equalsIgnoreCase("Ricerca-getTipoStanza")) {
                 response.setContentType("application/json");
                 String json = new Gson().toJson(gestoreRicerca.getTipoStanza());
-                System.out.println(json);
+                //System.out.println(json);
                 out.write(json);
 
-            } else if (action.equalsIgnoreCase("Ricerca-salvaFiltro")) {
+            } /*
+             Richiesta utilizzata per salvare filtro di ricerca caricato in gestoreRicerca relativamente
+             a un particolare studente
+             */else if (action.equalsIgnoreCase("Ricerca-salvaFiltro")) {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
                 if (session == null) {
@@ -248,14 +267,13 @@ public class ServletRicerca extends HttpServlet {
                         }
 
                     } else {
-                        //String json = new Gson().toJson("ok");
-                        //System.out.println(json);
                         out.write("no studente");
                     }
                 }
 
-            } else if (action.equalsIgnoreCase("Ricerca-addSuperMarket")) {
-                //System.out.println("I'm in!!");
+            } /*
+             Richiesta supermercati in un raggio rad(=500) da un particolare annuncio passato come input
+             */else if (action.equalsIgnoreCase("Ricerca-addSuperMarket")) {
                 String jsonA = (String) request.getParameter("annuncio");
                 System.out.println(jsonA);
                 try {
@@ -266,18 +284,19 @@ public class ServletRicerca extends HttpServlet {
                     response.setContentType("application/json");
                     JSONArray superJ = gestoreRicerca.getSupermarketNearBy(lat, lng, dist);
                     String json = superJ.toString(); //new Gson().toJson();
-                    System.out.println(json);
+                    //System.out.println(json);
                     out.write(json);
 
                 } catch (JSONException ex) {
                     String json = new Gson().toJson("ERRORE SUPERMARKET");
-                    System.out.println(json);
+                    //System.out.println(json);
                     out.write(json);
                     Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-            } else if (action.equalsIgnoreCase("Ricerca-addBank")) {
-                //System.out.println("I'm in!!");
+            }/*
+             Richiesta banche in un raggio rad(=500) da un particolare annuncio passato come input
+             */ else if (action.equalsIgnoreCase("Ricerca-addBank")) {
                 String jsonA = (String) request.getParameter("annuncio");
                 System.out.println(jsonA);
                 try {
@@ -287,19 +306,21 @@ public class ServletRicerca extends HttpServlet {
 
                     response.setContentType("application/json");
                     JSONArray superJ = gestoreRicerca.getBankNearBy(lat, lng, dist);
-                    String json = superJ.toString(); //new Gson().toJson();
-                    System.out.println(json);
+                    String json = superJ.toString(); 
+                    //System.out.println(json);
                     out.write(json);
 
                 } catch (JSONException ex) {
                     String json = new Gson().toJson("ERRORE BANK");
-                    System.out.println(json);
+                    //System.out.println(json);
                     out.write(json);
                     Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-            } else if (action.equalsIgnoreCase("Ricerca-addBus")) {
-                //System.out.println("I'm in!!");
+            } /*
+             Richiesta fermate mezzi pubblici in un raggio rad(=500) da un particolare annuncio passato come input
+             */else if (action.equalsIgnoreCase("Ricerca-addBus")) {
+               
                 String jsonA = (String) request.getParameter("annuncio");
                 System.out.println(jsonA);
                 try {
@@ -310,17 +331,19 @@ public class ServletRicerca extends HttpServlet {
                     response.setContentType("application/json");
                     JSONArray superJ = gestoreRicerca.getBusNearBy(lat, lng, dist);
                     String json = superJ.toString(); //new Gson().toJson();
-                    System.out.println(json);
+                    //System.out.println(json);
                     out.write(json);
 
                 } catch (JSONException ex) {
                     String json = new Gson().toJson("ERRORE BUS");
-                    System.out.println(json);
+                    //System.out.println(json);
                     out.write(json);
                     Logger.getLogger(ServletRicerca.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-            } else if (action.equalsIgnoreCase("Ricerca-deleteFiltro")) {
+            }/*
+             Richiesta di cancellazione di uno specifico filtro di ricerca 
+             */ else if (action.equalsIgnoreCase("Ricerca-deleteFiltro")) {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
                 if (session == null) {
@@ -344,7 +367,9 @@ public class ServletRicerca extends HttpServlet {
 
                     }
                 }
-            } else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
+            } /*
+             Verifica studente loggato
+             */else if (action.equalsIgnoreCase("Ricerca-loggatoStudente")) {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
                 boolean result = false;
@@ -365,7 +390,9 @@ public class ServletRicerca extends HttpServlet {
                 }
 
                 out.write("" + id);
-            } else if (action.equalsIgnoreCase("Ricerca-loggatoLocatore")) {
+            } /*
+             Verfica locatore loggato
+             */else if (action.equalsIgnoreCase("Ricerca-loggatoLocatore")) {
                 response.setContentType("text/html;charset=UTF-8");
                 HttpSession session = request.getSession();
                 boolean result = false;
@@ -386,13 +413,15 @@ public class ServletRicerca extends HttpServlet {
                 }
 
                 out.write("" + id);
-            } else if (action.equalsIgnoreCase("Ricerca-getImage")) {
+            } /*
+             Carica particolare immagine definita dai parametri di input
+             */else if (action.equalsIgnoreCase("Ricerca-getImage")) {
                 String url = request.getParameter("url");
                 String type = request.getParameter("type");
                 String image = "";
                 image = gestoreImmagini.getImage(url, type);
                 if (image == null) {
-                    out.write(""); //accrocchio momentaneo
+                    out.write("");
                 } else {
                     out.write(image);
                 }

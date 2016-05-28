@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * @author SPORT
  */
 public class ServletSegnalazione extends HttpServlet {
-    
+
     @EJB
     private GestoreSegnalazioneLocal gestoreSegnalazione;
 
@@ -41,36 +41,36 @@ public class ServletSegnalazione extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-             String action = request.getParameter("action");
-            System.out.println(action);
-            
-            if(action.equalsIgnoreCase("Segnalazione-addSegnalazione")){
-                String id_studente=request.getParameter("id_studente");
-                String id_annuncio=request.getParameter("id_annuncio");
-                String descrizione=request.getParameter("descrizione");
-                System.out.println("studente: "+id_studente+" annuncio: "+id_annuncio+" descrizione: "+descrizione);
-                boolean result=gestoreSegnalazione.addSegnalazione(id_studente, id_annuncio, descrizione);
-                System.out.println("result: "+result);
-                out.write(""+result);
-                
-            }else if(action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")){
-                JSONArray all=gestoreSegnalazione.MapAnnunciSegnalati();
-                String json=all.toString();
+            String action = request.getParameter("action");
+            System.out.println("ACTION: " + action);
+
+            if (action.equalsIgnoreCase("Segnalazione-addSegnalazione")) {
+                String id_studente = request.getParameter("id_studente");
+                String id_annuncio = request.getParameter("id_annuncio");
+                String descrizione = request.getParameter("descrizione");
+                //System.out.println("studente: "+id_studente+" annuncio: "+id_annuncio+" descrizione: "+descrizione);
+                boolean result = gestoreSegnalazione.addSegnalazione(id_studente, id_annuncio, descrizione);
+                //System.out.println("result: "+result);
+                out.write("" + result);
+
+            } else if (action.equalsIgnoreCase("Segnalazione-getAllSegnalazioni")) {
+                JSONArray all = gestoreSegnalazione.MapAnnunciSegnalati();
+                String json = all.toString();
                 response.setContentType("application/json");
-                System.out.println("Result: "+json);
+                //System.out.println("Result: "+json);
                 out.write(json);
-            }else if(action.equalsIgnoreCase("Segnalazione-archivia")){
-                String json=request.getParameter("segnalazione");
-                 String status=request.getParameter("status");
-                 try {
-                     JSONObject Segn=new JSONObject(json);
-                     System.out.println("Da archiviare: "+json);
-                     boolean result=gestoreSegnalazione.archiviaSegnalazioni(Segn,Boolean.valueOf(status));
-                     out.write(""+result);
-                 } catch (JSONException ex) {
-                     out.write("false");
-                     Logger.getLogger(ServletSegnalazione.class.getName()).log(Level.SEVERE, null, ex);
-                 }
+            } else if (action.equalsIgnoreCase("Segnalazione-archivia")) {
+                String json = request.getParameter("segnalazione");
+                String status = request.getParameter("status");
+                try {
+                    JSONObject Segn = new JSONObject(json);
+                    System.out.println("Da archiviare: " + json);
+                    boolean result = gestoreSegnalazione.archiviaSegnalazioni(Segn, Boolean.valueOf(status));
+                    out.write("" + result);
+                } catch (JSONException ex) {
+                    out.write("false");
+                    Logger.getLogger(ServletSegnalazione.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
