@@ -43,6 +43,7 @@ public class ServletCitta extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             String action = request.getParameter("action");
+            System.out.println("ACTION: " + action);
 
             if (action.equalsIgnoreCase("inserisci-citta")) {
                 String nomeCitta = request.getParameter("NomeCitta");

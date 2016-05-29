@@ -449,7 +449,7 @@ function info_annuncio(annuncio) {
         html += "<p class=\"text-muted\"> <span class=\"text-primary\">Costo mensile: </span> " + annuncio.Prezzo + " &euro; " + cmp + "</p>";
     }
     html += "<button id=\"saveButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"salvaAnnuncioPreferiti()\" style=\"display:none\">Salva nei Preferiti</button>";
-    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina dai Preferti</button>";
+    html += "<button id=\"deleteButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"cancellaAnnuncioPreferiti()\" style=\"display:none\">Elimina dai Preferiti</button>";
     html += "<button id=\"oscuraButton\" type=\"button\" class=\"btn btn-danger detailButton\" onClick=\"oscuraAnnuncio()\" style=\"display:none\">Oscura Annuncio</button>";
     html += "<button id=\"visibileButton\" type=\"button\" class=\"btn btn-success detailButton\" onClick=\"visibileAnnuncio()\" style=\"display:none\">Rendi Visibile Annuncio</button>";
     html += "<button id=\"ArchiviaButton\" type=\"button\" class=\"btn btn-warning detailButton\" style=\"display:none\" onClick=\"archiviaAnnuncio()\">Archivia Annuncio</button>";

@@ -38,6 +38,7 @@ public class ServletAdmin extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String action = request.getParameter("action");
+            System.out.println("ACTION: " + action);
             /*gestoreAdmin.addAdmin("admin@haihome.it", "haihome");
             out.write("Aggiunto");*/
             HttpSession session = request.getSession(); 

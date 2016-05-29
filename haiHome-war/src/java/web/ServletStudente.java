@@ -47,6 +47,7 @@ public class ServletStudente extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String action = request.getParameter("action");
+            System.out.println("ACTION: " + action);
 
             /* We have to create or update a session between requests 
              We suppose that a previous session exists.
