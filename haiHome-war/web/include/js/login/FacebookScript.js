@@ -1,33 +1,3 @@
-/*// This is called with the results from from FB.getLoginStatus().
- function statusChangeCallback(response) {
- console.log('statusChangeCallback');
- console.log(response);
- // The response object is returned with a status field that lets the
- // app know the current login status of the person.
- // Full docs on the response object can be found in the documentation
- // for FB.getLoginStatus().
- if (response.status === 'connected') {
- // Logged into your app and Facebook.
- LoginFB();
- } else if (response.status === 'not_authorized') {
- // The person is logged into Facebook, but not your app.
- document.getElementById('status').innerHTML = 'Please log ' +
- 'into this app.';
- } else {
- // The person is not logged into Facebook, so we're not sure if
- // they are logged into this app or not.
- document.getElementById('status').innerHTML = 'Please log ' +
- 'into Facebook.';
- }
- }
- // This function is called when someone finishes with the Login
- // Button.  See the onlogin handler attached to it in the sample
- // code below.
- //function checkLoginState() {
- //    FB.getLoginStatus(function (response) {
- //        statusChangeCallback(response);
- //    });
- // }*/
 window.fbAsyncInit = function () {
     FB.init({
         appId: '785498704895774',
@@ -72,13 +42,7 @@ function LoginFB(clicked_id) {
 function getData(clicked_id) {
     var dati;
     var email;
-    //prendo l'immagine
-    //FB.api("/me/picture?width=180&height=180", function (response) {
-    //     var profileImage = response.data.url.split('https://')[1]; //remove https to avoid any cert issues
-    //document.getElementById("profileImage").setAttribute("src", "http://" + profileImage);
-    //     document.getElementById("profilo").value = "http://" + profileImage;
-    //   });
-    //IMPORTANTE!! METTI I CAMPI CHE TI SERVONO ANCHE QUI DENTRO!!
+
     FB.api('/me?fields=id,first_name,last_name,email', function (response) {
         //response.name       - User Full name
         //response.link       - User Facebook URL
@@ -88,8 +52,7 @@ function getData(clicked_id) {
         //
         dati = response.first_name + ',' + response.last_name;
         email = response.email;
-        //Passo i parametri
-        //Prendo nome+cognome
+
         document.getElementById("userData").value = dati;
         document.getElementById("mailUser").value = email;
         document.getElementById("profilo").value = "http://graph.facebook.com/" + response.id + "/picture?type=large";
@@ -103,22 +66,3 @@ function getData(clicked_id) {
         document.getElementById("formLogin").submit();
     });
 }
-/*function checkUser() {
- FB.getLoginStatus(function (response) {
- logOut(response);
- });
- }
- function logOut(response) {
- if (response.status === 'connected') {
- //Se l'utente è loggato, sloggalo
- FB.logout(function () {
- //alert("prova");
- document.getElementById('azione').value = "logoutFacebook";
- //Chiamo la servlet
- document.getElementById("formLogin").submit();
- });
- } else {
- //L'utente non è loggato, avvisalo
- alert("Non sei loggato! Ti devi connettere per poter effettuare il logout.");
- }
- }*/
