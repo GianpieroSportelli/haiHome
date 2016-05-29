@@ -862,10 +862,23 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     @Override
     public boolean eliminaAnnuncio(long oidAnnuncio) {
         this.annuncio = annuncioFacade.find(oidAnnuncio);
-        
+
         if(this.annuncio==null){
             return false;
         }
+        
+        Città miaCitta = this.annuncio.getCittà();
+        
+        
+        
+        for(Annuncio a: miaCitta.getAnnunci()){
+            if(a.getId() == this.annuncio.getId()){
+                miaCitta.getAnnunci().remove(a);
+                break;
+            }
+        }
+        
+        
         
         Collection<Stanza> listaStanze = this.annuncio.getListaStanza();
         this.annuncio.setListaStanza(new ArrayList<>());
@@ -880,6 +893,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         }
 
         annuncioFacade.remove(annuncio);
+        this.cittàFacade.edit(miaCitta);
         return true;
     }
 

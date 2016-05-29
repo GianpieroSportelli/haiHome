@@ -51,7 +51,7 @@
 
 
             <div class="row pull-right">
-                 <button id="butt2" type="submit" class="btn btn-primary nextBtn"> Next</button>
+                 <button id="butt2" type="submit" class="btn btn-primary nextBtn"> Avanti</button>
             </div>
 
     </form>
