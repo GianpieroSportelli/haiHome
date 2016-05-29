@@ -153,17 +153,6 @@ function add_button() {
                 "<li class=\"pagerCursore\"> <a onClick='nextpage()' id='next_page'> <span class='glyphicon glyphicon-menu-right'> </span> </a> </li>" +
                 "</ul> </div>";
         $("#filtriUtente").append(html);
-        /*
-         $("#button-div").append("<div class=\"btn-group\" id=\"group-button-page\">");
-         $("#group-button-page").append("<button class=\"btn btn-white\"onClick=prevpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button>");
-         for (i = 0; i < n_page; i++) {
-         
-         var html = '<button class=\"btn btn-white\" onClick=selectpage(this.id) id=\"' + (i + 1) + '\"> ' + (i + 1) + '</button>';
-         $("#group-button-page").append(html);
-         }
-         $("#group-button-page").append("<button class=\"btn btn-white\" onClick=nextpage() type=\"button\"><i class=\"glyphicon glyphicon-chevron-right\"></i> </button>");
-         $("#button-div").append("</div>");
-         $("#filtriUtente").append("</div>");*/
     }
 }
 
