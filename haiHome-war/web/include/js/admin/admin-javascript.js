@@ -9,7 +9,7 @@ function insertCitta() {
             function (data) {
                 if (data == "OK") {
                     alert('Città ' + citta + " inserita con successo.");
-
+                    getCittaToDelete();
                 } else
                     alert('ERRORE INSERIMENTO ' + citta);
                 $('#citta').val('');
@@ -23,7 +23,7 @@ function deleteCitta() {
             function (data) {
                 if (data == "OK") {
                     alert('Città ' + citta + " cancellata con successo.");
-
+                    getCittaToDelete();
                 } else
                     alert('ERRORE CANCELLAZIONE ' + citta);
                 $('#citta2').val('');
@@ -120,5 +120,29 @@ function inserisciCAP() {
             );
         }
     }
+}
+
+function getCittaToDelete() {
+    no_segn();
+    $("#citta2").empty();
+    $("#cancellaCittaDIV").hide();
+    $.post("ServletController",
+            {action: "get-lista-citta"},
+            function (responseJson) {
+                if (responseJson == 'false') {
+                    alert('Non è stato possibile recuperare le città presenti nel Database.');
+                } else {
+                    console.log(responseJson);
+                    responseJson = JSON.parse(responseJson);
+                    var html = '';
+                    html += '<option value=\"-\"> - </option>';
+                    $.each(responseJson, function (index, item) {
+                        html += '<option id=\"citta-' + item + '\" value=\"' + item + '\">' + item + '</option>';
+                    });
+                    $("#citta2").append(html);
+                }
+
+            }
+    );
 }
 

@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import verifytoken.Verify;
@@ -70,12 +69,27 @@ public class ServletLocatore extends HttpServlet {
                         phone = request.getParameter("user-phone").trim(),
                         pwd = request.getParameter("user-pw"),
                         pwd2 = request.getParameter("user-pw-repeat"),
-                        op_result = "OK";
+                        res = "OK";
 
-                /* String DigestUtils.shaHex(String data) */
+           //      String DigestUtils.shaHex(String data) 
+               
+                Pattern email_pattern = Pattern.compile("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$");
+                Pattern phone_pattern = Pattern.compile("^\\+?[0-9]{3}-?[0-9]{6,12}$");
                 
-                /* controllo correttezza email, telefono, password */
-                if (pwd.equals(pwd2)) {
+                if (!email_pattern.matcher(email).matches()) {
+                    res = "L'email è in un formato non riconosciuto";
+                } 
+                else if (!phone_pattern.matcher(phone).matches()) {
+                    res = "Numero di telefono non valido";
+                }
+                else if (pwd.length() < 3) {
+                    res = "Password troppo corta";
+                }
+                else if (!pwd.equals(pwd2)) {
+                    res = "Le due password non coincidono"; 
+                }
+                
+                if (res.equalsIgnoreCase("ok")) {
                     // email non presente
                     if (!gestoreLocatore.checkLocatore(email)) {
                         gestoreLocatore.aggiungiLocatore(email, pwd, name, surname, phone, "https://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg");
@@ -83,15 +97,13 @@ public class ServletLocatore extends HttpServlet {
                     else if (gestoreLocatore.getLocatore().getPassword() == null) {
                         gestoreLocatore.modificaPassword(pwd);
                     } else {
-                        op_result = "L'email " + email + " e' associata ad un altro account"; //email address <" + email + "> is already registered";
+                        res = "L'email " + email + " e' associata ad un altro account"; 
                     }
-                } else {
-                    op_result = "password mismatch";
                 }
 
                 response.setContentType("text/html"); 
                 response.setCharacterEncoding("UTF-8"); 
-                out.write(op_result);
+                out.write(res);
 
             } else if (action.equalsIgnoreCase("login-locatore")) {
                 String email = request.getParameter("user-email").trim(),
@@ -185,28 +197,28 @@ public class ServletLocatore extends HttpServlet {
                 if (field_name.equalsIgnoreCase("password")) {
                     if (gestoreLocatore.getLocatore().getPassword().equals(field_value)) {
                         String new_password = request.getParameter("new-pw");
-                        /* Regex complessità password?? */
 
                         if (new_password.length() >= 3) {
                             gestoreLocatore.modificaPassword(new_password);
                         } else {
                             res = false;
-                            error = "PASSWORD TOO SHORT";
+                            error = "Password troppo corta";
                         }
                     } else {
                         res = false;
-                        error = "OLD PASSWORD INCORRECT";
+                        error = "Vecchia password errata";
                     }
                 } else if (field_name.equalsIgnoreCase("telefono")) {
                     String phone_number = field_value.replace(" ", ""); 
                     Pattern pattern = Pattern.compile("^\\+?[0-9]{3}-?[0-9]{6,12}$");
                     Matcher matcher = pattern.matcher(phone_number);
-                    res = phone_number.equals("") || matcher.matches();
 
-                    if (res) {
+                    /* L'utente può non indicare un numero di telefono */
+                    if (phone_number.equals("") || matcher.matches()) {
                         gestoreLocatore.modificaTelefono(field_value);
                     } else {
                         error = "REGEX MISMATCH - " + phone_number + " non e' un numero di telefono valido";
+                        res = false; 
                     }
                 } else if (field_name.equalsIgnoreCase("descrizione")) {
                     gestoreLocatore.modificaDescrizione(field_value);
@@ -218,7 +230,6 @@ public class ServletLocatore extends HttpServlet {
                     jsonresult.accumulate("id", field_name);
                     jsonresult.accumulate("result", res);
                     jsonresult.accumulate("error", error);
-
                 } catch (JSONException ex) {
                     Logger.getLogger(ServletLocatore.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -240,9 +251,7 @@ public class ServletLocatore extends HttpServlet {
                     gestoreLocatore.removeAnnuncio(annuncio);
                     res = gestoreAnnuncio.eliminaAnnuncio(oid);
                     System.out.println("Annuncio " + oid + "eliminato?" + res);
-                } else {
-                    System.out.println("Questo non dovrebbe succedere ma non si sa mai");
-                }
+                } 
 
                 update_session(session);
 
@@ -254,16 +263,14 @@ public class ServletLocatore extends HttpServlet {
                 gestoreLocatore.reloadLocatore();
                 
                 long oid = Long.parseLong(request.getParameter("oid"));
-                System.out.println("ARCHIVIAZIONEEE annuncio " + oid);
-                
                 boolean res = gestoreAnnuncio.archiviaAnnuncio(oid, true);
 
                 if (res) {
                     Annuncio a = gestoreAnnuncio.getAnnuncioByID(oid);
                     gestoreLocatore.updateAnnuncio(oid, a);
                 }
+                System.out.println("ARCHIVIAZIONE annuncio " + oid + "..." + res);
 
-                System.out.println(res ? "ok" : "errore"); 
                 update_session(session);
 
                 response.setContentType("text/plain");
@@ -275,9 +282,7 @@ public class ServletLocatore extends HttpServlet {
                 
                 long oid = Long.parseLong(request.getParameter("oid"));
                 boolean res = gestoreAnnuncio.archiviaAnnuncio(oid, false);
-                
-                System.out.println("PUBBLICAZIONEEEE annuncio " + oid);
-
+               
                 if (res) {
                     Annuncio a = gestoreAnnuncio.getAnnuncioByID(oid);
                     gestoreLocatore.updateAnnuncio(oid, a);
@@ -309,7 +314,6 @@ public class ServletLocatore extends HttpServlet {
                 }
 
                 response.setContentType("application/json");
-                System.out.println("LOCATORE GET SESSION: " + jsonsession.toString());
                 out.write(jsonsession.toString());
 
             } else if (action.equalsIgnoreCase("locatore-blocca-by-id")) {
@@ -417,7 +421,7 @@ public class ServletLocatore extends HttpServlet {
             quartiere = json.getString("Quartiere"); 
             prezzo = String.valueOf(json.getDouble("Prezzo")) + " &euro;";       
             num_locali = String.valueOf(json.getInt("NumeroLocali")); 
-            arredato = a.isArredato() ? "s&igrave;" : "no"; 
+            arredato = (a.isArredato() ? "Arredato" : "Non arredato");
             
             /* L'operatore ternario è l'invenzione del secolo */
             spese_comprese = (a.isCompresoCondominio() ? "condominio" : "") +
@@ -427,8 +431,8 @@ public class ServletLocatore extends HttpServlet {
                 spese_comprese = "nessuna";
             }
         }
-        catch (JSONException e) {
-            System.out.println("Il json e' esploso, e vbb");
+        catch (JSONException ex) {
+            Logger.getLogger(ServletLocatore.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         html += "<div id='ann-" + oid + "' class='annuncio row'>"; //CONTAINER 
@@ -440,7 +444,7 @@ public class ServletLocatore extends HttpServlet {
         
         if (!a.isOscurato()) { //annuncio modificabile solo se non oscurato 
             html += "<div class='dropdown link-annuncio'>"; //DROPDOWN MENU - HEADER
-            html += "<a class='btn btn-link dropdown-toggle'" + disabled + " type='button' data-toggle='dropdown'>";
+            html += "<a class='btn btn-link dropdown-toggle " + disabled + "' type='button' data-toggle='dropdown'>";
             html += "Gestisci annuncio <span class='caret'></span>";
             html += "</a>";
             html += "<ul class='dropdown-menu'>"; //DROPDOWN MENU - OPZIONI
@@ -456,18 +460,16 @@ public class ServletLocatore extends HttpServlet {
         
         html += "<div class='col-md-6'>"; // COLONNA 1 
         html += "<p class='text-muted'><b>Indirizzo:</b> " + indirizzo + "</p>";
-        html += "<p class='text-muted'><b>Metratura appartamento:</b> " + metratura + "</p>";
+        html += "<p class='text-muted'><b>Quartiere:</b> " + quartiere + "</p>";
         html += "<p class='text-muted'><b>In affitto dal:</b> " + dataInizioAffitto + "</p>";
-        if (is_appartamento) {
-            html += "<p class='text-muted'><b>Prezzo:</b> " + prezzo + "</p>"; 
-        }
+        html += "<p class='text-muted'><b>" + arredato + "</b></p>";
         html += "</div>";
         
         html += "<div class='col-md-6'>"; // COLONNA 2 
-        html += "<p class='text-muted'><b>Quartiere:</b> " + quartiere + "</p>";
-        html += "<p class='text-muted'><b>Arredato:</b> " + arredato + "</p>";
+        html += "<p class='text-muted'><b>Metratura appartamento:</b> " + metratura + "</p>";
         html += "<p class='text-muted'><b>Numero locali:</b> " + num_locali + "</p>";
         if (is_appartamento) {
+            html += "<p class='text-muted'><b>Prezzo:</b> " + prezzo + "</p>"; 
             html += "<p class='text-muted'><b>Spese comprese:</b> " + spese_comprese + "</p>";
         }
         html += "</div>";
@@ -481,8 +483,9 @@ public class ServletLocatore extends HttpServlet {
 
     private String getHTMLButtonAnnuncio(Long oid, boolean is_archiviato, boolean locatore_bloccato) {
         String id = "id='select-ann-" + oid + "'";
+        String css_class = " class='" + (is_archiviato ? "pubblica" : "archivia") + "-annuncio' ";
         String value = is_archiviato ? "Pubblica" : "Archivia";
-        String css_class = " class='" + (is_archiviato ? "pubblica-annuncio" : "archivia-annuncio") + "' ";
+        
         return "<a " + id + css_class + " href='#0'>" + value + "</a>";
     }
 

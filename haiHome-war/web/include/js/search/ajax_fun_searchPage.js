@@ -17,8 +17,10 @@ var caroselli = new Array();
 
 var actual = 0;
 
-
-
+//-----------------------------------------------------//
+//____________________ GOOGLE MAPS____________________ //
+//
+//
 //Funzione Ajax per caricare e inizializzare la mappa e caricare gli annunci
 function annunci_search() {
     $.post("ServletController",
@@ -88,6 +90,17 @@ function setMapOnAll(map, markers) {
 function clearMarkers(markers) {
     setMapOnAll(null, markers);
 }
+
+
+
+//-----------------------------------------------------//
+//____________________ GOOGLE MAPS____________________ //
+
+
+//----------------------------------------------------//
+//______________RISULTATI RICERCA____________________//
+
+
 
 function load_Annunci() {
     $.post("ServletController",
@@ -325,12 +338,12 @@ function activateCaroselli() {
     });
 }
 
-function prevpage() {
+/*function prevpage() {
     if (actual > 1) {
         var page = actual - 1;
         selectpage(page);
     }
-}
+}*/
 
 function nextpage() {
     if (actual < n_page) {
@@ -338,6 +351,30 @@ function nextpage() {
         selectpage(page);
     }
 }
+
+//Caricamento dei risultati a fine pagina
+$(window).scroll(function () {
+    if (($(window).scrollTop() + 200) >= $(document).height() - $(window).height()) {
+        nextpage();
+    }
+});
+
+//Funzione usata per aprire pagina risultati
+function send_Annuncio(k) {
+    var annuncio = annunci[k];
+    var url = "/haiHome-war/dettagliAnnuncio.jsp";
+    var json = JSON.stringify(annuncio);
+    $.session.set('dettagli', json);
+    $.session.set('admin', false);
+    window.open(url);
+}
+
+//----------------------------------------------------//
+//______________RISULTATI RICERCA____________________//
+
+
+//---------------------------------------------------//
+//______________FILTRI PREFERITI_____________________//
 
 function loggatoStudente() {
     $.post("ServletController",
@@ -385,6 +422,12 @@ function getfiltro() {
     $.post("ServletController",
             {action: "Ricerca-getFiltro"},
             function (filtro) {
+                if(filtro=="null"){
+                   var title = "Ops...";
+                    var body = "C'è stato un errore con il caricamento del filtro di ricerca, contatti l'admin per maggiori informazini.";
+                    var footer = null;
+                    openModalMessage(title, body, footer); 
+                }else{
                 var Quartieri = filtro.Quartieri;
                 $.each(Quartieri, function (index, quart) {
                     $('#' + quart).prop('selected', true);
@@ -455,16 +498,8 @@ function getfiltro() {
                 } else {
                     $("#saveButton").text("Modifica");
                 }
+            }
             });
-}
-
-function send_Annuncio(k) {
-    var annuncio = annunci[k];
-    var url = "/haiHome-war/dettagliAnnuncio.jsp";
-    var json = JSON.stringify(annuncio);
-    $.session.set('dettagli', json);
-    $.session.set('admin', false);
-    window.open(url);
 }
 
 function persistiFiltro() {
@@ -523,12 +558,9 @@ $(document).ready(function () {
     });
 });
 
-//Caricamento dei risultati a fine pagina
-$(window).scroll(function () {
-    if (($(window).scrollTop() + 200) >= $(document).height() - $(window).height()) {
-        nextpage();
-    }
-});
+//---------------------------------------------------//
+//______________FILTRI PREFERITI_____________________//
+
 
 // implement JSON.stringify serialization
 JSON.stringify = JSON.stringify || function (obj) {

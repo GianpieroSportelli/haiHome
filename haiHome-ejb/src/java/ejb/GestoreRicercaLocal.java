@@ -67,107 +67,111 @@ public interface GestoreRicercaLocal {
     JSONArray usaFiltroAttuale();
     
     /**
-     * 
-     * @return 
+     * Metodo che verifica se il filtro contenuto in gestoreRicerca è un filtro appartamento oppure no
+     * @return true se il filtro in gestoreRicerca è di tipo appartamento false altrimenti
      */
     boolean isFiltroAppartamento();
     
     /**
-     * 
-     * @param id_FiltroDiRicerca
-     * @return 
+     * Metodo che carica in gestoreRicerca un particolare filtro di ricerca persistito scelto tramite l'id
+     * @param id_FiltroDiRicerca id del filtro di ricerca che si vuole caricare
+     * @return true se il caricamento va a buon fine
      */
     boolean cambiaFiltroAttuale(long id_FiltroDiRicerca);
     
     /**
-     * 
-     * @return 
+     * Metodo che ritorna il json rappresentante il filro di ricerca presente al interno di gestoreRicerca
+     * @return JSON filtro in gestoreRicerca null se il non è presente un filtro
      */
     JSONObject attualeToJSON();
     
     /**
-     * 
-     * @param id_studente
-     * @return 
+     * Metodo incaricato di persistere il filtro presente al interno del gestoreRicerca comunicando con gestoreStudente, salva il filtro nella lista
+     * filtri preferiti dello studente specificato mediante id_studente
+     * @param id_studente id dello studente a cui verrà collegato il filtro di ricerca
+     * @return valore di veerità rappresentate l'esito del oprazione
      */
     boolean persistiFiltroAttuale(String id_studente);
     
     /**
-     * 
-     * @return 
+     * Metodo che ritorna la lista dei queartieri precedentemente selezionata
+     * @return lista dei nomi dei quesrtieri della città selezionata
      */
     ArrayList<String> getQuartieriCittà();
     
     /**
-     * 
-     * @return 
+     * Metodo che ritorna la lista dei tipiStanza presenti in haiHome
+     * @return lista tipi stanza
      */
     ArrayList<String> getTipoStanza();
     
     /**
-     * 
-     * @return 
+     * Metodo che si occupa di ottenere le coordinate di geocodifica della città selezionata in precedenza comunicando con
+     * googleMapsBean
+     * @return [latitudine,longitudine] città selezionata secondo la codifica ottenuta da goole
      */
     double[] geocodeCurrentCity();
     /**
-     * 
-     * @param lat
-     * @param lng
-     * @param rad
-     * @return 
+     * Metodo che di occupa di recuperare i supermercati in uno specifico raggio ottenuti mediante googleMapsBean
+     * @param lat latitudine centro del area di interesse
+     * @param lng longitudine area di interesse
+     * @param rad raggio dell'area di interesse
+     * @return JSONArray dei servizi
      */
     public JSONArray getSupermarketNearBy(double lat, double lng, double rad);
     
     /**
-     * 
-     * @param lat
-     * @param lng
-     * @param rad
-     * @return 
+     * Metodo che di occupa di recuperare le banche in uno specifico raggio ottenuti mediante googleMapsBean
+     * @param lat latitudine centro del area di interesse
+     * @param lng longitudine area di interesse
+     * @param rad raggio dell'area di interesse
+     * @return JSONArray dei servizi
      */
     public JSONArray getBankNearBy(double lat, double lng, double rad);
     
     /**
-     * 
-     * @param lat
-     * @param lng
-     * @param rad
-     * @return 
+     * Metodo che di occupa di recuperare le fermate dei mezzi pubblici in uno specifico raggio ottenuti mediante googleMapsBean
+     * @param lat latitudine centro del area di interesse
+     * @param lng longitudine area di interesse
+     * @param rad raggio dell'area di interesse
+     * @return JSONArray dei servizi
      */
     public JSONArray getBusNearBy(double lat, double lng, double rad);
     
     /**
-     * 
-     * @param id_filtro
-     * @param id_studente
-     * @return 
+     * Metodo che si occupa di cancellare un particolare filtro di ricerca collegato a uno specifico studente,
+     * operazione effetuata in collaborazione con gestoreStudente
+     * @param id_filtro id filtro da cancellare
+     * @param id_studente id studente detentore del filtro
+     * @return esito cancellazione valore di verità
      */
     public boolean removeFiltro(String id_filtro, String id_studente);
     
-    /**
-     * 
-     * @param id
-     * @return 
+     /**
+     * Metodo che carica in gestoreRicerca un particolare filtro di ricerca persistito scelto tramite l'id
+     * @param id id del filtro di ricerca che si vuole caricare
+     * @return true se il caricamento va a buon fine
      */
     boolean loadFiltro(String id);
     
     /**
-     * 
-     * @param obj
-     * @return 
+     * Metodo utilizzato per interfacciamento andorid riceve le info necessarie per la creazione di un filtro di ricerca
+     * @param obj JSONObject che codifica le info del filtro di ricerca
+     * @return JSONObject contenente status valore di verità che indica se la creazione e l'utilizzo del filtro è andata a buon fine 
+     *         e un campo esito che contiene un JSONArray degli annunci risultato
      */
     public JSONObject create_useFilter(JSONObject obj);
     
     /**
-     * 
-     * @param Città
-     * @return 
+     * Metodo utilizzato per l'interfacciamento con android per ottenere i quartieri di una specifica città
+     * @param Città stringa nome città
+     * @return JSONObject con due campi {status: valore di verità successo o fallimento, esito: lista di quartieri}
      */
     public JSONObject getQuartieri(String Città);
     
     /**
-     * 
-     * @return 
+     * Metodo utilizzato per l'interfacciamento con android per ottenere i tipi stanza presenti in haihome
+     * @return JSONObject con due campi {status: valore di verità successo o fallimento, esito: lista di tipi stanza}
      */
     public JSONObject getTipoStanzaJSON();
 

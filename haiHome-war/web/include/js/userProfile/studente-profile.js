@@ -241,7 +241,7 @@ function constructFiltriPage() {
 
     for (i = 1; i < (n_page + 1); i++) {
         page_html = '';
-        page_html += '<div class="filtri row" id =' + i + '_RESULT>';
+        page_html += '<div class="filtri" id =' + i + '_RESULT>';
 
         for (var k = (i - 1) * FIlTRI_X_PAGE; (k < (i * FIlTRI_X_PAGE) && k < filtri.length); k++) {
 

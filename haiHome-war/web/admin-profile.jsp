@@ -89,6 +89,7 @@
             //console.log("carico");
             $(document).ready(function () {
                 loadSegnalazioni();
+                getCittaToDelete();
             });
         </script>
 
@@ -143,9 +144,10 @@
                     <div class="profile-content tab-content">
                         <div class="tab-pane active in fade" id="1">
                             <form id="formCitta" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
+
+                                <label class="string optional" for="citta">Inserisci Citt&agrave;</label>
                                 <div class="sminputs">
                                     <div class="input full">
-                                        <label class="string optional" for="citta">Inserisci Citt&Agrave;</label>
                                         <input style="background-color:#f2f2f2" class="string optional" maxlength="255" id="citta" name="citta" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Citt&agrave;'" placeholder="Citt&agrave;" size="50" />
                                     </div>
                                 </div>
@@ -158,18 +160,38 @@
                             </form>
 
                             <form id="formCitta2" accept-charset="utf-8" action="ServletController" method="POST" class="simform">
-                                <div class="sminputs">
+                                <div class="col-md-6">
+                                    <label class="string optional" for="citta2">Cancella Citt&agrave;</label>
+                                    <div class="well sidebar">
+                                        <div class="form-group" id="cittaCANCDIV"> 
+                                            <select class="form-control" name="cittaDB" id="citta2">
+
+                                            </select>
+                                        </div>
+                                        <div id="cancellaCittaDIV" style="display:none">
+                                            <div class="simform__actions"> 
+                                                <a onclick="deleteCitta()" class="btn btn-lg btn-success" role="button"
+                                                   data-toggle="popover" data-trigger="manual" data-content="" > 
+                                                    Cancella
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="sminputs">
                                     <div class="input full">
                                         <label class="string optional" for="citta2">Cancella Citt&Agrave;</label>
                                         <input style="background-color:#f2f2f2" class="string optional" maxlength="255" id="citta2" name="citta2" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Citt&agrave;'" placeholder="Citt&agrave;" size="50" />
                                     </div>
                                 </div>
-                                <div class="simform__actions"> 
-                                    <a onclick="deleteCitta()" class="btn btn-lg btn-success" role="button"
-                                       data-toggle="popover" data-trigger="manual" data-content="" > 
-                                        Cancella
-                                    </a>
-                                </div> 
+                                <div id="cancellaCittaDIV" style="display: none">
+                                    <div class="simform__actions"> 
+                                        <a onclick="deleteCitta()" class="btn btn-lg btn-success" role="button"
+                                           data-toggle="popover" data-trigger="manual" data-content="" > 
+                                            Cancella
+                                        </a>
+                                    </div>
+                                </div>-->
                             </form>
                         </div>
                         <div class="tab-pane fade" id="2">
@@ -238,6 +260,14 @@
                 } else {
                     $("#quartieriDIV").hide();
                     $("#capDIV").hide();
+                }
+            });
+
+            $("#citta2").change(function () {
+                if ($("#citta2").val() !== "-") {
+                    $("#cancellaCittaDIV").show("slow");
+                } else {
+                    $("#cancellaCittaDIV").hide();
                 }
             });
         </script>

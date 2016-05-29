@@ -81,7 +81,7 @@ public class GestoreSegnalazione implements GestoreSegnalazioneLocal {
         HashMap<Annuncio,Collection<SegnStudente>> result=new HashMap<>();
         Collection<JSONSegn> out=new ArrayList<>();
         for(Segnalazione x:all){
-            System.out.println("Annuncio: "+x.getAnnuncio().getId()+" Studente: "+x.getStudente().getId()+" archiviata? "+x.isArchiviato());
+            //System.out.println("Annuncio: "+x.getAnnuncio().getId()+" Studente: "+x.getStudente().getId()+" archiviata? "+x.isArchiviato());
             if(result.containsKey(x.getAnnuncio())){
                 result.get(x.getAnnuncio()).add(new SegnStudente(x.getStudente(),x.getDataSegnalazione(),x.getDescrizione(),""+x.getId(),x.isArchiviato()));
             }else{
@@ -108,14 +108,14 @@ public class GestoreSegnalazione implements GestoreSegnalazioneLocal {
 
     @Override
     public boolean archiviaSegnalazioni(JSONObject json,boolean status) {
-        System.out.println("Archivia?"+status);
+        //System.out.println("Archivia?"+status);
         try {
             JSONArray studenti=json.getJSONArray("Studenti");
             for(int i=0;i<studenti.length();i++){
                 JSONObject x=studenti.getJSONObject(i);
                 String oid=x.getString("ID");
                 boolean arch=x.getBoolean("Archiviato");
-                System.out.println("segnalazione: "+oid+" archiviata? "+arch);
+                //System.out.println("segnalazione: "+oid+" archiviata? "+arch);
                 if(arch!=status){
                     Segnalazione actual=segnalazioneFacade.find(Long.valueOf(oid));
                     actual.setArchiviato(status);
