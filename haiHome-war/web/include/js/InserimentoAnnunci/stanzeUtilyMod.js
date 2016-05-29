@@ -589,14 +589,22 @@ function mostraPrezzoStanze(stanze){
 
 
 
-function checkStanza(stanzaContent){
+function checkStanza(stanzaContent,atomico){
     var prezzoS = stanzaContent.find("input#inpPrezzoS");
     var prezzoMet = stanzaContent.find("input#inpMetratura");
-
-    var pre= prezzoS.val()!="" && parseInt(prezzoS.val())>0;
+    alert(atomico);
+    if(atomico){
+        pre=true;
+    }else{
+        var pre= prezzoS.val()!="" && parseInt(prezzoS.val())>0;
+    }
     
-    alert(pre);
-    var met = true;
+    
+    //alert(prezzoS.val());
+    //alert("controllo prezzo " + pre);
+    
+    var met = prezzoMet.val()=="" || parseInt(prezzoMet.val())>=0;
+    
     if(prezzoMet.val()==""){
          prezzoMet.val(0);
     }
@@ -612,7 +620,12 @@ function checkStanza(stanzaContent){
     
     var totimg = img.length + files.length;
     
+    //alert("num img" + totimg);
     drop = totimg>0;
+    //alert("controllo metratura " + met);
+    
+    //alert("controllo drop " + drop);
+    
     
     return pre && met && drop;
 }

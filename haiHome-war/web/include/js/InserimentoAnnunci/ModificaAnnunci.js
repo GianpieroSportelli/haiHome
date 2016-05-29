@@ -227,7 +227,7 @@ $(document).ready(function () {
         var stanzaContent = navContent.find("div.active");
 
         // controllo dati stanza
-        if(checkStanza(stanzaContent)){
+        if(checkStanza(stanzaContent,myAnnuncio.Atomico)){
             
          modificaStanza(stanzaContent);
 
@@ -392,7 +392,7 @@ $(document).ready(function () {
         var tabContent = tabStanze.find("li.active");
 
         
-        if(checkStanza(stanzaContent)){
+        if(checkStanza(stanzaContent,myAnnuncio.Atomico)){
             salvaNuovaStanza(stanzaContent);
 
 
@@ -666,7 +666,7 @@ function checkInfoApp() {
     var descrizioneTag = pannInfo.find("#textDescrizione");
     var metraturaTag = pannInfo.find("#inpMetratura");          //da aggiungere il controllo sui dati
     var dataInizio = pannInfo.find("input#inpDataInizio");
-    var met = true;
+    var met = metraturaTag.val()=="" || parseInt(metraturaTag.val())>=0;
     if(metraturaTag.val()==""){
          metraturaTag.val(0);
     }

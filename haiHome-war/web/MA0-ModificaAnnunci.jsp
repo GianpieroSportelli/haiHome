@@ -81,7 +81,7 @@
         <!-- FINE General Modal -->
         
                 <!--mio scriot autocomplite -->
-        <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocompleteMod.js"></script>
         
         
         
