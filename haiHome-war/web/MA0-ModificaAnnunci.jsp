@@ -80,6 +80,9 @@
         <script type="text/javascript" src="include/js/confirm-bootstrap.js"></script>
         <!-- FINE General Modal -->
         
+                <!--mio scriot autocomplite -->
+        <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocomplete.js"></script>
+        
         
         
         
@@ -122,7 +125,7 @@
                     <div id="collapse1" class="panel-collapse collapse" >
                         <div class="panel-body">
                             <%@include file="MA1-InfoIndirizzo.jsp" %>
-                                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&signed_in=true&libraries=places&callback=initAutocomplete" async defer></script>
+                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2yod6637sOZqbmDNOZSUh-30b6xTchBE&signed_in=true&libraries=places&callback=initAutocomplete" async defer></script>
 
                         </div>
                         <div class="panel-footer"></div>
@@ -186,7 +189,6 @@
 
         <!-- script miei -->
                 <!--mio scriot autocomplite -->
-         <script type="text/javascript" src="include/js/InserimentoAnnunci/googleAutocompleteMod.js"></script>
         <link rel="stylesheet" href="include/css/InserimentoAnnunci/ModificaAnnunci.css">
         <script type="text/javascript" src="include/js/InserimentoAnnunci/ModificaAnnunci.js"></script>
         <script type="text/javascript" src="include/js/InserimentoAnnunci/stanzeUtilyMod.js"></script>
