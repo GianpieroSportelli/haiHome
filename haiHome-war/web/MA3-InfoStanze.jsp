@@ -43,7 +43,7 @@
 
                 <div>
                     <a class="editStanza">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Mofidica     
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Modifica     
                     </a></br>
                     <a class="deleteStanza">
                         <span class="glyphicon glyphicon-remove-circle" data-toggle="confirmation" aria-hidden="true"></span>Elimina

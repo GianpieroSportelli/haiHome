@@ -35,7 +35,7 @@
         
         <div class="col-md-10"></div>
         
-        <button class="btn btn-primary nextBtn pull-right col-md-1" id="buttStanze" type="button" >Next</button>
+        <button class="btn btn-primary nextBtn pull-right col-md-1" id="buttStanze" type="button" >Avanti</button>
 
     </div>
         
