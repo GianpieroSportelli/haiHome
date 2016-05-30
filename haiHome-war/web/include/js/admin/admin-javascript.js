@@ -54,27 +54,7 @@ function getListaCitta() {
             }
     );
 }
-/*
- function getQuartieriCitta(citta) {
- $.post("ServletController",
- {action: "get-lista-quartieri-citta", citta: citta},
- function (responseJson) {
- if (responseJson == 'false') {
- alert('Non è stato possibile recuperare i quartieri della città: ' + citta);
- } else {
- console.log(responseJson);
- responseJson = JSON.parse(responseJson);
- var html = '';
- $.each(responseJson, function (index, item) {
- html += '<option id=\"citta-' + item + '\" value=\"' + item + '\">' + item + '</option>';
- });
- $("#quartieri").append(html);
- }
- 
- }
- );
- }
- */
+
 function inserisciCAP() {
     var capInput = $('#capQuartiere').val();
     var cittaInput = $('#cittaDB').val();

@@ -51,8 +51,6 @@ function load_Annunci_Studente() {
 }
 
 function create_pageResult_studente() {
-    //console.log("CREATE");
-    //console.log(12 / N_ANNUNCI_X_PAGE);
     page_annunci = [];
     var result_div = '<div class = "search-result" >';
     var close_div = '</div>';
@@ -81,13 +79,6 @@ function create_pageResult_studente() {
             console.log('Immagini annuncio' + i + " " + foto_page[i]);
         }
     }
-    /*
-     for(var l = 0; l < page_annunci.length; l++){
-     console.log(page_annunci[l]);
-     }
-     for(var l = 0; l < foto_page.length; l++){
-     console.log(foto_page[l]);
-     }*/
 }
 
 function getCodeCarousel(annuncio, k) {
@@ -370,13 +361,6 @@ function activateCaroselli() {
     });
 }
 
-/*function prevpage_1() {
- if (actual_1 > 1) {
- var page = actual_1 - 1;
- selectpage_1(page);
- }
- }*/
-
 function nextpage_1() {
     if (n_page_1 != 0) {
         if (actual_1 < n_page_1) {
@@ -459,8 +443,7 @@ function deleteAnnuncio() {
     $.post("ServletController",
             {action: "studente-removeAnnuncio", id: annuncioToDelete},
             function (item) {
-                //var html = '';
-                //alert(item);
+
                 console.log("Annuncio eliminato?: " + item);
                 if (item == "true") {
                     refresh_annunci();
@@ -472,7 +455,6 @@ function deleteAnnuncio() {
 }
 
 function refresh_annunci() {
-    //
     n_annunci -= 1;
     actual_1 = 0;
     n_page_1 = n_annunci / N_ANNUNCI_X_PAGE;
@@ -483,13 +465,6 @@ function refresh_annunci() {
         console.log("Annuncio: " + i + " - " + page_annunci[i]);
     }
     console.log("CANCELLARE: " + annuncioNumberToDelete);
-    /*var newAnnunci = new Array();
-     for (var i = 0; i < annuncioNumberToDelete; i++) {
-     newAnnunci[i] = page_annunci[i];
-     }
-     for (var i = annuncioNumberToDelete; i < page_annunci.length - 1; i++) {
-     newAnnunci[i] = page_annunci[(i + 1)];
-     }*/
 
     page_annunci.splice(annuncioNumberToDelete, 1);
     foto_page.splice(annuncioNumberToDelete, 1);
@@ -510,53 +485,7 @@ function refresh_annunci() {
 
     }
 }
-/*
- function refresh_annunci_1() {
- var annuncioIDPAGE = $('div.IDF' + annuncioToDelete).parent().parent().parent().attr("id").split("-")[1];
- console.log("DA CANCELLARE " + annuncioIDPAGE);
- //console.log("ID STAMPATO: " + $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().empty());
- //DIV RISULTATO ROW
- console.log("CLASSE PADRE ROW " + $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().parent().attr("class"));
- console.log("HTML FRATELLO " + $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().next(".col-sm-6").html());
- 
- //console.log("FRATELLO " + $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().next().attr("id"));
- if (annuncioIDPAGE % 2 === 0) {
- //pari, sposto la roba a sinistra e poi scalo di uno
- //Se non è vuoto
- if (!$.trim($('div.IDF' + annuncioToDelete).parent().parent().parent().parent().next(".col-sm-6").html()) === false) {
- //Html non vuoto, c'è un fratello
- var newHtml = $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().next(".col-sm-6").html();
- console.log("HTML: " + newHtml);
- var inizioHTML = "<div class=\"col-sm-" + 12 / N_ANNUNCI_X_PAGE + "\">";
- inizioHTML += newHtml;
- inizioHTML += "</div>";
- 
- //Cancello la roba del padre
- $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().parent().empty();
- $('div.IDF' + annuncioToDelete).parent().parent().parent().parent().parent().append(inizioHTML);
- 
- if (actual_1 === 1) {
- //Prima pagina
- }
- //Non ho scrollato ancora il prossimo da aggiungere
- if (actual_1 < paginaToDisplay && actual_1 !== 1) {
- 
- }
- 
- 
- } else {
- //O all'ultima pagina oppure sto cancellando l'ultimo annuncio
- //Se non è la prima ROW
- if ($('div.IDF' + annuncioToDelete).parent().parent().parent().parent().parent().attr("ID").split("_")[0] !== '1') {
- console.log('ARRIVATO');
- } else {
- console.log('INIZIO');
- }
- }
- }
- 
- }
- */
+
 $(document).ajaxStop(function () {
 
     for (var i = 0; i < paginaToDisplay; i++) {
@@ -565,35 +494,6 @@ $(document).ajaxStop(function () {
             console.log("Nuovo HTML per annuncio: " + i + " : " + page_annunci[i]);
         }
     }
-    /*
-     //Prima pagina da visualizzare
-     if (paginaToDisplay === 2) {
-     if (n_page_1 != 0) {
-     if (!$.trim($('div.annuncio-0').parent().html()) === false) {
-     page_annunci[0] = "0" + $('div.annuncio-0').parent().html();
-     console.log("HTML NUOVO DI 0 - " + page_annunci[0]);
-     }
-     
-     if (!$.trim($('div.annuncio-1').parent().html()) === false)
-     page_annunci[1] = "1" + $('div.annuncio-1').parent().html();
-     console.log("HTML NUOVO DI 1 - " + page_annunci[1]);
-     }
-     
-     
-     } else {
-     //Se non è vuoto
-     if (!$.trim($('div.annuncio-' + (paginaToDisplay - 2)).parent().html()) === false) {
-     // console.log("HTML ANNUNCIO: " + (paginaToDisplay - 2) + " - " + $('div.annuncio-' + +(paginaToDisplay - 2)).parent().html());
-     page_annunci[paginaToDisplay - 2] = "" + (paginaToDisplay - 2) + $('div.annuncio-' + +(paginaToDisplay - 2)).parent().html();
-     console.log(" HTML NUOVO DI " + (paginaToDisplay - 2) + " - " + page_annunci[paginaToDisplay - 2]);
-     }
-     if (!$.trim($('div.annuncio-' + (paginaToDisplay - 1)).parent().html()) === false) {
-     // console.log("HTML ANNUNCIO: " + (paginaToDisplay - 1) + " - " + $('div.annuncio-' + +(paginaToDisplay - 1)).parent().html());
-     page_annunci[paginaToDisplay - 1] = "" + (paginaToDisplay - 1) + $('div.annuncio-' + +(paginaToDisplay - 1)).parent().html();
-     console.log(" HTML NUOVO DI " + (paginaToDisplay - 1) + " - " + page_annunci[paginaToDisplay - 1]);
-     
-     }
-     }*/
 });
 
 
