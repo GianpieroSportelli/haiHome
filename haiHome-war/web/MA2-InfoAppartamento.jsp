@@ -12,7 +12,7 @@
             <input type="hidden" name="action" value="Annunci-editAnnuncio-infoAppartamento" /> 
             <div class="form-group">
                 <label class="control-label">Descrizione</label>
-                <textarea id='textDescrizione' name='Descrizione' required="required" class="form-control" disabled="disabled" ></textarea>
+                <textarea id='textDescrizione' name='Descrizione' required="required" class="form-control" disabled="disabled" maxlength="255" ></textarea>
             </div>
             <div class="form-group">
                 <label class="control-label">Metratura</label>

@@ -9,6 +9,7 @@ and open the template in the editor.
 */
 
 
+/*
 body {
     background-color: white;
 }
@@ -20,19 +21,38 @@ p {
 h1, h2, h3, h4 {
     font-family: initial;
     font-weight: initial;
+}*/
+
+div.prezzoStanzaCont{
+        border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border: 1px solid #3399ff;
+    margin-top: 10px;
+    margin-bottom:  10px;
+    padding-top: 10px;
 }
+
+div.markup{
+    position:relative;
+
+}
+div.markup img{ 
+    position:absolute;
+    margin-top:10px; 
+} 
 
 .buttonTopRight{
     position: absolute;
     float: right;
-    
+
 }
 
 .formContainer{
-      margin-top: 10px;
-      margin-bottom: 10px;
-      margin-right: 10px;
-      margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .formContainer  .mylabel{
@@ -44,23 +64,23 @@ h1, h2, h3, h4 {
 }
 
 .dropzone .dz-preview .dz-image {
-      width: 80px;
-      height: 80px;
-      margin-top: 0px;
-      margin-bottom: 0px;
-      margin-right: 0px;
-      margin-left: 0px;
-    }
-    
-    .dropzone{
+    width: 80px;
+    height: 80px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.dropzone{
     padding-top: 0px;
     padding-right: 0px;
     padding-bottom: 0px;
     padding-left: 0px;
-    }
-    
-    .not-active {
-   pointer-events: none;
-   cursor: not-allowed;
-   
+}
+
+.not-active {
+    pointer-events: none;
+    cursor: not-allowed;
+
 }

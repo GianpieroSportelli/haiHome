@@ -88,10 +88,12 @@ function nuovaStanza1() {
                 url: "ServletController",
                 parallelUploads: 100,
                 uploadMultiple: true,
+                acceptedFiles: "image/*",
                 paramName: "file[]",
                 addRemoveLinks: true,
+                dictDefaultMessage: "Clicca o Trascina qui le immagini",
                 previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img data-dz-thumbnail /></div>\n</div>"});
-    addDropzoneStanza(myDropzone, numStanze);
+                addDropzoneStanza(myDropzone, numStanze);
 
     contatoreStanze++;
 
@@ -263,7 +265,7 @@ function getStanzaHTMLCode2(number, tipoLetto, tipAcc) {
                 <label class=\"control-label\">Foto</label>\n\
                 <div>\n\
                     <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
-                        <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\
+                        <div class=\"dz-message needsclick\">Trascina qui le immagini o clicca per caricare<br>\n\
                         </div>\n\
                     </div>\n\
                 </div>\n\
@@ -329,7 +331,7 @@ function getStanzaHTMLCode(number, tipoLetto, tipAcc) {
                     <label class=\"control-label\">Foto</label>\n\
                 <div>\n\
                 <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
-                    <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\
+                    <div class=\"dz-message needsclick\">Trascina qui le immagini o clicca per caricare<br>\n\
                     </div>\n\
                 </div>\n\
             </div>\n\

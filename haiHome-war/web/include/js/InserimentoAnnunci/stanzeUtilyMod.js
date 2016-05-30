@@ -100,6 +100,7 @@ function aggiungiStanza(s, i) {
                 url: "ServletController",
                 parallelUploads: 100,
                 uploadMultiple: true,
+                acceptedFiles: "image/*",
                 paramName: "file[]",
                 addRemoveLinks: true,
                 thumbnailWidth: 100,
@@ -122,7 +123,7 @@ function aggiungiStanza(s, i) {
         var prefix = "data:image/" + est[j] + ";base64, ";
 
         //var dropContainer = $("div#mydropzone" + i);
-        var fotoHTML = "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img id=\"" + foto[j] + "\" src=\"" + prefix + foto64[j] + "\" data-dz-thumbnail class='old'/></div><a class=\"dz-remove removeOldImg\" data-dz-remove>Remove File</a>\n</div>";
+        var fotoHTML = "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image markup\"><img id=\"" + foto[j] + "\" src=\"" + prefix + foto64[j] + "\" data-dz-thumbnail class='old'/></div><a class=\"dz-remove removeOldImg\" data-dz-remove>Remove File</a>\n</div>";
         dropContainer.append(fotoHTML);
     }
 
@@ -171,7 +172,7 @@ function stanzaHTMLCode(stanza, number) {
                   <form action=\"ServletController\" method=\"post\" id='stanzaForm" + number + "'><input type=\"hidden\" name=\"action\" value=\"Annunci-editAnnuncio-infoEditStanze\" />\n\
                     <input type=\"hidden\" class=\"tipoStanzaHidd\" value=\"" + stanza.SuperTipo + "\" /> \
                 <div class=\"form-group\">\n\
-                         <p class='mylabel'>Stanza :  <span class='valore'>" + stanza.SuperTipo + "</span></br>TipoStanza : <span class='valore'>" + stanza.Tipo + " </span>\n\
+                         <p class='mylabel'>Stanza :  <span class='valore supertipo'>" + stanza.SuperTipo + "</span></br>Tipo Stanza : <span class='valore'>" + stanza.Tipo + " </span>\n\
                         </p>\n\
                     <div class=\"form-group\">\n\
                         <label class=\"control-label\">Metratura</label> <input name='MetraturaS' type='number' id=\"inpMetratura\" class=\"form-control\" value=\"" + stanza.Metratura + "\"  disabled=\"disabled\" />\n\
@@ -414,6 +415,7 @@ function newEditableStanza(){
                 url: "ServletController",
                 parallelUploads: 100,
                 uploadMultiple: true,
+                acceptedFiles: "image/*",
                 paramName: "file[]",
                 addRemoveLinks: true,
                 thumbnailWidth: 100,
@@ -469,17 +471,17 @@ function newEditableStanza(){
                         </div>\n\
                          <div class=\"form-group\">\n\
                             <label class=\"control-label\">Metratura</label>\n\
-                            <input name='MetraturaS' type='number' id=\"inpMetratura\" class=\"form-control\" /><br />\n\
+                            <input name='MetraturaS' type='number' id=\"inpMetratura\" class=\"form-control\" />\n\
                         </div>\n\
                          <div class=\"form-group\" style=\"display: none;\">\n\
                             <label class=\"control-label\">Prezzo</label>\n\
-                            <input name='PrezzoS' type='number' id=\"inpPrezzoS\" class=\"form-control\" value='0' /><br />\n\
+                            <input name='PrezzoS' type='number' id=\"inpPrezzoS\" class=\"form-control\" value='0' />\n\
                         </div>\n\
                         <div class=\"form-group col-md-12\">\n\
                             <label class=\"control-label\">Foto</label>\n\
                         <div>\n\
                         <div  id=\"mydropzone" + number + "\"  class=\"dropzone needsclick dz-clickable\">\n\
-                            <div class=\"dz-message needsclick\">Drop files here or click to upload.<br>\n\</div>\n\
+                            <div class=\"dz-message needsclick\">Trascina qui le immagini o clicca per caricare<br>\n\</div>\n\
                         </div>\n\
                     </div>\n\
                 </div>\n\
@@ -589,12 +591,16 @@ function mostraPrezzoStanze(stanze){
 
 
 
-function checkStanza(stanzaContent,atomico){
+function checkStanza(stanzaContent,atomico,supertipo){
     var prezzoS = stanzaContent.find("input#inpPrezzoS");
+    
     var prezzoMet = stanzaContent.find("input#inpMetratura");
-    alert(atomico);
+
     if(atomico){
         pre=true;
+    }else if(supertipo=="2"){
+        
+        pre = true;
     }else{
         var pre= prezzoS.val()!="" && parseInt(prezzoS.val())>0;
     }
