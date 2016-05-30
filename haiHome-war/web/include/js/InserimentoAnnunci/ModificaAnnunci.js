@@ -226,8 +226,15 @@ $(document).ready(function () {
         var navContent = pannStanze.find(".tab-content");
         var stanzaContent = navContent.find("div.active");
 
+        var supertipo = stanzaContent.find(".tipoStanzaHidd").val();
+        if(supertipo=="StanzaAccessoria"){
+            supertipo="2";
+        }else{
+            supertipo="1";
+        }
+
         // controllo dati stanza
-        if(checkStanza(stanzaContent,myAnnuncio.Atomico)){
+        if(checkStanza(stanzaContent,myAnnuncio.Atomico,supertipo)){
             
          modificaStanza(stanzaContent);
 
@@ -391,8 +398,9 @@ $(document).ready(function () {
         var tabStanze = pannStanze.find(".nav-tabs");
         var tabContent = tabStanze.find("li.active");
 
-        
-        if(checkStanza(stanzaContent,myAnnuncio.Atomico)){
+        var supertipo = stanzaContent.find("#selStanza").val();
+
+        if(checkStanza(stanzaContent,myAnnuncio.Atomico,supertipo)){
             salvaNuovaStanza(stanzaContent);
 
 
@@ -494,7 +502,7 @@ $(document).ready(function () {
         showOn: "focus",
         buttonImage: "images/calendario.png",
         buttonImageOnly: true,
-        //minDate: 0,
+        minDate: 0,
         monthNames: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
         dayNamesMin: ["Do", "Lu", "Ma", "Me", "Gi", "Ve", "Sa"],
         dateFormat: "dd-mm-yy"

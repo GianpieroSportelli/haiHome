@@ -60,9 +60,11 @@ public interface GestoreAnnuncioLocal {
     
     public boolean modificaStanza(long oid, Collection<String> newFoto,Collection<String> deletedFoto, double metratura, double prezzo);
     
-        public boolean modificaStanza(long oid, boolean CC, boolean CR, double prezzo);
+    public boolean modificaStanza(long oid, boolean CC, boolean CR, double prezzo);
     
     public boolean aggiungiStanza(String tipologia,String tipo, Collection<String> foto, double metratura, double prezzo);
+    
+    public String persistiEditedFoto(InputStream fotoStream, String nomePhoto, String denominazioneLocatore, String denominazioneStanza);
 
     //public boolean modificaStanzaInAffitto(long oid, String tipo, Collection<String> foto, boolean compresoCondominio, boolean compresoRiscaldamento, double metratura, double prezzo);
 

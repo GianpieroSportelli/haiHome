@@ -740,6 +740,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         }
 
         for (String newfoto : newFoto) {
+            /*
             File fileTemp = (new File(newfoto));
             File fileDef = (new File(newfoto.replace("_temp_", "")));
 
@@ -748,10 +749,12 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
             } catch (IOException ex) {
                 System.out.println("Errore!!!!!");
                 Logger.getLogger(GestoreAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
 
-            foto.add(fileDef.getPath());
+            foto.add(newfoto);
         }
+        
+        editedStanza.setFoto(foto);
 
         stanzaAccessoriaFacade.edit(editedStanza);
         listaStanze.add(editedStanza);
@@ -922,6 +925,14 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
         } else {
             return false;
         }
+        
+        ArrayList<String> foto = (ArrayList<String>) stanza.getFoto();
+
+        for (String deletedfoto : foto) {
+            //foto.remove(deletedfoto);
+            PathUtily.eliminaFoto(deletedfoto);
+        }    
+        
         return true;
 
     }
@@ -1020,6 +1031,71 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
 
         return pathFoto;
     }
+    
+        /**
+     * Metodo utile per persistere una foto in modalità Modifica, fa uso della classe PathUtily
+     * 
+     * @param fotoStream - foto da memorizzare
+     * @param nomePhoto - denominazione della foto
+     * @param denominazioneLocatore - denominazione del locatore
+     * @param denominazioneStanza - denominazione della stanza
+     * @return restituisce il path della foto appena memorizzata
+     */
+    @Override
+    public String persistiEditedFoto(InputStream fotoStream, String nomePhoto, String denominazioneLocatore, String denominazioneStanza) {
+
+        String pathFoto = PathUtily.getPhotoPath() + annuncio.getLocatore().getId();
+
+        
+       // String pathTempFoto = PathUtily.getPhotoPath() + denominazioneLocatore;
+
+        File cartellaStanza = (new File(pathFoto));
+        if (!cartellaStanza.exists()) {
+            cartellaStanza.mkdir();
+        }
+
+        /*
+        File cartellaTemp = (new File(pathTempFoto));
+        if (!cartellaTemp.exists()) {
+            cartellaTemp.mkdir();
+        } else {
+
+        }*/
+
+        Date d = new Date();
+
+        Random r = new Random();
+
+        String[] t = nomePhoto.split("\\.");
+
+        String est = t[t.length - 1];
+
+        String photoName = denominazioneLocatore + r.nextInt(100) + d.getTime() + "." + est;
+
+        pathFoto = pathFoto + "//" + photoName;
+
+        try {
+            try (FileOutputStream tempFile = new FileOutputStream(pathFoto)) {
+                int read;
+
+                final byte[] bytes = new byte[1024];
+                while ((read = fotoStream.read(bytes)) != -1) {
+                    tempFile.write(bytes, 0, read);
+                }
+
+                tempFile.close();
+                fotoStream.close();
+            }
+
+        } catch (FileNotFoundException ex) {
+
+            Logger.getLogger(GestoreAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GestoreAnnuncio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return pathFoto;
+    }
 
     
     /**
@@ -1066,7 +1142,7 @@ public class GestoreAnnuncio implements GestoreAnnuncioLocal {
     }
 
     /**
-     * Metodo utile per spostare le foto da una cartella temporanea a quella definitiva
+     * Metodo utile per controllare che non ci siano foto in temp
      */
     private void checkPhotoFolder() {
 

@@ -13,7 +13,7 @@
         <h3>Info Annuncio</h3>
         <div class="form-group col-md-12 row">
             <label class="control-label">Descrizione</label>
-            <textarea id='textDescrizione' name='Descrizione' required="required" class="form-control" ></textarea>
+            <textarea id='textDescrizione' name='Descrizione' required="required" class="form-control" maxlength="255"></textarea>
         </div>
 
         <div class="form-group col-md-12 row">
@@ -29,7 +29,7 @@
 
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <input id='inpDataInizio' name='DataInizioAffitto' type="text" required="required" class="input-lg" />
             </div>
 

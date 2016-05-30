@@ -695,7 +695,10 @@ public class ServletAnnuncio extends HttpServlet {
                     long idLocatore = (long) locatoreJSON.get("id");
                     
 
-                    String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, idLocatore + "", numStanza);
+                    //String path = gestoreAnnuncio.persistiFoto(filecontent, fileName, idLocatore + "", numStanza);
+                    
+                    System.out.println("SONO QUI PORCO DIO");
+                    String path = gestoreAnnuncio.persistiEditedFoto(filecontent, fileName, idLocatore + "", numStanza);
 
                     editPhotoTempPath.add(path);
 
@@ -726,6 +729,7 @@ public class ServletAnnuncio extends HttpServlet {
                 metratura = metratura.compareToIgnoreCase("")==0 ? "0" : metratura;
                 String prezzoTemp = request.getParameter("PrezzoS");
                 System.out.println("request " +prezzoTemp);
+                System.out.println("PREZZOOOO " +prezzoTemp );
                 double prezzo;
                 if(prezzoTemp==null || prezzoTemp.compareToIgnoreCase("")==0){
                     prezzo = -1;
@@ -756,9 +760,11 @@ public class ServletAnnuncio extends HttpServlet {
                 boolean result;
                 ArrayList<String> editPhotoTempPath = gestoreAnnuncio.geteditPhotoTempPath();
                 if(prezzo<=0){
+                    System.out.println("STANZA SENZA PREZZO");
                     result = gestoreAnnuncio.modificaStanza(oid, editPhotoTempPath, stanzeEliminate, Double.parseDouble(metratura));
 
                 }else{
+                    System.out.println("STANZA CON PREZZO");
                     result = gestoreAnnuncio.modificaStanza(oid, editPhotoTempPath, stanzeEliminate, Double.parseDouble(metratura),prezzo);
 
                 }
